@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Attorney from "../forms/Attorney";
 import Business from "../forms/Business";
 import Personal from "../forms/Personal";
+import {showToast, validateEmail} from "../utils";
 
 function Register(props) {
     const dispatch = useDispatch();
@@ -36,6 +37,17 @@ function Register(props) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
+        if(!validateEmail(email.toLocaleLowerCase())) {
+            showToast("Invalid email address!", "warning");
+        } else if(password.length < 8 || rePassword.length < 8) {
+            showToast("Password must be at least 8 characters long!", "warning");
+        } else if(password !== rePassword) {
+            showToast("Passwords do not match!", "warning");
+        } else {
+            const data = {
+                email: email.toLocaleLowerCase(),
+            };
+        }
     }
 
     return(
