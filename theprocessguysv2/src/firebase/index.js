@@ -11,6 +11,6 @@ firebase.initializeApp({
   measurementId: "G-TYPTXTCZGS"
 });
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
 
-export default db;
+export default firebase;

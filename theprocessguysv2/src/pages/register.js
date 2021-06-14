@@ -7,9 +7,11 @@ import Attorney from "../forms/Attorney";
 import Business from "../forms/Business";
 import Personal from "../forms/Personal";
 import {showToast, validateEmail} from "../utils";
+import { register } from '../redux/actions/auth';
 
 function Register(props) {
     const dispatch = useDispatch();
+    const isUserSigningUp = useSelector(state => state.auth.isPosting);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
@@ -46,7 +48,9 @@ function Register(props) {
         } else {
             const data = {
                 email: email.toLocaleLowerCase(),
+                password
             };
+            dispatch(register(data, ()=>props.history.push("/login")));
         }
     }
 
@@ -218,9 +222,18 @@ function Register(props) {
                         className="w-100 mt-4" 
                         color="default" 
                         type="submit"
-                        // style={{ background: loader ? "#ccc" : " rgb(2, 2, 110)" }}
                     >
-                        Submit
+                        {
+                            isUserSigningUp
+                                ?
+                                    <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                                        <div className="spinner-border text-success" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>  
+                                    </div>
+                                :
+                                    <span>Sign Up</span>
+                        }
                     </Button>
                     <br></br>
                 </form>

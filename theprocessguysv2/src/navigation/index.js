@@ -1,5 +1,6 @@
-import React from 'react';
-import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import React, {useEffect} from 'react';
+import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 import TheProcessGuys from "../pages/TheProcessGuys";
 // import QuestionairePage from "../pages/Questionaire";
 import Login from "../pages/Login";
@@ -11,15 +12,37 @@ import SingleSubmission from "../pages/singleSubmission";
 import MultiSubmission from "../pages/multipleSubmission";
 import PacketSubmissionPage from "../pages/packetSubmissionPage";
 import MemberDashboard from "../pages/Dashboard";
+import LoadingPage from "../pages/Loading";
 import UpdateProfilePage from "../pages/UpdateProfile";
+import { fetchUser } from "../redux/actions/auth";
 
 const Navigation = (props) => {
+
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isFetchingUser = useSelector(state => state.auth.isFetchingUser);
+
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
+
+  if(isFetchingUser) return(<LoadingPage />);
+
+  const CustomRoute = ({path, isProtected, exact, redirect, component, ...props}) => {
+    if(isProtected && user && isAuthenticated) {
+      return <Route exact={exact} path={path} component={component} />;
+    } else {
+      return <Redirect to={redirect} />;
+    }
+  }
+
   return (
     <>
       <NavBar />
       <Router>
         <Switch>
-          <Route exact path='/' component = {TheProcessGuys} />
+          <CustomRoute exact path='/' component={TheProcessGuys} isProtected redirect="/login" />
           <Route path = '/single-submission' component = {SingleSubmission} />
           <Route path = '/multi-submission' component = {MultiSubmission} />
           <Route path = '/packet-submission-page' component = {PacketSubmissionPage} />
