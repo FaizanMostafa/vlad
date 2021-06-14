@@ -1,14 +1,19 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {useSelector} from 'react-redux';
-// import ContactPage from '../pages/contactus2';
-import OurServices from '../pages/OurServices';
+import {useDispatch, useSelector} from 'react-redux';
+// import ContactPage from "../pages/contactus2";
+import OurServices from "../pages/OurServices";
+import { logout } from "../redux/actions/auth";
 // import img from "./Pictures/The-Process-Guys-word-logo.png";
 
 const NavBar = (props) => {
-
+    const dispatch = useDispatch();
     const user = useSelector(state => state.auth.user);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    const handleOnPressLogout = () => {
+        dispatch(logout());
+    }
 
     if(!user || !isAuthenticated) return (
         <><br/><br/><br/>
@@ -64,6 +69,15 @@ const NavBar = (props) => {
                             <h5>
                                 <b>
                                         Services
+                                </b>
+                            </h5>
+                        </a>
+                    </li>
+                    <li className="nav-item" onClick={handleOnPressLogout}>
+                        <a className="nav-link service text-center mt-4 mb-4" href=''style={{color : "white"}}>
+                            <h5>
+                                <b>
+                                    Logout
                                 </b>
                             </h5>
                         </a>

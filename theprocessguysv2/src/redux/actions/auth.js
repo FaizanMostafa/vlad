@@ -1,4 +1,4 @@
-import firebase from "../../firebase";
+import firebase, {db} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USER,
@@ -24,18 +24,19 @@ const setIsSigningUp = (status) => {
 const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
+      if(user) {
         var uid = user.uid;
-        console.log({user});
-        dispatch({
-          type: FETCH_USER,
-          payload: user
-        });
+        db.collection("users").doc(uid)
+          .get().then((doc) => {
+            var userData = doc.data();
+            dispatch({
+              type: FETCH_USER,
+              payload: {uid, ...userData}
+            });
+          }).catch((error) => {
+            console.log("Error getting user data:", error);
+          });
       } else {
-        // User is signed out
-        // ...
         dispatch({
           type: LOGOUT
         });
@@ -49,11 +50,9 @@ const login = (data, onSuccess=()=>{}, onError=()=>{}) => (
     dispatch(setIsSigningIn(true));
     firebase.auth().signInWithEmailAndPassword(data.email, data.password)
       .then((userCredential) => {
-        // Signed in
-        var user = userCredential.user;
         showToast("User logged in successfully!", "success");
-        onSuccess();
         dispatch(setIsSigningIn(false));
+        onSuccess();
       })
       .catch((error) => {
         onError();
@@ -68,11 +67,17 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
     dispatch(setIsSigningUp(true));
     firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
       .then((userCredential) => {
-        // Signed in 
         var user = userCredential.user;
-        showToast("User registered successfully!", "success");
-        onSuccess();
-        dispatch(setIsSigningUp(false));
+        delete data["password"];
+        db.collection("users").doc(user.uid).set({uid: user.uid, ...data})
+          .then(() => {
+            showToast("User registered successfully!", "success");
+            onSuccess();
+            dispatch(setIsSigningUp(false));
+          })
+          .catch((error) => {
+            console.error("Error saving user details: ", error);
+          });
       })
       .catch((error) => {
         onError();
@@ -82,8 +87,15 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const logout = () => (
+  async (dispatch) => {
+    await firebase.auth().signOut();
+  }
+)
+
 export {
   login,
+  logout,
   register,
   fetchUser,
 };

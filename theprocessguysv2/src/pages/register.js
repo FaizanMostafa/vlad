@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Attorney from "../forms/Attorney";
 import Business from "../forms/Business";
@@ -11,6 +11,8 @@ import { register } from '../redux/actions/auth';
 
 function Register(props) {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const isUserSigningUp = useSelector(state => state.auth.isPosting);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -46,13 +48,39 @@ function Register(props) {
         } else if(password !== rePassword) {
             showToast("Passwords do not match!", "warning");
         } else {
-            const data = {
+            let data = {
                 email: email.toLocaleLowerCase(),
-                password
+                password,
+                name,
+                address,
+                userType
             };
-            dispatch(register(data, ()=>props.history.push("/login")));
+            if(userType==="attorney") {
+                data["faxNo"] = attFaxNo;
+                data["firmName"] = attFirmName;
+                data["firmAddress"] = attFirmAddress;
+                data["jobTitle"] = attJobTitle;
+                if(attorneyType==="attorney") {
+                    data["specialty"] = attSpecialty;
+                    data["barNumber"] = attBarNo;
+                } else {
+                    data["userType"] = "paralegal";
+                }
+            } else if(userType==="business") {
+                data["faxNo"] = busFaxNo;
+                data["firmName"] = busFirmName;
+                data["firmAddress"] = busFirmAddress;
+                data["jobTitle"] = busJobTitle;
+                data["specialty"] = busSpecialty;
+            } else {
+                data["faxNo"] = perFaxNo;
+                data["SSN"] = perSSN;
+            }
+            dispatch(register(data, ()=>props.history.push("/")));
         }
     }
+
+    if(user && isAuthenticated) return (<Redirect to="/" />);
 
     return(
         <MDBRow md="10" className="justify-content-center">

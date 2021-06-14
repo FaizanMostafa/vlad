@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { showToast, validateEmail } from "../utils";
 import { login } from "../redux/actions/auth";
 
 const Login = (props) => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const isUserSigningIn = useSelector(state => state.auth.isPosting);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,10 +26,12 @@ const Login = (props) => {
                     email: email.toLocaleLowerCase(),
                     password
                 };
-                dispatch(login(data));
+                dispatch(login(data, ()=>props.history.push("/")));
             }
         }
     }
+
+    if(user && isAuthenticated) return (<Redirect to="/" />);
 
     return (
         <MDBRow>
@@ -39,10 +43,10 @@ const Login = (props) => {
                             <Form.Group id="email">
                                 <Form.Label>Email</Form.Label>
                                     <Form.Control
-                                    type="email"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
-                                    required
+                                        type="email"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
+                                        required
                                     />
                             </Form.Group>
                         </MDBCol>
@@ -50,10 +54,10 @@ const Login = (props) => {
                             <Form.Group id="password">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control 
-                                type="password"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                required 
+                                    type="password"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    required 
                                 />
                             </Form.Group>
                         </MDBCol><br></br>
