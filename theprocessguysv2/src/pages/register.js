@@ -60,8 +60,8 @@ function Register(props) {
                 data["firmName"] = attFirmName;
                 data["firmAddress"] = attFirmAddress;
                 data["jobTitle"] = attJobTitle;
+                data["specialty"] = attSpecialty;
                 if(attorneyType==="attorney") {
-                    data["specialty"] = attSpecialty;
                     data["barNumber"] = attBarNo;
                 } else {
                     data["userType"] = "paralegal";

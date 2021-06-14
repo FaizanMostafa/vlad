@@ -46,21 +46,17 @@ function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, se
                             />
                         </Form.Group>
                     </MDBCol>
-                    {
-                        attorneyType === "attorney"
-                            &&
-                                <MDBCol md="12">
-                                    <Form.Group id="attorney-specialty">
-                                        <Form.Label>Specialty (ie. Defence, Business, Financial Attorney, etc.)</Form.Label>
-                                        <Form.Control 
-                                            type="text"
-                                            value={specialty}
-                                            onChange={(e) => setSpecialty(e.target.value)}
-                                            required
-                                        />
-                                    </Form.Group>
-                                </MDBCol>
-                    }
+                    <MDBCol md="12">
+                        <Form.Group id="attorney-specialty">
+                            <Form.Label>Specialty (ie. Defence, Business, Financial Attorney, etc.)</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                value={specialty}
+                                onChange={(e) => setSpecialty(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </MDBCol>
                     {
                         attorneyType === "attorney"
                             &&
