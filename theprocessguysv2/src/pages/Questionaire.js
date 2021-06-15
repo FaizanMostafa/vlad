@@ -1,243 +1,246 @@
 import { MDBRow, MDBCol, MDBBtn, MDBInput } from "mdbreact";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React/*, { useState }*/ from "react";
+// import { Link } from "react-router-dom";
+// import app from "firebase";
 
 function Questionaire() {
 
-    const [caseTitle, setCaseTitle] = useState("");
-    const [caseNumber, setCaseNumber] = useState("");
-    const [courtDate, setCourtDate] = useState("");
-    const [superiorCourtOf, setSuperiorCourtOf] = useState("");
-    const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
-    const [countyOf, setCountyOf] = useState("");
-    const [courthouseAddress, setCourthouseAddress] = useState("");
-    const [courthouseMailingAddress, setCourthouseMailingAddress] = useState("");
-    const [branchName, setBranchName] = useState("");
-    const [plaintiffFullName, setPlaintiffFullName] = useState("");
-    const [plaintiffAddress, setPlaintiffAddress] = useState("");
-    const [numberOfAttorneyPlaintiff, setNumberOfAttorneyPlaintiff] = useState("");
-    const [attorneyRepresentingPlaintiffInfo, setAttorneyRepresentingPlaintiffInfo] = useState("");
-    const [defendantFullName, setDefendantFullName] = useState("");
-    const [defendantAddress, setDefendantAddress] = useState("");
-    const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
-    const [attorneyRepresentingDefendantInfo, setAttorneyRepresentingDefendantInfo] = useState("");
-    const [nameOfIndividuals, setNameOfIndividuals] = useState("");
-    const [dobOfIndividuals, setDobOfIndividuals] = useState("");
-    const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
-    const [emailsOfindividuals, setEmailOfIndividuals] = useState("");
-    const [serviceAddressOfIndividuals, setServiceAddressOfIndividuals] = useState("");
-    const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
-    const [imageOfIndividuals, setImageOfIndividuals] = useState("");
-    const [genderOfindividuals, setGenderOfIndividuals] = useState("");
-    const [ethnicityOfindividuals, setEthnicityOfIndividuals] = useState("");
-    const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
-    const [weightOfIndividuals, setWeightOfIndividuals] = useState("");
-    const [hairColorOfIndividuals, setHairColorOfIndividuals] = useState("");
-    const [eyeColorOfindividuals, setEyeColorOfIndividuals] = useState("");
-    const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
-    const [howManyIndividualsBeingServed, setHowManyIndividualsBeingServed] = useState("");
-    const [employmentOfIndividuals, setEmploymentOfIndividuals] = useState("");
-    const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
-    const [appealsCourtOf, setAppealsCourtOf] = useState("");
-    const [supremeCourtOf, setSupremeCourtOf] = useState("");
-    const [howManyIndividualsServed, setHowManyindividualsServed] = useState("");
-    const [lastKnownResidence, setLastKnownResidence] = useState("");
-    const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
-    const [serveeKnowTheyAreBeingServed, setServeeKnowTheyAreBeingServed] = useState("");
-    const [paralegalAttorneyClientContracted, setParalegalAttorneyClientContracted] = useState("");
-    const [leaveContactInfoDoorTag, setLeaveContactInfoDoorTag] = useState("");
-    const [knownCoResidentsOfServee, setCoResidentsOfServee] = useState("");
-    const [whichIsBeingServed, setWhichIsBeingServed] = useState("");
-    const [agentOfService, setAgentOfService] = useState("");
-    const [ifYesListFullName, setIfYesListFullName] = useState("");
-    const [addressForCurrentPlaceOfEmployment, setAddressForCurrentPlaceOfEmployment] = useState("");
-    const [insuranceCompanyOfServee, setInsuranceCompanyOfServee] = useState("");
-    const [liscencePlateNumberState, setLiscencePlateNumberState] = useState("");
-    const [vinNumberOfindividuals, setVinNumberOfIndividuals] = useState("");
-    const [yearOfMakeOnVehicle, setYearOfMakeOnVehicle] = useState("");
-    const [vehicleColor, setVehicleColor] = useState("");
-    const [poBoxAllowedToServe, setPOBoxAllowedToServe] = useState("");
-    const [requireServiceByMail, setRequireServiceByMail] = useState("");
-    const [requireByEmail, setRequireByEmail] = useState("");
-    const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
-    const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
-    const [requireServernotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
-    const [dropServeForceServe, setDropServeForceServe] = useState("");
-    const [instructionDropServiceForceService, setInstructionDropServiceForceService] = useState("");
-    const [requireRushService, setRequireRushService] = useState("");
-    const [specifyDatesForRushService, setSpecifyDatesForRushService] = useState("");
-    const [requireSameDayServiceAttempt, setRequireSameDayServiceAttempt] = useState("");
-    const [requireStakeOutService, setRequireStakeoutService] = useState("");
-    const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
-    const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
-    const [specificHoursNeedAttempted, setSpecificHoursNeedAttempted] = useState("");
-    const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
-    const [refuseToAcceptDocuments, setRefuseToAccpetDocuments] = useState("");
-    const [fullNameofDescribedServee, setFullNameOfDescribedServee] = useState("");
+    // const [caseTitle, setCaseTitle] = useState("");
+    // const [caseNumber, setCaseNumber] = useState("");
+    // const [courtDate, setCourtDate] = useState("");
+    // const [superiorCourtOf, setSuperiorCourtOf] = useState("");
+    // const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
+    // const [countyOf, setCountyOf] = useState("");
+    // const [courthouseAddress, setCourthouseAddress] = useState("");
+    // const [courthouseMailingAddress, setCourthouseMailingAddress] = useState("");
+    // const [branchName, setBranchName] = useState("");
+    // const [plaintiffFullName, setPlaintiffFullName] = useState("");
+    // const [plaintiffAddress, setPlaintiffAddress] = useState("");
+    // const [numberOfAttorneyPlaintiff, setNumberOfAttorneyPlaintiff] = useState("");
+    // const [attorneyRepresentingPlaintiffInfo, setAttorneyRepresentingPlaintiffInfo] = useState("");
+    // const [defendantFullName, setDefendantFullName] = useState("");
+    // const [defendantAddress, setDefendantAddress] = useState("");
+    // const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
+    // const [attorneyRepresentingDefendantInfo, setAttorneyRepresentingDefendantInfo] = useState("");
+    // const [nameOfIndividuals, setNameOfIndividuals] = useState("");
+    // const [dobOfIndividuals, setDobOfIndividuals] = useState("");
+    // const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
+    // const [emailsOfindividuals, setEmailOfIndividuals] = useState("");
+    // const [serviceAddressOfIndividuals, setServiceAddressOfIndividuals] = useState("");
+    // const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
+    // const [imageOfIndividuals, setImageOfIndividuals] = useState("");
+    // const [genderOfindividuals, setGenderOfIndividuals] = useState("");
+    // const [ethnicityOfindividuals, setEthnicityOfIndividuals] = useState("");
+    // const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
+    // const [weightOfIndividuals, setWeightOfIndividuals] = useState("");
+    // const [hairColorOfIndividuals, setHairColorOfIndividuals] = useState("");
+    // const [eyeColorOfindividuals, setEyeColorOfIndividuals] = useState("");
+    // const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
+    // const [howManyIndividualsBeingServed, setHowManyIndividualsBeingServed] = useState("");
+    // const [employmentOfIndividuals, setEmploymentOfIndividuals] = useState("");
+    // const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
+    // const [appealsCourtOf, setAppealsCourtOf] = useState("");
+    // const [supremeCourtOf, setSupremeCourtOf] = useState("");
+    // const [howManyIndividualsServed, setHowManyindividualsServed] = useState("");
+    // const [lastKnownResidence, setLastKnownResidence] = useState("");
+    // const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
+    // const [serveeKnowTheyAreBeingServed, setServeeKnowTheyAreBeingServed] = useState("");
+    // const [paralegalAttorneyClientContracted, setParalegalAttorneyClientContracted] = useState("");
+    // const [leaveContactInfoDoorTag, setLeaveContactInfoDoorTag] = useState("");
+    // const [knownCoResidentsOfServee, setCoResidentsOfServee] = useState("");
+    // const [whichIsBeingServed, setWhichIsBeingServed] = useState("");
+    // const [agentOfService, setAgentOfService] = useState("");
+    // const [ifYesListFullName, setIfYesListFullName] = useState("");
+    // const [addressForCurrentPlaceOfEmployment, setAddressForCurrentPlaceOfEmployment] = useState("");
+    // const [insuranceCompanyOfServee, setInsuranceCompanyOfServee] = useState("");
+    // const [liscencePlateNumberState, setLiscencePlateNumberState] = useState("");
+    // const [vinNumberOfindividuals, setVinNumberOfIndividuals] = useState("");
+    // const [yearOfMakeOnVehicle, setYearOfMakeOnVehicle] = useState("");
+    // const [vehicleColor, setVehicleColor] = useState("");
+    // const [poBoxAllowedToServe, setPOBoxAllowedToServe] = useState("");
+    // const [requireServiceByMail, setRequireServiceByMail] = useState("");
+    // const [requireByEmail, setRequireByEmail] = useState("");
+    // const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
+    // const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
+    // const [requireServernotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
+    // const [dropServeForceServe, setDropServeForceServe] = useState("");
+    // const [instructionDropServiceForceService, setInstructionDropServiceForceService] = useState("");
+    // const [requireRushService, setRequireRushService] = useState("");
+    // const [specifyDatesForRushService, setSpecifyDatesForRushService] = useState("");
+    // const [requireSameDayServiceAttempt, setRequireSameDayServiceAttempt] = useState("");
+    // const [requireStakeOutService, setRequireStakeoutService] = useState("");
+    // const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
+    // const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
+    // const [specificHoursNeedAttempted, setSpecificHoursNeedAttempted] = useState("");
+    // const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
+    // const [refuseToAcceptDocuments, setRefuseToAccpetDocuments] = useState("");
+    // const [fullNameofDescribedServee, setFullNameOfDescribedServee] = useState("");
 
-    const [loader, setLoader] = useState(false);
+    // const [loader, setLoader] = useState(false);
   
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      setLoader(true);
-  //should be app for server but deleted firebase and converting to MySQL
-        React.collection("new-questionaire")
-        .add({
-          caseTitle: caseTitle,
-          caseNumber: caseNumber,
-          courtDate: courtDate,
-          superiorCourtOf: superiorCourtOf,
-          obtainNewDeliveryLocation: obtainNewDeliveryLocation,
-          countyOf: countyOf,
-          courthouseAddress: courthouseAddress,
-          courthouseMailingAddress: courthouseMailingAddress,
-          branchName: branchName,
-          plaintiffFullName: plaintiffFullName,
-          plaintiffAddress: plaintiffAddress,
-          numberOfAttorneyPlaintiff: numberOfAttorneyPlaintiff,
-          attorneyRepresentingPlaintiffInfo: attorneyRepresentingPlaintiffInfo,
-          defendantFullName: defendantFullName,
-          defendantAddress: defendantAddress,
-          numberOfAttorneyDefendant: numberOfAttorneyDefendant,
-          attorneyRepresentingDefendantInfo:attorneyRepresentingDefendantInfo,
-          nameOfIndividuals: nameOfIndividuals,
-          dobOfIndividuals: dobOfIndividuals,
-          phoneNumbersOfIndividuals: phoneNumbersOfIndividuals,
-          emailsOfindividuals: emailsOfindividuals,
-          serviceAddressOfIndividuals: serviceAddressOfIndividuals,
-          serveIndividualAtEmployment: serveIndividualAtEmployment,
-          imageOfIndividuals: imageOfIndividuals,
-          genderOfindividuals: genderOfindividuals,
-          ethnicityOfindividuals: ethnicityOfindividuals,
-          heightOfIndividuals: heightOfIndividuals,
-          weightOfIndividuals: weightOfIndividuals,
-          hairColorOfIndividuals: hairColorOfIndividuals,
-          eyeColorOfindividuals: eyeColorOfindividuals,
-          physicalOutlineOfIndividuals: physicalOutlineOfIndividuals,
-          howManyIndividualsBeingServed: howManyIndividualsBeingServed,
-          employmentOfIndividuals: employmentOfIndividuals,
-          vehicleTypeModelOwnership: vehicleTypeModelOwnership,
-          appealsCourtOf: appealsCourtOf,
-          supremeCourtOf: supremeCourtOf,
-          howManyIndividualsServed: howManyIndividualsServed,
-          lastKnownResidence: lastKnownResidence,
-          serverContactServeeByPhone: serverContactServeeByPhone,
-          serveeKnowTheyAreBeingServed: serveeKnowTheyAreBeingServed,
-          paralegalAttorneyClientContracted: paralegalAttorneyClientContracted,
-          leaveContactInfoDoorTag: leaveContactInfoDoorTag,
-          knownCoResidentsOfServee: knownCoResidentsOfServee,
-          whichIsBeingServed: whichIsBeingServed,
-          agentOfService: agentOfService,
-          ifYesListFullName: ifYesListFullName,
-          addressForCurrentPlaceOfEmployment: addressForCurrentPlaceOfEmployment,
-          insuranceCompanyOfServee: insuranceCompanyOfServee,
-          liscencePlateNumberState: liscencePlateNumberState,
-          vinNumberOfindividuals: vinNumberOfindividuals,
-          yearOfMakeOnVehicle: yearOfMakeOnVehicle,
-          vehicleColor: vehicleColor,
-          poBoxAllowedToServe: poBoxAllowedToServe,
-          requireServiceByMail: requireServiceByMail,
-          requireByEmail: requireByEmail,
-          requireSkipTracingService: requireSkipTracingService,
-          requireBodyCamFootage: requireBodyCamFootage,
-          requireServernotifyPersonOfInterest: requireServernotifyPersonOfInterest,
-          dropServeForceServe: dropServeForceServe,
-          instructionDropServiceForceService: instructionDropServiceForceService,
-          requireRushService: requireRushService,
-          specifyDatesForRushService: specifyDatesForRushService,
-          requireSameDayServiceAttempt: requireSameDayServiceAttempt,
-          requireStakeOutService: requireStakeOutService,
-          subserveAfterThreeAttempts: subserveAfterThreeAttempts,
-          specificHoursNeedAttempted: specificHoursNeedAttempted,
-          specificCourtInstruction: specificCourtInstruction,
-          refuseToAcceptDocuments: refuseToAcceptDocuments,
-          fullNameofDescribedServee: fullNameofDescribedServee
-
-        })
-        .then(() => {
-          setLoader(false);
-          alert("Your questionaire has been submitted 👍");
-        })
-        .catch((error) => {
-          alert(error.message);
-          setLoader(false);
-        });
+    // const handleSubmit = (e) => {
+    //   e.preventDefault();
+    //   setLoader(true);
   
-      setCaseTitle("");
-      setCaseNumber("");
-      setCourtDate("");
-      setSuperiorCourtOf("");
-      setObtainNewDeliveryLocation("");
-      setCountyOf("");
-      setCourthouseAddress("");
-      setCourthouseMailingAddress("");
-      setBranchName("");
-      setPlaintiffFullName("");
-      setPlaintiffAddress("");
-      setNumberOfAttorneyPlaintiff("");
-      setAttorneyRepresentingPlaintiffInfo("");
-      setDefendantFullName("");
-      setDefendantAddress("");
-      setNumberOfAttorneyDefendant("");
-      setAttorneyRepresentingDefendantInfo("");
-      setNameOfIndividuals("");
-      setDobOfIndividuals("");
-      setPhoneNumberOfIndividuals("");
-      setEmailOfIndividuals("");
-      setServiceAddressOfIndividuals("");
-      setServeIndividualAtEmployment("");
-      setImageOfIndividuals("");
-      setGenderOfIndividuals("");
-      setEthnicityOfIndividuals("");
-      setHeightOfIndividuals("");
-      setWeightOfIndividuals("");
-      setHairColorOfIndividuals("");
-      setEyeColorOfIndividuals("");
-      setPhysicalOutlineOfIndividuals("");
-      setHowManyIndividualsBeingServed("");
-      setEmploymentOfIndividuals("");
-      setVehicleTypeModelOwnership("");
-      setAppealsCourtOf("");
-      setSupremeCourtOf("");
-      setHowManyindividualsServed("");
-      setLastKnownResidence("");
-      setServerContactServeeByPhone("");
-      setServeeKnowTheyAreBeingServed("");
-      setParalegalAttorneyClientContracted("");
-      setLeaveContactInfoDoorTag("");
-      setCoResidentsOfServee("");
-      setWhichIsBeingServed("");
-      setAgentOfService("");
-      setIfYesListFullName("");
-      setAddressForCurrentPlaceOfEmployment("");
-      setInsuranceCompanyOfServee("");
-      setLiscencePlateNumberState("");
-      setVinNumberOfIndividuals("");
-      setYearOfMakeOnVehicle("");
-      setVehicleColor("");
-      setPOBoxAllowedToServe("");
-      setRequireServiceByMail("");
-      setRequireByEmail("");
-      setRequireSkipTracingService("");
-      setRequireBodyCamFootage("");
-      setRequireServerNotifyPersonOfInterest("");
-      setDropServeForceServe("");
-      setInstructionDropServiceForceService("");
-      setRequireRushService("");
-      setSpecifyDatesForRushService("");
-      setRequireSameDayServiceAttempt("");
-      setRequireStakeoutService("");
-      setSubserveAfterThreeAttempts("");
-      setSpecificHoursNeedAttempted("");
-      setSpecificCourtInstruction("");
-      setRefuseToAccpetDocuments("");
-      setFullNameOfDescribedServee("");
+    //     app.collection("questionaire")
+    //     .add({
+    //       caseTitle: caseTitle,
+    //       caseNumber: caseNumber,
+    //       courtDate: courtDate,
+    //       superiorCourtOf: superiorCourtOf,
+    //       obtainNewDeliveryLocation: obtainNewDeliveryLocation,
+    //       countyOf: countyOf,
+    //       courthouseAddress: courthouseAddress,
+    //       courthouseMailingAddress: courthouseMailingAddress,
+    //       branchName: branchName,
+    //       plaintiffFullName: plaintiffFullName,
+    //       plaintiffAddress: plaintiffAddress,
+    //       numberOfAttorneyPlaintiff: numberOfAttorneyPlaintiff,
+    //       attorneyRepresentingPlaintiffInfo: attorneyRepresentingPlaintiffInfo,
+    //       defendantFullName: defendantFullName,
+    //       defendantAddress: defendantAddress,
+    //       numberOfAttorneyDefendant: numberOfAttorneyDefendant,
+    //       attorneyRepresentingDefendantInfo:attorneyRepresentingDefendantInfo,
+    //       nameOfIndividuals: nameOfIndividuals,
+    //       dobOfIndividuals: dobOfIndividuals,
+    //       phoneNumbersOfIndividuals: phoneNumbersOfIndividuals,
+    //       emailsOfindividuals: emailsOfindividuals,
+    //       serviceAddressOfIndividuals: serviceAddressOfIndividuals,
+    //       serveIndividualAtEmployment: serveIndividualAtEmployment,
+    //       imageOfIndividuals: imageOfIndividuals,
+    //       genderOfindividuals: genderOfindividuals,
+    //       ethnicityOfindividuals: ethnicityOfindividuals,
+    //       heightOfIndividuals: heightOfIndividuals,
+    //       weightOfIndividuals: weightOfIndividuals,
+    //       hairColorOfIndividuals: hairColorOfIndividuals,
+    //       eyeColorOfindividuals: eyeColorOfindividuals,
+    //       physicalOutlineOfIndividuals: physicalOutlineOfIndividuals,
+    //       howManyIndividualsBeingServed: howManyIndividualsBeingServed,
+    //       employmentOfIndividuals: employmentOfIndividuals,
+    //       vehicleTypeModelOwnership: vehicleTypeModelOwnership,
+    //       appealsCourtOf: appealsCourtOf,
+    //       supremeCourtOf: supremeCourtOf,
+    //       howManyIndividualsServed: howManyIndividualsServed,
+    //       lastKnownResidence: lastKnownResidence,
+    //       serverContactServeeByPhone: serverContactServeeByPhone,
+    //       serveeKnowTheyAreBeingServed: serveeKnowTheyAreBeingServed,
+    //       paralegalAttorneyClientContracted: paralegalAttorneyClientContracted,
+    //       leaveContactInfoDoorTag: leaveContactInfoDoorTag,
+    //       knownCoResidentsOfServee: knownCoResidentsOfServee,
+    //       whichIsBeingServed: whichIsBeingServed,
+    //       agentOfService: agentOfService,
+    //       ifYesListFullName: ifYesListFullName,
+    //       addressForCurrentPlaceOfEmployment: addressForCurrentPlaceOfEmployment,
+    //       insuranceCompanyOfServee: insuranceCompanyOfServee,
+    //       liscencePlateNumberState: liscencePlateNumberState,
+    //       vinNumberOfindividuals: vinNumberOfindividuals,
+    //       yearOfMakeOnVehicle: yearOfMakeOnVehicle,
+    //       vehicleColor: vehicleColor,
+    //       poBoxAllowedToServe: poBoxAllowedToServe,
+    //       requireServiceByMail: requireServiceByMail,
+    //       requireByEmail: requireByEmail,
+    //       requireSkipTracingService: requireSkipTracingService,
+    //       requireBodyCamFootage: requireBodyCamFootage,
+    //       requireServernotifyPersonOfInterest: requireServernotifyPersonOfInterest,
+    //       dropServeForceServe: dropServeForceServe,
+    //       instructionDropServiceForceService: instructionDropServiceForceService,
+    //       requireRushService: requireRushService,
+    //       specifyDatesForRushService: specifyDatesForRushService,
+    //       requireSameDayServiceAttempt: requireSameDayServiceAttempt,
+    //       requireStakeOutService: requireStakeOutService,
+    //       subserveAfterThreeAttempts: subserveAfterThreeAttempts,
+    //       specificHoursNeedAttempted: specificHoursNeedAttempted,
+    //       specificCourtInstruction: specificCourtInstruction,
+    //       refuseToAcceptDocuments: refuseToAcceptDocuments,
+    //       fullNameofDescribedServee: fullNameofDescribedServee
 
-    };
+    //     })
+    //     .then(() => {
+    //       setLoader(false);
+    //       alert("Your questionaire has been submitted 👍");
+    //     })
+    //     .catch((error) => {
+    //       alert(error.message);
+    //       setLoader(false);
+    //     });
+  
+    //   setCaseTitle("");
+    //   setCaseNumber("");
+    //   setCourtDate("");
+    //   setSuperiorCourtOf("");
+    //   setObtainNewDeliveryLocation("");
+    //   setCountyOf("");
+    //   setCourthouseAddress("");
+    //   setCourthouseMailingAddress("");
+    //   setBranchName("");
+    //   setPlaintiffFullName("");
+    //   setPlaintiffAddress("");
+    //   setNumberOfAttorneyPlaintiff("");
+    //   setAttorneyRepresentingPlaintiffInfo("");
+    //   setDefendantFullName("");
+    //   setDefendantAddress("");
+    //   setNumberOfAttorneyDefendant("");
+    //   setAttorneyRepresentingDefendantInfo("");
+    //   setNameOfIndividuals("");
+    //   setDobOfIndividuals("");
+    //   setPhoneNumberOfIndividuals("");
+    //   setEmailOfIndividuals("");
+    //   setServiceAddressOfIndividuals("");
+    //   setServeIndividualAtEmployment("");
+    //   setImageOfIndividuals("");
+    //   setGenderOfIndividuals("");
+    //   setEthnicityOfIndividuals("");
+    //   setHeightOfIndividuals("");
+    //   setWeightOfIndividuals("");
+    //   setHairColorOfIndividuals("");
+    //   setEyeColorOfIndividuals("");
+    //   setPhysicalOutlineOfIndividuals("");
+    //   setHowManyIndividualsBeingServed("");
+    //   setEmploymentOfIndividuals("");
+    //   setVehicleTypeModelOwnership("");
+    //   setAppealsCourtOf("");
+    //   setSupremeCourtOf("");
+    //   setHowManyindividualsServed("");
+    //   setLastKnownResidence("");
+    //   setServerContactServeeByPhone("");
+    //   setServeeKnowTheyAreBeingServed("");
+    //   setParalegalAttorneyClientContracted("");
+    //   setLeaveContactInfoDoorTag("");
+    //   setCoResidentsOfServee("");
+    //   setWhichIsBeingServed("");
+    //   setAgentOfService("");
+    //   setIfYesListFullName("");
+    //   setAddressForCurrentPlaceOfEmployment("");
+    //   setInsuranceCompanyOfServee("");
+    //   setLiscencePlateNumberState("");
+    //   setVinNumberOfIndividuals("");
+    //   setYearOfMakeOnVehicle("");
+    //   setVehicleColor("");
+    //   setPOBoxAllowedToServe("");
+    //   setRequireServiceByMail("");
+    //   setRequireByEmail("");
+    //   setRequireSkipTracingService("");
+    //   setRequireBodyCamFootage("");
+    //   setRequireServerNotifyPersonOfInterest("");
+    //   setDropServeForceServe("");
+    //   setInstructionDropServiceForceService("");
+    //   setRequireRushService("");
+    //   setSpecifyDatesForRushService("");
+    //   setRequireSameDayServiceAttempt("");
+    //   setRequireStakeoutService("");
+    //   setSubserveAfterThreeAttempts("");
+    //   setSpecificHoursNeedAttempted("");
+    //   setSpecificCourtInstruction("");
+    //   setRefuseToAccpetDocuments("");
+    //   setFullNameOfDescribedServee("");
+
+    // };
     return(
         <React.Fragment>
         <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
-                <p>* Are All Required</p>
+        <h3>​**Service should be completed 2 + weeks prior to the court date**
+            Thus avoiding any complications with the judge.
+            Please fill out as much information as possible from the court documents being submitted, certain sections marked with "*" are REQUIRED to proceed</h3>
             <form className="mb-4">
             <MDBRow className="text-left" md="12">
             <MDBCol md="12" id="case-title">
@@ -245,8 +248,8 @@ function Questionaire() {
                 <label>Case Title*</label>
                 <MDBInput
                 type="text"
-                value={caseTitle}
-                onChange={(e) => setCaseTitle(e.target.value)}
+                // value={caseTitle}
+                // onChange={(e) => setCaseTitle(e.target.value)}
                 required 
                      />
                 </div>
@@ -256,8 +259,8 @@ function Questionaire() {
                 <label>Case Number*</label>
                 <MDBInput 
                 type="text"
-                value={caseNumber}
-                onChange={(e) => setCaseNumber(e.target.value)} 
+                // value={caseNumber}
+                // onChange={(e) => setCaseNumber(e.target.value)} 
                 required
                      />
                 </div>
@@ -267,8 +270,8 @@ function Questionaire() {
                 <label>Court Date (Write N/A if not issued)*</label>
                 <MDBInput 
                 type="text"
-                value={courtDate}
-                onChange={(e) => setCourtDate(e.target.value)} 
+                // value={courtDate}
+                // onChange={(e) => setCourtDate(e.target.value)} 
                 required
                      />
                 </div>
@@ -278,8 +281,8 @@ function Questionaire() {
                 <label>Superior Court of (Write N/A if not Applicable)*</label>
                 <MDBInput 
                 type="text"
-                value={superiorCourtOf}
-                onChange={(e) => setSuperiorCourtOf(e.target.value)} 
+                // value={superiorCourtOf}
+                // onChange={(e) => setSuperiorCourtOf(e.target.value)} 
                 required
                      />
                 </div>
@@ -289,8 +292,8 @@ function Questionaire() {
                 <label>County Of*</label>
                 <MDBInput
                 type="text"
-                value={countyOf}
-                onChange={(e) => setCountyOf(e.target.value)} 
+                // value={countyOf}
+                // onChange={(e) => setCountyOf(e.target.value)} 
                 required
                      />
                 </div>
@@ -300,8 +303,8 @@ function Questionaire() {
                 <label>Branch Name*</label>
                 <MDBInput
                 type="text" 
-                value={branchName}
-                onChange={(e) => setBranchName(e.target.value)}
+                // value={branchName}
+                // onChange={(e) => setBranchName(e.target.value)}
                 required
                      />
                 </div>
@@ -311,8 +314,8 @@ function Questionaire() {
                 <label>Courthouse Address*</label>
                 <MDBInput 
                 type="text" 
-                value={courthouseAddress}
-                onChange={(e) => setCourthouseAddress(e.target.value)}
+                // value={courthouseAddress}
+                // onChange={(e) => setCourthouseAddress(e.target.value)}
                 required
                      />
                 </div>
@@ -322,8 +325,8 @@ function Questionaire() {
                 <label>Courthouse Mailing Address*</label>
                 <MDBInput 
                 type="text" 
-                value={courthouseMailingAddress}
-                onChange={(e) => setCourthouseMailingAddress(e.target.value)}
+                // value={courthouseMailingAddress}
+                // onChange={(e) => setCourthouseMailingAddress(e.target.value)}
                 required
                      />
                 </div>
@@ -333,8 +336,8 @@ function Questionaire() {
                 <label>Appeals Court Of (Write N/A if not Applicable)*</label>
                 <MDBInput 
                 type="text" 
-                value={appealsCourtOf}
-                onChange={(e) => setAppealsCourtOf(e.target.value)}
+                // value={appealsCourtOf}
+                // onChange={(e) => setAppealsCourtOf(e.target.value)}
                 required
                      />
                 </div>
@@ -344,13 +347,15 @@ function Questionaire() {
                 <label>Supreme Court Of (Write N/A if not Applicable)*</label>
                 <MDBInput 
                 type="text" 
-                value={supremeCourtOf}
-                onChange={(e) => setSupremeCourtOf(e.target.value)}
+                // value={supremeCourtOf}
+                // onChange={(e) => setSupremeCourtOf(e.target.value)}
                 required
                      />
                 </div>
             </MDBCol>
-            <MDBBtn><Link to="/skip-main-questions">Log In</Link></MDBBtn>
+            <MDBBtn>
+                {/*<Link to="/skip-main-questions">Log In</Link>*/}
+            </MDBBtn>
             <br></br>
             <p><i>**to skip filling this section out, leave it for our team to complete! (Additional Charge)**</i></p>
 
@@ -360,8 +365,8 @@ function Questionaire() {
                 <label>Plaintiff's Full Name*</label>
                 <MDBInput 
                 type="text" 
-                value={plaintiffFullName}
-                onChange={(e) => setPlaintiffFullName(e.target.value)}
+                // value={plaintiffFullName}
+                // onChange={(e) => setPlaintiffFullName(e.target.value)}
                 required
                      />
                 </div>
@@ -371,8 +376,8 @@ function Questionaire() {
                 <label>Plaintiff's Address*</label>
                 <MDBInput 
                 type="text" 
-                value={plaintiffAddress}
-                onChange={(e) => setPlaintiffAddress(e.target.value)}
+                // value={plaintiffAddress}
+                // onChange={(e) => setPlaintiffAddress(e.target.value)}
                 required
                      />
                 </div>
@@ -381,8 +386,8 @@ function Questionaire() {
                 <div id="number-of-attorney-representing-plaintiff">
                 <label>Number of Attorney's Representing the Plaintiff?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={numberOfAttorneyPlaintiff}
-                onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
+                // value={numberOfAttorneyPlaintiff}
+                // onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
                 required
                 >
                     <option value="0">0</option>
@@ -408,8 +413,8 @@ function Questionaire() {
                     <i>(Optional)</i> [Section off if more than one councel]*</label>
                 <MDBInput 
                     type="textarea"
-                    value={attorneyRepresentingPlaintiffInfo}
-                    onChange={(e) => setAttorneyRepresentingPlaintiffInfo(e.target.value)}
+                    // value={attorneyRepresentingPlaintiffInfo}
+                    // onChange={(e) => setAttorneyRepresentingPlaintiffInfo(e.target.value)}
                     outline
                     required />
                 </div>
@@ -420,8 +425,8 @@ function Questionaire() {
                 <label>Defendant's Full Name*</label>
                 <MDBInput 
                 type="text" 
-                value={defendantFullName}
-                onChange={(e) => setDefendantFullName(e.target.value)}
+                // value={defendantFullName}
+                // onChange={(e) => setDefendantFullName(e.target.value)}
                 required
                 />
                 </div>
@@ -431,8 +436,8 @@ function Questionaire() {
                 <label>Defendant's Address</label>
                 <MDBInput 
                 type="text" 
-                value={defendantAddress}
-                onChange={(e) => setDefendantAddress(e.target.value)}
+                // value={defendantAddress}
+                // onChange={(e) => setDefendantAddress(e.target.value)}
                 required
                 />
                 </div>
@@ -441,8 +446,8 @@ function Questionaire() {
                 <div id="number-of-attorney-representing-defendant">
                 <label>Number of Attorney's Representing the Defendant?*</label><br></br>
                 <select className="w-75 m-4 text-center p-2"
-                value={numberOfAttorneyDefendant}
-                onChange={(e) => setNumberOfAttorneyDefendant(e.target.value)}
+                // value={numberOfAttorneyDefendant}
+                // onChange={(e) => setNumberOfAttorneyDefendant(e.target.value)}
                 required
                 >
                     <option value="0">0</option>
@@ -467,19 +472,21 @@ function Questionaire() {
                 <i>(Optional)</i> [Section off if more than one councel]*</label>
                 <MDBInput 
                 type="textarea" 
-                value={attorneyRepresentingDefendantInfo}
-                onChange={(e) => setAttorneyRepresentingDefendantInfo(e.target.value)}
+                // value={attorneyRepresentingDefendantInfo}
+                // onChange={(e) => setAttorneyRepresentingDefendantInfo(e.target.value)}
                 required
                 />
                 </div>
             </MDBCol>
+
+
             <h2 className="text-center mb-4 mt-2">Servee Documented Data</h2>
             <MDBCol md="12" id="how-many-individuals-served">
                 <div id="how-many-individuals-served">
                 <label>How Many Individuals are Being Served?*</label><br></br>
                 <select className="w-75 m-4 text-center p-2"
-                value={howManyIndividualsServed}
-                onChange={(e) => setHowManyindividualsServed(e.target.value)}
+                // value={howManyIndividualsServed}
+                // onChange={(e) => setHowManyindividualsServed(e.target.value)}
                 required
                 >
                     <option value="0">0</option>
@@ -501,8 +508,8 @@ function Questionaire() {
                 <label>Full Name or Title of who is Receiving Service*</label>
                 <MDBInput 
                 type="text" 
-                value={nameOfIndividuals}
-                onChange={(e) => setNameOfIndividuals(e.target.value)}
+                // value={nameOfIndividuals}
+                // onChange={(e) => setNameOfIndividuals(e.target.value)}
                 required 
                 />
                 </div>
@@ -512,8 +519,8 @@ function Questionaire() {
                 <label>Date of Birth of Individual(s)*</label>
                 <MDBInput
                 type="text" 
-                value={dobOfIndividuals}
-                onChange={(e) => setDobOfIndividuals(e.target.value)}
+                // value={dobOfIndividuals}
+                // onChange={(e) => setDobOfIndividuals(e.target.value)}
                 required
                 />
                 </div>
@@ -523,8 +530,8 @@ function Questionaire() {
                 <label>Last Known Residence?</label>
                 <MDBInput
                 type="text" 
-                value={lastKnownResidence}
-                onChange={(e) => setLastKnownResidence(e.target.value)}
+                // value={lastKnownResidence}
+                // onChange={(e) => setLastKnownResidence(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -533,8 +540,8 @@ function Questionaire() {
                 <label>Phone Number(s) Pertaining to Servee(s) - Identify via Mobile, Office, and/or Home</label>
                 <MDBInput 
                 type="textarea" 
-                value={phoneNumbersOfIndividuals}
-                onChange={(e) => setPhoneNumberOfIndividuals(e.target.value)}
+                // value={phoneNumbersOfIndividuals}
+                // onChange={(e) => setPhoneNumberOfIndividuals(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -543,8 +550,8 @@ function Questionaire() {
                 <label>E-Mail(s) pertaining Servee(s)</label>
                 <MDBInput 
                 type="textarea" 
-                value={emailsOfindividuals}
-                onChange={(e) => setEmailOfIndividuals(e.target.value)}
+                // value={emailsOfindividuals}
+                // onChange={(e) => setEmailOfIndividuals(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -552,8 +559,8 @@ function Questionaire() {
                 <div id="server-contact-servee-by-phone">
                 <label>May our Process Server Contact the Servee by Phone or Other Means?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={serverContactServeeByPhone}
-                onChange={(e) => setServerContactServeeByPhone(e.target.value)}
+                // value={serverContactServeeByPhone}
+                // onChange={(e) => setServerContactServeeByPhone(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -568,8 +575,8 @@ function Questionaire() {
                 <div id="servee-know-they-are-being-served">
                 <label>Does the Servee Know They're Being Served?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={serveeKnowTheyAreBeingServed}
-                onChange={(e) => setServeeKnowTheyAreBeingServed(e.target.value)}
+                // value={serveeKnowTheyAreBeingServed}
+                // onChange={(e) => setServeeKnowTheyAreBeingServed(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -584,8 +591,8 @@ function Questionaire() {
                 <div id="paralegal-attorney-client-contracted">
                 <label>Have you, a Paralegal/Attorney, or your Client Contracted the Individual Regarding Service or this Case?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={paralegalAttorneyClientContracted}
-                onChange={(e) => setParalegalAttorneyClientContracted(e.target.value)}
+                // value={paralegalAttorneyClientContracted}
+                // onChange={(e) => setParalegalAttorneyClientContracted(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -600,8 +607,8 @@ function Questionaire() {
                 <div id="leave-contact-info-door-tag">
                 <label>May our Process Server Leave Contact Information Such as a Door Tag on the Handle, or Business Card when Encountering as Individual?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={leaveContactInfoDoorTag}
-                onChange={(e) => setLeaveContactInfoDoorTag(e.target.value)}
+                // value={leaveContactInfoDoorTag}
+                // onChange={(e) => setLeaveContactInfoDoorTag(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -617,8 +624,8 @@ function Questionaire() {
                 <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
                 <MDBInput 
                 type="textarea" 
-                value={knownCoResidentsOfServee}
-                onChange={(e) => setCoResidentsOfServee(e.target.value)}
+                // value={knownCoResidentsOfServee}
+                // onChange={(e) => setCoResidentsOfServee(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -626,8 +633,8 @@ function Questionaire() {
                 <div id="which-is-being-served">
                 <label>Which is Being Served?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={whichIsBeingServed}
-                onChange={(e) => setWhichIsBeingServed(e.target.value)}
+                // value={whichIsBeingServed}
+                // onChange={(e) => setWhichIsBeingServed(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -643,8 +650,8 @@ function Questionaire() {
                 <div id="agent-of-service">
                 <label>Is There an Agent of Service?*</label>
                 <select className="w-75 m-4 center p-2"
-                value={agentOfService}
-                onChange={(e) => setAgentOfService(e.target.value)}
+                // value={agentOfService}
+                // onChange={(e) => setAgentOfService(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -660,8 +667,8 @@ function Questionaire() {
                 <label>If yes, List the Full Name to Agent of Service</label>
                 <MDBInput
                 type="text" 
-                value={ifYesListFullName}
-                onChange={(e) => setIfYesListFullName(e.target.value)}
+                // value={ifYesListFullName}
+                // onChange={(e) => setIfYesListFullName(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -669,8 +676,8 @@ function Questionaire() {
                 <div id="employment-of-individuals">
                 <label>Is the Servee Currently Employed?*</label>
                 <select className="w-75 m-4 center p-2"
-                value={employmentOfIndividuals}
-                onChange={(e) => setEmploymentOfIndividuals(e.target.value)}
+                // value={employmentOfIndividuals}
+                // onChange={(e) => setEmploymentOfIndividuals(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -686,8 +693,8 @@ function Questionaire() {
                 <label>Address for Current Place of Employment?</label>
                 <MDBInput
                 type="text" 
-                value={addressForCurrentPlaceOfEmployment}
-                onChange={(e) => setAddressForCurrentPlaceOfEmployment(e.target.value)}
+                // value={addressForCurrentPlaceOfEmployment}
+                // onChange={(e) => setAddressForCurrentPlaceOfEmployment(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -695,8 +702,8 @@ function Questionaire() {
                 <div id="serve-individual-at-employment">
                 <label>May we serve the Servee at a place of employment?*</label>
                 <select className="w-75 m-4 text-center p-2"
-                value={serveIndividualAtEmployment}
-                onChange={(e) => setServeIndividualAtEmployment(e.target.value)}
+                // value={serveIndividualAtEmployment}
+                // onChange={(e) => setServeIndividualAtEmployment(e.target.value)}
                 required
                 >
                 <label caret color="white">
@@ -712,8 +719,8 @@ function Questionaire() {
                 <label>Insurance Company of Servee</label>
                 <MDBInput
                 type="text" 
-                value={insuranceCompanyOfServee}
-                onChange={(e) => setInsuranceCompanyOfServee(e.target.value)}
+                // value={insuranceCompanyOfServee}
+                // onChange={(e) => setInsuranceCompanyOfServee(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -722,8 +729,8 @@ function Questionaire() {
                 <label>Vehicle Type/Model Ownership <i>(ie car, motorcycle, boat, RV)</i></label>
                 <MDBInput 
                 type="textarea" 
-                value={vehicleTypeModelOwnership}
-                onChange={(e) => setVehicleTypeModelOwnership(e.target.value)}
+                // value={vehicleTypeModelOwnership}
+                // onChange={(e) => setVehicleTypeModelOwnership(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -732,8 +739,8 @@ function Questionaire() {
                 <label>Liscense Plate Number/State of Individual(s)</label>
                 <MDBInput
                 type="text" 
-                value={liscencePlateNumberState}
-                onChange={(e) => setLiscencePlateNumberState(e.target.value)}
+                // value={liscencePlateNumberState}
+                // onChange={(e) => setLiscencePlateNumberState(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -742,8 +749,8 @@ function Questionaire() {
                 <label>Vehicle Vin Number of Individual(s)</label>
                 <MDBInput 
                 type="text" 
-                value={vinNumberOfindividuals}
-                onChange={(e) => setVinNumberOfIndividuals(e.target.value)}
+                // value={vinNumberOfindividuals}
+                // onChange={(e) => setVinNumberOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -752,8 +759,8 @@ function Questionaire() {
                 <label>Year of Make on Vehicle</label>
                 <MDBInput
                 type="text" 
-                value={yearOfMakeOnVehicle}
-                onChange={(e) => setYearOfMakeOnVehicle(e.target.value)}
+                // value={yearOfMakeOnVehicle}
+                // onChange={(e) => setYearOfMakeOnVehicle(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -762,8 +769,8 @@ function Questionaire() {
                 <label>Vehicle Color</label>
                 <MDBInput 
                 type="text"
-                value={vehicleColor} 
-                onChange={(e) => setVehicleColor(e.target.value)}
+                // value={vehicleColor} 
+                // onChange={(e) => setVehicleColor(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -772,8 +779,8 @@ function Questionaire() {
                 <div id="gender-of-individuals">
                 <label>Gender of Individual(s)</label>
                 <select className="w-75 m-4 center p-2"
-                value={genderOfindividuals}
-                onChange={(e) => setGenderOfIndividuals(e.target.value)}
+                // value={genderOfindividuals}
+                // onChange={(e) => setGenderOfIndividuals(e.target.value)}
                 >
                     <option value="Non-Binary">Non-Binary</option>
                     <option value="Female">Female</option>
@@ -786,8 +793,8 @@ function Questionaire() {
                 <label>Ethnicity of Individual(s)</label>
                 <MDBInput
                 type="textarea" 
-                value={ethnicityOfindividuals}
-                onChange={(e) => setEthnicityOfIndividuals(e.target.value)}
+                // value={ethnicityOfindividuals}
+                // onChange={(e) => setEthnicityOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -796,8 +803,8 @@ function Questionaire() {
                 <label>Height of Individual(s) Being Served?</label>
                 <MDBInput
                 type="textarea" 
-                value={heightOfIndividuals}
-                onChange={(e) => setHeightOfIndividuals(e.target.value)}
+                // value={heightOfIndividuals}
+                // onChange={(e) => setHeightOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -806,8 +813,8 @@ function Questionaire() {
                 <label>Weight of Individual(s) Being Served?</label>
                 <MDBInput 
                 type="textarea" 
-                value={weightOfIndividuals}
-                onChange={(e) => setWeightOfIndividuals(e.target.value)}
+                // value={weightOfIndividuals}
+                // onChange={(e) => setWeightOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -816,8 +823,8 @@ function Questionaire() {
                 <label>Hair Color of Individual(s) Being Served?</label>
                 <MDBInput 
                 type="textarea" 
-                value={hairColorOfIndividuals}
-                onChange={(e) => setHairColorOfIndividuals(e.target.value)}
+                // value={hairColorOfIndividuals}
+                // onChange={(e) => setHairColorOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -826,8 +833,8 @@ function Questionaire() {
                 <label>Eye Color of Individual(s) Being Served?</label>
                 <MDBInput 
                 type="textarea" 
-                value={eyeColorOfindividuals}
-                onChange={(e) => setEyeColorOfIndividuals(e.target.value)}
+                // value={eyeColorOfindividuals}
+                // onChange={(e) => setEyeColorOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -837,8 +844,8 @@ function Questionaire() {
                 <i>(ie scars, tattoos, birthmarks, facial hair, glasses, blemish, birth mark)</i></label>
                 <MDBInput
                 type="textarea" 
-                value={physicalOutlineOfIndividuals}
-                onChange={(e) => setPhysicalOutlineOfIndividuals(e.target.value)}
+                // value={physicalOutlineOfIndividuals}
+                // onChange={(e) => setPhysicalOutlineOfIndividuals(e.target.value)}
                 />
                 </div>
             </MDBCol>
@@ -847,8 +854,8 @@ function Questionaire() {
                 <label>Full Name of Described Servee*</label>
                 <MDBInput
                 type="text" 
-                value={fullNameofDescribedServee}
-                onChange={(e) => setFullNameOfDescribedServee(e.target.value)}
+                // value={fullNameofDescribedServee}
+                // onChange={(e) => setFullNameOfDescribedServee(e.target.value)}
                 required 
                 />
                 </div>
@@ -857,8 +864,8 @@ function Questionaire() {
             <div id="image-of-individuals">
                 <label>Individual(s) Image</label>
                 <input type='file' accept=".jpg,.png" label='Upload' multiple 
-                value={imageOfIndividuals}
-                onChange={(e) => setImageOfIndividuals(e.target.value)}
+                // value={imageOfIndividuals}
+                // onChange={(e) => setImageOfIndividuals(e.target.value)}
                 />
               </div>
             </MDBCol>
@@ -869,8 +876,8 @@ function Questionaire() {
                 <i>(ie residence/employment)</i>*</label>
                 <MDBInput 
                 type="textarea" 
-                value={serviceAddressOfIndividuals}
-                onChange={(e) => setServiceAddressOfIndividuals(e.target.value)}
+                // value={serviceAddressOfIndividuals}
+                // onChange={(e) => setServiceAddressOfIndividuals(e.target.value)}
                 required
                 />
                 </div>
@@ -880,8 +887,8 @@ function Questionaire() {
                 <label>If the Process Server Obtains a New Delivery Location from the Servee, 
                     Should they Proceed the Service Without Authorization? <i>(Pre-Paid Plan)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={obtainNewDeliveryLocation}
-                onChange={(e) => setObtainNewDeliveryLocation(e.target.value)}
+                // value={obtainNewDeliveryLocation}
+                // onChange={(e) => setObtainNewDeliveryLocation(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -896,8 +903,8 @@ function Questionaire() {
                 <div id="p-o-box-allowed-to-serve">
                 <label>Is a P.O. Box Allowed to be Served Belonging to the Person of Interest? <i>(USPS Excluded)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={poBoxAllowedToServe}
-                onChange={(e) => setPOBoxAllowedToServe(e.target.value)}
+                // value={poBoxAllowedToServe}
+                // onChange={(e) => setPOBoxAllowedToServe(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -912,8 +919,8 @@ function Questionaire() {
                 <div id="require-service-by-mail">
                 <label>Do You Require a Service by Secured Postal Mail with Signature, After Personal Service is Attempted? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireServiceByMail}
-                onChange={(e) => setRequireServiceByMail(e.target.value)}
+                // value={requireServiceByMail}
+                // onChange={(e) => setRequireServiceByMail(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -928,8 +935,8 @@ function Questionaire() {
                 <div id="require-service-by-email">
                 <label>Do You Require a Service by E-Mail After Personal Service is Attempted? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireByEmail}
-                onChange={(e) => setRequireByEmail(e.target.value)}
+                // value={requireByEmail}
+                // onChange={(e) => setRequireByEmail(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -944,8 +951,8 @@ function Questionaire() {
                 <div id="require-skip-tracing-service">
                 <label>Do You Require a “Skip Tracing” Service? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireSkipTracingService}
-                onChange={(e) => setRequireSkipTracingService(e.target.value)}
+                // value={requireSkipTracingService}
+                // onChange={(e) => setRequireSkipTracingService(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -960,8 +967,8 @@ function Questionaire() {
                 <div id="require-body-cam-footage">
                 <label>Do You Require Body Cam Footage of Service to Present as Evidence? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireBodyCamFootage}
-                onChange={(e) => setRequireBodyCamFootage(e.target.value)}
+                // value={requireBodyCamFootage}
+                // onChange={(e) => setRequireBodyCamFootage(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -976,8 +983,8 @@ function Questionaire() {
                 <div id="require-server-notify-person-of-interest">
                 <label>Is the judge Requiring the Server to Notify the Person of Interest, Service May be Rejected? Thus Limiting Operations to the Server <i>(International Court Rules)</i>*</label>
                     <select className="w-75 m-4 center p-2"
-                    value={requireServernotifyPersonOfInterest}
-                    onChange={(e) => setRequireServerNotifyPersonOfInterest(e.target.value)}
+                    // value={requireServernotifyPersonOfInterest}
+                    // onChange={(e) => setRequireServerNotifyPersonOfInterest(e.target.value)}
                     required
                     >
                 <label  color="white">
@@ -993,8 +1000,8 @@ function Questionaire() {
                 <label>Is a “Drop Serve / Force Serve” Allowed, 
                     Once Residence/Employment is Confirmed and an Individual(s) Refuses to Accept Documents Upon Contact/Sub-Service?*</label>
                     <select className="w-75 m-4 center p-2"
-                    value={dropServeForceServe}
-                    onChange={(e) => setDropServeForceServe(e.target.value)}
+                    // value={dropServeForceServe}
+                    // onChange={(e) => setDropServeForceServe(e.target.value)}
                     required
                     >
                 <label  color="white">
@@ -1010,8 +1017,8 @@ function Questionaire() {
                 <label>Any Specific Instructions You Would Like to Provide Regarding “Drop Service / Force Service”?*</label>
                 <MDBInput 
                 type="textarea" 
-                value={instructionDropServiceForceService}
-                onChange={(e) => setInstructionDropServiceForceService(e.target.value)}
+                // value={instructionDropServiceForceService}
+                // onChange={(e) => setInstructionDropServiceForceService(e.target.value)}
                 required
                 />
                 </div>
@@ -1020,8 +1027,8 @@ function Questionaire() {
                 <div id="require-rush-service">
                 <label>Do You Require a Rush Service?* <i>(Additional Fee)</i></label>
                 <select className="w-75 m-4 center p-2"
-                value={requireRushService}
-                onChange={(e) => setRequireRushService(e.target.value)}
+                // value={requireRushService}
+                // onChange={(e) => setRequireRushService(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -1037,8 +1044,8 @@ function Questionaire() {
                 <label><i>(Specify Dates/Hours for Rush Service)</i></label>
                 <MDBInput 
                 type="textarea"
-                value={specifyDatesForRushService} 
-                onChange={(e) => setSpecifyDatesForRushService(e.target.value)}
+                // value={specifyDatesForRushService} 
+                // onChange={(e) => setSpecifyDatesForRushService(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -1046,8 +1053,8 @@ function Questionaire() {
                 <div id="require-same-day-service-attempt">
                 <label>Do You Require a Same Day Service Attempt? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireSameDayServiceAttempt}
-                onChange={(e) => setRequireSameDayServiceAttempt(e.target.value)}
+                // value={requireSameDayServiceAttempt}
+                // onChange={(e) => setRequireSameDayServiceAttempt(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -1062,8 +1069,8 @@ function Questionaire() {
                 <div id="require-stake-out-service">
                 <label>Do You Require a Stake Out Service? <i>(Additional Fee)</i>*</label>
                 <select className="w-75 m-4 center p-2"
-                value={requireStakeOutService}
-                onChange={(e) => setRequireStakeoutService(e.target.value)}
+                // value={requireStakeOutService}
+                // onChange={(e) => setRequireStakeoutService(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -1079,8 +1086,8 @@ function Questionaire() {
                 <label><i>(Please Specify Dates/Hours for Stake Out Service)</i></label>
                 <MDBInput 
                 type="textarea" 
-                value={specifyDatesForStakeOutService}
-                onChange={(e) => setSpecifyDatesForStakeOutService (e.target.value)}
+                // value={specifyDatesForStakeOutService}
+                // onChange={(e) => setSpecifyDatesForStakeOutService (e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -1088,8 +1095,8 @@ function Questionaire() {
                 <div id="subserve-after-three-attempts">
                 <label>Is a “Subserve” to a Co-Resident/Co-Worker After 3 Attempts <i>(2 Attempts in California)</i> Allowed?*</label>
                 <select className="w-75 m-4 center p-2"
-                value={subserveAfterThreeAttempts}
-                onChange={(e) => setSubserveAfterThreeAttempts(e.target.value)}
+                // value={subserveAfterThreeAttempts}
+                // onChange={(e) => setSubserveAfterThreeAttempts(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -1104,8 +1111,8 @@ function Questionaire() {
                 <div id="refuse-to-accept-documents">
                 <label>Is a “Drop Serve/Force Serve” Allowed Once Residence/Employment is Confirmed and an Individual Refuses to Accept Documents Upon Contact/Subservice?*</label>
                 <select className="w-75 m-4 center p-2"
-                value={refuseToAcceptDocuments}
-                onChange={(e) => setRefuseToAccpetDocuments(e.target.value)}
+                // value={refuseToAcceptDocuments}
+                // onChange={(e) => setRefuseToAccpetDocuments(e.target.value)}
                 required
                 >
                 <label  color="white">
@@ -1122,8 +1129,8 @@ function Questionaire() {
                     <i>(We Generally Operate 8 AM - 10 PM)</i></label>
                 <MDBInput
                 type="text" 
-                value={specificHoursNeedAttempted}
-                onChange={(e) => setSpecificHoursNeedAttempted(e.target.value)}
+                // value={specificHoursNeedAttempted}
+                // onChange={(e) => setSpecificHoursNeedAttempted(e.target.value)}
                      />
                 </div>
             </MDBCol>
@@ -1132,13 +1139,13 @@ function Questionaire() {
                 <label>Any Specific Court Instructions/Requirements You Would Like to Provide for the Serve?</label>
                 <MDBInput
                 type="textarea" 
-                value={specificCourtInstruction}
-                onChange={(e) => setSpecificCourtInstruction(e.target.value)}
+                // value={specificCourtInstruction}
+                // onChange={(e) => setSpecificCourtInstruction(e.target.value)}
                      />
                 </div>
             </MDBCol>
             </MDBRow>
-            <MDBBtn color="primary w-100 mt-2 mb-4" type="submit" onClick={handleSubmit} style={{ background: loader ? "#ccc" : " rgb(2, 2, 110)" }}>Submit Questionaire</MDBBtn>
+            {/* <MDBBtn color="primary w-100 mt-2 mb-4" type="submit" onClick={handleSubmit} style={{ background: loader ? "#ccc" : " rgb(2, 2, 110)" }}>Submit Questionaire</MDBBtn> */}
             </form>
         </React.Fragment>
       )

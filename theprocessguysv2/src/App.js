@@ -1,7 +1,7 @@
 import React from "react";
 import {BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import TheProcessGuys from "./pages/TheProcessGuys";
-// import QuestionairePage from "./pages/Questionaire";
+import QuestionairePage from "./pages/questionaire2";
 import Login from "./pages/Login";
 import Register from "./pages/register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -30,7 +30,7 @@ export default function App() {
       <Route path = '/forgot-password' component = {ForgotPassword} />
       <Route path = '/member-dashboard' component = {MemberDashboard} />
       <Route path = '/update-profile' component = {UpdateProfilePage} />
-      {/* <Route path = '/questionaire' component = {QuestionairePage} /> */}
+      <Route path = '/questionaire' component = {QuestionairePage} />
       </Switch>
       </Router>
       <Footer></Footer>

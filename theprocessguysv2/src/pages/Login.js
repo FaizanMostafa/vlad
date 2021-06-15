@@ -1,4 +1,4 @@
-import { MDBRow, MDBCol } from "mdbreact";
+import { MDBCol } from "mdbreact";
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -11,12 +11,12 @@ function Login() {
   const [password, setPassword] = useState("");
 
   return (
-    <MDBRow>
-        <MDBCol md="6 w-100"><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+    <>
+        <MDBCol md="6 w-50"><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
             <h2 className="text-center">Log In</h2>
             <form>
 
-              <MDBRow>
+              <>
 
                 <MDBCol md="10">
                   <Form.Group id="email">
@@ -42,9 +42,9 @@ function Login() {
                 </Form.Group>
               </MDBCol><br></br>
 
-            </MDBRow>
+            </>
 
-              <Button className="w-100 text-center" type="submit">
+              <Button className="w-50 text-center" type="submit">
                 Log In
               </Button>
 
@@ -52,16 +52,16 @@ function Login() {
 
         </MDBCol>
 
-          <div className="w-100 text-center mt-3">
+          <div className="xxtext-center mt-5 d-flex">
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
 
-          <div className="w-100 text-center mt-2">
+          <div className=" text-center d-flex mt-5">
             Need an account? <Link to="/register">Register Now</Link>
           </div>
           
           <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
-    </MDBRow>
+    </>
   
     )
     // async function login(e) {
