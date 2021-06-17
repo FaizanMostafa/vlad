@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MDBCol, MDBInput } from "mdbreact";
 import { Form, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import QuestionaireAttorneyTemplateD from "./questionaireAttorneyTemplateD";
 import QuestionaireAttorneyTemplateP from "./questionaireAttorneyTemplateP";
 import QuestionaireAddressTemplate from "./questionaireAddressTemplate";
@@ -9,7 +9,7 @@ import QuestionaireAgentOfService from "./questionaireAgentOfServiceTemplate";
 import QuestionaireEmploymentAddressTemplate from "./questionaireEmploymentAddressTemplate";
 import QuestionaireAdditionalServeeTemplate from "./questionaireAdditionalServeeTemplate";
 import QuestionaireAdditionalVehicleTemplate from "./questionaireAdditionalVehicleTemplate";
-import db from "../firebase";
+import  {db}  from "../firebase/index";
 
 function Questionaire() {
 
@@ -1422,11 +1422,11 @@ function Questionaire() {
             </form>
             <br></br>
             <br></br>
-            <Link to="/packet-submission-page">
+            {/* <Link to="/packet-submission-page"> */}
                 <Button className="w-75 justify-content-center d-flex" onSubmit={handleSubmit}>
                     Proceed to Document Upload
                 </Button>
-            </Link>
+            {/* </Link> */}
             <br></br>
             <br></br>
             <br></br>

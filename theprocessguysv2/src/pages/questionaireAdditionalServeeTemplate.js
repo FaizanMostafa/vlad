@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase";
+import db from "../firebase/index";
 
 function QuestionaireAttorneyTemplateD() {
     const [showModal, setShow] = useState(false);
