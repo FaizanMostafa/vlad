@@ -64,7 +64,7 @@ function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, se
                                     <Form.Group id="attorney-barnumber">
                                         <Form.Label>Bar Number</Form.Label>
                                         <Form.Control 
-                                            type="text" type="text"
+                                            type="text"
                                             value={barNo}
                                             onChange={(e) => setBarNo(e.target.value)}
                                             required

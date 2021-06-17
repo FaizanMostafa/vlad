@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { MDBCol, MDBInput } from "mdbreact";
 import { Form, Button } from "react-bootstrap";
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 // import { Link } from "react-router-dom";
 import QuestionaireAttorneyTemplateD from "./questionaireAttorneyTemplateD";
 import QuestionaireAttorneyTemplateP from "./questionaireAttorneyTemplateP";
@@ -12,6 +15,8 @@ import QuestionaireAdditionalVehicleTemplate from "./questionaireAdditionalVehic
 import  {db}  from "../firebase/index";
 
 function Questionaire() {
+
+    const user = useSelector(state => state.auth.user);
 
     const [caseTitle, setCaseTitle] = useState("");
     const [caseNumber, setCaseNumber] = useState("");
@@ -287,6 +292,7 @@ function Questionaire() {
         setIfYesListAddress("");
     }
 
+    if(user) return (<Redirect to="/" />);
 
     return(
         <React.Fragment>
@@ -301,7 +307,7 @@ function Questionaire() {
             <br></br>
             <br></br>
             <br></br>
-            <form className="mb-4">
+            <form className="mb-4" onSubmit = {handleSubmit}>
             <MDBCol md="12" id="case-title">
                 <Form.Group id="text">
                 <div id="case-title">
@@ -1419,14 +1425,14 @@ function Questionaire() {
                      />
                 </div>
             </MDBCol>
-            </form>
-            <br></br>
-            <br></br>
             {/* <Link to="/packet-submission-page"> */}
-                <Button className="w-75 justify-content-center d-flex" onSubmit={handleSubmit}>
+                <Button className="w-75 justify-content-center d-flex" onClick="click">
                     Proceed to Document Upload
                 </Button>
             {/* </Link> */}
+            </form>
+            <br></br>
+            <br></br>
             <br></br>
             <br></br>
             <br></br>

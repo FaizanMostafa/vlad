@@ -49,6 +49,7 @@ function Register(props) {
             showToast("Passwords do not match!", "warning");
         } else {
             let data = {
+                uid: user.uid,
                 email: email.toLocaleLowerCase(),
                 password,
                 name,
