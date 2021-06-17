@@ -1,8 +1,8 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+// import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 // import ContactPage from "../pages/contactus2";
-import OurServices from "../pages/OurServices";
+// import OurServices from "../pages/OurServices";
 import { logout } from "../redux/actions/auth";
 // import img from "./Pictures/The-Process-Guys-word-logo.png";
 
@@ -74,7 +74,7 @@ const NavBar = (props) => {
                         </a>
                     </li>
                     <li className="nav-item" onClick={handleOnPressLogout}>
-                        <a className="nav-link service text-center mt-4 mb-4" href=''style={{color : "white"}}>
+                        <a className="nav-link service text-center mt-4 mb-4" href='blah'style={{color : "white"}}>
                             <h5>
                                 <b>
                                     Logout
