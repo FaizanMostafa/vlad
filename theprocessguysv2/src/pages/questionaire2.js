@@ -9,7 +9,8 @@ import QuestionaireAgentOfService from "./questionaireAgentOfServiceTemplate";
 import QuestionaireEmploymentAddressTemplate from "./questionaireEmploymentAddressTemplate";
 import QuestionaireAdditionalServeeTemplate from "./questionaireAdditionalServeeTemplate";
 import QuestionaireAdditionalVehicleTemplate from "./questionaireAdditionalVehicleTemplate";
-import  {db}  from "../firebase/index";
+import {showToast} from "../utils";
+import  {db}  from "../firebase";
 
 function Questionaire() {
 
@@ -197,94 +198,93 @@ function Questionaire() {
 
     })
         .then(() => {
-          alert("Your questionaire has been submitted 👍");
+            setCaseTitle("");
+            setCaseNumber("");
+            setCourtDate("");
+            setSuperiorCourtOf("");
+            setCountyOf("");
+            setCourthouseAddress("");
+            setCourthouseMailingAddress("");
+            setBranchName("");
+            setAppealsCourtOf("");
+            setSupremeCourtOf("");
+            setPlaintiffFullName("");
+            setPlaintiffAddress("");
+            setNumberOfAttorneyPlaintiff("");
+            setAttorneyRepresentingPlaintiffInfo("");
+            setDefendantFullName("");
+            setDefendantAddress("");
+            setNumberOfAttorneyDefendant("");
+            setAttorneyRepresentingDefendantInfo("");
+            setNameOfIndividuals("");
+            setDobOfIndividuals("");
+            setPhoneNumberOfIndividuals("");
+            setEmailOfIndividuals("");
+            setServeIndividualAtEmployment("");
+            setImageOfIndividuals("");
+            setGenderOfIndividuals("");
+            setEthnicityOfIndividuals("");
+            setHeightOfIndividuals("");
+            setWeightOfIndividuals("");
+            setHairColorOfIndividuals("");
+            setEyeColorOfIndividuals("");
+            setPhysicalOutlineOfIndividuals("");
+            setEmploymentOfIndividuals("");
+            setVehicleTypeModelOwnership("");
+            setAppealsCourtOf("");
+            setSupremeCourtOf("");
+            setServerContactServeeByPhone("");
+            setCoResidentsOfServee("");
+            setAgentOfService("");
+            setIfYesListFullName("");
+            setAddressForCurrentPlaceOfEmployment("");
+            setInsuranceCompanyOfServee("");
+            setLiscencePlateNumberState("");
+            setVinNumberOfIndividuals("");
+            setYearOfMakeOnVehicle("");
+            setVehicleColor("");
+            setPOBoxAllowedToServe("");
+            setRequireServiceByMail("");
+            setRequireByEmail("");
+            setRequireSkipTracingService("");
+            setRequireBodyCamFootage("");
+            setRequireServerNotifyPersonOfInterest("");
+            setDropServeForceServe("");
+            setRequireRushService("");
+            setRequireStakeoutService("");
+            setSubserveAfterThreeAttempts("");
+            setSpecificCourtInstruction("");
+            setFullNameOfDescribedServee("");
+            setPlaintiffAttorneyName("");
+            setPlaintiffAttorneyBarNumber("");
+            setPlaintiffAttorneyBarNumber("");
+            setPlaintiffAttorneyOfficeAddress("");
+            setPlaintiffAttorneyPhoneNumberForCalls("");
+            setPlaintiffAttorneyEmail("");
+            setPlaintiffAttorneyFaxNumberOptional("");
+            setDefendantAttorneyName("");
+            setDefendantAttorneyBarNumber("");
+            setDefendantAttorneyOfficeAddress("");
+            setDefendantAttorneyPhoneNumberForCalls("");
+            setDefendantAttorneyEmail("");
+            setDefendantAttorneyFaxNumberOptional("");
+            setHowManyindividualsServed("");
+            setLocationForBeingServed("");
+            setMainAddressForService("");
+            setProcessServerLeaveDoorTag("");
+            setServerPostDocumentsWithRubberBand("");
+            setParalegalAttorneyClientContactServee("");
+            setFullNameOfDescribedServee("");
+            setSpecifyDatesForStakeOutService("");
+            setListDateWhenServiceAttemptsClosed("");
+            setRequireFirst24HourService("");
+            setObtainNewDeliveryLocation("");
+            setIfYesListAddress("");
+          showToast("Your questionaire has been submitted 👍", "success");
         })
         .catch((error) => {
-          alert(error.message);
+          showToast(error.message, "error");
         });
-
-        setCaseTitle("");
-        setCaseNumber("");
-        setCourtDate("");
-        setSuperiorCourtOf("");
-        setCountyOf("");
-        setCourthouseAddress("");
-        setCourthouseMailingAddress("");
-        setBranchName("");
-        setAppealsCourtOf("");
-        setSupremeCourtOf("");
-        setPlaintiffFullName("");
-        setPlaintiffAddress("");
-        setNumberOfAttorneyPlaintiff("");
-        setAttorneyRepresentingPlaintiffInfo("");
-        setDefendantFullName("");
-        setDefendantAddress("");
-        setNumberOfAttorneyDefendant("");
-        setAttorneyRepresentingDefendantInfo("");
-        setNameOfIndividuals("");
-        setDobOfIndividuals("");
-        setPhoneNumberOfIndividuals("");
-        setEmailOfIndividuals("");
-        setServeIndividualAtEmployment("");
-        setImageOfIndividuals("");
-        setGenderOfIndividuals("");
-        setEthnicityOfIndividuals("");
-        setHeightOfIndividuals("");
-        setWeightOfIndividuals("");
-        setHairColorOfIndividuals("");
-        setEyeColorOfIndividuals("");
-        setPhysicalOutlineOfIndividuals("");
-        setEmploymentOfIndividuals("");
-        setVehicleTypeModelOwnership("");
-        setAppealsCourtOf("");
-        setSupremeCourtOf("");
-        setServerContactServeeByPhone("");
-        setCoResidentsOfServee("");
-        setAgentOfService("");
-        setIfYesListFullName("");
-        setAddressForCurrentPlaceOfEmployment("");
-        setInsuranceCompanyOfServee("");
-        setLiscencePlateNumberState("");
-        setVinNumberOfIndividuals("");
-        setYearOfMakeOnVehicle("");
-        setVehicleColor("");
-        setPOBoxAllowedToServe("");
-        setRequireServiceByMail("");
-        setRequireByEmail("");
-        setRequireSkipTracingService("");
-        setRequireBodyCamFootage("");
-        setRequireServerNotifyPersonOfInterest("");
-        setDropServeForceServe("");
-        setRequireRushService("");
-        setRequireStakeoutService("");
-        setSubserveAfterThreeAttempts("");
-        setSpecificCourtInstruction("");
-        setFullNameOfDescribedServee("");
-        setPlaintiffAttorneyName("");
-        setPlaintiffAttorneyBarNumber("");
-        setPlaintiffAttorneyBarNumber("");
-        setPlaintiffAttorneyOfficeAddress("");
-        setPlaintiffAttorneyPhoneNumberForCalls("");
-        setPlaintiffAttorneyEmail("");
-        setPlaintiffAttorneyFaxNumberOptional("");
-        setDefendantAttorneyName("");
-        setDefendantAttorneyBarNumber("");
-        setDefendantAttorneyOfficeAddress("");
-        setDefendantAttorneyPhoneNumberForCalls("");
-        setDefendantAttorneyEmail("");
-        setDefendantAttorneyFaxNumberOptional("");
-        setHowManyindividualsServed("");
-        setLocationForBeingServed("");
-        setMainAddressForService("");
-        setProcessServerLeaveDoorTag("");
-        setServerPostDocumentsWithRubberBand("");
-        setParalegalAttorneyClientContactServee("");
-        setFullNameOfDescribedServee("");
-        setSpecifyDatesForStakeOutService("");
-        setListDateWhenServiceAttemptsClosed("");
-        setRequireFirst24HourService("");
-        setObtainNewDeliveryLocation("");
-        setIfYesListAddress("");
     }
 
 
@@ -301,7 +301,7 @@ function Questionaire() {
             <br></br>
             <br></br>
             <br></br>
-            <form className="mb-4">
+            <form className="mb-4" onSubmit={handleSubmit}>
             <MDBCol md="12" id="case-title">
                 <Form.Group id="text">
                 <div id="case-title">
@@ -1419,14 +1419,14 @@ function Questionaire() {
                      />
                 </div>
             </MDBCol>
-            </form>
             <br></br>
             <br></br>
             {/* <Link to="/packet-submission-page"> */}
-                <Button className="w-75 justify-content-center d-flex" onSubmit={handleSubmit}>
+                <Button className="w-75 justify-content-center d-flex" type="submit">
                     Proceed to Document Upload
                 </Button>
             {/* </Link> */}
+            </form>
             <br></br>
             <br></br>
             <br></br>
