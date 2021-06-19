@@ -5,7 +5,7 @@ import { MDBInput } from "mdbreact"
 function singleSubmission() {
 
     return(
-        <Card className="justify-content-center mt-4 mb-4">
+        <Card className="justify-content-center mt-4 mb-4 homepage">
             <Card.Body>
                 <h2><b>Single Submission Upload</b></h2>
                 <Form onSubmit={""}>

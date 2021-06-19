@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 function packetSubmissionPage() {
 
     return(
-        <Card>
+        <Card className="homepage">
             <h1 className="text-center"><b>Packet Submission Page</b></h1>
             <br></br>
             <br></br>

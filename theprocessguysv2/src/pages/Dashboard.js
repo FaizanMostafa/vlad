@@ -1,64 +1,53 @@
-import React, { useState } from "react"
-import { Card, Button, Alert } from "react-bootstrap"
-// import { useAuth } from "../contexts/AuthContexts"
-import { Link, useHistory } from "react-router-dom"
+import React from "react"
+import { Card } from "react-bootstrap"
+import { Link} from "react-router-dom"
 
-export default function Dashboard() {
-  const [error, setError] = useState("")
-//   const { currentUser, logout } = useAuth()
-  const history = useHistory()
+function Dashboard() {
 
-  async function handleLogout() {
-    setError("")
-
-    try {
-    //   await logout()
-      history.push("/")
-    } catch {
-      setError("Failed to log out")
-    }
-  }
 
   return (
     <>
       <Card className="homepage">
 
-        <Card.Body>
+        <Card.Body className="text-center">
 
           <h2 className="text-center mb-4">Member Dashboard</h2>
-
-          {error && <Alert variant="danger">{error}</Alert>}
-          {/* <strong>Email:</strong> {currentUser.email} */}
+          <div>
+            <img className="img profile-pic" alt="img"/>
+          </div>
           <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <Link to="/update-profile" className="btn btn-primary w-50">
+            <div>E-mail: `{}`</div>
+            <br></br>
+            <div>Name: `{}`</div>
+            <br></br>
+            {/*if business shows this*/}
+            <div>Business Name: `{}`</div>
+            <br></br>
+            {/*if attorney show this*/}
+            <div>Attorney Name: `{}` </div>
+            <br></br>
+            {/*if paralegal show this*/}
+            <div>Paralegal Name: `{}`</div>
+            <br></br>
+            <div>Address: `{}`</div>
+            <br></br>
+            <br></br>
+        
+          <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
             Update Profile
           </Link>
-        
+          <br></br>
+          <Link to="/questionaire" className="btn btn-primary w-50 justify-content-center">
+            New Submission
+          </Link>
+          <br></br>
         </Card.Body>
 
       </Card>
-
-      <div className="w-100 text-center mt-2">
-
-        <Button variant="link" onClick={handleLogout} className="btn btn-primary w-50 mt-3">
-          Log Out
-        </Button>
-      
-      </div>
       <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
           <br></br>
           <br></br>
           <br></br>
@@ -82,3 +71,5 @@ export default function Dashboard() {
     </>
   )
 }
+
+export default Dashboard;
