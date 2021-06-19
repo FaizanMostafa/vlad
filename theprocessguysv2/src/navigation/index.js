@@ -15,6 +15,7 @@ import MemberDashboard from "../pages/Dashboard";
 import LoadingPage from "../pages/Loading";
 import UpdateProfilePage from "../pages/UpdateProfile";
 import { fetchUser } from "../redux/actions/auth";
+import ViewCases from '../pages/viewCases';
 
 const Navigation = (props) => {
 
@@ -46,6 +47,7 @@ const Navigation = (props) => {
           <Route path = '/single-submission' component = {SingleSubmission} />
           <Route path = '/multi-submission' component = {MultiSubmission} />
           <Route path = '/packet-submission-page' component = {PacketSubmissionPage} />
+          <Route path = '/view-cases' component = {ViewCases} />
           <Route path = '/login' component = {Login} />
           <Route path = '/register' component = {Register} />
           <Route path = '/forgot-password' component = {ForgotPassword} />

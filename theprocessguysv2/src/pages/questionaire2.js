@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MDBCol, MDBInput } from "mdbreact";
 import { Form, Button } from "react-bootstrap";
 import { useSelector } from 'react-redux';
+import { Link } from "react-router-dom";
 // import { Redirect } from 'react-router-dom';
 
 // import { Link } from "react-router-dom";
@@ -296,6 +297,13 @@ function Questionaire() {
 
     return(
         <React.Fragment>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+            <Link to="/member-dashboard" className="btn btn-primary" style={{ marginLeft: "auto" }}>Back to Dashboard</Link>
         <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
         <h3 className="text-center mb-4 mt-5">
             ​**Service should be completed 2 + weeks prior to the court date**
