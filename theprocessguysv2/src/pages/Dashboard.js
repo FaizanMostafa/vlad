@@ -32,13 +32,17 @@ function Dashboard() {
             <div>Address: `{}`</div>
             <br></br>
             <br></br>
-        
+
           <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
             Update Profile
           </Link>
           <br></br>
           <Link to="/questionaire" className="btn btn-primary w-50 justify-content-center">
             New Submission
+          </Link>
+          <br></br>
+          <Link to="/view-cases" className="btn btn-primary w-50 justify-content-center">
+            View Cases
           </Link>
           <br></br>
         </Card.Body>

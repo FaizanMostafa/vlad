@@ -15,9 +15,9 @@ export default function UpdateProfile() {
 
   function handleSubmit(e) {
     e.preventDefault()
-    if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
-    }
+    // if (passwordRef.current.value !== passwordConfirmRef.current.value) {
+    //   return setError("Passwords do not match")
+    // }
 
     // setLoading(true)
     setError("")
@@ -97,7 +97,7 @@ export default function UpdateProfile() {
             </Button>
           </Form>
           <div>
-            <Link to="/" className="btn btn-primary justify-content-center">Close</Link>
+            <Link to="/member-dashboard" className="btn btn-primary justify-content-center">Close</Link>
           </div>
         </Card.Body>
 
