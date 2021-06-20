@@ -1,4 +1,4 @@
-import firebase, {db} from "../../firebase";
+import firebase, {db, uploadMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USER,
@@ -33,6 +33,7 @@ const fetchUser = () => (
               type: FETCH_USER,
               payload: {uid, ...userData}
             });
+            console.log("\n User: ", {uid, ...userData}, "\n");
           }).catch((error) => {
             console.log("Error getting user data:", error);
           });
@@ -66,19 +67,15 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     dispatch(setIsSigningUp(true));
     firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
-      .then((userCredential) => {
+      .then(async(userCredential) => {
         var user = userCredential.user;
         delete data["password"];
-        db.collection("users").doc(user.uid).set({uid: user.uid, ...data})
-          .then(() => {
-            showToast("User registered successfully!", "success");
-            onSuccess();
-            dispatch(setIsSigningUp(false));
-          })
-          .catch((error) => {
-            console.error("Error saving user details: ", error);
-          });
-      })
+        const profilePicture = await uploadMedia(data["profilePicture"], "profile_pictures/");
+        await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePicture});
+        showToast("User registered successfully!", "success");
+        onSuccess();
+        dispatch(setIsSigningUp(false));
+        })
       .catch((error) => {
         onError();
         showToast(error.message, "error");

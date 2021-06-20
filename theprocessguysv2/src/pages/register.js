@@ -19,6 +19,7 @@ function Register(props) {
     const [rePassword, setRePassword] = useState("");
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
+    const [profilePicture, setProfilePicture] = useState(null);
     const [userType, setUserType] = useState("attorney");
     const [attorneyType, setAttorneyType] = useState("paralegal");
 
@@ -49,11 +50,11 @@ function Register(props) {
             showToast("Passwords do not match!", "warning");
         } else {
             let data = {
-                uid: user.uid,
                 email: email.toLocaleLowerCase(),
                 password,
                 name,
                 address,
+                profilePicture,
                 userType
             };
             if(userType==="attorney") {
@@ -149,8 +150,10 @@ function Register(props) {
                                 <Form.Label>Account Image</Form.Label>
                                 <input
                                     type='file' 
-                                    accept=".jpg,.png" 
+                                    onChange={(e)=>{setProfilePicture(e.target.files[0])}}
+                                    accept=".jpg,.png"
                                     label='Upload' 
+                                    required 
                                 />
                             </Form.Group>
                         </MDBCol>

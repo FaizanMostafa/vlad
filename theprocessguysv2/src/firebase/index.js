@@ -11,6 +11,17 @@ firebase.initializeApp({
   measurementId: "G-TYPTXTCZGS"
 });
 
-export const db = firebase.firestore();
+const uploadMedia = async(file, baseFolder) => {
+  var storageRef = firebase.storage().ref();
+  var fileRef = storageRef.child(`${baseFolder}${file.name}`);
+  const snapshot = await fileRef.put(file);
+  return snapshot.ref.getDownloadURL();
+}
 
+const db = firebase.firestore();
+
+export {
+  db,
+  uploadMedia
+};
 export default firebase;
