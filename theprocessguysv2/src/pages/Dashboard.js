@@ -29,8 +29,9 @@ function Dashboard() {
             {/*if paralegal show this*/}
             <div>Paralegal Name: `{}`</div>
             <br></br>
-            <div>Address: `{}`</div>
+            <div>Phone Number: `{}`</div>
             <br></br>
+            <div>Personal: `{}`</div>
             <br></br>
 
           <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">

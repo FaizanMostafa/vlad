@@ -24,6 +24,10 @@ function AdminDashboard() {
             <br></br>
             <div>Phone Number: `{}`</div>
             <br></br>
+            {/*Show Personal ID ONLY for ADMIN*/}
+            {/*if personal/business/paralegal show this*/}
+            <div>Driver Liscense / Real ID (No Passports): `{}`</div>
+            <br></br>
 
           <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
             Update Profile
