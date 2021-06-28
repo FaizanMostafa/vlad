@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MDBCol, MDBInput } from "mdbreact";
-import { Form, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 // import { Redirect } from 'react-router-dom';
@@ -263,7 +263,6 @@ function Questionaire() {
             setFullNameOfDescribedServee("");
             setPlaintiffAttorneyName("");
             setPlaintiffAttorneyBarNumber("");
-            setPlaintiffAttorneyBarNumber("");
             setPlaintiffAttorneyOfficeAddress("");
             setPlaintiffAttorneyPhoneNumberForCalls("");
             setPlaintiffAttorneyEmail("");
@@ -317,7 +316,6 @@ function Questionaire() {
             <br></br>
             <form className="mb-4" onSubmit={handleSubmit}>
             <MDBCol md="12" id="case-title">
-                <Form.Group id="text">
                 <div id="case-title">
                 <label>Case Title*</label>
                 <MDBInput
@@ -327,7 +325,6 @@ function Questionaire() {
                 required 
                      />
                 </div>
-                </Form.Group>
             </MDBCol>
             <MDBCol md="12" id="case-number">
                 <div id="case-number">
@@ -1045,7 +1042,7 @@ function Questionaire() {
                 </div>
             </MDBCol>
 
-            <h2 className="text-center mb-4 mt-2">Servee physical description <i>(If Available)</i>*</h2>
+            <h2 className="text-center mb-4 mt-2">Servee Physical Description <i>(If Available)</i>*</h2>
             <br></br>
 
             <MDBCol md="12" id="full-name-of-described-servee">

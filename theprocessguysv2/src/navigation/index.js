@@ -2,7 +2,14 @@ import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import TheProcessGuys from "../pages/TheProcessGuys";
-import QuestionairePage2 from "../pages/questionaire2";
+import QuestionaireMain from "../pages/questionaireMain";
+import QuestionairePlaintiff from '../pages/questionairePlaintiff';
+import QuestionaireDefendant from '../pages/questionaireDefendant';
+import QuestionaireServeeDocumentedData from '../pages/questionaireServeeDocumentedData';
+import QuestionaireClearanceOfAction from '../pages/questionaireClearanceOfAction';
+import QuestionaireVehicleInfo from '../pages/questionaireVehicleInfo';
+import QuestionaireServeePhysicalDescription from '../pages/questionaireServeePhysicalDescription';
+import QuestionaireOfferedServices from '../pages/questionaireOfferedServices';
 import Login from "../pages/Login";
 import Register from "../pages/register";
 import ForgotPassword from "../pages/ForgotPassword";
@@ -55,7 +62,14 @@ const Navigation = (props) => {
           <Route path = '/forgot-password' component = {ForgotPassword} />
           <Route path = '/member-dashboard' component = {MemberDashboard} />
           <Route path = '/update-profile' component = {UpdateProfilePage} />
-          <Route path = '/questionaire' component = {QuestionairePage2} />
+          <Route path = '/questionaire' component = {QuestionaireMain} />
+          <Route path = '/questionaire-plaintiff' component = {QuestionairePlaintiff} />
+          <Route path = '/questionaire-defendant' component = {QuestionaireDefendant} />
+          <Route path = '/questionaire-servee-documented-data' component = {QuestionaireServeeDocumentedData} />
+          <Route path = '/questionaire-clearance-of-action' component = {QuestionaireClearanceOfAction} />
+          <Route path = '/questionaire-vehicle-information' component = {QuestionaireVehicleInfo} />
+          <Route path = '/questionaire-servee-physical-description' component = {QuestionaireServeePhysicalDescription} />
+          <Route path = '/questionaire-offered-services' component = {QuestionaireOfferedServices} />
         </Switch>
       </Router>
       <Footer />
