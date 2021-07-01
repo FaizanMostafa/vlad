@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAttorneyTemplateP() {
     const [showModal, setShow] = useState(false);
@@ -15,28 +14,23 @@ function QuestionaireAttorneyTemplateP() {
     const handleSubmit = (e) => {
       e.preventDefault();
 
-      db.collection("questionaire").doc("add-attorney-p").collection("adding-attorney-p")
-      .add({
-        plaintiffAttorneyName: plaintiffAttorneyName,
-        plaintiffAttorneyBarNumber: plaintiffAttorneyBarNumber,
-        plaintiffAttorneyOfficeAddress: plaintiffAttorneyOfficeAddress,
-        plaintiffAttorneyEmail: plaintiffAttorneyEmail,
-        plaintiffAttorneyPhoneNumberForCalls: plaintiffAttorneyPhoneNumberForCalls,
-        plaintiffAttorneyFaxNumberOptional: plaintiffAttorneyFaxNumberOptional
-      })        
-      .then(() => {
-          alert("Plaintiff Attorney has been added!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-        
-        setPlaintiffAttorneyName("");
-        setPlaintiffAttorneyBarNumber("");
-        setPlaintiffAttorneyOfficeAddress("");
-        setPlaintiffAttorneyPhoneNumberForCalls("");
-        setPlaintiffAttorneyEmail("");
-        setPlaintiffAttorneyFaxNumberOptional("");
+      let data = {
+        plaintiffAttorneyName,
+        plaintiffAttorneyBarNumber,
+        plaintiffAttorneyOfficeAddress,
+        plaintiffAttorneyEmail,
+        plaintiffAttorneyPhoneNumberForCalls,
+        plaintiffAttorneyFaxNumberOptional
+      }
+      
+      localStorage.setItem('questionaireAttorneyTemplateP', JSON.stringify(data))
+
+      // .then(() => {
+      //     alert("Plaintiff Attorney has been added!");
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
   }
     
     const handleClose = () => setShow(false);

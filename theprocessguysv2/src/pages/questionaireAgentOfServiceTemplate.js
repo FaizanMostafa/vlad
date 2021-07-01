@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAgentOfServiceTemplate() {
     const [showModal, setShow] = useState(false);
@@ -10,18 +9,18 @@ function QuestionaireAgentOfServiceTemplate() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        db.collection("questionaire").doc("add-agent").collection("adding-agent")
-        .add({
-            ifYesListFullName: ifYesListFullName
-        })        
-        .then(() => {
-            alert("Agent Of Service has been added!");
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-          
-          setIfYesListFullName("");
+        let data = {
+            ifYesListFullName
+        }
+        
+        localStorage.setItem('questionaireAgentOfServiceTemplate', JSON.stringify(data))
+
+        // .then(() => {
+        //     alert("Agent Of Service has been added!");
+        //   })
+        //   .catch((error) => {
+        //     alert(error.message);
+        //   });
     }
   
     const handleClose = () => setShow(false);

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { MDBCol, MDBInput } from "mdbreact";
 import QuestionaireAddressTemplate from "./questionaireAddressTemplate";
 import QuestionaireAgentOfService from "./questionaireAgentOfServiceTemplate";
 import QuestionaireEmploymentAddressTemplate from "./questionaireEmploymentAddressTemplate";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function QuestionaireServeeDocumentedData() {
@@ -25,42 +24,35 @@ function QuestionaireServeeDocumentedData() {
     const [addressForCurrentPlaceOfEmployment, setAddressForCurrentPlaceOfEmployment] = useState("");
     const [knownCoResidentsOfServee, setCoResidentsOfServee] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            howManyIndividualsServed: howManyIndividualsServed,          
-            employmentOfIndividuals: employmentOfIndividuals,
-            nameOfIndividuals: nameOfIndividuals,
-            dobOfIndividuals: dobOfIndividuals,
-            locationForBeingServed: locationForBeingServed,
-            mainAddressForService: mainAddressForService,
-            agentOfService: agentOfService,          
-            ifYesListFullName: ifYesListFullName,
-            phoneNumbersOfIndividuals: phoneNumbersOfIndividuals,
-            emailsOfindividuals: emailsOfindividuals,
-            addressForCurrentPlaceOfEmployment: addressForCurrentPlaceOfEmployment,
-            knownCoResidentsOfServee: knownCoResidentsOfServee
-        })
-        .then(() => {
-            setHowManyindividualsServed("");
-            setEmploymentOfIndividuals("");
-            setNameOfIndividuals("");
-            setDobOfIndividuals("");
-            setLocationForBeingServed("");
-            setMainAddressForService("");
-            setAgentOfService("");
-            setIfYesListFullName("");
-            setPhoneNumberOfIndividuals("");
-            setEmailOfIndividuals("");
-            setAddressForCurrentPlaceOfEmployment("");
-            setCoResidentsOfServee("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+          let data = {
+            howManyIndividualsServed,          
+            employmentOfIndividuals,
+            nameOfIndividuals,
+            dobOfIndividuals,
+            locationForBeingServed,
+            mainAddressForService,
+            agentOfService,          
+            ifYesListFullName,
+            phoneNumbersOfIndividuals,
+            emailsOfindividuals,
+            addressForCurrentPlaceOfEmployment,
+            knownCoResidentsOfServee
+        }
+
+        localStorage.setItem('questionaireServeeDocumentedData', JSON.stringify(data))
+        history.push('/questionaire-clearance-of-action')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -256,7 +248,7 @@ function QuestionaireServeeDocumentedData() {
                 </div>
             </MDBCol>
             <br></br>
-                <Link to="/questionaire-clearance-of-action" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to the Clearance of Action Section</Link>
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>Proceed to the Clearance of Action Section</button>
             <br></br>
             <br></br>
             <br></br>

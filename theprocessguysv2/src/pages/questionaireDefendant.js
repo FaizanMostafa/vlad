@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import QuestionaireAttorneyTemplateD from "./questionaireAttorneyTemplateD";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function QuestionaireDefendant() {
@@ -23,40 +22,35 @@ function QuestionaireDefendant() {
     const [defendantAttorneyEmail, setDefendantAttorneyEmail] = useState("");
     const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            defendantFullName: defendantFullName,
-            defendantAddress: defendantAddress,
-            numberOfAttorneyDefendant: numberOfAttorneyDefendant,
+          let data = {
+            defendantFullName,
+            defendantAddress,
+            numberOfAttorneyDefendant,
   
-            attorneyRepresentingDefendantInfo:attorneyRepresentingDefendantInfo,
-            defendantAttorneyName: defendantAttorneyName,
-            defendantAttorneyOfficeAddress: defendantAttorneyOfficeAddress,
-            defendantAttorneyBarNumber: defendantAttorneyBarNumber,
-            defendantAttorneyEmail: defendantAttorneyEmail,
-            defendantAttorneyPhoneNumberForCalls:defendantAttorneyPhoneNumberForCalls,
-            defendantAttorneyFaxNumberOptional: defendantAttorneyFaxNumberOptional
+            attorneyRepresentingDefendantInfo,
+            defendantAttorneyName,
+            defendantAttorneyOfficeAddress,
+            defendantAttorneyBarNumber,
+            defendantAttorneyEmail,
+            defendantAttorneyPhoneNumberForCalls,
+            defendantAttorneyFaxNumberOptional
 
-        })
-        .then(() => {
-            setDefendantFullName("");
-            setDefendantAddress("");
-            setNumberOfAttorneyDefendant("");
-            setAttorneyRepresentingDefendantInfo("");
-            setDefendantAttorneyName("");
-            setDefendantAttorneyBarNumber("");
-            setDefendantAttorneyOfficeAddress("");
-            setDefendantAttorneyPhoneNumberForCalls("");
-            setDefendantAttorneyEmail("");
-            setDefendantAttorneyFaxNumberOptional("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+        }
+
+        localStorage.setItem('questionaireDefendant', JSON.stringify(data))
+        history.push('/questionaire-servee-documented-data')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -223,7 +217,7 @@ function QuestionaireDefendant() {
                 **Click button to add another Attorney**
             </p>
             <br></br>
-                <Link to="/questionaire-servee-documented-data" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to the Servee Documented Data Section</Link>
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>Proceed to the Servee Documented Data Section</button>
             <br></br>
             <br></br>
             <br></br>

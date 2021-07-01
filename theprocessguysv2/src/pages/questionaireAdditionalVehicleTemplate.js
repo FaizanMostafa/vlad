@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAdditionalVehicleTemplate() {
 
@@ -14,30 +13,25 @@ function QuestionaireAdditionalVehicleTemplate() {
     const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
   
     const handleSubmit = (e) => {
-      e.preventDefault();
+      e.preventDefault();   
 
-      db.collection("questionaire").doc("add-vehicle").collection("adding-vehicle")
-      .add({
-        insuranceCompanyOfServee: insuranceCompanyOfServee,
-        vehicleTypeModelOwnership: vehicleTypeModelOwnership,
-        liscencePlateNumberState: liscencePlateNumberState,
-        vinNumberOfindividuals: vinNumberOfindividuals,
-        yearOfMakeOnVehicle: yearOfMakeOnVehicle,
-        vehicleColor: vehicleColor
-      })        
-      .then(() => {
-          alert("Vehicle has been added!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-        setInsuranceCompanyOfServee("");
-        setLiscencePlateNumberState("");
-        setVinNumberOfIndividuals("");
-        setYearOfMakeOnVehicle("");
-        setVehicleColor("");
-        setVehicleTypeModelOwnership("");
+      let data = {
+        insuranceCompanyOfServee,
+        vehicleTypeModelOwnership,
+        liscencePlateNumberState,
+        vinNumberOfindividuals,
+        yearOfMakeOnVehicle,
+        vehicleColor
+      }
 
+      localStorage.setItem('questionaireAdditionalVehicleTemplate', JSON.stringify(data))
+
+      // .then(() => {
+      //     alert("Vehicle has been added!");
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
   }
     
     const handleClose = () => setShow(false);

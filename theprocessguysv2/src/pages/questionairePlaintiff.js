@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import QuestionaireAttorneyP from "./questionaireAttorneyTemplateP";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function QuestionairePlaintiff() {
@@ -23,40 +22,36 @@ function QuestionairePlaintiff() {
     const [plaintiffAttorneyEmail, setPlaintiffAttorneyEmail] = useState("");
     const [plaintiffAttorneyFaxNumberOptional, setPlaintiffAttorneyFaxNumberOptional] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            plaintiffFullName: plaintiffFullName,
-            plaintiffAddress: plaintiffAddress,
-            numberOfAttorneyPlaintiff: numberOfAttorneyPlaintiff,
+          let data = {
+            plaintiffFullName,
+            plaintiffAddress,
+            numberOfAttorneyPlaintiff,
   
-            attorneyRepresentingPlaintiffInfo: attorneyRepresentingPlaintiffInfo,
-            plaintiffAttorneyName: plaintiffAttorneyName,
-            plaintiffAttorneyBarNumber: plaintiffAttorneyBarNumber,
-            plaintiffAttorneyOfficeAddress: plaintiffAttorneyOfficeAddress,
-            plaintiffAttorneyEmail: plaintiffAttorneyEmail,
-            plaintiffAttorneyPhoneNumberForCalls: plaintiffAttorneyPhoneNumberForCalls,
-            plaintiffAttorneyFaxNumberOptional: plaintiffAttorneyFaxNumberOptional
+            attorneyRepresentingPlaintiffInfo,
+            plaintiffAttorneyName,
+            plaintiffAttorneyBarNumber,
+            plaintiffAttorneyOfficeAddress,
+            plaintiffAttorneyEmail,
+            plaintiffAttorneyPhoneNumberForCalls,
+            plaintiffAttorneyFaxNumberOptional
 
-        })
-        .then(() => {
-            setPlaintiffFullName("");
-            setPlaintiffAddress("");
-            setNumberOfAttorneyPlaintiff("");
-            setAttorneyRepresentingPlaintiffInfo("");
-            setPlaintiffAttorneyName("");
-            setPlaintiffAttorneyBarNumber("");
-            setPlaintiffAttorneyOfficeAddress("");
-            setPlaintiffAttorneyPhoneNumberForCalls("");
-            setPlaintiffAttorneyEmail("");
-            setPlaintiffAttorneyFaxNumberOptional("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+        }
+
+        localStorage.setItem('questionairePlaintiff', JSON.stringify(data))
+
+        history.push('/questionaire-defendant')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -228,7 +223,7 @@ function QuestionairePlaintiff() {
                 **Click button to add another Attorney**
             </p>
             <br></br>
-                <Link to="/questionaire-defendant" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to the Defendant Section</Link>
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>Proceed to the Defendant Section</button>
             <br></br>
             <br></br>
             <br></br>

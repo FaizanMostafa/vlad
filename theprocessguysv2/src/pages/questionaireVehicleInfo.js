@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { MDBCol, MDBInput } from "mdbreact";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import QuestionaireAdditionalVehicleTemplate from './questionaireAdditionalVehicleTemplate';
 
@@ -17,30 +16,29 @@ function QuestionaireVehicleInfo() {
     const [vehicleColor, setVehicleColor] = useState("");
     const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            insuranceCompanyOfServee: insuranceCompanyOfServee,
-            vehicleTypeModelOwnership: vehicleTypeModelOwnership,
-            liscencePlateNumberState: liscencePlateNumberState,
-            vinNumberOfindividuals: vinNumberOfindividuals,
-            yearOfMakeOnVehicle: yearOfMakeOnVehicle,
-            vehicleColor: vehicleColor
-        })
-        .then(() => {
-            setInsuranceCompanyOfServee("");
-            setLiscencePlateNumberState("");
-            setVinNumberOfIndividuals("");
-            setYearOfMakeOnVehicle("");
-            setVehicleColor("");
-            setVehicleTypeModelOwnership("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+          let data = {
+            insuranceCompanyOfServee,
+            vehicleTypeModelOwnership,
+            liscencePlateNumberState,
+            vinNumberOfindividuals,
+            yearOfMakeOnVehicle,
+            vehicleColor
+        }
+
+        localStorage.setItem('questionaireVehicleInfo', JSON.stringify(data))
+        history.push('/questionaire-offered-services')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -127,9 +125,9 @@ function QuestionaireVehicleInfo() {
             <br></br>
             <br></br>
             <br></br>
-                <Link to="/questionaire-offered-services" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>
                     Proceed to the Offered Sevices Section
-                </Link>
+                </button>
             <br></br>
             <br></br>
             <br></br>

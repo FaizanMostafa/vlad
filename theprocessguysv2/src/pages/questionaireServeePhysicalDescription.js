@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { MDBCol, MDBInput } from "mdbreact";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import QuestionaireAdditionalServeeTemplate from './questionaireAdditionalServeeTemplate';
 
@@ -11,7 +10,7 @@ function QuestionaireVehicleInfo() {
     const user = useSelector(state => state.auth.user);
 
     const [fullNameofDescribedServee, setFullNameOfDescribedServee] = useState("");
-    const [imageOfIndividuals, setImageOfIndividuals] = useState("");
+    const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
     const [genderOfindividuals, setGenderOfIndividuals] = useState("");
     const [ethnicityOfindividuals, setEthnicityOfIndividuals] = useState("");
     const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
@@ -20,36 +19,32 @@ function QuestionaireVehicleInfo() {
     const [eyeColorOfindividuals, setEyeColorOfIndividuals] = useState("");
     const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            fullNameofDescribedServee: fullNameofDescribedServee,
-            imageOfIndividuals: imageOfIndividuals,
-            genderOfindividuals: genderOfindividuals,
-            ethnicityOfindividuals: ethnicityOfindividuals,
-            heightOfIndividuals: heightOfIndividuals,
-            weightOfIndividuals: weightOfIndividuals,
-            hairColorOfIndividuals: hairColorOfIndividuals,
-            eyeColorOfindividuals: eyeColorOfindividuals,
-            physicalOutlineOfIndividuals: physicalOutlineOfIndividuals
-        })
-        .then(() => {
-            setFullNameOfDescribedServee("");
-            setImageOfIndividuals("");
-            setGenderOfIndividuals("");
-            setEthnicityOfIndividuals("");
-            setHeightOfIndividuals("");
-            setWeightOfIndividuals("");
-            setHairColorOfIndividuals("");
-            setEyeColorOfIndividuals("");
-            setPhysicalOutlineOfIndividuals("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+          let data = {
+            fullNameofDescribedServee,
+            imageOfIndividuals,
+            genderOfindividuals,
+            ethnicityOfindividuals,
+            heightOfIndividuals,
+            weightOfIndividuals,
+            hairColorOfIndividuals,
+            eyeColorOfindividuals,
+            physicalOutlineOfIndividuals
+        }
+
+        localStorage.setItem('questionaireServeePhysicalDescription', JSON.stringify(data))
+        history.push('/questionaire-vehicle-information')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -158,9 +153,10 @@ function QuestionaireVehicleInfo() {
             <MDBCol md="12 mb-4" id="image-of-individuals">
             <div id="image-of-individuals">
                 <label>Servee Image <i>(If Available)</i>*</label>
-                <input type='file' accept=".jpg,.png" label='Upload' multiple 
-                value={imageOfIndividuals}
-                onChange={(e) => setImageOfIndividuals(e.target.value)}
+                <input type='file' 
+                accept=".jpg,.png" 
+                label='Upload'
+                onChange={(e) => {setImageOfIndividuals(e.target.files[0])}}
                 />
               </div>
             </MDBCol>
@@ -170,7 +166,7 @@ function QuestionaireVehicleInfo() {
             </MDBCol>
             <br></br>
             <br></br>
-                <Link to="/questionaire-vehicle-information" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to the Vehicle Information Section</Link>
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" OnClick={handleSubmit}>Proceed to the Vehicle Information Section</button>
             <br></br>
             <br></br>
             <br></br>

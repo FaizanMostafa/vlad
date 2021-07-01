@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
+
 
 function QuestionaireEmploymentAddressTemplate() {
     const [showModal, setShow] = useState(false);
@@ -10,18 +10,18 @@ function QuestionaireEmploymentAddressTemplate() {
     const handleSubmit = (e) => {
       e.preventDefault();
 
-      db.collection("questionaire").doc("add-employment-address").collection("adding-employment-address")
-      .add({
-        addressForCurrentPlaceOfEmployment: addressForCurrentPlaceOfEmployment
-      })        
-      .then(() => {
-          alert("Employment Address has been added!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-        setAddressForCurrentPlaceOfEmployment("");
+      let data = {
+        addressForCurrentPlaceOfEmployment
+      }
 
+      localStorage.setItem('questionaireEmploymentAddressTemplate', JSON.stringify(data))
+
+      // .then(() => {
+      //     alert("Employment Address has been added!");
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
   }
     
     const handleClose = () => setShow(false);

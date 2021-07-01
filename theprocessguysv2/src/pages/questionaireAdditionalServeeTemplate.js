@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAttorneyTemplateD() {
     const [showModal, setShow] = useState(false);
     const [fullNameofDescribedServee, setFullNameOfDescribedServee] = useState("");
-    const [imageOfIndividuals, setImageOfIndividuals] = useState("");
+    const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
     const [genderOfindividuals, setGenderOfIndividuals] = useState("");
     const [ethnicityOfindividuals, setEthnicityOfIndividuals] = useState("");
     const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
@@ -18,34 +17,25 @@ function QuestionaireAttorneyTemplateD() {
     const handleSubmit = (e) => {
       e.preventDefault();
 
-      db.collection("questionaire").doc("add-servee").collection("adding-servee")
-      .add({
-        fullNameofDescribedServee: fullNameofDescribedServee,
-        imageOfIndividuals: imageOfIndividuals,
-        genderOfindividuals: genderOfindividuals,
-        ethnicityOfindividuals: ethnicityOfindividuals,
-        heightOfIndividuals: heightOfIndividuals,
-        weightOfIndividuals: weightOfIndividuals,
-        hairColorOfIndividuals: hairColorOfIndividuals,
-        eyeColorOfindividuals: eyeColorOfindividuals,
-        physicalOutlineOfIndividuals: physicalOutlineOfIndividuals
-      })        
-      .then(() => {
-          alert("New Servee(s) has been added!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-        setFullNameOfDescribedServee("");
-        setImageOfIndividuals("");
-        setGenderOfIndividuals("");
-        setEthnicityOfIndividuals("");
-        setHeightOfIndividuals("");
-        setWeightOfIndividuals("");
-        setHairColorOfIndividuals("");
-        setEyeColorOfIndividuals("");
-        setPhysicalOutlineOfIndividuals("");
+      let data = {
+        fullNameofDescribedServee,
+        imageOfIndividuals,
+        genderOfindividuals,
+        ethnicityOfindividuals,
+        heightOfIndividuals,
+        weightOfIndividuals,
+        hairColorOfIndividuals,
+        eyeColorOfindividuals,
+        physicalOutlineOfIndividuals}
 
+      localStorage.setItem('questionaireAdditionalServeeTemplate', JSON.stringify(data))
+
+      // .then(() => {
+      //     alert("New Servee(s) has been added!");
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
   }
     
     const handleClose = () => setShow(false);
@@ -155,9 +145,10 @@ function QuestionaireAttorneyTemplateD() {
             <MDBCol md="12 mb-4" id="image-of-individuals">
             <div id="image-of-individuals">
                 <label>Servee Image <i>(If Available)</i>*</label>
-                <input type='file' accept=".jpg,.png" label='Upload' multiple 
-                value={imageOfIndividuals}
-                onChange={(e) => setImageOfIndividuals(e.target.value)}
+                <input type='file' 
+                accept=".jpg,.png" 
+                label='Upload'
+                onChange={(e) => {setImageOfIndividuals(e.target.files[0])}}
                 />
               </div>
             </MDBCol>

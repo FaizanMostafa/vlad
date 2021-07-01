@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAttorneyTemplateD() {
     
@@ -14,30 +13,25 @@ function QuestionaireAttorneyTemplateD() {
     const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
   
     const handleSubmit = (e) => {
-      e.preventDefault();
+      e.preventDefault()
 
-      db.collection("questionaire").doc("add-attorney-d").collection("adding-attorney-d")
-      .add({
+      let data = {
         defendantAttorneyName: defendantAttorneyName,
         defendantAttorneyOfficeAddress: defendantAttorneyOfficeAddress,
         defendantAttorneyBarNumber: defendantAttorneyBarNumber,
         defendantAttorneyEmail: defendantAttorneyEmail,
         defendantAttorneyPhoneNumberForCalls:defendantAttorneyPhoneNumberForCalls,
         defendantAttorneyFaxNumberOptional: defendantAttorneyFaxNumberOptional
-      })        
-      .then(() => {
-          alert("Defendant Attorney has been added!");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-        
-        setDefendantAttorneyName("");
-        setDefendantAttorneyBarNumber("");
-        setDefendantAttorneyOfficeAddress("");
-        setDefendantAttorneyPhoneNumberForCalls("");
-        setDefendantAttorneyEmail("");
-        setDefendantAttorneyFaxNumberOptional("");
+      }
+
+      localStorage.setItem('questionaireAttorneyTemplateD', JSON.stringify(data))
+
+      // .then(() => {
+      //     alert("Defendant Attorney has been added!");
+      //   })
+      //   .catch((error) => {
+      //     alert(error.message);
+      //   });
   }
     
     const handleClose = () => setShow(false);

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
-import db from "../firebase/index";
 
 function QuestionaireAddressTemplate() {
     const [showModal, setShow] = useState(false);
@@ -10,18 +9,18 @@ function QuestionaireAddressTemplate() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        db.collection("questionaire").doc("add-address").collection("adding-address")
-        .add({
-            mainAddressForService: mainAddressForService
-        })        
-        .then(() => {
-            alert("Address has been added!");
-          })
-          .catch((error) => {
-            alert(error.message);
-          });
-          
-          setMainAddressForService("");
+        let data = {
+            mainAddressForService
+        }
+        
+        localStorage.setItem('questionaireAddressTemplate', JSON.stringify(data))
+
+        // .then(() => {
+        //     alert("Address has been added!");
+        //   })
+        //   .catch((error) => {
+        //     alert(error.message);
+        //   });
     }
   
     const handleClose = () => setShow(false);

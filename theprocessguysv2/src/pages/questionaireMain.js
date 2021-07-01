@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { MDBCol, MDBInput } from "mdbreact";
-import  {db}  from "../firebase";
-import {showToast} from "../utils";
-import { Link } from "react-router-dom";
+// import {showToast} from "../utils";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function Questionaire() {
@@ -20,38 +19,33 @@ function Questionaire() {
     const [appealsCourtOf, setAppealsCourtOf] = useState("");
     const [supremeCourtOf, setSupremeCourtOf] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    let history = useHistory();
 
-        db.collection("questionaire")
-        .add({
-          caseTitle: caseTitle,
-          caseNumber: caseNumber,
-          courtDate: courtDate,
-          superiorCourtOf: superiorCourtOf,
-          countyOf: countyOf,
-          courthouseAddress: courthouseAddress,
-          courthouseMailingAddress: courthouseMailingAddress,
-          branchName: branchName,
-          appealsCourtOf: appealsCourtOf,
-          supremeCourtOf: supremeCourtOf
-        })
-        .then(() => {
-            setCaseTitle("");
-            setCaseNumber("");
-            setCourtDate("");
-            setSuperiorCourtOf("");
-            setCountyOf("");
-            setCourthouseAddress("");
-            setCourthouseMailingAddress("");
-            setBranchName("");
-            setAppealsCourtOf("");
-            setSupremeCourtOf("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+    const handleSubmit = (e) => {
+         e.preventDefault();
+        
+        let data = {
+          caseTitle,
+          caseNumber,
+          courtDate,
+          superiorCourtOf,
+          countyOf,
+          courthouseAddress,
+          courthouseMailingAddress,
+          branchName,
+          appealsCourtOf,
+          supremeCourtOf
+        }
+
+        localStorage.setItem('questionaireMain', JSON.stringify(data))
+        history.push('/questionaire-plaintiff')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if(user);
@@ -188,7 +182,7 @@ function Questionaire() {
                 </div>
             </MDBCol>
             <br></br>
-                <Link to="/questionaire-plaintiff" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to Plaintiff Section</Link>
+                <button className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>Proceed to Plaintiff Section</button>
             </form>
             <br></br>
             <br></br>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { MDBCol, MDBInput } from "mdbreact";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function QuestionaireOfferedServices() {
@@ -23,44 +22,36 @@ function QuestionaireOfferedServices() {
     const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
     const [ifYesListAddress, setIfYesListAddress] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            requireStakeOutService: requireStakeOutService,
-            specifyDatesForStakeOutService: specifyDatesForStakeOutService,
-            requireRushService: requireRushService,          
-            listDateWhenServiceAttemptsClosed: listDateWhenServiceAttemptsClosed,
-            requireFirst24HourService: requireFirst24HourService,
-            requireSkipTracingService: requireSkipTracingService,
-            requireBodyCamFootage: requireBodyCamFootage,
-            obtainNewDeliveryLocation: obtainNewDeliveryLocation,
-            poBoxAllowedToServe: poBoxAllowedToServe,
-            requireServiceByMail: requireServiceByMail,
-            requireByEmail: requireByEmail,
-            specificCourtInstruction: specificCourtInstruction,
-            ifYesListAddress: ifYesListAddress
-        })
-        .then(() => {
-            setRequireStakeoutService("");
-            setSpecifyDatesForStakeOutService("");
-            setRequireRushService("");
-            setListDateWhenServiceAttemptsClosed("");
-            setRequireFirst24HourService("");
-            setRequireSkipTracingService("");
-            setRequireBodyCamFootage("");
-            setObtainNewDeliveryLocation("");
-            setPOBoxAllowedToServe("");
-            setRequireServiceByMail("");
-            setRequireByEmail("");
-            setSpecificCourtInstruction("");
-            setIfYesListAddress("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+          let data = {
+            requireStakeOutService,
+            specifyDatesForStakeOutService,
+            requireRushService,          
+            listDateWhenServiceAttemptsClosed,
+            requireFirst24HourService,
+            requireSkipTracingService,
+            requireBodyCamFootage,
+            obtainNewDeliveryLocation,
+            poBoxAllowedToServe,
+            requireServiceByMail,
+            requireByEmail,
+            specificCourtInstruction,
+            ifYesListAddress
+        }
+
+        localStorage.setItem('questionaireOfferedServices', JSON.stringify(data))
+        history.push('/packet-submission-page')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -118,7 +109,6 @@ function QuestionaireOfferedServices() {
                 <label  color="white">
                    Please Select
                 </label>
-                <option value="Please Select" >Please Select</option>
                 <option value="Please Select" >Please Select</option>
                 <option value="Yes" >Yes</option>
                 <option value="No">No</option>
@@ -294,9 +284,9 @@ function QuestionaireOfferedServices() {
             </MDBCol>
             <br></br>
             <br></br>
-                <Link to="/packet-submission-page" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" type="submit">
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onclick={handleSubmit}>
                     Proceed to Document Upload
-                </Link>
+                </button>
             <br></br>
             <br></br>
             <br></br>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import {showToast} from "../utils";
-import  {db}  from "../firebase";
+// import {showToast} from "../utils";
 import { MDBCol } from "mdbreact";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 function QuestionaireClearanceOfAction() {
@@ -18,35 +17,31 @@ function QuestionaireClearanceOfAction() {
     const [dropServeForceServe, setDropServeForceServe] = useState("");
     const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
 
+    let history = useHistory();
+
     const handleSubmit = (e) => {
         e.preventDefault();
   
-          db.collection("questionaire")
-          .add({
-            serveIndividualAtEmployment: serveIndividualAtEmployment,
-            processServerLeaveDoorTag:processServerLeaveDoorTag,
-            subserveAfterThreeAttempts: subserveAfterThreeAttempts,          
-            requireServernotifyPersonOfInterest: requireServernotifyPersonOfInterest,
-            serverContactServeeByPhone: serverContactServeeByPhone,
-            serverPostDocumentsWithRubberBand: serverPostDocumentsWithRubberBand,
-            dropServeForceServe: dropServeForceServe,          
-            paralegalAttorneyClientContactServee: paralegalAttorneyClientContactServee
+          let data = {
+            serveIndividualAtEmployment,
+            processServerLeaveDoorTag,
+            subserveAfterThreeAttempts,          
+            requireServernotifyPersonOfInterest,
+            serverContactServeeByPhone,
+            serverPostDocumentsWithRubberBand,
+            dropServeForceServe,          
+            paralegalAttorneyClientContactServee
+        }
 
-        })
-        .then(() => {
-            setServeIndividualAtEmployment("");
-            setProcessServerLeaveDoorTag("");
-            setSubserveAfterThreeAttempts("");
-            setRequireServerNotifyPersonOfInterest("");
-            setServerContactServeeByPhone("");
-            setServerPostDocumentsWithRubberBand("");
-            setDropServeForceServe("");
-            setParalegalAttorneyClientContactServee("");
-            showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
-        })
-        .catch((error) => {
-          showToast(error.message, "error");
-        });
+        localStorage.setItem('questionaireClearanceOfAction', JSON.stringify(data))
+        history.push('/questionaire-servee-physical-description')
+
+        // .then(() => {
+        //     showToast("Thank you for filling this portion out. 👍", "Please proceed to the next Section.");
+        // })
+        // .catch((error) => {
+        //   showToast(error.message, "error");
+        // });
     }
 
     if (user);
@@ -205,7 +200,7 @@ function QuestionaireClearanceOfAction() {
             </MDBCol>
             <br></br>
             <br></br>
-                <Link to="/questionaire-servee-physical-description" style={{ color: "white"}} className="btn btn-primary mt-1 mb-1">Proceed to the Servee Physical Description Section</Link>
+                <button style={{ color: "white"}} className="btn btn-primary mt-1 mb-1" onClick={handleSubmit}>Proceed to the Servee Physical Description Section</button>
             <br></br>
             <br></br>
             <br></br>
