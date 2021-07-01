@@ -39,7 +39,6 @@ function QuestionaireDefendant() {
             defendantAttorneyEmail,
             defendantAttorneyPhoneNumberForCalls,
             defendantAttorneyFaxNumberOptional
-
         }
 
         localStorage.setItem('questionaireDefendant', JSON.stringify(data))
@@ -57,7 +56,7 @@ function QuestionaireDefendant() {
 
     return (
         <React.Fragment>
-                    <br></br>
+        <br></br>
         <br></br>
         <br></br>
         <br></br>

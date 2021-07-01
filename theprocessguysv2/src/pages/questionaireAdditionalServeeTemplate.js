@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 
 function QuestionaireAttorneyTemplateD() {
+  
     const [showModal, setShow] = useState(false);
     const [fullNameofDescribedServee, setFullNameOfDescribedServee] = useState("");
     const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
@@ -26,7 +27,8 @@ function QuestionaireAttorneyTemplateD() {
         weightOfIndividuals,
         hairColorOfIndividuals,
         eyeColorOfindividuals,
-        physicalOutlineOfIndividuals}
+        physicalOutlineOfIndividuals
+      }
 
       localStorage.setItem('questionaireAdditionalServeeTemplate', JSON.stringify(data))
 

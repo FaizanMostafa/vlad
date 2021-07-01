@@ -24,6 +24,7 @@ import UpdateProfilePage from "../pages/UpdateProfile";
 import { fetchUser } from "../redux/actions/auth";
 import ViewCases from '../pages/viewCases';
 import AdminDashboard from '../pages/adminDashboard';
+import ThankYouForRegistering from '../pages/ThankYouForRegistering';
 
 const Navigation = (props) => {
 
@@ -70,6 +71,7 @@ const Navigation = (props) => {
           <Route path = '/questionaire-vehicle-information' component = {QuestionaireVehicleInfo} />
           <Route path = '/questionaire-servee-physical-description' component = {QuestionaireServeePhysicalDescription} />
           <Route path = '/questionaire-offered-services' component = {QuestionaireOfferedServices} />
+          <Route path = '/questionaire-finished' component = {ThankYouForRegistering} />
         </Switch>
       </Router>
       <Footer />
