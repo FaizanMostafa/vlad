@@ -61,7 +61,8 @@ function multipleSubmission() {
                                     <label>File Image</label>
                                     <input
                                     type="file"
-                                    onChange={(e)=>{setFileUpload(e.target.files[0])}}
+                                    multiple
+                                    onChange={(e)=>{setFileUpload(e.target.files)}}
                                     accept=".jpg,.png"
                                     >
                                     </input>
