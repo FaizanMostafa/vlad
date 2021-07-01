@@ -47,7 +47,7 @@ function multipleSubmission() {
                         <form>
                             <br></br>
                             <MDBCol md="12">
-                                <Form.Group id="full-address">
+                                <Form.Group id="fileName">
                                     <Form.Label>File Name</Form.Label>
                                     <Form.Control 
                                         value={fileName}
@@ -95,4 +95,4 @@ function multipleSubmission() {
         )
 }
 
-export default multipleSubmission
+export default multipleSubmission;
