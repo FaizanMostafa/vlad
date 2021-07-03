@@ -1,17 +1,36 @@
-import React, { useRef, useState } from "react"
-import { Form, Button, Card, Alert } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import React, { useRef, useState } from 'react';
+import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { updateEmail } from "../redux/actions/auth";
+import { showToast, validateEmail } from "../utils";
 
 export default function UpdateProfile() {
-  const emailRef = useRef()
-  const passwordRef = useRef()
-  const passwordConfirmRef = useRef()
-  const phoneNumberRef = useRef()
-  const addressRef = useRef()
-  const imageRef = useRef()
+  const dispatch = useDispatch();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
+  const phoneNumberRef = useRef();
+  const addressRef = useRef();
+  const imageRef = useRef();
+  const [error, setError] = useState("");
+
+  const isUpdatingEmail = useSelector(state => state.auth.isUpdatingEmail);
+  const user = useSelector(state => state.auth.user);
+
   // const { currentUser, updatePassword, updateEmail } = useAuth()
-  const [error, setError] = useState("")
   // const [loading, setLoading] = useState(false)
+
+  function handleSubmitUpdateEmail(e) {
+    e.preventDefault();
+    if(!isUpdatingEmail) {
+      if(!validateEmail(emailRef.current.value)) {
+        showToast("Invalid email address!", "error");
+      } else {
+        dispatch(updateEmail({email: emailRef.current.value, uid: user.uid}, ()=>{emailRef.current.value="";}));
+      }
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -35,7 +54,7 @@ export default function UpdateProfile() {
     <React.Fragment>
       <Card className="w-100 text-center homepage">
         <Card.Body>
-          <h2 className="text-center mb-4">Update Profile</h2>
+          <h2 className="text-center mb-4">Update Profile Data</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <br></br>
       <br></br>
@@ -45,15 +64,29 @@ export default function UpdateProfile() {
       <br></br>
       <br></br>
       <br></br>
+          <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", borderRadius: 8}} onSubmit={handleSubmitUpdateEmail}>
+            <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Email</h2>
+            <div style={{display: "flex", flexDirection: "column"}}>
+              <Form.Group id="email">
+                <Form.Label>New Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  ref={emailRef}
+                  // defaultValue={currentUser.email}
+                />
+              </Form.Group>
+              <Button style={{alignSelf: "flex-end"}} type="submit">
+                {
+                  isUpdatingEmail
+                    ?
+                      "Updating..."
+                    :
+                      "Update Email"
+                }
+              </Button>
+            </div>
+          </Form>
           <Form onSubmit={handleSubmit}>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                ref={emailRef}
-                // defaultValue={currentUser.email}
-              />
-            </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
               <Form.Control

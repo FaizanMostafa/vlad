@@ -1,15 +1,24 @@
 import firebase, {db, uploadMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
-  FETCH_USER,
+  SET_IS_UPDATING_EMAIL,
+  UPDATE_USER_EMAIL,
   SET_IS_SIGNING_IN,
   SET_IS_SIGNING_UP,
+  FETCH_USER,
   LOGOUT
 } from "../constants";
 
 const setIsSigningIn = (status) => {
   return {
     type: SET_IS_SIGNING_IN,
+    payload: status
+  };
+}
+
+const setIsUpdatingEmail = (status) => {
+  return {
+    type: SET_IS_UPDATING_EMAIL,
     payload: status
   };
 }
@@ -84,6 +93,34 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const updateEmail = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    const user = firebase.auth().currentUser;
+    dispatch(setIsUpdatingEmail(true));
+    user.updateEmail(data.email).then(() => {
+      db.collection("users").doc(data.uid)
+        .update({email: data.email})
+        .then(() => {
+          dispatch({
+            type: UPDATE_USER_EMAIL,
+            payload: {email: data.email}
+          });
+          showToast("Email updated successfully!", "success");
+          dispatch(setIsUpdatingEmail(false));
+          onSuccess();
+        }).catch((error) => {
+          showToast(error.message, "error");
+          dispatch(setIsUpdatingEmail(false));
+          onError();
+        });
+    }).catch((error) => {
+      showToast(error.message, "error");
+      dispatch(setIsUpdatingEmail(false));
+      onError();
+    });
+  }
+)
+
 const logout = () => (
   async (dispatch) => {
     await firebase.auth().signOut();
@@ -95,4 +132,5 @@ export {
   logout,
   register,
   fetchUser,
+  updateEmail,
 };
