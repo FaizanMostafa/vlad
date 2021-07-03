@@ -1,6 +1,7 @@
 import firebase, {db, uploadMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
+  SET_IS_UPDATING_PASSWORD,
   SET_IS_UPDATING_EMAIL,
   UPDATE_USER_EMAIL,
   SET_IS_SIGNING_IN,
@@ -19,6 +20,13 @@ const setIsSigningIn = (status) => {
 const setIsUpdatingEmail = (status) => {
   return {
     type: SET_IS_UPDATING_EMAIL,
+    payload: status
+  };
+}
+
+const setIsUpdatingPassword = (status) => {
+  return {
+    type: SET_IS_UPDATING_PASSWORD,
     payload: status
   };
 }
@@ -121,6 +129,22 @@ const updateEmail = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const updatePassword = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    const user = firebase.auth().currentUser;
+    dispatch(setIsUpdatingPassword(true));
+    user.updatePassword(data.password).then(() => {
+      showToast("Password updated successfully!", "success");
+      dispatch(setIsUpdatingPassword(false));
+      onSuccess();
+    }).catch((error) => {
+      showToast(error.message, "error");
+      dispatch(setIsUpdatingPassword(false));
+      onError();
+    });
+  }
+)
+
 const logout = () => (
   async (dispatch) => {
     await firebase.auth().signOut();
@@ -133,4 +157,5 @@ export {
   register,
   fetchUser,
   updateEmail,
+  updatePassword
 };

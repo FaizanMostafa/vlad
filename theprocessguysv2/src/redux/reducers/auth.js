@@ -1,4 +1,5 @@
 import {
+    SET_IS_UPDATING_PASSWORD,
     SET_IS_UPDATING_EMAIL,
     UPDATE_USER_EMAIL,
     SET_IS_SIGNING_IN,
@@ -13,7 +14,8 @@ const initState = {
     isPosting: false,
     isFetching: false,
     isFetchingUser: true,
-    isUpdatingEmail: false
+    isUpdatingEmail: false,
+    isUpdatingPassword: false
 };
 
 const authReducer = (state=initState, action) => {
@@ -39,6 +41,13 @@ const authReducer = (state=initState, action) => {
             return {
                 ...state,
                 isUpdatingEmail: payload
+            }
+        }
+
+        case SET_IS_UPDATING_PASSWORD: {
+            return {
+                ...state,
+                isUpdatingPassword: payload
             }
         }
 
