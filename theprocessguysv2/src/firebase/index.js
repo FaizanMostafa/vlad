@@ -18,10 +18,16 @@ const uploadMedia = async(file, baseFolder) => {
   return snapshot.ref.getDownloadURL();
 }
 
+const deleteMedia = async(filePath) => {
+  var storageRef = firebase.storage().ref();
+  return storageRef.child(filePath).delete();
+}
+
 const db = firebase.firestore();
 
 export {
   db,
-  uploadMedia
+  deleteMedia,
+  uploadMedia,
 };
 export default firebase;

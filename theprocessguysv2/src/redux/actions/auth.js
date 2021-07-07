@@ -1,8 +1,14 @@
-import firebase, {db, uploadMedia} from "../../firebase";
+import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
+  SET_IS_UPDATING_PHONE_NO,
   SET_IS_UPDATING_PASSWORD,
+  SET_IS_UPDATING_ADDRESS,
+  SET_IS_UPDATING_IMAGE,
   SET_IS_UPDATING_EMAIL,
+  UPDATE_USER_PHONE_NO,
+  UPDATE_USER_ADDRESS,
+  UPDATE_USER_IMAGE,
   UPDATE_USER_EMAIL,
   SET_IS_SIGNING_IN,
   SET_IS_SIGNING_UP,
@@ -27,6 +33,27 @@ const setIsUpdatingEmail = (status) => {
 const setIsUpdatingPassword = (status) => {
   return {
     type: SET_IS_UPDATING_PASSWORD,
+    payload: status
+  };
+}
+
+const setIsUpdatingAddress = (status) => {
+  return {
+    type: SET_IS_UPDATING_ADDRESS,
+    payload: status
+  };
+}
+
+const setIsUpdatingPhoneNo = (status) => {
+  return {
+    type: SET_IS_UPDATING_PHONE_NO,
+    payload: status
+  };
+}
+
+const setIsUpdatingImage = (status) => {
+  return {
+    type: SET_IS_UPDATING_IMAGE,
     payload: status
   };
 }
@@ -87,8 +114,9 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
       .then(async(userCredential) => {
         var user = userCredential.user;
         delete data["password"];
-        const profilePicture = await uploadMedia(data["profilePicture"], "profile_pictures/");
-        await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePicture});
+        const profilePicturePath = `profile_pictures/${user.uid}/${data["profilePicture"].name}`;
+        const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`);
+        await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath});
         showToast("User registered successfully!", "success");
         onSuccess();
         dispatch(setIsSigningUp(false));
@@ -145,6 +173,75 @@ const updatePassword = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const updateAddress = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    dispatch(setIsUpdatingAddress(true));
+    db.collection("users").doc(data.uid)
+      .update({address: data.address})
+      .then(() => {
+        dispatch({
+          type: UPDATE_USER_ADDRESS,
+          payload: {address: data.address}
+        });
+        showToast("Address updated successfully!", "success");
+        dispatch(setIsUpdatingAddress(false));
+        onSuccess();
+      }).catch((error) => {
+        showToast(error.message, "error");
+        dispatch(setIsUpdatingAddress(false));
+        onError();
+      });
+  }
+)
+
+const updatePhoneNumber = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    dispatch(setIsUpdatingPhoneNo(true));
+    db.collection("users").doc(data.uid)
+      .update({phoneNumber: data.phoneNumber})
+      .then(() => {
+        dispatch({
+          type: UPDATE_USER_PHONE_NO,
+          payload: {phoneNumber: data.phoneNumber}
+        });
+        showToast("Phone number updated successfully!", "success");
+        dispatch(setIsUpdatingPhoneNo(false));
+        onSuccess();
+      }).catch((error) => {
+        showToast(error.message, "error");
+        dispatch(setIsUpdatingPhoneNo(false));
+        onError();
+      });
+  }
+)
+
+const updateProfilePicture = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async (dispatch) => {
+    dispatch(setIsUpdatingImage(true));
+    await deleteMedia(data.oldProfilePicturePath);
+    const profilePicturePath = `profile_pictures/${data.uid}/${data["profilePicture"].name}`;
+    const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${data.uid}/`);
+    db.collection("users").doc(data.uid)
+      .update({profilePictureURI: profilePictureURI, profilePicturePath: profilePicturePath})
+      .then(() => {
+        dispatch({
+          type: UPDATE_USER_IMAGE,
+          payload: {
+            profilePictureURI,
+            profilePicturePath
+          }
+        });
+        showToast("Profile picture updated successfully!", "success");
+        dispatch(setIsUpdatingImage(false));
+        onSuccess();
+      }).catch((error) => {
+        showToast(error.message, "error");
+        dispatch(setIsUpdatingImage(false));
+        onError();
+      });
+  }
+)
+
 const logout = () => (
   async (dispatch) => {
     await firebase.auth().signOut();
@@ -157,5 +254,8 @@ export {
   register,
   fetchUser,
   updateEmail,
-  updatePassword
+  updateAddress,
+  updatePassword,
+  updatePhoneNumber,
+  updateProfilePicture
 };

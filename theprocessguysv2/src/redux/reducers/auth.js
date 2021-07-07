@@ -1,6 +1,12 @@
 import {
     SET_IS_UPDATING_PASSWORD,
+    SET_IS_UPDATING_PHONE_NO,
+    SET_IS_UPDATING_ADDRESS,
+    SET_IS_UPDATING_IMAGE,
     SET_IS_UPDATING_EMAIL,
+    UPDATE_USER_PHONE_NO,
+    UPDATE_USER_ADDRESS,
+    UPDATE_USER_IMAGE,
     UPDATE_USER_EMAIL,
     SET_IS_SIGNING_IN,
     SET_IS_SIGNING_UP,
@@ -15,6 +21,9 @@ const initState = {
     isFetching: false,
     isFetchingUser: true,
     isUpdatingEmail: false,
+    isUpdatingPhoneNo: false,
+    isUpdatingImage: false,
+    isUpdatingAddress: false,
     isUpdatingPassword: false
 };
 
@@ -51,10 +60,52 @@ const authReducer = (state=initState, action) => {
             }
         }
 
+        case SET_IS_UPDATING_ADDRESS: {
+            return {
+                ...state,
+                isUpdatingAddress: payload
+            }
+        }
+
+        case SET_IS_UPDATING_PHONE_NO: {
+            return {
+                ...state,
+                isUpdatingPhoneNo: payload
+            }
+        }
+
+        case SET_IS_UPDATING_IMAGE: {
+            return {
+                ...state,
+                isUpdatingImage: payload
+            }
+        }
+
         case UPDATE_USER_EMAIL: {
             return {
                 ...state,
                 user: {...state.user, email: payload.email}
+            }
+        }
+
+        case UPDATE_USER_ADDRESS: {
+            return {
+                ...state,
+                user: {...state.user, address: payload.address}
+            }
+        }
+
+        case UPDATE_USER_PHONE_NO: {
+            return {
+                ...state,
+                user: {...state.user, phoneNumber: payload.phoneNumber}
+            }
+        }
+
+        case UPDATE_USER_IMAGE: {
+            return {
+                ...state,
+                user: {...state.user, ...payload}
             }
         }
 

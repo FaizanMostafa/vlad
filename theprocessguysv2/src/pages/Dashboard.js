@@ -12,7 +12,7 @@ const Dashboard = (props) => {
         <Card.Body className="text-center">
           <h2 className="text-center mb-4">Member Dashboard</h2>
           <div>
-            <img src={user.profilePicture} className="img profile-pic" alt="img"/>
+            <img src={user.profilePictureURI} style={{width: 150, height: 150, borderRadius: 75}} className="img profile-pic" alt="img"/>
           </div>
           <br></br>
             <div>E-mail: {user.email}</div>
@@ -49,12 +49,11 @@ const Dashboard = (props) => {
                     <br></br>
                   </>
             }
-            <div>Fax Number: {user.faxNo}</div>
+            <div>Phone Number: {user.phoneNumber}</div>
             <br></br>
-            {/* What does that mean? */}
-            <div>Personal: {}</div>
+            
+            <div>Address: {user.address}</div>
             <br></br>
-            {/*  */}
 
           <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
             Update Profile

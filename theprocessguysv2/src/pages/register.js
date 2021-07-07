@@ -18,6 +18,7 @@ function Register(props) {
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [name, setName] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const [address, setAddress] = useState("");
     const [profilePicture, setProfilePicture] = useState(null);
     const [userType, setUserType] = useState("attorney");
@@ -54,6 +55,7 @@ function Register(props) {
                 password,
                 name,
                 address,
+                phoneNumber,
                 profilePicture,
                 userType
             };
@@ -130,6 +132,17 @@ function Register(props) {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="phone-number">
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
                                     required
                                 />
                             </Form.Group>

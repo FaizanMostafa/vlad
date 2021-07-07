@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   updateEmail,
-  updatePassword
+  updateAddress,
+  updatePassword,
+  updatePhoneNumber,
+  updateProfilePicture
 } from "../redux/actions/auth";
 import { showToast, validateEmail } from "../utils";
 
@@ -20,10 +23,10 @@ export default function UpdateProfile() {
 
   const isUpdatingEmail = useSelector(state => state.auth.isUpdatingEmail);
   const isUpdatingPassword = useSelector(state => state.auth.isUpdatingPassword);
+  const isUpdatingAddress = useSelector(state => state.auth.isUpdatingAddress);
+  const isUpdatingPhoneNo = useSelector(state => state.auth.isUpdatingPhoneNo);
+  const isUpdatingImage = useSelector(state => state.auth.isUpdatingImage);
   const user = useSelector(state => state.auth.user);
-
-  // const { currentUser, updatePassword, updateEmail } = useAuth()
-  // const [loading, setLoading] = useState(false)
 
   function handleSubmitUpdateEmail(e) {
     e.preventDefault();
@@ -60,21 +63,63 @@ export default function UpdateProfile() {
     }
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    // if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-    //   return setError("Passwords do not match")
-    // }
+  function handleSubmitUpdateAddress(e) {
+    e.preventDefault();
+    if(!isUpdatingAddress) {
+      if(!addressRef.current.value.length) {
+        showToast("Please type in your address!", "error");
+      } else {
+        dispatch(
+          updateAddress(
+            {address: addressRef.current.value, uid: user.uid},
+            ()=>{
+              addressRef.current.value="";
+            }
+          )
+        );
+      }
+    }
+  }
 
-    // setLoading(true)
-    setError("")
+  function handleSubmitUpdatePhoneNo(e) {
+    e.preventDefault();
+    if(!isUpdatingPhoneNo) {
+      if(!phoneNumberRef.current.value.length) {
+        showToast("Please type in your phone number!", "error");
+      } else {
+        dispatch(
+          updatePhoneNumber(
+            {phoneNumber: phoneNumberRef.current.value, uid: user.uid},
+            ()=>{
+              phoneNumberRef.current.value="";
+            }
+          )
+        );
+      }
+    }
+  }
 
-    // if (emailRef.current.value !== currentUser.email) {
-    //   promises.push(updateEmail(emailRef.current.value))
-    // }
-    // if (passwordRef.current.value) {
-    //   promises.push(updatePassword(passwordRef.current.value))
-    // }
+  function handleSubmitUpdateDP(e) {
+    e.preventDefault();
+    if(!isUpdatingImage) {
+      if(!imageRef.current.files[0]) {
+        showToast("Please attach your profile picture!", "error");
+      } else {
+        const data = {
+          uid: user.uid,
+          profilePicture: imageRef.current.files[0],
+          oldProfilePicturePath: user.profilePicturePath
+        }
+        dispatch(
+          updateProfilePicture(
+            data,
+            ()=>{
+              imageRef.current.value="";
+            }
+          )
+        );
+      }
+    }
   }
 
   return (
@@ -146,34 +191,72 @@ export default function UpdateProfile() {
             </div>
           </Form>
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group id="update-address">
-              <Form.Label>Update Address</Form.Label>
-              <Form.Control
-                type="text"
-                ref={addressRef}
-              />
-            </Form.Group>
-            <Form.Group id="update-phone-number">
-              <Form.Label>Update Phone Number</Form.Label>
-              <Form.Control
-                type="password"
-                ref={phoneNumberRef}
-              />
-            </Form.Group>
-            <Form.Group id="update-image">
-              <Form.Label>Update Image</Form.Label>
-              <Form.Control
-                type='file' 
-                accept=".jpg,.png" 
-                label='Upload' 
-                ref={imageRef}
-              />
-            </Form.Group>
-            <br></br>
-            <Button className="w-100" type="submit">
-              Update
-            </Button>
+          <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdateAddress}>
+            <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Address</h2>
+            <div style={{display: "flex", flexDirection: "column"}}>
+              <Form.Group id="update-address">
+                <Form.Label>Update Address</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={addressRef}
+                />
+              </Form.Group>
+              <Button style={{alignSelf: "flex-end"}} type="submit">
+                {
+                  isUpdatingAddress
+                    ?
+                      "Updating..."
+                    :
+                      "Update Address"
+                }
+              </Button>
+            </div>
+          </Form>
+
+          <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdatePhoneNo}>
+            <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Phone Number</h2>
+            <div style={{display: "flex", flexDirection: "column"}}>
+              <Form.Group id="update-phone-number">
+                <Form.Label>Update Phone Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  ref={phoneNumberRef}
+                />
+              </Form.Group>
+              <Button style={{alignSelf: "flex-end"}} type="submit">
+                {
+                  isUpdatingPhoneNo
+                    ?
+                      "Updating..."
+                    :
+                      "Update Phone"
+                }
+              </Button>
+            </div>
+          </Form>
+
+          <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdateDP}>
+            <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Profile Picture</h2>
+            <div style={{display: "flex", flexDirection: "column"}}>
+              <Form.Group id="update-image">
+                <Form.Label>Update Image</Form.Label>
+                <Form.Control
+                  type='file' 
+                  accept=".jpg,.png" 
+                  label='Upload' 
+                  ref={imageRef}
+                />
+              </Form.Group>
+              <Button style={{alignSelf: "flex-end"}} type="submit">
+                {
+                  isUpdatingImage
+                    ?
+                      "Updating..."
+                    :
+                      "Update Image"
+                }
+              </Button>
+            </div>
           </Form>
           <div>
             <Link to="/member-dashboard" className="btn btn-primary justify-content-center">Close</Link>
