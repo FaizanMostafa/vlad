@@ -11,6 +11,16 @@ const Dashboard = (props) => {
       <Card className="homepage">
         <Card.Body className="text-center">
           <h2 className="text-center mb-4">Member Dashboard</h2>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          {/* When Vlad submits and update of news, it will show up for all clients */}
+          {/* {NewsUpdateForClients} */}
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
           <div>
             <img src={user.profilePictureURI} style={{width: 150, height: 150, borderRadius: 75}} className="img profile-pic" alt="img"/>
           </div>

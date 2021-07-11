@@ -25,6 +25,9 @@ import { fetchUser } from "../redux/actions/auth";
 import ViewCases from '../pages/viewCases';
 import AdminDashboard from '../pages/adminDashboard';
 import ThankYouForRegistering from '../pages/ThankYouForRegistering';
+import TermsOfServiceTemplate from '../pages/termsOfServiceTemplate';
+import CaseDocumentArchive from '../pages/caseDocumentArchive';
+import NewsUpdateForClients from '../pages/newsUpdateForClients';
 
 const Navigation = (props) => {
 
@@ -72,6 +75,9 @@ const Navigation = (props) => {
           <Route path = '/questionaire-servee-physical-description' component = {QuestionaireServeePhysicalDescription} />
           <Route path = '/questionaire-offered-services' component = {QuestionaireOfferedServices} />
           <Route path = '/questionaire-finished' component = {ThankYouForRegistering} />
+          <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />
+          <Route path = '/case-document-archive' component = {CaseDocumentArchive} />
+          <Route path = '/news-update-for-clients' component = {NewsUpdateForClients} />
         </Switch>
       </Router>
       <Footer />
