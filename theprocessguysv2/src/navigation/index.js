@@ -3,10 +3,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-do
 import {useDispatch, useSelector} from 'react-redux';
 import TheProcessGuys from "../pages/TheProcessGuys";
 import QuestionaireMain from "../pages/questionaireMain";
-import QuestionaireServeeDocumentedData from '../pages/questionaireServeeDocumentedData';
-import QuestionaireClearanceOfAction from '../pages/questionaireClearanceOfAction';
 import QuestionaireVehicleInfo from '../pages/questionaireVehicleInfo';
-import QuestionaireServeePhysicalDescription from '../pages/questionaireServeePhysicalDescription';
 import QuestionaireOfferedServices from '../pages/questionaireOfferedServices';
 import Login from "../pages/Login";
 import Register from "../pages/register";
@@ -65,10 +62,7 @@ const Navigation = (props) => {
           <Route path = '/member-dashboard' component = {MemberDashboard} />
           <Route path = '/update-profile' component = {UpdateProfilePage} />
           <Route path = '/questionaire' component = {QuestionaireMain} />
-          <Route path = '/questionaire-servee-documented-data' component = {QuestionaireServeeDocumentedData} />
-          <Route path = '/questionaire-clearance-of-action' component = {QuestionaireClearanceOfAction} />
           <Route path = '/questionaire-vehicle-information' component = {QuestionaireVehicleInfo} />
-          <Route path = '/questionaire-servee-physical-description' component = {QuestionaireServeePhysicalDescription} />
           <Route path = '/questionaire-offered-services' component = {QuestionaireOfferedServices} />
           <Route path = '/questionaire-finished' component = {ThankYouForRegistering} />
           <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />

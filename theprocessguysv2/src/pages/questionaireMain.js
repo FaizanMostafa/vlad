@@ -5,14 +5,17 @@ import { Stepper } from 'react-form-stepper';
 import {
   Questionaire1,
   Questionaire2,
-  Questionaire3
+  Questionaire3,
+  Questionaire4,
+  Questionaire5,
+  Questionaire6
 } from "../forms/NewCaseSubmission";
 import { showToast } from "../utils";
 
 function Questionaire() {
 
   const user = useSelector(state => state.auth.user);
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(6);
   
   // Questionaire Form 1
   const [caseTitle, setCaseTitle] = useState("");
@@ -49,6 +52,41 @@ function Questionaire() {
   const [defendantAttorneyPhoneNumberForCalls, setDefendantAttorneyPhoneNumberForCalls] = useState("");
   const [defendantAttorneyEmail, setDefendantAttorneyEmail] = useState("");
   const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
+
+  // Questionaire Form 4
+  const [howManyIndividualsServed, setHowManyIndividualsServed] = useState("");
+  const [employmentOfIndividuals, setEmploymentOfIndividuals] = useState("");
+  const [nameOfIndividuals, setNameOfIndividuals] = useState("");
+  const [dobOfIndividuals, setDobOfIndividuals] = useState("");
+  const [locationForBeingServed, setLocationForBeingServed] = useState("");
+  const [mainAddressForService, setMainAddressForService] = useState("");
+  const [agentOfService, setAgentOfService] = useState("");
+  const [ifYesListFullName, setIfYesListFullName] = useState("");
+  const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
+  const [emailsOfIndividuals, setEmailsOfIndividuals] = useState("");
+  const [addressForCurrentPlaceOfEmployment, setAddressForCurrentPlaceOfEmployment] = useState("");
+  const [knownCoResidentsOfServee, setKnownCoResidentsOfServee] = useState("");
+
+  // Questionaire Form 5
+  const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
+  const [processServerLeaveDoorTag,setProcessServerLeaveDoorTag] = useState("");
+  const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
+  const [requireServerNotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
+  const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
+  const [serverPostDocumentsWithRubberBand,setServerPostDocumentsWithRubberBand] = useState("");
+  const [dropServeForceServe, setDropServeForceServe] = useState("");
+  const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
+
+  //  Questionaire Form 6
+  const [fullNameOfDescribedServee, setFullNameOfDescribedServee] = useState("");
+  const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
+  const [genderOfIndividuals, setGenderOfIndividuals] = useState("");
+  const [ethnicityOfIndividuals, setEthnicityOfIndividuals] = useState("");
+  const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
+  const [weightOfIndividuals, setWeightOfIndividuals] = useState("");
+  const [hairColorOfIndividuals, setHairColorOfIndividuals] = useState("");
+  const [eyeColorOfIndividuals, setEyeColorOfIndividuals] = useState("");
+  const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
 
   const handleOnPressNext = () => {
     if(activeStep === 1) {
@@ -159,6 +197,117 @@ function Questionaire() {
         // history.push('/questionaire-servee-documented-data')
         setActiveStep(4);
       }
+    } else if(activeStep === 4) {
+      if(!howManyIndividualsServed.length) {
+        showToast("Please select how many individuals being served!", "warning");
+      } else if(!employmentOfIndividuals.length) {
+        showToast("Please enter employment of individuals!", "warning");
+      } else if(!nameOfIndividuals.length) {
+        showToast("Please enter name of individuals!", "warning");
+      } else if(!dobOfIndividuals.length) {
+        showToast("Please enter date of birth of individuals!", "warning");
+      } else if(!locationForBeingServed.length) {
+        showToast("Please enter location for being served!", "warning");
+      } else if(!mainAddressForService.length) {
+        showToast("Please enter main address for service!", "warning");
+      } else if(!agentOfService.length) {
+        showToast("Please enter agent of service!", "warning");
+      } else if(!ifYesListFullName.length) {
+        showToast("Please enter full name!", "warning");
+      } else if(!phoneNumbersOfIndividuals.length) {
+        showToast("Please enter phone numbers of individuals!", "warning");
+      } else if(!emailsOfIndividuals.length) {
+        showToast("Please enter emails of individuals!", "warning");
+      } else if(!addressForCurrentPlaceOfEmployment.length) {
+        showToast("Please enter address for current place of employment!", "warning");
+      } else if(!knownCoResidentsOfServee.length) {
+        showToast("Please enter known co residents of servee!", "warning");
+      } else {
+        let data = {
+          howManyIndividualsServed,          
+          employmentOfIndividuals,
+          nameOfIndividuals,
+          dobOfIndividuals,
+          locationForBeingServed,
+          mainAddressForService,
+          agentOfService,          
+          ifYesListFullName,
+          phoneNumbersOfIndividuals,
+          emailsOfIndividuals,
+          addressForCurrentPlaceOfEmployment,
+          knownCoResidentsOfServee
+        };
+        localStorage.setItem('questionaireServeeDocumentedData', JSON.stringify(data));
+        // history.push('/questionaire-clearance-of-action');
+        setActiveStep(5);
+      }
+    } else if(activeStep === 5) {
+      if(!serveIndividualAtEmployment.length) {
+        showToast("Please select should the servee be served at the place of employment!", "warning");
+      } else if(!processServerLeaveDoorTag.length) {
+        showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
+      } else if(!subserveAfterThreeAttempts.length) {
+        showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
+      } else if(!requireServerNotifyPersonOfInterest.length) {
+        showToast("Please select should process server verbally notify the Servee", "warning");
+      } else if(!serverContactServeeByPhone.length) {
+        showToast("Please select should process server Contact the Servee by Phone", "warning");
+      } else if(!serverPostDocumentsWithRubberBand.length) {
+        showToast("Please select may process server post documents with a rubber band", "warning");
+      } else if(!dropServeForceServe.length) {
+        showToast("Please select if “Drop Serve / Force Serve” Allowed", "warning");
+      } else if(!paralegalAttorneyClientContactServee.length) {
+        showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
+      } else {
+        let data = {
+          serveIndividualAtEmployment,
+          processServerLeaveDoorTag,
+          subserveAfterThreeAttempts,          
+          requireServerNotifyPersonOfInterest,
+          serverContactServeeByPhone,
+          serverPostDocumentsWithRubberBand,
+          dropServeForceServe,          
+          paralegalAttorneyClientContactServee
+        };
+        localStorage.setItem('questionaireClearanceOfAction', JSON.stringify(data));
+        // history.push('/questionaire-servee-physical-description')
+        setActiveStep(6);
+      }
+    } else if(activeStep===6) {
+      if(!fullNameOfDescribedServee.length) {
+        showToast("Please enter full name of described servee!", "warning");
+      } else if(!imageOfIndividuals) {
+        showToast("Please upload image of individuals!", "warning");
+      } else if(!genderOfIndividuals.length) {
+        showToast("Please select gender of individuals!", "warning");
+      } else if(!ethnicityOfIndividuals.length) {
+        showToast("Please select ethnicity of individuals!", "warning");
+      } else if(!heightOfIndividuals.length) {
+        showToast("Please enter height of individuals!", "warning");
+      } else if(!weightOfIndividuals.length) {
+        showToast("Please enter weight of individuals!", "warning");
+      } else if(!hairColorOfIndividuals.length) {
+        showToast("Please enter hair color of individuals!", "warning");
+      } else if(!eyeColorOfIndividuals.length) {
+        showToast("Please enter eye color of individuals!", "warning");
+      } else if(!physicalOutlineOfIndividuals.length) {
+        showToast("Please enter physical outline of individuals!", "warning");
+      } else {
+        let data = {
+          fullNameOfDescribedServee,
+          imageOfIndividuals,
+          genderOfIndividuals,
+          ethnicityOfIndividuals,
+          heightOfIndividuals,
+          weightOfIndividuals,
+          hairColorOfIndividuals,
+          eyeColorOfIndividuals,
+          physicalOutlineOfIndividuals
+        };
+        localStorage.setItem('questionaireServeePhysicalDescription', JSON.stringify(data));
+        // history.push('/questionaire-vehicle-information')
+        setActiveStep(7);
+      }
     }
   }
 
@@ -170,9 +319,13 @@ function Questionaire() {
     } else if(activeStep===3) {
       return "Proceed to the Servee Documented Data Section";
     } else if(activeStep===4) {
-      return "Proceed to Plaintiff Section";
+      return "Proceed to the Clearance of Action Section";
     } else if(activeStep===5) {
-      return "Proceed to Plaintiff Section";
+      return "Proceed to the Servee Physical Description Section";
+    } else if(activeStep===6) {
+      return "Proceed to the Servee Physical Description Section";
+    } else if(activeStep===7) {
+      return "Proceed to the Servee Physical Description Section";
     }
   }
 
@@ -183,7 +336,7 @@ function Questionaire() {
       <br></br>
       <br></br>
       <Stepper
-        steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }]}
+        steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }]}
         activeStep={activeStep}
       />
       <br></br>
@@ -266,6 +419,82 @@ function Questionaire() {
               setDefendantAttorneyPhoneNumberForCalls={setDefendantAttorneyPhoneNumberForCalls}
               defendantAttorneyFaxNumberOptional={defendantAttorneyFaxNumberOptional}
               setDefendantAttorneyFaxNumberOptional={setDefendantAttorneyFaxNumberOptional}
+            />
+      }
+      {
+        activeStep === 4
+          &&
+            <Questionaire4
+              howManyIndividualsServed={howManyIndividualsServed}
+              setHowManyIndividualsServed={setHowManyIndividualsServed}
+              employmentOfIndividuals={employmentOfIndividuals}
+              setEmploymentOfIndividuals={setEmploymentOfIndividuals}
+              nameOfIndividuals={nameOfIndividuals}
+              setNameOfIndividuals={setNameOfIndividuals}
+              dobOfIndividuals={dobOfIndividuals}
+              setDobOfIndividuals={setDobOfIndividuals}
+              locationForBeingServed={locationForBeingServed}
+              setLocationForBeingServed={setLocationForBeingServed}
+              mainAddressForService={mainAddressForService}
+              setMainAddressForService={setMainAddressForService}
+              agentOfService={agentOfService}
+              setAgentOfService={setAgentOfService}
+              ifYesListFullName={ifYesListFullName}
+              setIfYesListFullName={setIfYesListFullName}
+              phoneNumbersOfIndividuals={phoneNumbersOfIndividuals}
+              setPhoneNumberOfIndividuals={setPhoneNumberOfIndividuals}
+              emailsOfIndividuals={emailsOfIndividuals}
+              setEmailsOfIndividuals={setEmailsOfIndividuals}
+              addressForCurrentPlaceOfEmployment={addressForCurrentPlaceOfEmployment}
+              setAddressForCurrentPlaceOfEmployment={setAddressForCurrentPlaceOfEmployment}
+              knownCoResidentsOfServee={knownCoResidentsOfServee}
+              setKnownCoResidentsOfServee={setKnownCoResidentsOfServee}
+            />
+      }
+      {
+        activeStep === 5
+          &&
+            <Questionaire5
+              serveIndividualAtEmployment={serveIndividualAtEmployment}
+              setServeIndividualAtEmployment={setServeIndividualAtEmployment}
+              processServerLeaveDoorTag={processServerLeaveDoorTag}
+              setProcessServerLeaveDoorTag={setProcessServerLeaveDoorTag}
+              subserveAfterThreeAttempts={subserveAfterThreeAttempts}  
+              setSubserveAfterThreeAttempts={setSubserveAfterThreeAttempts}        
+              requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
+              setRequireServerNotifyPersonOfInterest={setRequireServerNotifyPersonOfInterest}
+              serverContactServeeByPhone={serverContactServeeByPhone}
+              setServerContactServeeByPhone={setServerContactServeeByPhone}
+              serverPostDocumentsWithRubberBand={serverPostDocumentsWithRubberBand}
+              setServerPostDocumentsWithRubberBand={setServerPostDocumentsWithRubberBand}
+              dropServeForceServe={dropServeForceServe}
+              setDropServeForceServe={setDropServeForceServe}   
+              paralegalAttorneyClientContactServee={paralegalAttorneyClientContactServee}
+              setParalegalAttorneyClientContactServee={setParalegalAttorneyClientContactServee}
+            />
+      }
+      {
+        activeStep === 6
+          &&
+            <Questionaire6
+              fullNameOfDescribedServee={fullNameOfDescribedServee}
+              setFullNameOfDescribedServee={setFullNameOfDescribedServee}
+              imageOfIndividuals={imageOfIndividuals}
+              setImageOfIndividuals={setImageOfIndividuals}
+              genderOfIndividuals={genderOfIndividuals}
+              setGenderOfIndividuals={setGenderOfIndividuals}
+              ethnicityOfIndividuals={ethnicityOfIndividuals}
+              setEthnicityOfIndividuals={setEthnicityOfIndividuals}
+              heightOfIndividuals={heightOfIndividuals}
+              setHeightOfIndividuals={setHeightOfIndividuals}
+              weightOfIndividuals={weightOfIndividuals}
+              setWeightOfIndividuals={setWeightOfIndividuals}
+              hairColorOfIndividuals={hairColorOfIndividuals}
+              setHairColorOfIndividuals={setHairColorOfIndividuals}
+              eyeColorOfIndividuals={eyeColorOfIndividuals}
+              setEyeColorOfIndividuals={setEyeColorOfIndividuals}
+              physicalOutlineOfIndividuals={physicalOutlineOfIndividuals}
+              setPhysicalOutlineOfIndividuals={setPhysicalOutlineOfIndividuals}
             />
       }
       <div className="d-flex justify-content-end">
