@@ -26,6 +26,8 @@ import ThankYouForRegistering from '../pages/ThankYouForRegistering';
 import TermsOfServiceTemplate from '../pages/termsOfServiceTemplate';
 import CaseDocumentArchive from '../pages/caseDocumentArchive';
 import NewsUpdateForClients from '../pages/newsUpdateForClients';
+import ClientPayment from '../pages/clientPayments';
+import ClientPaymentOptions from '../pages/clientPaymentOptions';
 
 const Navigation = (props) => {
 
@@ -74,6 +76,8 @@ const Navigation = (props) => {
           <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />
           <Route path = '/case-document-archive' component = {CaseDocumentArchive} />
           <Route path = '/news-update-for-clients' component = {NewsUpdateForClients} />
+          <Route path = '/client-payment-credit-card' component = {ClientPayment} />
+          <Route path = '/client-payment-options' component = {ClientPaymentOptions} />
         </Switch>
       </Router>
       <Footer />
