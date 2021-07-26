@@ -59,7 +59,7 @@ function singleSubmission() {
                                    <input
                                     type="file"
                                     onChange={(e)=>{setFileUpload(e.target.files[0])}}
-                                    accept=".jpg,.png"
+                                    accept=".pdf, .zip"
                                     >
                                     </input>
                                 </Form.Group>

@@ -73,7 +73,7 @@ const Dashboard = (props) => {
             New Submission
           </Link>
           <br></br>
-          <Link to="/view-cases" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/case-document-archive" className="btn btn-primary w-50 justify-content-center">
             View Cases
           </Link>
           <br></br>

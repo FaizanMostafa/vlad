@@ -20,6 +20,11 @@ import ThankYouForRegistering from '../pages/ThankYouForRegistering';
 import TermsOfServiceTemplate from '../pages/termsOfServiceTemplate';
 import CaseDocumentArchive from '../pages/caseDocumentArchive';
 import NewsUpdateForClients from '../pages/newsUpdateForClients';
+import ClientPayment from '../pages/clientPayments';
+import ClientPaymentOptions from '../pages/clientPaymentOptions';
+import PaymentSuccessful from '../pages/paymentSucessful';
+import PaymentFailure from '../pages/paymentFailure';
+import AfterUploadMessage from '../pages/afterUploadMessage';
 
 const Navigation = (props) => {
 
@@ -62,6 +67,11 @@ const Navigation = (props) => {
           <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />
           <Route path = '/case-document-archive' component = {CaseDocumentArchive} />
           <Route path = '/news-update-for-clients' component = {NewsUpdateForClients} />
+          <Route path = '/client-payment-credit-card' component = {ClientPayment} />
+          <Route path = '/client-payment-options' component = {ClientPaymentOptions} />
+          <Route path = '/payment-successful' component = {PaymentSuccessful} />
+          <Route path = '/payment-failure' component = {PaymentFailure} />
+          <Route path = '/after-upload-message' component = {AfterUploadMessage} />
         </Switch>
       </Router>
       <Footer />

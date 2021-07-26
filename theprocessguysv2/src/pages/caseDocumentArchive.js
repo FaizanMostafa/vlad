@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { MDBCol } from "mdbreact";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function CaseDocumentArchive() {
 
@@ -95,7 +95,9 @@ function CaseDocumentArchive() {
             {/* ( Admin 1 will have delete button for cases ) */}
                 <div>
                     <button className="btn btn-danger" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"10px"}} disabled>Delete Case</button>
+                    <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"200px"}}>Pay Invoice</Link>
                 </div>
+
         </MDBCol>    
         
             <br></br>
