@@ -34,6 +34,7 @@ const Questionaire6 = (props) => {
           <label>Full Name of Described Servee*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={fullNameOfDescribedServee}
             onChange={(e) => setFullNameOfDescribedServee(e.target.value)}
             required
@@ -59,6 +60,7 @@ const Questionaire6 = (props) => {
           <label>Ethnicity of Servee</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={ethnicityOfIndividuals}
             onChange={(e) => setEthnicityOfIndividuals(e.target.value)}
           />
@@ -69,6 +71,7 @@ const Questionaire6 = (props) => {
           <label>Height of Servee Being Served?</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={heightOfIndividuals}
             onChange={(e) => setHeightOfIndividuals(e.target.value)}
           />
@@ -79,6 +82,7 @@ const Questionaire6 = (props) => {
           <label>Weight Servee Being Served?</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={weightOfIndividuals}
             onChange={(e) => setWeightOfIndividuals(e.target.value)}
           />
@@ -89,6 +93,7 @@ const Questionaire6 = (props) => {
           <label>Hair Color of Servee Being Served?</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={hairColorOfIndividuals}
             onChange={(e) => setHairColorOfIndividuals(e.target.value)}
           />
@@ -99,6 +104,7 @@ const Questionaire6 = (props) => {
           <label>Eye Color of Servee Being Served?</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={eyeColorOfIndividuals}
             onChange={(e) => setEyeColorOfIndividuals(e.target.value)}
           />
@@ -110,6 +116,7 @@ const Questionaire6 = (props) => {
             <i>(ie scars, tattoos, birthmarks, facial hair, glasses, blemish, birth mark)</i></label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={physicalOutlineOfIndividuals}
             onChange={(e) => setPhysicalOutlineOfIndividuals(e.target.value)}
           />

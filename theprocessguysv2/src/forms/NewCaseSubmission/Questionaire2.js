@@ -45,6 +45,7 @@ const Questionaire2 = (props) => {
           <label>Plaintiff's Full Name*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffFullName}
             onChange={(e) => setPlaintiffFullName(e.target.value)}
             required
@@ -56,6 +57,7 @@ const Questionaire2 = (props) => {
           <label>Plaintiff's Address*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAddress}
             onChange={(e) => setPlaintiffAddress(e.target.value)}
             required
@@ -114,6 +116,7 @@ const Questionaire2 = (props) => {
           <label>Enter Attorney Full Name*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAttorneyName}
             onChange={(e) => setPlaintiffAttorneyName(e.target.value)}
             required
@@ -125,6 +128,7 @@ const Questionaire2 = (props) => {
           <label>Bar Number*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAttorneyBarNumber}
             onChange={(e) => setPlaintiffAttorneyBarNumber(e.target.value)}
             required
@@ -136,6 +140,7 @@ const Questionaire2 = (props) => {
           <label>Phone Number for Calls (you may list multiple)</label>
           <MDBInput
             type="textarea"
+            className="text-white"
             value={plaintiffAttorneyPhoneNumberForCalls}
             onChange={(e) => setPlaintiffAttorneyPhoneNumberForCalls(e.target.value)}
             required
@@ -147,6 +152,7 @@ const Questionaire2 = (props) => {
           <label>Office Address*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAttorneyOfficeAddress}
             onChange={(e) => setPlaintiffAttorneyOfficeAddress(e.target.value)}
             required
@@ -158,6 +164,7 @@ const Questionaire2 = (props) => {
           <label>Attorney E-Mail*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAttorneyEmail}
             onChange={(e) => setPlaintiffAttorneyEmail(e.target.value)}
             required
@@ -169,6 +176,7 @@ const Questionaire2 = (props) => {
           <label>Fax Number (Optional)</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={plaintiffAttorneyFaxNumberOptional}
             onChange={(e) => setPlaintiffAttorneyFaxNumberOptional(e.target.value)}
             required

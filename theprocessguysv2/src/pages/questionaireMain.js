@@ -8,14 +8,17 @@ import {
   Questionaire3,
   Questionaire4,
   Questionaire5,
-  Questionaire6
+  Questionaire6,
+  Questionaire7,
+  Questionaire8,
+  PacketSubmission
 } from "../forms/NewCaseSubmission";
 import { showToast } from "../utils";
 
 function Questionaire() {
 
   const user = useSelector(state => state.auth.user);
-  const [activeStep, setActiveStep] = useState(6);
+  const [activeStep, setActiveStep] = useState(1);
   
   // Questionaire Form 1
   const [caseTitle, setCaseTitle] = useState("");
@@ -87,6 +90,30 @@ function Questionaire() {
   const [hairColorOfIndividuals, setHairColorOfIndividuals] = useState("");
   const [eyeColorOfIndividuals, setEyeColorOfIndividuals] = useState("");
   const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
+
+  // Questionaire Form 7
+  const [insuranceCompanyOfServee, setInsuranceCompanyOfServee] = useState("");
+  const [licensePlateNumberState, setLicensePlateNumberState] = useState("");
+  const [vinNumberOfIndividuals, setVinNumberOfIndividuals] = useState("");
+  const [yearOfMakeOnVehicle, setYearOfMakeOnVehicle] = useState("");
+  const [vehicleColor, setVehicleColor] = useState("");
+  const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
+
+  // Questionaire Form 8
+  const [requireStakeOutService, setRequireStakeoutService] = useState("");
+  const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
+  const [requireRushService, setRequireRushService] = useState("");
+  const [listDateWhenServiceAttemptsClosed, setListDateWhenServiceAttemptsClosed] = useState("");
+  const [requireFirst24HourService,setRequireFirst24HourService] = useState("");
+  const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
+  const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
+  const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
+  const [poBoxAllowedToServe, setPOBoxAllowedToServe] = useState("");
+  const [requireServiceByMail, setRequireServiceByMail] = useState("");
+  const [requireByEmail, setRequireByEmail] = useState("");
+  const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
+  const [requireZipFileService, setRequireZipFileService] = useState("");
+  const [ifYesListAddress, setIfYesListAddress] = useState("");
 
   const handleOnPressNext = () => {
     if(activeStep === 1) {
@@ -194,7 +221,6 @@ function Questionaire() {
           defendantAttorneyFaxNumberOptional
         };
         localStorage.setItem('questionaireDefendant', JSON.stringify(data));
-        // history.push('/questionaire-servee-documented-data')
         setActiveStep(4);
       }
     } else if(activeStep === 4) {
@@ -238,7 +264,6 @@ function Questionaire() {
           knownCoResidentsOfServee
         };
         localStorage.setItem('questionaireServeeDocumentedData', JSON.stringify(data));
-        // history.push('/questionaire-clearance-of-action');
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
@@ -270,7 +295,6 @@ function Questionaire() {
           paralegalAttorneyClientContactServee
         };
         localStorage.setItem('questionaireClearanceOfAction', JSON.stringify(data));
-        // history.push('/questionaire-servee-physical-description')
         setActiveStep(6);
       }
     } else if(activeStep===6) {
@@ -305,8 +329,77 @@ function Questionaire() {
           physicalOutlineOfIndividuals
         };
         localStorage.setItem('questionaireServeePhysicalDescription', JSON.stringify(data));
-        // history.push('/questionaire-vehicle-information')
         setActiveStep(7);
+      }
+    } else if(activeStep===7) {
+      if(!insuranceCompanyOfServee.length) {
+        showToast("Please enter insurance company of servee!", "warning");
+      } else if(!vehicleTypeModelOwnership.length) {
+        showToast("Please enter vehicle type/model ownership!", "warning");
+      } else if(!licensePlateNumberState.length) {
+        showToast("Please enter license plate number!", "warning");
+      } else if(!vinNumberOfIndividuals.length) {
+        showToast("Please enter vehicle vin number!", "warning");
+      } else if(!yearOfMakeOnVehicle.length) {
+        showToast("Please enter vehicle's year of make!", "warning");
+      } else if(!vehicleColor.length) {
+        showToast("Please enter vehicle color!", "warning");
+      } else {
+        let data = {
+          insuranceCompanyOfServee,
+          vehicleTypeModelOwnership,
+          licensePlateNumberState,
+          vinNumberOfIndividuals,
+          yearOfMakeOnVehicle,
+          vehicleColor
+        };
+        localStorage.setItem('questionaireVehicleInfo', JSON.stringify(data));
+        // history.push('/questionaire-offered-services');
+      }
+    } else if(activeStep===8) {
+      if(!requireStakeOutService.length) {
+        showToast("Please select an option for stake out service!", "warning");
+      } else if(!specifyDatesForStakeOutService.length) {
+        showToast("Please enter stake out time and hours!", "warning");
+      } else if(!requireRushService.length) {
+        showToast("Please select if your require a rush out service!", "warning");
+      } else if(!listDateWhenServiceAttemptsClosed.length) {
+        showToast("Please select the date when service attempts close out!", "warning");
+      } else if(!requireFirst24HourService.length) {
+        showToast("Please select if service should be attempted within 24 hours of submission!", "warning");
+      } else if(!requireSkipTracingService.length) {
+        showToast("Please select if you require skip tracing service!", "warning");
+      } else if(!requireBodyCamFootage.length) {
+        showToast("Please select if you require body cam footage of service!", "warning");
+      } else if(!obtainNewDeliveryLocation.length) {
+        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
+      } else if(!poBoxAllowedToServe.length) {
+        showToast("Please select if P.O. box is allowed to be served!", "warning");
+      } else if(!requireByEmail.length) {
+        showToast("Please select if you require a service by E-mail!", "warning");
+      } else if(!requireServiceByMail.length) {
+        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
+      } else if(!specificCourtInstruction.length) {
+        showToast("Please select if you require a zip file service at a court house!", "warning");
+      } else if(!ifYesListAddress.length) {
+        showToast("Please enter address for zip filing!", "warning");
+      } else {
+        let data = {
+          requireStakeOutService,
+          specifyDatesForStakeOutService,
+          requireRushService,          
+          listDateWhenServiceAttemptsClosed,
+          requireFirst24HourService,
+          requireSkipTracingService,
+          requireBodyCamFootage,
+          obtainNewDeliveryLocation,
+          poBoxAllowedToServe,
+          requireServiceByMail,
+          requireByEmail,
+          specificCourtInstruction,
+          ifYesListAddress
+        };
+        localStorage.setItem('questionaireOfferedServices', JSON.stringify(data));
       }
     }
   }
@@ -323,9 +416,11 @@ function Questionaire() {
     } else if(activeStep===5) {
       return "Proceed to the Servee Physical Description Section";
     } else if(activeStep===6) {
-      return "Proceed to the Servee Physical Description Section";
+      return "Proceed to the Vehicle Information Section";
     } else if(activeStep===7) {
-      return "Proceed to the Servee Physical Description Section";
+      return "Proceed to the Offered Services Section";
+    } else if(activeStep===8) {
+      return "Proceed to Document Upload";
     }
   }
 
@@ -336,7 +431,7 @@ function Questionaire() {
       <br></br>
       <br></br>
       <Stepper
-        steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }]}
+        steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
         activeStep={activeStep}
       />
       <br></br>
@@ -496,6 +591,63 @@ function Questionaire() {
               physicalOutlineOfIndividuals={physicalOutlineOfIndividuals}
               setPhysicalOutlineOfIndividuals={setPhysicalOutlineOfIndividuals}
             />
+      }
+      {
+        activeStep===7
+          &&
+            <Questionaire7
+              insuranceCompanyOfServee={insuranceCompanyOfServee}
+              setInsuranceCompanyOfServee={setInsuranceCompanyOfServee}
+              licensePlateNumberState={licensePlateNumberState}
+              setLicensePlateNumberState={setLicensePlateNumberState}
+              vinNumberOfIndividuals={vinNumberOfIndividuals}
+              setVinNumberOfIndividuals={setVinNumberOfIndividuals}
+              yearOfMakeOnVehicle={yearOfMakeOnVehicle}
+              setYearOfMakeOnVehicle={setYearOfMakeOnVehicle}
+              vehicleColor={vehicleColor}
+              setVehicleColor={setVehicleColor}
+              vehicleTypeModelOwnership={vehicleTypeModelOwnership}
+              setVehicleTypeModelOwnership={setVehicleTypeModelOwnership}
+            />
+      }
+      {
+        activeStep===8
+          &&
+            <Questionaire8
+              requireStakeOutService={requireStakeOutService}
+              setRequireStakeoutService={setRequireStakeoutService}
+              specifyDatesForStakeOutService={specifyDatesForStakeOutService}
+              setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
+              requireRushService={requireRushService}
+              setRequireRushService={setRequireRushService}
+              listDateWhenServiceAttemptsClosed={listDateWhenServiceAttemptsClosed}
+              setListDateWhenServiceAttemptsClosed={setListDateWhenServiceAttemptsClosed}
+              requireFirst24HourService={requireFirst24HourService}
+              setRequireFirst24HourService={setRequireFirst24HourService}
+              requireSkipTracingService={requireSkipTracingService}
+              setRequireSkipTracingService={setRequireSkipTracingService}
+              requireBodyCamFootage={requireBodyCamFootage}
+              setRequireBodyCamFootage={setRequireBodyCamFootage}
+              obtainNewDeliveryLocation={obtainNewDeliveryLocation}
+              setObtainNewDeliveryLocation={setObtainNewDeliveryLocation}
+              poBoxAllowedToServe={poBoxAllowedToServe}
+              setPOBoxAllowedToServe={setPOBoxAllowedToServe}
+              requireServiceByMail={requireServiceByMail}
+              setRequireServiceByMail={setRequireServiceByMail}
+              requireByEmail={requireByEmail}
+              setRequireByEmail={setRequireByEmail}
+              specificCourtInstruction={specificCourtInstruction}
+              setSpecificCourtInstruction={setSpecificCourtInstruction}
+              requireZipFileService={requireZipFileService}
+              setRequireZipFileService={setRequireZipFileService}
+              ifYesListAddress={ifYesListAddress}
+              setIfYesListAddress={setIfYesListAddress}
+            />
+      }
+      {
+        activeStep===9
+          &&
+            <PacketSubmission />
       }
       <div className="d-flex justify-content-end">
         <button

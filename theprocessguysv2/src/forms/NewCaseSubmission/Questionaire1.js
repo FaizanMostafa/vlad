@@ -44,6 +44,7 @@ const Questionaire1 = (props) => {
           <label>Case Title*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={caseTitle}
             onChange={(e) => setCaseTitle(e.target.value)}
             required
@@ -55,6 +56,7 @@ const Questionaire1 = (props) => {
           <label>Case Number*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={caseNumber}
             onChange={(e) => setCaseNumber(e.target.value)}
             required
@@ -66,6 +68,7 @@ const Questionaire1 = (props) => {
           <label>Court Date (Write N/A if not issued)*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={courtDate}
             onChange={(e) => setCourtDate(e.target.value)}
             required
@@ -77,6 +80,7 @@ const Questionaire1 = (props) => {
           <label>Superior Court of (Write N/A if not Applicable)*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={superiorCourtOf}
             onChange={(e) => setSuperiorCourtOf(e.target.value)}
             required
@@ -88,6 +92,7 @@ const Questionaire1 = (props) => {
           <label>County Of*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={countyOf}
             onChange={(e) => setCountyOf(e.target.value)}
             required
@@ -99,6 +104,7 @@ const Questionaire1 = (props) => {
           <label>Branch Name*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={branchName}
             onChange={(e) => setBranchName(e.target.value)}
             required
@@ -110,6 +116,7 @@ const Questionaire1 = (props) => {
           <label>Courthouse Address*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={courthouseAddress}
             onChange={(e) => setCourthouseAddress(e.target.value)}
             required
@@ -121,6 +128,7 @@ const Questionaire1 = (props) => {
           <label>Courthouse Mailing Address*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={courthouseMailingAddress}
             onChange={(e) => setCourthouseMailingAddress(e.target.value)}
             required
@@ -132,6 +140,7 @@ const Questionaire1 = (props) => {
           <label>Appeals Court Of (Write N/A if not Applicable)*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={appealsCourtOf}
             onChange={(e) => setAppealsCourtOf(e.target.value)}
             required
@@ -143,6 +152,7 @@ const Questionaire1 = (props) => {
           <label>Supreme Court Of (Write N/A if not Applicable)*</label>
           <MDBInput
             type="text"
+            className="text-white"
             value={supremeCourtOf}
             onChange={(e) => setSupremeCourtOf(e.target.value)}
             required

@@ -3,8 +3,6 @@ import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-do
 import {useDispatch, useSelector} from 'react-redux';
 import TheProcessGuys from "../pages/TheProcessGuys";
 import QuestionaireMain from "../pages/questionaireMain";
-import QuestionaireVehicleInfo from '../pages/questionaireVehicleInfo';
-import QuestionaireOfferedServices from '../pages/questionaireOfferedServices';
 import Login from "../pages/Login";
 import Register from "../pages/register";
 import ForgotPassword from "../pages/ForgotPassword";
@@ -12,7 +10,6 @@ import NavBar from "../navbar/navBar";
 import Footer from "../footer/footer";
 import SingleSubmission from "../pages/singleSubmission";
 import MultiSubmission from "../pages/multipleSubmission";
-import PacketSubmissionPage from "../pages/packetSubmissionPage";
 import MemberDashboard from "../pages/Dashboard";
 import LoadingPage from "../pages/Loading";
 import UpdateProfilePage from "../pages/UpdateProfile";
@@ -53,7 +50,6 @@ const Navigation = (props) => {
           <CustomRoute exact path='/' component={TheProcessGuys} isProtected redirect="/login" />
           <Route path = '/single-submission' component = {SingleSubmission} />
           <Route path = '/multi-submission' component = {MultiSubmission} />
-          <Route path = '/packet-submission-page' component = {PacketSubmissionPage} />
           <Route path = '/view-cases' component = {ViewCases} />
           <Route path = '/admin-dashboard' component = {AdminDashboard} />
           <Route path = '/login' component = {Login} />
@@ -62,8 +58,6 @@ const Navigation = (props) => {
           <Route path = '/member-dashboard' component = {MemberDashboard} />
           <Route path = '/update-profile' component = {UpdateProfilePage} />
           <Route path = '/questionaire' component = {QuestionaireMain} />
-          <Route path = '/questionaire-vehicle-information' component = {QuestionaireVehicleInfo} />
-          <Route path = '/questionaire-offered-services' component = {QuestionaireOfferedServices} />
           <Route path = '/questionaire-finished' component = {ThankYouForRegistering} />
           <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />
           <Route path = '/case-document-archive' component = {CaseDocumentArchive} />
