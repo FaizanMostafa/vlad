@@ -125,18 +125,6 @@ const Questionaire4 = (props) => {
           <input className="ml-2" type="radio" onClick={()=>setAgentOfService(true)} id="agentOfServiceY" name="agentOfService" value={agentOfService} /><label className="ml-2" for="agentOfServiceY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setAgentOfService(false)} id="agentOfServiceN" name="agentOfService" value={agentOfService} /><label className="ml-2" for="agentOfServiceN">No</label>
           <br/>
-          {/* <select className="w-75 m-4 center p-2"
-            value={agentOfService}
-            onChange={(e) => setAgentOfService(e.target.value)}
-            required
-          >
-            <label color="white">
-              Please Select
-            </label>
-            <option value="Please Select" >Please Select</option>
-            <option value="Yes" >Yes</option>
-            <option value="No">No</option>
-          </select><br></br> */}
         </div>
       </MDBCol>
       <MDBCol md="12" id="if-yes-list-full-name">
@@ -184,18 +172,6 @@ const Questionaire4 = (props) => {
           <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals(true)} id="employmentOfIndividualsY" name="employmentOfIndividuals" value={employmentOfIndividuals} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals(false)} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
           <br/>
-          {/* <select className="w-75 m-4 center p-2"
-            value={employmentOfIndividuals}
-            onChange={(e) => setEmploymentOfIndividuals(e.target.value)}
-            required
-          >
-            <label color="white">
-              Please Select
-            </label>
-            <option value="Please Select" >Please Select</option>
-            <option value="Yes" >Yes</option>
-            <option value="No">No</option>
-          </select><br></br> */}
         </div>
       </MDBCol>
       <MDBCol md="12" id="address-for-current-place-of-employment">

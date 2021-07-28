@@ -59,7 +59,7 @@ const Questionaire8 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="require-rush-service">
         <div id="require-rush-service">
-          <label>Do You Require a Rush Service?* <i>(Additional Fee)</i></label><br />
+          <label>Do You Require a Rush Service?* This is regarding service that needs to be served with 13 days or less <i>(Additional Fee)</i></label><br />
           <input className="ml-2" type="radio" onClick={()=>setRequireRushService(true)} id="requireRushServiceY" name="requireRushService" value={requireRushService} /><label className="ml-2" for="requireRushServiceY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setRequireRushService(false)} id="requireRushServiceN" name="requireRushService" value={requireRushService} /><label className="ml-2" for="requireRushServiceN">No</label>
           <br/>
@@ -78,7 +78,7 @@ const Questionaire8 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="require-first-24-hour-service">
         <div id="require-first-24-hour-service">
-          <label>Do you require a Service attempt within the first 24 hours of submission?<i>(Additional Fee)</i></label><br />
+          <label>Do you require a Service attempt within the first 24 hours of submission?*<i>(Additional Fee)</i></label><br />
           <input className="ml-2" type="radio" onClick={()=>setRequireFirst24HourService(true)} id="requireFirst24HourServiceY" name="requireFirst24HourService" value={requireFirst24HourService} /><label className="ml-2" for="requireFirst24HourServiceY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setRequireFirst24HourService(false)} id="requireFirst24HourServiceN" name="requireFirst24HourService" value={requireFirst24HourService} /><label className="ml-2" for="requireFirst24HourServiceN">No</label>
           <br/>

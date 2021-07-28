@@ -31,7 +31,7 @@ const Questionaire6 = (props) => {
 
       <MDBCol md="12" id="full-name-of-described-servee">
         <div id="full-name-of-described-servee">
-          <label>Full Name of Described Servee*</label>
+          <label>Full Name of Described Servee</label>
           <MDBInput
             type="text"
             className="text-white"
@@ -124,7 +124,7 @@ const Questionaire6 = (props) => {
       </MDBCol>
       <MDBCol md="12 mb-4" id="image-of-individuals">
         <div id="image-of-individuals">
-          <label>Servee Image <i>(If Available)</i>*</label>
+          <label>Servee Image <i>(If Available)</i></label>
           <input type='file'
             accept=".jpg,.png"
             label='Upload'

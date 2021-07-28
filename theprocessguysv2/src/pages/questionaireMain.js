@@ -116,14 +116,14 @@ function Questionaire() {
   const [ifYesListAddress, setIfYesListAddress] = useState("");
 
   useEffect(() => {
-    const QuestionaireForm1 = localStorage.getItem("Questionaire1");
-    const QuestionaireForm2 = localStorage.getItem("Questionaire2");
-    const QuestionaireForm3 = localStorage.getItem("Questionaire3");
-    const QuestionaireForm4 = localStorage.getItem("Questionaire4");
-    const QuestionaireForm5 = localStorage.getItem("Questionaire5");
-    const QuestionaireForm6 = localStorage.getItem("Questionaire6");
-    const QuestionaireForm7 = localStorage.getItem("Questionaire7");
-    const QuestionaireForm8 = localStorage.getItem("Questionaire8");
+    const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
+    const QuestionaireForm2 = JSON.parse(localStorage.getItem("Questionaire2"));
+    const QuestionaireForm3 = JSON.parse(localStorage.getItem("Questionaire3"));
+    const QuestionaireForm4 = JSON.parse(localStorage.getItem("Questionaire4"));
+    const QuestionaireForm5 = JSON.parse(localStorage.getItem("Questionaire5"));
+    const QuestionaireForm6 = JSON.parse(localStorage.getItem("Questionaire6"));
+    const QuestionaireForm7 = JSON.parse(localStorage.getItem("Questionaire7"));
+    const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
     if(QuestionaireForm1) {
       setActiveStep(2);
       setCaseTitle(QuestionaireForm1.caseTitle);
@@ -152,18 +152,16 @@ function Questionaire() {
     }
     if(QuestionaireForm3) {
       setActiveStep(4);
-      setHowManyIndividualsServed(QuestionaireForm3.howManyIndividualsServed);
-      setEmploymentOfIndividuals(QuestionaireForm3.employmentOfIndividuals);
-      setNameOfIndividuals(QuestionaireForm3.nameOfIndividuals);
-      setDobOfIndividuals(QuestionaireForm3.dobOfIndividuals);
-      setLocationForBeingServed(QuestionaireForm3.locationForBeingServed);
-      setMainAddressForService(QuestionaireForm3.mainAddressForService);
-      setAgentOfService(QuestionaireForm3.agentOfService);
-      setIfYesListFullName(QuestionaireForm3.ifYesListFullName);
-      setPhoneNumberOfIndividuals(QuestionaireForm3.phoneNumbersOfIndividuals);
-      setEmailsOfIndividuals(QuestionaireForm3.emailsOfIndividuals);
-      setAddressForCurrentPlaceOfEmployment(QuestionaireForm3.addressForCurrentPlaceOfEmployment);
-      setKnownCoResidentsOfServee(QuestionaireForm3.knownCoResidentsOfServee);
+      setDefendantFullName(QuestionaireForm3.defendantFullName);
+      setDefendantAddress(QuestionaireForm3.defendantAddress);
+      setNumberOfAttorneyDefendant(QuestionaireForm3.numberOfAttorneyDefendant);
+      setAttorneyRepresentingDefendantInfo(QuestionaireForm3.attorneyRepresentingDefendantInfo);
+      setDefendantAttorneyName(QuestionaireForm3.defendantAttorneyName);
+      setDefendantAttorneyBarNumber(QuestionaireForm3.defendantAttorneyBarNumber);
+      setDefendantAttorneyOfficeAddress(QuestionaireForm3.defendantAttorneyOfficeAddress);
+      setDefendantAttorneyPhoneNumberForCalls(QuestionaireForm3.defendantAttorneyPhoneNumberForCalls);
+      setDefendantAttorneyEmail(QuestionaireForm3.defendantAttorneyEmail);
+      setDefendantAttorneyFaxNumberOptional(QuestionaireForm3.defendantAttorneyFaxNumberOptional);
     }
     if(QuestionaireForm4) {
       setActiveStep(5);
@@ -277,7 +275,7 @@ function Questionaire() {
       } else if(!numberOfAttorneyPlaintiff.length) {
         showToast("Please select number of plaintiff(s) listed!", "warning");
       } else if(!attorneyRepresentingPlaintiffInfo.length) {
-
+        showToast("Please select number of attorney's representing plaintiff!", "warning");
       } else if(!plaintiffAttorneyName.length) {
         showToast("Please enter plaintiff's attorney name!", "warning");
       } else if(!plaintiffAttorneyBarNumber.length) {
@@ -286,8 +284,6 @@ function Questionaire() {
         showToast("Please enter plaintiff's attorney office address!", "warning");
       } else if(!plaintiffAttorneyEmail.length) {
         showToast("Please enter plaintiff's attorney email!", "warning");
-      } else if(!plaintiffAttorneyPhoneNumberForCalls.length) {
-        showToast("Please enter plaintiff's attorney phone number(s)!", "warning");
       } else {
         let data = {
           plaintiffFullName,
@@ -307,22 +303,18 @@ function Questionaire() {
     } else if(activeStep === 3) {
       if(!defendantFullName.length) {
         showToast("Please enter defendant's full name!", "warning");
-      } else if(!defendantAddress.length) {
-        showToast("Please enter defendant's address!", "warning");
       } else if(!numberOfAttorneyDefendant.length) {
-        showToast("Please enter number of attorney defendant!", "warning");
+        showToast("Please select number of defendant(s) listed!", "warning");
       } else if(!attorneyRepresentingDefendantInfo.length) {
-        showToast("Please enter attorney representing defendant info!", "warning");
+        showToast("Please select number of attorney's representing defendant!", "warning");
       } else if(!defendantAttorneyName.length) {
         showToast("Please enter defendant attorney name!", "warning");
-      } else if(!defendantAttorneyOfficeAddress.length) {
-        showToast("Please enter defendant attorney office address!", "warning");
       } else if(!defendantAttorneyBarNumber.length) {
         showToast("Please enter defendant attorney bar number!", "warning");
+      } else if(!defendantAttorneyOfficeAddress.length) {
+        showToast("Please enter defendant attorney office address!", "warning");
       } else if(!defendantAttorneyEmail.length) {
         showToast("Please enter defendant attorney email!", "warning");
-      } else if(!defendantAttorneyPhoneNumberForCalls.length) {
-        showToast("Please enter defendant attorney phone number!", "warning");
       } else {
         let data = {
           defendantFullName,
@@ -342,28 +334,22 @@ function Questionaire() {
     } else if(activeStep === 4) {
       if(!howManyIndividualsServed.length) {
         showToast("Please select how many individuals being served!", "warning");
-      } else if(!employmentOfIndividuals.length) {
-        showToast("Please enter employment of individuals!", "warning");
       } else if(!nameOfIndividuals.length) {
-        showToast("Please enter name of individuals!", "warning");
+        showToast("Please enter full name of individual(s) who is receiving Service!", "warning");
       } else if(!dobOfIndividuals.length) {
-        showToast("Please enter date of birth of individuals!", "warning");
+        showToast("Please enter date of birth of servee!", "warning");
       } else if(!locationForBeingServed.length) {
-        showToast("Please enter location for being served!", "warning");
+        showToast("Please select the kind of location being served!", "warning");
       } else if(!mainAddressForService.length) {
         showToast("Please enter main address for service!", "warning");
-      } else if(!agentOfService.length) {
-        showToast("Please enter agent of service!", "warning");
-      } else if(!ifYesListFullName.length) {
-        showToast("Please enter full name!", "warning");
-      } else if(!phoneNumbersOfIndividuals.length) {
-        showToast("Please enter phone numbers of individuals!", "warning");
+      } else if(typeof(agentOfService)!=="boolean") {
+        showToast("Please select if there is an agent of service!", "warning");
+      } else if(agentOfService && !ifYesListFullName.length) {
+        showToast("Please enter full name to agent of service!", "warning");
       } else if(!emailsOfIndividuals.length) {
-        showToast("Please enter emails of individuals!", "warning");
-      } else if(!addressForCurrentPlaceOfEmployment.length) {
-        showToast("Please enter address for current place of employment!", "warning");
-      } else if(!knownCoResidentsOfServee.length) {
-        showToast("Please enter known co residents of servee!", "warning");
+        showToast("Please enter emails of pertaining servee(s)!", "warning");
+      } else if(typeof(employmentOfIndividuals)!=="boolean") {
+        showToast("Please enter employment of individuals!", "warning");
       } else {
         let data = {
           howManyIndividualsServed,          
@@ -383,21 +369,21 @@ function Questionaire() {
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
-      if(!serveIndividualAtEmployment.length) {
+      if(typeof(serveIndividualAtEmployment)!=="boolean") {
         showToast("Please select should the servee be served at the place of employment!", "warning");
-      } else if(!processServerLeaveDoorTag.length) {
+      } else if(typeof(processServerLeaveDoorTag)!=="boolean") {
         showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
-      } else if(!subserveAfterThreeAttempts.length) {
+      } else if(typeof(subserveAfterThreeAttempts)!=="boolean") {
         showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
-      } else if(!requireServerNotifyPersonOfInterest.length) {
+      } else if(typeof(requireServerNotifyPersonOfInterest)!=="boolean") {
         showToast("Please select should process server verbally notify the Servee", "warning");
-      } else if(!serverContactServeeByPhone.length) {
+      } else if(typeof(serverContactServeeByPhone)!=="boolean") {
         showToast("Please select should process server Contact the Servee by Phone", "warning");
-      } else if(!serverPostDocumentsWithRubberBand.length) {
+      } else if(typeof(serverPostDocumentsWithRubberBand)!=="boolean") {
         showToast("Please select may process server post documents with a rubber band", "warning");
-      } else if(!dropServeForceServe.length) {
+      } else if(typeof(dropServeForceServe)!=="boolean") {
         showToast("Please select if “Drop Serve / Force Serve” Allowed", "warning");
-      } else if(!paralegalAttorneyClientContactServee.length) {
+      } else if(typeof(paralegalAttorneyClientContactServee)!=="boolean") {
         showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
       } else {
         let data = {
@@ -414,89 +400,52 @@ function Questionaire() {
         setActiveStep(6);
       }
     } else if(activeStep===6) {
-      if(!fullNameOfDescribedServee.length) {
-        showToast("Please enter full name of described servee!", "warning");
-      } else if(!imageOfIndividuals) {
-        showToast("Please upload image of individuals!", "warning");
-      } else if(!genderOfIndividuals.length) {
-        showToast("Please select gender of individuals!", "warning");
-      } else if(!ethnicityOfIndividuals.length) {
-        showToast("Please select ethnicity of individuals!", "warning");
-      } else if(!heightOfIndividuals.length) {
-        showToast("Please enter height of individuals!", "warning");
-      } else if(!weightOfIndividuals.length) {
-        showToast("Please enter weight of individuals!", "warning");
-      } else if(!hairColorOfIndividuals.length) {
-        showToast("Please enter hair color of individuals!", "warning");
-      } else if(!eyeColorOfIndividuals.length) {
-        showToast("Please enter eye color of individuals!", "warning");
-      } else if(!physicalOutlineOfIndividuals.length) {
-        showToast("Please enter physical outline of individuals!", "warning");
-      } else {
-        let data = {
-          fullNameOfDescribedServee,
-          imageOfIndividuals,
-          genderOfIndividuals,
-          ethnicityOfIndividuals,
-          heightOfIndividuals,
-          weightOfIndividuals,
-          hairColorOfIndividuals,
-          eyeColorOfIndividuals,
-          physicalOutlineOfIndividuals
-        };
-        localStorage.setItem('Questionaire6', JSON.stringify(data));
-        setActiveStep(7);
-      }
+      let data = {
+        fullNameOfDescribedServee,
+        imageOfIndividuals,
+        genderOfIndividuals,
+        ethnicityOfIndividuals,
+        heightOfIndividuals,
+        weightOfIndividuals,
+        hairColorOfIndividuals,
+        eyeColorOfIndividuals,
+        physicalOutlineOfIndividuals
+      };
+      localStorage.setItem('Questionaire6', JSON.stringify(data));
+      setActiveStep(7);
     } else if(activeStep===7) {
-      if(!insuranceCompanyOfServee.length) {
-        showToast("Please enter insurance company of servee!", "warning");
-      } else if(!vehicleTypeModelOwnership.length) {
-        showToast("Please enter vehicle type/model ownership!", "warning");
-      } else if(!licensePlateNumberState.length) {
-        showToast("Please enter license plate number!", "warning");
-      } else if(!vinNumberOfIndividuals.length) {
-        showToast("Please enter vehicle vin number!", "warning");
-      } else if(!yearOfMakeOnVehicle.length) {
-        showToast("Please enter vehicle's year of make!", "warning");
-      } else if(!vehicleColor.length) {
-        showToast("Please enter vehicle color!", "warning");
-      } else {
-        let data = {
-          insuranceCompanyOfServee,
-          vehicleTypeModelOwnership,
-          licensePlateNumberState,
-          vinNumberOfIndividuals,
-          yearOfMakeOnVehicle,
-          vehicleColor
-        };
-        localStorage.setItem('Questionaire7', JSON.stringify(data));
-      }
+      let data = {
+        insuranceCompanyOfServee,
+        vehicleTypeModelOwnership,
+        licensePlateNumberState,
+        vinNumberOfIndividuals,
+        yearOfMakeOnVehicle,
+        vehicleColor
+      };
+      localStorage.setItem('Questionaire7', JSON.stringify(data));
+      setActiveStep(8);
     } else if(activeStep===8) {
-      if(!requireStakeOutService.length) {
+      if(typeof(requireStakeOutService)!=="boolean") {
         showToast("Please select an option for stake out service!", "warning");
-      } else if(!specifyDatesForStakeOutService.length) {
-        showToast("Please enter stake out time and hours!", "warning");
-      } else if(!requireRushService.length) {
+      } else if(typeof(requireRushService)!=="boolean") {
         showToast("Please select if your require a rush out service!", "warning");
-      } else if(!listDateWhenServiceAttemptsClosed.length) {
-        showToast("Please select the date when service attempts close out!", "warning");
-      } else if(!requireFirst24HourService.length) {
+      } else if(typeof(requireFirst24HourService)!=="boolean") {
         showToast("Please select if service should be attempted within 24 hours of submission!", "warning");
-      } else if(!requireSkipTracingService.length) {
+      } else if(typeof(requireSkipTracingService)!=="boolean") {
         showToast("Please select if you require skip tracing service!", "warning");
-      } else if(!requireBodyCamFootage.length) {
+      } else if(typeof(requireBodyCamFootage)!=="boolean") {
         showToast("Please select if you require body cam footage of service!", "warning");
-      } else if(!obtainNewDeliveryLocation.length) {
+      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
         showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
-      } else if(!poBoxAllowedToServe.length) {
+      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
         showToast("Please select if P.O. box is allowed to be served!", "warning");
-      } else if(!requireByEmail.length) {
+      } else if(typeof(requireByEmail)!=="boolean") {
         showToast("Please select if you require a service by E-mail!", "warning");
-      } else if(!requireServiceByMail.length) {
+      } else if(typeof(requireServiceByMail)!=="boolean") {
         showToast("Please select if you require a service by secured postal mail with signature!", "warning");
-      } else if(!specificCourtInstruction.length) {
+      } else if(typeof(requireZipFileService)!=="boolean") {
         showToast("Please select if you require a zip file service at a court house!", "warning");
-      } else if(!ifYesListAddress.length) {
+      } else if(requireZipFileService && !ifYesListAddress.length) {
         showToast("Please enter address for zip filing!", "warning");
       } else {
         let data = {
@@ -512,9 +461,11 @@ function Questionaire() {
           requireServiceByMail,
           requireByEmail,
           specificCourtInstruction,
+          requireZipFileService,
           ifYesListAddress
         };
         localStorage.setItem('Questionaire8', JSON.stringify(data));
+        setActiveStep(9);
       }
     }
   }
