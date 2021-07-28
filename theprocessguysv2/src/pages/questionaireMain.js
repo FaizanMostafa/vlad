@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Stepper } from 'react-form-stepper';
@@ -115,6 +115,122 @@ function Questionaire() {
   const [requireZipFileService, setRequireZipFileService] = useState("");
   const [ifYesListAddress, setIfYesListAddress] = useState("");
 
+  useEffect(() => {
+    const QuestionaireForm1 = localStorage.getItem("Questionaire1");
+    const QuestionaireForm2 = localStorage.getItem("Questionaire2");
+    const QuestionaireForm3 = localStorage.getItem("Questionaire3");
+    const QuestionaireForm4 = localStorage.getItem("Questionaire4");
+    const QuestionaireForm5 = localStorage.getItem("Questionaire5");
+    const QuestionaireForm6 = localStorage.getItem("Questionaire6");
+    const QuestionaireForm7 = localStorage.getItem("Questionaire7");
+    const QuestionaireForm8 = localStorage.getItem("Questionaire8");
+    if(QuestionaireForm1) {
+      setActiveStep(2);
+      setCaseTitle(QuestionaireForm1.caseTitle);
+      setCaseNumber(QuestionaireForm1.caseNumber);
+      setCourtDate(QuestionaireForm1.courtDate);
+      setSuperiorCourtOf(QuestionaireForm1.superiorCourtOf);
+      setCountyOf(QuestionaireForm1.countyOf);
+      setCourthouseAddress(QuestionaireForm1.courthouseAddress);
+      setCourthouseMailingAddress(QuestionaireForm1.courthouseMailingAddress);
+      setBranchName(QuestionaireForm1.branchName);
+      setAppealsCourtOf(QuestionaireForm1.appealsCourtOf);
+      setSupremeCourtOf(QuestionaireForm1.supremeCourtOf);
+    }
+    if(QuestionaireForm2) {
+      setActiveStep(3);
+      setPlaintiffFullName(QuestionaireForm2.plaintiffFullName);
+      setPlaintiffAddress(QuestionaireForm2.plaintiffAddress);
+      setNumberOfAttorneyPlaintiff(QuestionaireForm2.numberOfAttorneyPlaintiff);
+      setAttorneyRepresentingPlaintiffInfo(QuestionaireForm2.attorneyRepresentingPlaintiffInfo) 
+      setPlaintiffAttorneyName(QuestionaireForm2.plaintiffAttorneyName);
+      setPlaintiffAttorneyBarNumber(QuestionaireForm2.plaintiffAttorneyBarNumber);
+      setPlaintiffAttorneyOfficeAddress(QuestionaireForm2.plaintiffAttorneyOfficeAddress);
+      setPlaintiffAttorneyPhoneNumberForCalls(QuestionaireForm2.plaintiffAttorneyPhoneNumberForCalls);
+      setPlaintiffAttorneyEmail(QuestionaireForm2.plaintiffAttorneyEmail);
+      setPlaintiffAttorneyFaxNumberOptional(QuestionaireForm2.plaintiffAttorneyFaxNumberOptional);
+    }
+    if(QuestionaireForm3) {
+      setActiveStep(4);
+      setHowManyIndividualsServed(QuestionaireForm3.howManyIndividualsServed);
+      setEmploymentOfIndividuals(QuestionaireForm3.employmentOfIndividuals);
+      setNameOfIndividuals(QuestionaireForm3.nameOfIndividuals);
+      setDobOfIndividuals(QuestionaireForm3.dobOfIndividuals);
+      setLocationForBeingServed(QuestionaireForm3.locationForBeingServed);
+      setMainAddressForService(QuestionaireForm3.mainAddressForService);
+      setAgentOfService(QuestionaireForm3.agentOfService);
+      setIfYesListFullName(QuestionaireForm3.ifYesListFullName);
+      setPhoneNumberOfIndividuals(QuestionaireForm3.phoneNumbersOfIndividuals);
+      setEmailsOfIndividuals(QuestionaireForm3.emailsOfIndividuals);
+      setAddressForCurrentPlaceOfEmployment(QuestionaireForm3.addressForCurrentPlaceOfEmployment);
+      setKnownCoResidentsOfServee(QuestionaireForm3.knownCoResidentsOfServee);
+    }
+    if(QuestionaireForm4) {
+      setActiveStep(5);
+      setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
+      setEmploymentOfIndividuals(QuestionaireForm4.employmentOfIndividuals);
+      setNameOfIndividuals(QuestionaireForm4.nameOfIndividuals);
+      setDobOfIndividuals(QuestionaireForm4.dobOfIndividuals);
+      setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
+      setMainAddressForService(QuestionaireForm4.mainAddressForService);
+      setAgentOfService(QuestionaireForm4.agentOfService);
+      setIfYesListFullName(QuestionaireForm4.ifYesListFullName);
+      setPhoneNumberOfIndividuals(QuestionaireForm4.phoneNumbersOfIndividuals);
+      setEmailsOfIndividuals(QuestionaireForm4.emailsOfIndividuals);
+      setAddressForCurrentPlaceOfEmployment(QuestionaireForm4.addressForCurrentPlaceOfEmployment);
+      setKnownCoResidentsOfServee(QuestionaireForm4.knownCoResidentsOfServee);
+    }
+    if(QuestionaireForm5) {
+      setActiveStep(6);
+      setServeIndividualAtEmployment(QuestionaireForm5.serveIndividualAtEmployment);
+      setProcessServerLeaveDoorTag(QuestionaireForm5.processServerLeaveDoorTag);
+      setSubserveAfterThreeAttempts(QuestionaireForm5.subserveAfterThreeAttempts);
+      setRequireServerNotifyPersonOfInterest(QuestionaireForm5.requireServerNotifyPersonOfInterest);
+      setServerContactServeeByPhone(QuestionaireForm5.serverContactServeeByPhone);
+      setServerPostDocumentsWithRubberBand(QuestionaireForm5.serverPostDocumentsWithRubberBand);
+      setDropServeForceServe(QuestionaireForm5.dropServeForceServe);
+      setParalegalAttorneyClientContactServee(QuestionaireForm5.paralegalAttorneyClientContactServee);
+    }
+    if(QuestionaireForm6) {
+      setActiveStep(7);
+      setFullNameOfDescribedServee(QuestionaireForm6.fullNameOfDescribedServee);
+      setImageOfIndividuals(QuestionaireForm6.imageOfIndividuals);
+      setGenderOfIndividuals(QuestionaireForm6.genderOfIndividuals);
+      setEthnicityOfIndividuals(QuestionaireForm6.ethnicityOfIndividuals);
+      setHeightOfIndividuals(QuestionaireForm6.heightOfIndividuals);
+      setWeightOfIndividuals(QuestionaireForm6.weightOfIndividuals);
+      setHairColorOfIndividuals(QuestionaireForm6.hairColorOfIndividuals);
+      setEyeColorOfIndividuals(QuestionaireForm6.eyeColorOfIndividuals);
+      setPhysicalOutlineOfIndividuals(QuestionaireForm6.physicalOutlineOfIndividuals);
+    }
+    if(QuestionaireForm7) {
+      setActiveStep(8);
+      setInsuranceCompanyOfServee(QuestionaireForm7.insuranceCompanyOfServee);
+      setLicensePlateNumberState(QuestionaireForm7.licensePlateNumberState);
+      setVinNumberOfIndividuals(QuestionaireForm7.vinNumberOfIndividuals);
+      setYearOfMakeOnVehicle(QuestionaireForm7.yearOfMakeOnVehicle);
+      setVehicleColor(QuestionaireForm7.vehicleColor);
+      setVehicleTypeModelOwnership(QuestionaireForm7.vehicleTypeModelOwnership);
+    }
+    if(QuestionaireForm8) {
+      setActiveStep(9);
+      setRequireStakeoutService(QuestionaireForm8.requireStakeOutService);
+      setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
+      setRequireRushService(QuestionaireForm8.requireRushService);
+      setListDateWhenServiceAttemptsClosed(QuestionaireForm8.listDateWhenServiceAttemptsClosed);
+      setRequireFirst24HourService(QuestionaireForm8.requireFirst24HourService);
+      setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
+      setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
+      setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
+      setPOBoxAllowedToServe(QuestionaireForm8.poBoxAllowedToServe);
+      setRequireServiceByMail(QuestionaireForm8.requireServiceByMail);
+      setRequireByEmail(QuestionaireForm8.requireByEmail);
+      setSpecificCourtInstruction(QuestionaireForm8.specificCourtInstruction);
+      setRequireZipFileService(QuestionaireForm8.requireZipFileService);
+      setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
+    }
+  }, []);
+
   const handleOnPressNext = () => {
     if(activeStep === 1) {
       if(!caseTitle.length) {
@@ -150,7 +266,7 @@ function Questionaire() {
           appealsCourtOf,
           supremeCourtOf
         }
-        localStorage.setItem('questionaireMain', JSON.stringify(data));
+        localStorage.setItem('Questionaire1', JSON.stringify(data));
         setActiveStep(2);
       }
     } else if(activeStep === 2) {
@@ -185,7 +301,7 @@ function Questionaire() {
           plaintiffAttorneyPhoneNumberForCalls,
           plaintiffAttorneyFaxNumberOptional
         };
-        localStorage.setItem('questionairePlaintiff', JSON.stringify(data));
+        localStorage.setItem('Questionaire2', JSON.stringify(data));
         setActiveStep(3);
       }
     } else if(activeStep === 3) {
@@ -220,7 +336,7 @@ function Questionaire() {
           defendantAttorneyPhoneNumberForCalls,
           defendantAttorneyFaxNumberOptional
         };
-        localStorage.setItem('questionaireDefendant', JSON.stringify(data));
+        localStorage.setItem('Questionaire3', JSON.stringify(data));
         setActiveStep(4);
       }
     } else if(activeStep === 4) {
@@ -263,7 +379,7 @@ function Questionaire() {
           addressForCurrentPlaceOfEmployment,
           knownCoResidentsOfServee
         };
-        localStorage.setItem('questionaireServeeDocumentedData', JSON.stringify(data));
+        localStorage.setItem('Questionaire4', JSON.stringify(data));
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
@@ -294,7 +410,7 @@ function Questionaire() {
           dropServeForceServe,          
           paralegalAttorneyClientContactServee
         };
-        localStorage.setItem('questionaireClearanceOfAction', JSON.stringify(data));
+        localStorage.setItem('Questionaire5', JSON.stringify(data));
         setActiveStep(6);
       }
     } else if(activeStep===6) {
@@ -328,7 +444,7 @@ function Questionaire() {
           eyeColorOfIndividuals,
           physicalOutlineOfIndividuals
         };
-        localStorage.setItem('questionaireServeePhysicalDescription', JSON.stringify(data));
+        localStorage.setItem('Questionaire6', JSON.stringify(data));
         setActiveStep(7);
       }
     } else if(activeStep===7) {
@@ -353,8 +469,7 @@ function Questionaire() {
           yearOfMakeOnVehicle,
           vehicleColor
         };
-        localStorage.setItem('questionaireVehicleInfo', JSON.stringify(data));
-        // history.push('/questionaire-offered-services');
+        localStorage.setItem('Questionaire7', JSON.stringify(data));
       }
     } else if(activeStep===8) {
       if(!requireStakeOutService.length) {
@@ -399,7 +514,7 @@ function Questionaire() {
           specificCourtInstruction,
           ifYesListAddress
         };
-        localStorage.setItem('questionaireOfferedServices', JSON.stringify(data));
+        localStorage.setItem('Questionaire8', JSON.stringify(data));
       }
     }
   }
