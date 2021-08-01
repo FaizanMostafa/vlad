@@ -715,14 +715,18 @@ function Questionaire() {
           &&
             <PacketSubmission />
       }
-      <div className="d-flex justify-content-end">
-        <button
-          className="btn btn-primary mt-1 mb-1"
-          onClick={handleOnPressNext}
-        >
-          {getButtonTitle()}
-        </button>
-      </div>
+      {
+        activeStep!==9
+          &&
+            <div className="d-flex justify-content-end">
+              <button
+                className="btn btn-primary mt-1 mb-1"
+                onClick={handleOnPressNext}
+              >
+                {getButtonTitle()}
+              </button>
+            </div>
+      }
       <br/><br/><br/>
     </React.Fragment>
   )
