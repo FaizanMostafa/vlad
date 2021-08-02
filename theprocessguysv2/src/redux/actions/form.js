@@ -29,8 +29,9 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         documentURI = await uploadMedia(document, `file_submissions/${data.uid}/`);
         documents.push(documentURI);
       }
-      await db.collection("FileSubmission-9").add({uid: data.uid, documents});
-      showToast("File submitted successfully!", "success");
+      await db.collection("FileSubmission-9").add({uid: data.uid, documents, submittedAt: new Date()});
+      showToast("Case submitted successfully!", "success");
+      dispatch(setIsFormPosting(false));
       onSuccess();
     } catch(error) {
       onError();

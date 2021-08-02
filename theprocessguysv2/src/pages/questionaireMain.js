@@ -11,7 +11,7 @@ import {
   Questionaire6,
   Questionaire7,
   Questionaire8,
-  PacketSubmission
+  FileSubmission
 } from "../forms/NewCaseSubmission";
 import { showToast } from "../utils";
 
@@ -713,7 +713,7 @@ function Questionaire() {
       {
         activeStep===9
           &&
-            <PacketSubmission />
+            <FileSubmission />
       }
       {
         activeStep!==9

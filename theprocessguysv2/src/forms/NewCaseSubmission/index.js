@@ -7,7 +7,7 @@ import Questionaire5 from "./Questionaire5";
 import Questionaire6 from "./Questionaire6";
 import Questionaire7 from "./Questionaire7";
 import Questionaire8 from "./Questionaire8";
-import PacketSubmission from './PacketSubmission';
+import FileSubmission from './FileSubmission';
 
 export {
   Questionaire1,
@@ -18,5 +18,5 @@ export {
   Questionaire6,
   Questionaire7,
   Questionaire8,
-  PacketSubmission
+  FileSubmission
 };

@@ -8,8 +8,6 @@ import Register from "../pages/register";
 import ForgotPassword from "../pages/ForgotPassword";
 import NavBar from "../navbar/navBar";
 import Footer from "../footer/footer";
-import SingleSubmission from "../pages/singleSubmission";
-import MultiSubmission from "../pages/multipleSubmission";
 import MemberDashboard from "../pages/Dashboard";
 import LoadingPage from "../pages/Loading";
 import UpdateProfilePage from "../pages/UpdateProfile";
@@ -53,25 +51,23 @@ const Navigation = (props) => {
       <Router>
         <Switch>
           <CustomRoute exact path='/' component={TheProcessGuys} isProtected redirect="/login" />
-          <Route path = '/single-submission' component = {SingleSubmission} />
-          <Route path = '/multi-submission' component = {MultiSubmission} />
-          <Route path = '/view-cases' component = {ViewCases} />
-          <Route path = '/admin-dashboard' component = {AdminDashboard} />
-          <Route path = '/login' component = {Login} />
-          <Route path = '/register' component = {Register} />
-          <Route path = '/forgot-password' component = {ForgotPassword} />
-          <Route path = '/member-dashboard' component = {MemberDashboard} />
-          <Route path = '/update-profile' component = {UpdateProfilePage} />
-          <Route path = '/questionaire' component = {QuestionaireMain} />
-          <Route path = '/questionaire-finished' component = {ThankYouForRegistering} />
-          <Route path = '/questionaire-terms-of-service' component = {TermsOfServiceTemplate} />
-          <Route path = '/case-document-archive' component = {CaseDocumentArchive} />
-          <Route path = '/news-update-for-clients' component = {NewsUpdateForClients} />
-          <Route path = '/client-payment-credit-card' component = {ClientPayment} />
-          <Route path = '/client-payment-options' component = {ClientPaymentOptions} />
-          <Route path = '/payment-successful' component = {PaymentSuccessful} />
-          <Route path = '/payment-failure' component = {PaymentFailure} />
-          <Route path = '/after-upload-message' component = {AfterUploadMessage} />
+          <Route path='/view-cases' component={ViewCases} />
+          <CustomRoute exact path='/admin-dashboard' component={AdminDashboard} isProtected redirect="/login" />
+          <Route path='/login' component={Login} />
+          <Route path='/register' component={Register} />
+          <Route path='/forgot-password' component={ForgotPassword} />
+          <CustomRoute exact path='/member-dashboard' component={MemberDashboard} isProtected redirect="/login" />
+          <CustomRoute exact path='/update-profile' component={UpdateProfilePage} isProtected redirect="/login" />
+          <CustomRoute exact path='/questionaire' component={QuestionaireMain} isProtected redirect="/login" />
+          <Route path='/questionaire-finished' component={ThankYouForRegistering} />
+          <Route path='/questionaire-terms-of-service' component={TermsOfServiceTemplate} />
+          <Route path='/case-document-archive' component={CaseDocumentArchive} />
+          <Route path='/news-update-for-clients' component={NewsUpdateForClients} />
+          <Route path='/client-payment-credit-card' component={ClientPayment} />
+          <Route path='/client-payment-options' component={ClientPaymentOptions} />
+          <Route path='/payment-successful' component={PaymentSuccessful} />
+          <Route path='/payment-failure' component={PaymentFailure} />
+          <Route path='/after-upload-message' component={AfterUploadMessage} />
         </Switch>
       </Router>
       <Footer />

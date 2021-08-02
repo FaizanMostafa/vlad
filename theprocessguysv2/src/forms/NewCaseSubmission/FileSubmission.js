@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { MDBCol } from 'mdbreact';
 import { useHistory } from 'react-router-dom';
+import { MDBCol } from 'mdbreact';
 import {
   submitCase
-} from "../redux/actions/form";
+} from "../../redux/actions/form";
 
 const SingleSubmission = ({...props}) => {
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector(state => state.auth.user);
   const isPosting = useSelector(state => state.form.isPosting);
+  const [fileUpload, setFileUpload] = useState("");
+  const [fileSubmissionType, setFileSubmissionType] = useState("single");
 
   const handleCaseSubmit = () => {
     if(!isPosting) {
@@ -136,28 +139,18 @@ const SingleSubmission = ({...props}) => {
         };
       }
       data["documents"] = [fileUpload];
-      dispatch(submitCase({uid: user.uid, ...data}));
+      dispatch(submitCase({uid: user.uid, ...data}, ()=>{
+        localStorage.removeItem("Questionaire1");
+        localStorage.removeItem("Questionaire2");
+        localStorage.removeItem("Questionaire3");
+        localStorage.removeItem("Questionaire4");
+        localStorage.removeItem("Questionaire5");
+        localStorage.removeItem("Questionaire6");
+        localStorage.removeItem("Questionaire7");
+        localStorage.removeItem("Questionaire8");
+        history.push("/member-dashboard");
+      }));
     }
-  }
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [fileUpload, setFileUpload] = useState("");
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [fileName, setFileName] = useState("");
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  let history = useHistory();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let data = {
-      fileUpload,
-      fileName
-    }
-
-    localStorage.setItem('questionaireSingleSubmission', JSON.stringify(data))
-    history.push('/questionaire-finished')
-
   }
 
   return (
@@ -177,24 +170,27 @@ const SingleSubmission = ({...props}) => {
       <br></br>
       <br></br>
       <br></br>
-      <h2><b>Multiple Submission Upload</b></h2>
+      <h2><b>Case Files Submission Upload</b></h2>
       <div>
         <br></br>
         <MDBCol md="12">
-          <Form.Group id="fileName">
-            <Form.Label>File Name</Form.Label>
-            <Form.Control
-              value={fileName}
-              type="text"
-              onChange={(e) => setFileName(e.target.value)}
-            />
+          <Form.Group id="mS-file-upload-type">
+            <label>File Type</label>
+            <select className="w-75 m-4 text-center p-2"
+              value={fileSubmissionType}
+              onChange={(e) => setFileSubmissionType(e.target.value)}
+              required
+            >
+              <option value="single" selected={fileSubmissionType==="single"}>Single File Submission</option>
+              <option value="multiple" selected={fileSubmissionType==="multiple"}>Multiple File Submission</option>
+            </select><br></br>
           </Form.Group>
           <Form.Group id="mS-file-upload">
             <label>File Image</label>
             <input
               type="file"
               onChange={(e) => { setFileUpload(e.target.files[0]) }}
-              accept=".pdf, .zip"
+              accept={fileSubmissionType === "single" ? ".pdf" : ".rar, .zip"}
             >
             </input>
           </Form.Group>
@@ -205,14 +201,15 @@ const SingleSubmission = ({...props}) => {
           {
             isPosting
               ?
-                <span>...</span>
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
               :
-                <span>Submit Case</span>
+                <span className="text-white">Submit Case</span>
           }
         </Button>
         <br></br>
         <br></br>
-        {/* <button className="btn btn-primary">+ New Submission</button> */}
       </div>
       <br></br>
       <br></br>
