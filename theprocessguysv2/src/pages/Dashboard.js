@@ -7,7 +7,7 @@ const Dashboard = (props) => {
   const user = useSelector(state => state.auth.user);
 
   return (
-    <>
+    <div style={{minHeight: "100vh"}}>
       <Card className="homepage">
         <Card.Body className="text-center">
           <h2 className="text-center mb-4">Member Dashboard</h2>
@@ -64,47 +64,24 @@ const Dashboard = (props) => {
             
             <div>Address: {user.address}</div>
             <br></br>
-
-          <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
-            Update Profile
-          </Link>
-          <br></br>
-          <Link to="/questionaire" className="btn btn-primary w-50 justify-content-center">
-            New Submission
-          </Link>
-          <br></br>
-          <Link to="/case-document-archive" className="btn btn-primary w-50 justify-content-center">
-            View Cases
-          </Link>
+          <div style={{margin: "auto"}}>
+            <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
+              Update Profile
+            </Link>
+            <br></br>
+            <Link to="/questionaire" className="btn btn-primary w-50 justify-content-center">
+              New Submission
+            </Link>
+            <br></br>
+            <Link to="/case-document-archive" className="btn btn-primary w-50 justify-content-center">
+              View Cases
+            </Link>
+          </div>
           <br></br>
         </Card.Body>
 
       </Card>
-      <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-    </>
+    </div>
   )
 }
 

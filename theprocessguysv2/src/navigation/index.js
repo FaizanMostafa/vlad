@@ -47,8 +47,8 @@ const Navigation = (props) => {
 
   return (
     <>
-      <NavBar />
       <Router>
+        <NavBar />
         <Switch>
           <CustomRoute exact path='/' component={TheProcessGuys} isProtected redirect="/login" />
           <Route path='/view-cases' component={ViewCases} />
@@ -67,7 +67,7 @@ const Navigation = (props) => {
           <Route path='/client-payment-options' component={ClientPaymentOptions} />
           <Route path='/payment-successful' component={PaymentSuccessful} />
           <Route path='/payment-failure' component={PaymentFailure} />
-          <Route path='/after-upload-message' component={AfterUploadMessage} />
+          <Route path='/case-submission-success' component={AfterUploadMessage} />
         </Switch>
       </Router>
       <Footer />

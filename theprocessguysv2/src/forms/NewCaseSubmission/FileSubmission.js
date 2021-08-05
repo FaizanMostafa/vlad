@@ -7,7 +7,7 @@ import {
   submitCase
 } from "../../redux/actions/form";
 
-const SingleSubmission = ({...props}) => {
+const FileSubmission = ({...props}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -148,7 +148,7 @@ const SingleSubmission = ({...props}) => {
         localStorage.removeItem("Questionaire6");
         localStorage.removeItem("Questionaire7");
         localStorage.removeItem("Questionaire8");
-        history.push("/member-dashboard");
+        history.push("/case-submission-success");
       }));
     }
   }
@@ -230,4 +230,4 @@ const SingleSubmission = ({...props}) => {
   )
 }
 
-export default SingleSubmission;
+export default FileSubmission;
