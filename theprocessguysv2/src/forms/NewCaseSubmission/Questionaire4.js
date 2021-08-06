@@ -157,7 +157,7 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="email-of-individuals">
         <div id="email-of-individuals">
-          <label>E-Mail(s) pertaining Servee(s)</label>
+          <label>E-Mail(s) pertaining Servee(s)*</label>
           <MDBInput
             type="textarea"
             className="text-white"

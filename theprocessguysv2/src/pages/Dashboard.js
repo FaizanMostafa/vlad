@@ -64,7 +64,7 @@ const Dashboard = (props) => {
             
             <div>Address: {user.address}</div>
             <br></br>
-          <div style={{margin: "auto"}}>
+          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
               Update Profile
             </Link>
@@ -79,7 +79,6 @@ const Dashboard = (props) => {
           </div>
           <br></br>
         </Card.Body>
-
       </Card>
     </div>
   )
