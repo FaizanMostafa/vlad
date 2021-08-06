@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux';
+import caseReducer from "./case";
 import auth from "./auth";
-import form from "./form";
 
 const rootReducer = combineReducers({
   auth,
-  form
+  caseReducer
 });
 
 export default rootReducer;

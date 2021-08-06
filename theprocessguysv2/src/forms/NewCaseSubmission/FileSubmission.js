@@ -5,14 +5,14 @@ import { useHistory } from 'react-router-dom';
 import { MDBCol } from 'mdbreact';
 import {
   submitCase
-} from "../../redux/actions/form";
+} from "../../redux/actions/case";
 
 const FileSubmission = ({...props}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(state => state.auth.user);
-  const isPosting = useSelector(state => state.form.isPosting);
+  const isPosting = useSelector(state => state.caseReducer.isPosting);
   const [fileUpload, setFileUpload] = useState("");
   const [fileSubmissionType, setFileSubmissionType] = useState("single");
 
