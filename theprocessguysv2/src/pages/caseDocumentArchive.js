@@ -60,8 +60,9 @@ function CaseDocumentArchive() {
                             Case Title Name: {caseData.CaseInformation.caseTitle}
                         </div>
                         <br></br>
+                        {/*Questionaire 4 "Main Address for Service" */}
                         <div>
-                            Address of Serve: {takePlaceOfServeAddress}
+                            Address of Serve: {caseData.ServeeOfDocumentedData.mainAddressForService}
                         </div>
                         <br></br>
                         <div>
@@ -72,16 +73,19 @@ function CaseDocumentArchive() {
                             Defendant Name: {caseData.DefendantInformation.defendantFullName}
                         </div>
                         <br></br>
+                        {/*Questionaire 2 "Plaintiff Information" */}
                         <div>
-                            Attorney Name: {attorneyName}
+                            Attorney Name: {caseData.PlaintiffInformation.plaintiffAttorneyName}
                         </div>
                         <br></br>
+                        {/* We can skip this one
                         <div>
                             Attorney Firm: {attorneyFirm}
                         </div>
-                        <br></br>
+                        <br></br>*/}
+                        {/*Questionaire 2 "Plaintiff Information" */}
                         <div>
-                            Phone Number: {phoneNumber}
+                            Attorney Phone Number: {caseData.PlaintiffInformation.plaintiffAttorneyPhoneNumberForCalls}
                         </div>
                         <br></br>
                         <div>

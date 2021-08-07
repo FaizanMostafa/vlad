@@ -23,6 +23,7 @@ import ClientPaymentOptions from '../pages/clientPaymentOptions';
 import PaymentSuccessful from '../pages/paymentSucessful';
 import PaymentFailure from '../pages/paymentFailure';
 import AfterUploadMessage from '../pages/afterUploadMessage';
+import ContactUs from '../pages/contactus2';
 
 const Navigation = (props) => {
 
@@ -68,6 +69,7 @@ const Navigation = (props) => {
           <Route path='/payment-successful' component={PaymentSuccessful} />
           <Route path='/payment-failure' component={PaymentFailure} />
           <Route path='/case-submission-success' component={AfterUploadMessage} />
+          <Route path='/contact-us' component={ContactUs} />
         </Switch>
       </Router>
       <Footer />
