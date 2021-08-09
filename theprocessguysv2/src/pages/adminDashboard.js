@@ -7,7 +7,7 @@ function AdminDashboard() {
 
   return (
     <>
-      <Card className="homepage">
+      <Card className="homepage text-center">
 
         <Card.Body className="text-center">
 
@@ -24,45 +24,38 @@ function AdminDashboard() {
             <br></br>
             <div>Phone Number: `{}`</div>
             <br></br>
-            {/*Show Personal ID ONLY for ADMIN*/}
+            {/*Show Personal ID ONLY for ADMIN when admin looks at customer profile*/}
             {/*if personal/business/paralegal show this*/}
             <div>Driver Liscense / Real ID (No Passports): `{}`</div>
             <br></br>
 
-          <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             Update Profile
           </Link>
           <br></br>
-          <Link to="/view-all-cases" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/view-all-cases" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             View All Cases
           </Link>
           <br></br>
-          <Link to="/view-all-clients" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/view-all-clients" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             View All Accounts
           </Link>
           <br></br>
-          <Link to="/review-case-submissions" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/review-case-submissions" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             Review New Case Submissions
           </Link>
           <br></br>
-          <Link to="/terms-of-service" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/terms-of-service" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             Terms Of Service
           </Link>
           <br></br>
-          <Link to="/contact-request-submission" className="btn btn-primary w-50 justify-content-center">
+          <Link to="/contact-request-submission" className="btn btn-primary w-50 justify-content-center" style={{ marginRight: "500px" }}>
             Contact Request Submission
           </Link>
           <br></br>
         </Card.Body>
       </Card>
       <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
           <br></br>
           <br></br>
           <br></br>
