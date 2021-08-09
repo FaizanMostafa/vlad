@@ -8,10 +8,10 @@ function ClientPaymentOptions() {
             <br></br>
             <br></br>
             <br></br>
+            <Link to="/member-dashboard" className="btn btn-primary">Back to Dashboard</Link>
             <br></br>
             <br></br>
             <br></br>
-            <Link to="/member-dashboard" className="btn btn-primary" style={{ marginLeft: "auto" }}>Back to Dashboard</Link>
             <br></br>
             <br></br>
             <br></br>
@@ -24,36 +24,41 @@ function ClientPaymentOptions() {
             <br></br>
             <Link to="/client-payment-credit-card" 
                 className="btn btn-primary  w-50"
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center"
-
-                  }}
-                  >Credit Card</Link>
+                style={{ marginRight: "540px" }}
+            >Credit Card</Link>
             <br></br>
             <br></br>
             <Link to="/client-payment-debit-card" 
-                className="btn btn-primary w-50">Debit Card</Link>
+                className="btn btn-primary w-50"
+                style={{ marginRight: "540px" }}
+            >Debit Card</Link>
             <br></br>
             <br></br>
             <Link to="/client-payment-paypal" 
-                className="btn btn-primary w-50">Paypal ( 3% transfer fee )</Link>
+                className="btn btn-primary w-50"
+                style={{ marginRight: "540px" }}
+            >Paypal ( 3% transfer fee )</Link>
             <br></br>
             <br></br>
             <Link to="/client-payment-zelle" 
-                className="btn btn-primary w-50">Zelle</Link>
+                className="btn btn-primary w-50"
+                style={{ marginRight: "540px" }}
+            >Zelle</Link>
             <br></br>
             <br></br>
             <Link to="/client-payment-checks" 
-                className="btn btn-primary w-50">Cashier/Corporate/Business Check (No Personal Checks)</Link>
+                className="btn btn-primary w-50"
+                style={{ marginRight: "540px" }}
+            >Cashier/Corporate/Business Check (No Personal Checks)</Link>
             <br></br>
             <br></br>
-            <Link to="/client-payment-direct" 
-                className="btn btn-primary w-50">Direct ACH to TPG bank account</Link>
+            <Link to="/client-payment-ach-to-tpg" 
+                className="btn btn-primary w-50"
+                style={{ marginRight: "540px" }}
+            >Direct ACH to TPG bank account</Link>
             <br></br>
             </form>
+            <br></br>
             <br></br>
             <br></br>
             <br></br>

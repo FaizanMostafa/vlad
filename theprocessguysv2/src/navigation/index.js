@@ -24,6 +24,12 @@ import PaymentSuccessful from '../pages/paymentSucessful';
 import PaymentFailure from '../pages/paymentFailure';
 import AfterUploadMessage from '../pages/afterUploadMessage';
 import ContactUs from '../pages/contactus2';
+import ClientPaymentDebit from '../pages/clientPaymentsDebit';
+import ClientPaymentsPayPal from '../pages/clientPaymentsPayPal';
+import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
+import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
+import ClientPaymentACH from '../pages/clientPaymentACH';
+
 
 const Navigation = (props) => {
 
@@ -70,6 +76,11 @@ const Navigation = (props) => {
           <Route path='/payment-failure' component={PaymentFailure} />
           <Route path='/case-submission-success' component={AfterUploadMessage} />
           <Route path='/contact-us' component={ContactUs} />
+          <Route path='/client-payment-debit-card' component={ClientPaymentDebit} />
+          <Route path='/client-payment-paypal' component={ClientPaymentsPayPal} />
+          <Route path='/client-payment-zelle' component={ClientPaymentsZelle} />
+          <Route path='/client-payment-checks' component={ClientPaymentsChecks} />
+          <Route path='/client-payment-ach-to-tpg' component={ClientPaymentACH} />
         </Switch>
       </Router>
       <Footer />

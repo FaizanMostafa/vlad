@@ -38,7 +38,7 @@ const ContactPage = () => {
         totam voluptas nostrum quisquam eum porro a pariatur veniam.
       </p>
       <br></br>
-      <MDBRow className="text-center justify-content-center">
+      <MDBRow className="text-center justify-content-center" style={{ marginLeft: "180px"}}>
         <MDBCol lg="5" className="lg-0 mb-4">
           <MDBCard style={{ width:"75%", height: "100%" }}>
             <MDBCardBody>
@@ -110,7 +110,7 @@ const ContactPage = () => {
               width="75%"
               height="100%"
               frameBorder="0"
-              style={{ border: 0 }}
+              style={{ border: 0, marginRight: "180px" }}
             />
           </div>
           <br />
@@ -118,18 +118,22 @@ const ContactPage = () => {
       <br></br>
       <br></br>
       <br></br>
-          <MDBRow className="text-center">
+          <MDBRow className="text-center" style={{ marginRight: "180px"}}>
             <MDBCol md="4">
               <button tag="a" floating color="blue" className="accent-1">
                 <MDBIcon icon="map-marker-alt" />
               </button>
-              <p>New York, 94126</p>
+              <br></br>
+              <br></br>
+              <p>San Francisco, 94126</p>
               <p className="mb-md-0">United States</p>
             </MDBCol>
             <MDBCol md="4">
               <button tag="a" floating color="blue" className="accent-1">
                 <MDBIcon icon="phone" />
               </button>
+              <br></br>
+              <br></br>
               <p>+ 01 234 567 89</p>
               <p className="mb-md-0">Mon - Fri, 8:00-22:00</p>
             </MDBCol>
@@ -137,8 +141,10 @@ const ContactPage = () => {
               <button tag="a" floating color="blue" className="accent-1">
                 <MDBIcon icon="envelope" />
               </button>
-              <p>info@gmail.com</p>
-              <p className="mb-md-0">sale@gmail.com</p>
+              <br></br>
+              <br></br>
+              <p>theprocessguys@gmail.com</p>
+              <p className="mb-md-0">theprocessguysteam@gmail.com</p>
             </MDBCol>
           </MDBRow>
         </MDBCol>
