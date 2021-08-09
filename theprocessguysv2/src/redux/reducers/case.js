@@ -1,4 +1,6 @@
 import {
+  SET_IS_FETCHING_CASE_DETAILS,
+  SET_USER_CASE_DETAILS,
   SET_IS_FETCHING_CASES,
   SET_IS_FORM_POSTING,
   SET_USER_CASES,
@@ -7,7 +9,9 @@ import {
 
 const initState = {
   cases: [],
+  caseDetails: null,
   isPosting: false,
+  isFetchingCaseDetails: true,
   isFetching: true,
 };
 
@@ -21,10 +25,25 @@ const caseReducer = (state = initState, action) => {
       }
     }
 
+    case SET_IS_FETCHING_CASE_DETAILS: {
+      return {
+        ...state,
+        isFetchingCaseDetails: payload
+      }
+    }
+
     case SET_IS_FORM_POSTING: {
       return {
         ...state,
         isPosting: payload
+      }
+    }
+
+    case SET_USER_CASE_DETAILS: {
+      return {
+        ...state,
+        caseDetails: payload,
+        isFetchingCaseDetails: false
       }
     }
 

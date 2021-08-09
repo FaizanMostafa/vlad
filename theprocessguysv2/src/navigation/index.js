@@ -40,6 +40,8 @@ const Navigation = (props) => {
   const CustomRoute = ({path, isProtected, exact, redirect, component, ...props}) => {
     if(isProtected && user && isAuthenticated) {
       return <Route exact={exact} path={path} component={component} />;
+    } else if(!isProtected && user && isAuthenticated && path === "/") {
+      return <Redirect to={redirect} />;
     } else {
       return <Redirect to={redirect} />;
     }
@@ -50,7 +52,7 @@ const Navigation = (props) => {
       <Router>
         <NavBar />
         <Switch>
-          <CustomRoute exact path='/' component={TheProcessGuys} isProtected redirect="/login" />
+          <CustomRoute exact path='/' component={TheProcessGuys} redirect="/member-dashboard" />
           <Route path='/view-cases' component={ViewCases} />
           <CustomRoute exact path='/admin-dashboard' component={AdminDashboard} isProtected redirect="/login" />
           <Route path='/login' component={Login} />

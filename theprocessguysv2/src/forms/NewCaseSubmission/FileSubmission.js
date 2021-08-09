@@ -160,16 +160,6 @@ const FileSubmission = ({...props}) => {
       <br></br>
       <br></br>
       <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <h2><b>Case Files Submission Upload</b></h2>
       <div>
         <br></br>
@@ -211,18 +201,6 @@ const FileSubmission = ({...props}) => {
         <br></br>
         <br></br>
       </div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <br></br>
       <br></br>
       <br></br>
