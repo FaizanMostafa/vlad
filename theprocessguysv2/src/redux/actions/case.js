@@ -89,6 +89,7 @@ const getUserCases = (data, onSuccess=()=>{}, onError=()=>{}) => (
               caseTitle: docData.caseTitle,
               status: docData.status,
               searchString: docData.searchString,
+              details: null,
               filedAt: docData.filedAt
             });
           }
@@ -136,9 +137,8 @@ const getUserCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
       dispatch({
         type: SET_USER_CASE_DETAILS,
         payload: {
-          id: doc.id,
-          filedAt: docData.filedAt,
-          ...caseData
+          id: data.caseId,
+          caseDetails: caseData
         }
       });
       onSuccess();

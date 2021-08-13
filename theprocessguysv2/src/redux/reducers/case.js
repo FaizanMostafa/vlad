@@ -9,7 +9,6 @@ import {
 
 const initState = {
   cases: [],
-  caseDetails: null,
   isPosting: false,
   isFetchingCaseDetails: true,
   isFetching: true,
@@ -40,9 +39,21 @@ const caseReducer = (state = initState, action) => {
     }
 
     case SET_USER_CASE_DETAILS: {
+      let updatedCases = [];
+      state.cases.forEach(caseData => {
+        if(caseData.id===payload.id) {
+          updatedCases.push({
+            ...caseData,
+            details: payload.caseDetails
+          });
+        } else {
+          updatedCases.push(caseData);
+        }
+      });
+      console.log({updatedCases});
       return {
         ...state,
-        caseDetails: payload,
+        cases: updatedCases,
         isFetchingCaseDetails: false
       }
     }

@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, Card, AccordionContext, useAccordionToggle } from 'react-bootstrap';
 import { getUserCaseDetails } from "../../redux/actions/case";
 
-function CustomToggleBtn({ caseId, setIsLoading, children, callback, eventKey }) {
+function CustomToggleBtn({ caseId, hasDetails, setIsLoading, children, callback, eventKey }) {
     const dispatch = useDispatch();
     const currentEventKey = useContext(AccordionContext);
 
     useEffect(() => {
-        if(currentEventKey === eventKey) {
+        if(currentEventKey === eventKey && !hasDetails) {
             setIsLoading(true);
             dispatch(getUserCaseDetails({caseId}, ()=>setIsLoading(false)));
         }
@@ -32,7 +32,6 @@ function CustomToggleBtn({ caseId, setIsLoading, children, callback, eventKey })
   
 function CustomToggle({ index, caseData, children, ...props }) {
     const [isLoading, setIsLoading] = useState(true);
-    const caseDetails = useSelector(state => state.caseReducer.caseDetails);
     const isFetchingCaseDetails = useSelector(state => state.caseReducer.isFetchingCaseDetails);
     
     return (
@@ -42,6 +41,7 @@ function CustomToggle({ index, caseData, children, ...props }) {
                     <CustomToggleBtn
                         setIsLoading={setIsLoading}
                         caseId={caseData.id}
+                        hasDetails={caseData.details && Object.keys(caseData.details).length}
                         eventKey={`${index}`}
                     >
                         {caseData.caseTitle}
@@ -53,69 +53,68 @@ function CustomToggle({ index, caseData, children, ...props }) {
                             ?
                                 <center><b style={{margin: 10}}>loading...</b></center>
                             :
-                                <Card.Body>
-                                    <MDBCol key={caseData.id} className="" style={{border: "solid"}}>
-                                        <br></br>
-                                        <div>
-                                            Case Title Name: {caseDetails.CaseInformation.caseTitle}
-                                        </div>
-                                        <br></br>
-                                        <div>
-                                            Address of Serve: {caseDetails.ServeeDocumentedData.mainAddressForService}
-                                        </div>
-                                        <br></br>
-                                        <div>
-                                            Plaintiff Name: {caseDetails.PlaintiffInformation.plaintiffFullName}
-                                        </div>
-                                        <br></br>
-                                        <div>
-                                            Defendant Name: {caseDetails.DefendantInformation.defendantFullName}
-                                        </div>
-                                        <br></br>
-                                        <div>
-                                            Attorney Name: {caseDetails.PlaintiffInformation.plaintiffAttorneyName}
-                                        </div>
-                                        <br></br>
-                                        {/* <div>
-                                            Attorney Firm: {attorneyFirm}
-                                        </div> */}
-                                        <br></br>
-                                        <div>
-                                            Phone Number: {caseDetails.PlaintiffInformation.plaintiffAttorneyPhoneNumberForCalls}
-                                        </div>
-                                        <br></br>
-                                        <div>
-                                            Court Case Number: {caseDetails.CaseInformation.caseNumber}
-                                        </div>
-                                        <br></br>
-                                        {/* Case Number from the invoice */}
-                                        <div>
-                                            Process Guys Case Number: TPG{caseData.id}
-                                        </div>
-                                        <br></br>
-                                        {/* Case Status can be only changed in admin 1 & 2 (Not client) | Client will always have file as "Active" | Options: Active/Pending/Closed/Cancelled */}
-                                        <div className="">
-                                            Case Status: {caseData.status}  &nbsp; 
-                                            <select className="w-25" disabled>
-                                                <option>Please Select</option>
-                                                <option>Active</option>
-                                                <option>Cancelled</option>
-                                                <option>Closed</option>
-                                                <option>Pending</option>
-                                            </select>
-                                        </div>            
-                                        <br></br>
-                                        <div>
-                                            Date of Submission: {moment(caseData.filedAt).format()}
-                                        </div>            
-                                        <br></br>
-                                        {/* ( Admin 1 will have delete button for cases ) */}
-                                            <div>
-                                                <button className="btn btn-danger" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"10px"}} disabled>Delete Case</button>
-                                                <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"200px"}}>Pay Invoice</Link>
-                                            </div>
-                                    </MDBCol>
-                                </Card.Body>
+                                (
+                                    caseData.details && Object.keys(caseData.details).length
+                                        ?
+                                            <Card.Body>
+                                                <MDBCol key={caseData.id} className="" style={{border: "solid"}}>
+                                                    <br></br>
+                                                    <div>
+                                                        Case Title Name: {caseData.details.CaseInformation.caseTitle}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Address of Serve: {caseData.details.ServeeDocumentedData.mainAddressForService}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Plaintiff Name: {caseData.details.PlaintiffInformation.plaintiffFullName}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Defendant Name: {caseData.details.DefendantInformation.defendantFullName}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Attorney Name: {caseData.details.PlaintiffInformation.plaintiffAttorneyName}
+                                                    </div>
+                                                    <br></br>
+                                                    {/* <div>
+                                                        Attorney Firm: {attorneyFirm}
+                                                    </div>
+                                                    <br></br> */}
+                                                    <div>
+                                                        Phone Number: {caseData.details.PlaintiffInformation.plaintiffAttorneyPhoneNumberForCalls}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Court Case Number: {caseData.details.CaseInformation.caseNumber}
+                                                    </div>
+                                                    <br></br>
+                                                    {/* Case Number from the invoice */}
+                                                    <div>
+                                                        Process Guys Case Number: TPG{caseData.id}
+                                                    </div>
+                                                    <br></br>
+                                                    {/* Case Status can be only changed in admin 1 & 2 (Not client) | Client will always have file as "Active" | Options: Active/Pending/Closed/Cancelled */}
+                                                    <div className="">
+                                                        Case Status: {caseData.status}
+                                                    </div>            
+                                                    <br></br>
+                                                    <div>
+                                                        Date of Submission: {new Date(caseData.filedAt.toDate()).toDateString()}
+                                                    </div>            
+                                                    <br></br>
+                                                    {/* ( Admin 1 will have delete button for cases ) */}
+                                                        <div>
+                                                            <button className="btn btn-danger" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"10px"}} disabled>Delete Case</button>
+                                                            <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"200px"}}>Pay Invoice</Link>
+                                                        </div>
+                                                </MDBCol>
+                                            </Card.Body>
+                                        :
+                                            <center><b>No data</b></center>
+                                )
                     }
                 </Accordion.Collapse>
             </Card>
