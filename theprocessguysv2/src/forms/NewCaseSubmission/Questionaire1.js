@@ -9,8 +9,8 @@ const Questionaire1 = (props) => {
     setCaseNumber,
     courtDate,
     setCourtDate,
-    superiorCourtOf,
-    setSuperiorCourtOf,
+    courtType,
+    setCourtType,
     countyOf,
     setCountyOf,
     branchName,
@@ -18,11 +18,7 @@ const Questionaire1 = (props) => {
     courthouseAddress,
     setCourthouseAddress,
     courthouseMailingAddress,
-    setCourthouseMailingAddress,
-    appealsCourtOf,
-    setAppealsCourtOf,
-    supremeCourtOf,
-    setSupremeCourtOf
+    setCourthouseMailingAddress
   } = props;
 
   return (
@@ -45,6 +41,7 @@ const Questionaire1 = (props) => {
           <MDBInput
             type="text"
             className="text-white"
+            hint="Plaintiff vs Defendant"
             value={caseTitle}
             onChange={(e) => setCaseTitle(e.target.value)}
             required
@@ -53,11 +50,12 @@ const Questionaire1 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="case-number">
         <div id="case-number">
-          <label>Case Number*</label>
+          <label>Case Number (Write N/A if none was issued)*</label>
           <MDBInput
             type="text"
             className="text-white"
             value={caseNumber}
+            hint="Court issued case number"
             onChange={(e) => setCaseNumber(e.target.value)}
             required
           />
@@ -77,26 +75,17 @@ const Questionaire1 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="superior-court-of">
         <div id="superior-court-of">
-          <label>Superior Court of (Write N/A if not Applicable)*</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={superiorCourtOf}
-            onChange={(e) => setSuperiorCourtOf(e.target.value)}
+          <label>Please select the court*</label>
+          <select className="w-75 m-4 text-center p-2"
+            value={courtType}
+            onChange={(e) => setCourtType(e.target.value)}
             required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="county-of">
-        <div id="county-of">
-          <label>County Of*</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={countyOf}
-            onChange={(e) => setCountyOf(e.target.value)}
-            required
-          />
+          >
+            <option value="Please Select" >Please Select</option>
+            <option value="superior court">Superior court</option>
+            <option value="appeals court">Appeals court</option>
+            <option value="supreme court">Supreme court</option>
+          </select>
         </div>
       </MDBCol>
       <MDBCol md="12" id="branch-name">
@@ -135,26 +124,14 @@ const Questionaire1 = (props) => {
           />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="appeals-court-of">
-        <div id="appeals-court-of">
-          <label>Appeals Court Of (Write N/A if not Applicable)*</label>
+      <MDBCol md="12" id="county-of">
+        <div id="county-of">
+          <label>County Of*</label>
           <MDBInput
             type="text"
             className="text-white"
-            value={appealsCourtOf}
-            onChange={(e) => setAppealsCourtOf(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="supreme-court-of">
-        <div id="supreme-court-of">
-          <label>Supreme Court Of (Write N/A if not Applicable)*</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={supremeCourtOf}
-            onChange={(e) => setSupremeCourtOf(e.target.value)}
+            value={countyOf}
+            onChange={(e) => setCountyOf(e.target.value)}
             required
           />
         </div>

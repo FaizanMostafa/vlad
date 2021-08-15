@@ -18,8 +18,16 @@ const Questionaire2 = (props) => {
     setPlaintiffAttorneyName,
     plaintiffAttorneyBarNumber,
     setPlaintiffAttorneyBarNumber,
-    plaintiffAttorneyOfficeAddress,
-    setPlaintiffAttorneyOfficeAddress,
+    address,
+    setAddress,
+    city,
+    setCity,
+    state,
+    setState,
+    zipCode,
+    setZipCode,
+    country,
+    setCountry,
     plaintiffAttorneyEmail,
     setPlaintiffAttorneyEmail,
     plaintiffAttorneyPhoneNumberForCalls,
@@ -40,6 +48,28 @@ const Questionaire2 = (props) => {
       <p className="text-center">"Click Here" to skip filling this section out, leave it for our team to complete! (Additional Charge)</p>
       <br></br>
       <br></br>
+      <MDBCol md="12" id="number-of-plaintiff-listed">
+        <div id="number-of-plaintiff-listed">
+          <label>Number of Plaintiff(s) listed?*</label>
+          <select className="w-75 m-4 text-center p-2"
+            value={numberOfAttorneyPlaintiff}
+            onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
+            required
+          >
+            <option value="Please Select" >Please Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select><br></br>
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="plaintiff-full-name">
         <div id="plaintiff-full-name">
           <label>Plaintiff's Full Name*</label>
@@ -64,29 +94,6 @@ const Questionaire2 = (props) => {
           />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="number-of-plaintiff-listed">
-        <div id="number-of-plaintiff-listed">
-          <label>Number of Plaintiff(s) listed?*</label>
-          <select className="w-75 m-4 text-center p-2"
-            value={numberOfAttorneyPlaintiff}
-            onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
-            required
-          >
-            <option value="Please Select" >Please Select</option>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-          </select><br></br>
-        </div>
-      </MDBCol>
 
       <MDBCol md="12" id="number-of-attorney-representing-plaintiff">
         <div id="number-of-attorney-representing-plaintiff">
@@ -97,7 +104,6 @@ const Questionaire2 = (props) => {
             required
           >
             <option value="Please Select" >Please Select</option>
-            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -147,14 +153,14 @@ const Questionaire2 = (props) => {
           />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-office-address">
-        <div id="plaintiff-attorney-office-address">
-          <label>Office Address*</label>
+      <MDBCol md="12" id="plaintiff-fax-number-optional">
+        <div id="plaintiff-fax-number-optional">
+          <label>Fax Number (Optional)</label>
           <MDBInput
             type="text"
             className="text-white"
-            value={plaintiffAttorneyOfficeAddress}
-            onChange={(e) => setPlaintiffAttorneyOfficeAddress(e.target.value)}
+            value={plaintiffAttorneyFaxNumberOptional}
+            onChange={(e) => setPlaintiffAttorneyFaxNumberOptional(e.target.value)}
             required
           />
         </div>
@@ -171,18 +177,52 @@ const Questionaire2 = (props) => {
           />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="plaintiff-fax-number-optional">
-        <div id="plaintiff-fax-number-optional">
-          <label>Fax Number (Optional)</label>
+      <MDBCol md="12" id="plaintiff-attorney-office-address">
+        <div id="plaintiff-attorney-office-address">
+          <label>Firm Address*</label>
           <MDBInput
             type="text"
             className="text-white"
-            value={plaintiffAttorneyFaxNumberOptional}
-            onChange={(e) => setPlaintiffAttorneyFaxNumberOptional(e.target.value)}
+            hint="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
+          <MDBInput
+            type="text"
+            className="text-white"
+            hint="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+          />
+          <MDBInput
+            type="text"
+            className="text-white"
+            hint="State"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
+            required
+          />
+          <MDBInput
+            type="text"
+            className="text-white"
+            hint="Zip Code"
+            value={zipCode}
+            onChange={(e) => setZipCode(e.target.value)}
+            required
+          />
+          <MDBInput
+            type="text"
+            className="text-white"
+            hint="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
             required
           />
         </div>
       </MDBCol>
+      
       <MDBCol>
         <QuestionaireAttorneyP />
       </MDBCol>

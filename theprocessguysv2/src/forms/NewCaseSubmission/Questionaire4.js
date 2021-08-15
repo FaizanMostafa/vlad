@@ -86,7 +86,7 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="location-being-served">
         <div id="location-being-served">
-          <label>What kind of location is being served? (Write N/A if unavailable)*</label>
+          <label>What kind of location is being served?*</label>
           <select className="w-75 m-4 text-center p-2"
             value={locationForBeingServed}
             onChange={(e) => setLocationForBeingServed(e.target.value)}
@@ -104,7 +104,7 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="main-address-for-service">
         <div id="main-address-for-service">
-          <label>Main Address for Service*</label>
+          <label>Main Address for Service(Write N/A if unavailable)*</label>
           <MDBInput
             type="text"
             className="text-white"

@@ -11,29 +11,27 @@ import {
 function CaseDocumentArchive() {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState("");
+    const [hasFetchedCases, setHasFetchedCases] = useState(false);
     const isFetching = useSelector(state => state.caseReducer.isFetching);
     const user = useSelector(state => state.auth.user);
     const cases = useSelector(state => state.caseReducer.cases);
 
     useEffect(() => {
-        if(!cases.length) {
-            dispatch(getUserCases({uid: user.uid}));
+        if(!cases.length && !hasFetchedCases) {
+            dispatch(getUserCases({uid: user.uid}, ()=>{setHasFetchedCases(true)}));
         }
     }, [cases]);
 
     if(isFetching) return(<LoadingPage />);
 
     return(
-        <MDBCol className="">
+        <MDBCol style={{minHeight: "100vh"}} className="">
             <br></br>
             <br></br>
             <br></br>
             <br></br>
             
             <h1 className="text-center"><b>Case Document Archive</b></h1>
-            <br></br>
-            <br></br>
-            <Link to="/member-dashboard" className="btn btn-primary" style={{ marginLeft: "auto" }}>Back to Dashboard</Link>
             <br></br>
             <br></br>
             <h4 className="text-center">Search Clients</h4>
@@ -43,19 +41,16 @@ function CaseDocumentArchive() {
             <br></br>
             <br></br>
             {
-                cases.filter((caseDoc)=>(caseDoc.searchString.includes(searchTerm))).map((caseData, index)=>(
-                    <Accordian index={index} caseData={caseData}/>
-                ))
+                !isFetching && cases.length
+                    ?
+
+                        cases.filter((caseDoc)=>(caseDoc.searchString.includes(searchTerm))).map((caseData, index)=>(
+                            <Accordian index={index} caseData={caseData}/>
+                        ))
+                    :
+                        <center><b>No case data available</b></center>
             }
         
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
             <br></br>
             <br></br>
         </MDBCol>

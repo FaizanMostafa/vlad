@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RSLink, Element } from 'react-scroll';
 import { useSelector } from 'react-redux';
 import { Stepper } from 'react-form-stepper';
 import {
@@ -24,13 +24,11 @@ function Questionaire() {
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
-  const [superiorCourtOf, setSuperiorCourtOf] = useState("");
+  const [courtType, setCourtType] = useState("");
   const [countyOf, setCountyOf] = useState("");
   const [courthouseAddress, setCourthouseAddress] = useState("");
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState("");
   const [branchName, setBranchName] = useState("");
-  const [appealsCourtOf, setAppealsCourtOf] = useState("");
-  const [supremeCourtOf, setSupremeCourtOf] = useState("");
 
   // Questionaire Form 2
   const [plaintiffFullName, setPlaintiffFullName] = useState("");
@@ -39,7 +37,7 @@ function Questionaire() {
   const [attorneyRepresentingPlaintiffInfo, setAttorneyRepresentingPlaintiffInfo] = useState("");    
   const [plaintiffAttorneyName, setPlaintiffAttorneyName] = useState("");
   const [plaintiffAttorneyBarNumber, setPlaintiffAttorneyBarNumber] = useState("");
-  const [plaintiffAttorneyOfficeAddress, setPlaintiffAttorneyOfficeAddress] = useState("");
+  const [plaintiffAttorneyFirmAddress, setPlaintiffAttorneyFirmAddress] = useState({address: "", city: "", state: "", zipCode: "", country: ""});
   const [plaintiffAttorneyPhoneNumberForCalls, setPlaintiffAttorneyPhoneNumberForCalls] = useState("");
   const [plaintiffAttorneyEmail, setPlaintiffAttorneyEmail] = useState("");
   const [plaintiffAttorneyFaxNumberOptional, setPlaintiffAttorneyFaxNumberOptional] = useState("");
@@ -51,7 +49,7 @@ function Questionaire() {
   const [attorneyRepresentingDefendantInfo, setAttorneyRepresentingDefendantInfo] = useState("");
   const [defendantAttorneyName, setDefendantAttorneyName] = useState("");
   const [defendantAttorneyBarNumber,setDefendantAttorneyBarNumber] = useState("");
-  const [defendantAttorneyOfficeAddress, setDefendantAttorneyOfficeAddress] = useState("");
+  const [defendantAttorneyFirmAddress, setDefendantAttorneyFirmAddress] = useState({address: "", city: "", state: "", zipCode: "", country: ""});
   const [defendantAttorneyPhoneNumberForCalls, setDefendantAttorneyPhoneNumberForCalls] = useState("");
   const [defendantAttorneyEmail, setDefendantAttorneyEmail] = useState("");
   const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
@@ -129,13 +127,11 @@ function Questionaire() {
       setCaseTitle(QuestionaireForm1.caseTitle);
       setCaseNumber(QuestionaireForm1.caseNumber);
       setCourtDate(QuestionaireForm1.courtDate);
-      setSuperiorCourtOf(QuestionaireForm1.superiorCourtOf);
+      setCourtType(QuestionaireForm1.courtType);
       setCountyOf(QuestionaireForm1.countyOf);
       setCourthouseAddress(QuestionaireForm1.courthouseAddress);
       setCourthouseMailingAddress(QuestionaireForm1.courthouseMailingAddress);
       setBranchName(QuestionaireForm1.branchName);
-      setAppealsCourtOf(QuestionaireForm1.appealsCourtOf);
-      setSupremeCourtOf(QuestionaireForm1.supremeCourtOf);
     }
     if(QuestionaireForm2) {
       setActiveStep(3);
@@ -145,7 +141,7 @@ function Questionaire() {
       setAttorneyRepresentingPlaintiffInfo(QuestionaireForm2.attorneyRepresentingPlaintiffInfo) 
       setPlaintiffAttorneyName(QuestionaireForm2.plaintiffAttorneyName);
       setPlaintiffAttorneyBarNumber(QuestionaireForm2.plaintiffAttorneyBarNumber);
-      setPlaintiffAttorneyOfficeAddress(QuestionaireForm2.plaintiffAttorneyOfficeAddress);
+      setPlaintiffAttorneyFirmAddress(QuestionaireForm2.plaintiffAttorneyFirmAddress);
       setPlaintiffAttorneyPhoneNumberForCalls(QuestionaireForm2.plaintiffAttorneyPhoneNumberForCalls);
       setPlaintiffAttorneyEmail(QuestionaireForm2.plaintiffAttorneyEmail);
       setPlaintiffAttorneyFaxNumberOptional(QuestionaireForm2.plaintiffAttorneyFaxNumberOptional);
@@ -158,7 +154,7 @@ function Questionaire() {
       setAttorneyRepresentingDefendantInfo(QuestionaireForm3.attorneyRepresentingDefendantInfo);
       setDefendantAttorneyName(QuestionaireForm3.defendantAttorneyName);
       setDefendantAttorneyBarNumber(QuestionaireForm3.defendantAttorneyBarNumber);
-      setDefendantAttorneyOfficeAddress(QuestionaireForm3.defendantAttorneyOfficeAddress);
+      setDefendantAttorneyFirmAddress(QuestionaireForm3.defendantAttorneyFirmAddress);
       setDefendantAttorneyPhoneNumberForCalls(QuestionaireForm3.defendantAttorneyPhoneNumberForCalls);
       setDefendantAttorneyEmail(QuestionaireForm3.defendantAttorneyEmail);
       setDefendantAttorneyFaxNumberOptional(QuestionaireForm3.defendantAttorneyFaxNumberOptional);
@@ -237,8 +233,8 @@ function Questionaire() {
         showToast("Please enter case number!", "warning");
       } else if(!courtDate.length) {
         showToast("Please enter court date!", "warning");
-      } else if(!superiorCourtOf.length) {
-        showToast("Please enter superior court of!", "warning");
+      } else if(!courtType.length) {
+        showToast("Please select the applicable court!", "warning");
       } else if(!countyOf.length) {
         showToast("Please enter county of!", "warning");
       } else if(!courthouseAddress.length) {
@@ -247,22 +243,16 @@ function Questionaire() {
         showToast("Please enter courthouse mailing address!", "warning");
       } else if(!branchName.length) {
         showToast("Please enter branch name!", "warning");
-      } else if(!appealsCourtOf.length) {
-        showToast("Please enter appeals court of!", "warning");
-      } else if(!supremeCourtOf.length) {
-        showToast("Please enter supreme court of!", "warning");
       } else {
         let data = {
           caseTitle,
           caseNumber,
           courtDate,
-          superiorCourtOf,
+          courtType,
           countyOf,
           courthouseAddress,
           courthouseMailingAddress,
-          branchName,
-          appealsCourtOf,
-          supremeCourtOf
+          branchName
         }
         localStorage.setItem('Questionaire1', JSON.stringify(data));
         setActiveStep(2);
@@ -280,10 +270,18 @@ function Questionaire() {
         showToast("Please enter plaintiff's attorney name!", "warning");
       } else if(!plaintiffAttorneyBarNumber.length) {
         showToast("Please enter plaintiff's attorney bar number!", "warning");
-      } else if(!plaintiffAttorneyOfficeAddress.length) {
-        showToast("Please enter plaintiff's attorney office address!", "warning");
       } else if(!plaintiffAttorneyEmail.length) {
         showToast("Please enter plaintiff's attorney email!", "warning");
+      } else if(!plaintiffAttorneyFirmAddress.address.length) {
+        showToast("Please enter plaintiff's attorney firm address!", "warning");
+      } else if(!plaintiffAttorneyFirmAddress.city.length) {
+        showToast("Please enter plaintiff's attorney firm city!", "warning");
+      } else if(!plaintiffAttorneyFirmAddress.state.length) {
+        showToast("Please enter plaintiff's attorney firm state!", "warning");
+      } else if(!plaintiffAttorneyFirmAddress.zipCode.length) {
+        showToast("Please enter plaintiff's attorney firm zip code!", "warning");
+      } else if(!plaintiffAttorneyFirmAddress.country.length) {
+        showToast("Please enter plaintiff's attorney firm country!", "warning");
       } else {
         let data = {
           plaintiffFullName,
@@ -292,7 +290,7 @@ function Questionaire() {
           attorneyRepresentingPlaintiffInfo,
           plaintiffAttorneyName,
           plaintiffAttorneyBarNumber,
-          plaintiffAttorneyOfficeAddress,
+          plaintiffAttorneyFirmAddress,
           plaintiffAttorneyEmail,
           plaintiffAttorneyPhoneNumberForCalls,
           plaintiffAttorneyFaxNumberOptional
@@ -311,10 +309,18 @@ function Questionaire() {
         showToast("Please enter defendant attorney name!", "warning");
       } else if(!defendantAttorneyBarNumber.length) {
         showToast("Please enter defendant attorney bar number!", "warning");
-      } else if(!defendantAttorneyOfficeAddress.length) {
-        showToast("Please enter defendant attorney office address!", "warning");
       } else if(!defendantAttorneyEmail.length) {
         showToast("Please enter defendant attorney email!", "warning");
+      } else if(!defendantAttorneyFirmAddress.address.length) {
+        showToast("Please enter defendant attorney office address!", "warning");
+      } else if(!defendantAttorneyFirmAddress.city.length) {
+        showToast("Please enter defendant attorney office city!", "warning");
+      } else if(!defendantAttorneyFirmAddress.state.length) {
+        showToast("Please enter defendant attorney office state!", "warning");
+      } else if(!defendantAttorneyFirmAddress.zipCode.length) {
+        showToast("Please enter defendant attorney office zip code!", "warning");
+      } else if(!defendantAttorneyFirmAddress.country.length) {
+        showToast("Please enter defendant attorney office country!", "warning");
       } else {
         let data = {
           defendantFullName,
@@ -322,7 +328,7 @@ function Questionaire() {
           numberOfAttorneyDefendant,
           attorneyRepresentingDefendantInfo,
           defendantAttorneyName,
-          defendantAttorneyOfficeAddress,
+          defendantAttorneyFirmAddress,
           defendantAttorneyBarNumber,
           defendantAttorneyEmail,
           defendantAttorneyPhoneNumberForCalls,
@@ -490,19 +496,125 @@ function Questionaire() {
     }
   }
 
+  const handleResetForms = () => {
+    // Reset Form 1
+    setCaseTitle("");
+    setCaseNumber("");
+    setCourtDate("");
+    setCourtType("");
+    setCountyOf("");
+    setCourthouseAddress("");
+    setCourthouseMailingAddress("");
+    setBranchName("");
+    // Reset Form 2
+    setPlaintiffFullName("");
+    setPlaintiffAddress("");
+    setNumberOfAttorneyPlaintiff("");
+    setAttorneyRepresentingPlaintiffInfo("");    
+    setPlaintiffAttorneyName("");
+    setPlaintiffAttorneyBarNumber("");
+    setPlaintiffAttorneyFirmAddress({address: "", city: "", state: "", zipCode: "", country: ""});
+    setPlaintiffAttorneyPhoneNumberForCalls("");
+    setPlaintiffAttorneyEmail("");
+    setPlaintiffAttorneyFaxNumberOptional("");
+    // Reset Form 3
+    setDefendantFullName("");
+    setDefendantAddress("");
+    setNumberOfAttorneyDefendant("");
+    setAttorneyRepresentingDefendantInfo("");
+    setDefendantAttorneyName("");
+    setDefendantAttorneyBarNumber("");
+    setDefendantAttorneyFirmAddress({address: "", city: "", state: "", zipCode: "", country: ""});
+    setDefendantAttorneyPhoneNumberForCalls("");
+    setDefendantAttorneyEmail("");
+    setDefendantAttorneyFaxNumberOptional("");
+    // Reset Form 4
+    setHowManyIndividualsServed("");
+    setEmploymentOfIndividuals("");
+    setNameOfIndividuals("");
+    setDobOfIndividuals("");
+    setLocationForBeingServed("");
+    setMainAddressForService("");
+    setAgentOfService("");
+    setIfYesListFullName("");
+    setPhoneNumberOfIndividuals("");
+    setEmailsOfIndividuals("");
+    setAddressForCurrentPlaceOfEmployment("");
+    setKnownCoResidentsOfServee("");
+    // Reset Form 5
+    setServeIndividualAtEmployment("");
+    setProcessServerLeaveDoorTag("");
+    setSubserveAfterThreeAttempts("");
+    setRequireServerNotifyPersonOfInterest("");
+    setServerContactServeeByPhone("");
+    setServerPostDocumentsWithRubberBand("");
+    setDropServeForceServe("");
+    setParalegalAttorneyClientContactServee("");
+    // Reset Form 6
+    setFullNameOfDescribedServee("");
+    setImageOfIndividuals(null);
+    setGenderOfIndividuals("");
+    setEthnicityOfIndividuals("");
+    setHeightOfIndividuals("");
+    setWeightOfIndividuals("");
+    setHairColorOfIndividuals("");
+    setEyeColorOfIndividuals("");
+    setPhysicalOutlineOfIndividuals("");
+    // Reset Form 7
+    setInsuranceCompanyOfServee("");
+    setLicensePlateNumberState("");
+    setVinNumberOfIndividuals("");
+    setYearOfMakeOnVehicle("");
+    setVehicleColor("");
+    setVehicleTypeModelOwnership("");
+    // Reset Form 8
+    setRequireStakeoutService("");
+    setSpecifyDatesForStakeOutService("");
+    setRequireRushService("");
+    setListDateWhenServiceAttemptsClosed("");
+    setRequireFirst24HourService("");
+    setRequireSkipTracingService("");
+    setRequireBodyCamFootage("");
+    setObtainNewDeliveryLocation("");
+    setPOBoxAllowedToServe("");
+    setRequireServiceByMail("");
+    setRequireByEmail("");
+    setSpecificCourtInstruction("");
+    setRequireZipFileService("");
+    setIfYesListAddress("");
+    setActiveStep(1);
+    localStorage.removeItem("Questionaire1");
+    localStorage.removeItem("Questionaire2");
+    localStorage.removeItem("Questionaire3");
+    localStorage.removeItem("Questionaire4");
+    localStorage.removeItem("Questionaire5");
+    localStorage.removeItem("Questionaire6");
+    localStorage.removeItem("Questionaire7");
+    localStorage.removeItem("Questionaire8");
+  }
+
   return (
     <React.Fragment>
       <br></br>
       <br></br>
       <br></br>
       <br></br>
-      <Stepper
-        steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
-        activeStep={activeStep}
-      />
+      <Element name="stepper" className="element">
+        <Stepper
+          steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
+          activeStep={activeStep-1}
+        />
+      </Element>
       <br></br>
       <br></br>
-      <Link to="/member-dashboard" className="btn btn-primary" style={{ marginLeft: "auto" }}>Back to Dashboard</Link>
+      <div style={{display: "flex", width: "100%", justifyContent: "space-between"}}>
+        {
+          activeStep>1
+            &&
+              <button onClick={()=>setActiveStep(activeStep-1)} className="btn btn-primary">Previous Step</button>
+        }
+        <button style={{marginLeft: "auto"}} onClick={handleResetForms} className="btn btn-primary">Reset All Forms</button>
+      </div>
       
       {
         activeStep === 1
@@ -514,8 +626,8 @@ function Questionaire() {
               setCaseNumber={setCaseNumber}
               courtDate={courtDate}
               setCourtDate={setCourtDate}
-              superiorCourtOf={superiorCourtOf}
-              setSuperiorCourtOf={setSuperiorCourtOf}
+              courtType={courtType}
+              setCourtType={setCourtType}
               countyOf={countyOf}
               setCountyOf={setCountyOf}
               branchName={branchName}
@@ -524,10 +636,6 @@ function Questionaire() {
               setCourthouseAddress={setCourthouseAddress}
               courthouseMailingAddress={courthouseMailingAddress}
               setCourthouseMailingAddress={setCourthouseMailingAddress}
-              appealsCourtOf={appealsCourtOf}
-              setAppealsCourtOf={setAppealsCourtOf}
-              supremeCourtOf={supremeCourtOf}
-              setSupremeCourtOf={setSupremeCourtOf}
             />
       }
       {
@@ -546,8 +654,16 @@ function Questionaire() {
               setPlaintiffAttorneyName={setPlaintiffAttorneyName}
               plaintiffAttorneyBarNumber={plaintiffAttorneyBarNumber}
               setPlaintiffAttorneyBarNumber={setPlaintiffAttorneyBarNumber}
-              plaintiffAttorneyOfficeAddress={plaintiffAttorneyOfficeAddress}
-              setPlaintiffAttorneyOfficeAddress={setPlaintiffAttorneyOfficeAddress}
+              address={plaintiffAttorneyFirmAddress.address}
+              setAddress={(address)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, address})}
+              city={plaintiffAttorneyFirmAddress.city}
+              setCity={(city)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, city})}
+              state={plaintiffAttorneyFirmAddress.state}
+              setState={(state)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, state})}
+              zipCode={plaintiffAttorneyFirmAddress.zipCode}
+              setZipCode={(zipCode)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, zipCode})}
+              country={plaintiffAttorneyFirmAddress.country}
+              setCountry={(country)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, country})}
               plaintiffAttorneyEmail={plaintiffAttorneyEmail}
               setPlaintiffAttorneyEmail={setPlaintiffAttorneyEmail}
               plaintiffAttorneyPhoneNumberForCalls={plaintiffAttorneyPhoneNumberForCalls}
@@ -570,8 +686,16 @@ function Questionaire() {
               setAttorneyRepresentingDefendantInfo={setAttorneyRepresentingDefendantInfo}
               defendantAttorneyName={defendantAttorneyName}
               setDefendantAttorneyName={setDefendantAttorneyName}
-              defendantAttorneyOfficeAddress={defendantAttorneyOfficeAddress}
-              setDefendantAttorneyOfficeAddress={setDefendantAttorneyOfficeAddress}
+              address={defendantAttorneyFirmAddress.address}
+              setAddress={(address)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, address})}
+              city={defendantAttorneyFirmAddress.city}
+              setCity={(city)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, city})}
+              state={defendantAttorneyFirmAddress.state}
+              setState={(state)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, state})}
+              zipCode={defendantAttorneyFirmAddress.zipCode}
+              setZipCode={(zipCode)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, zipCode})}
+              country={defendantAttorneyFirmAddress.country}
+              setCountry={(country)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, country})}
               defendantAttorneyBarNumber={defendantAttorneyBarNumber}
               setDefendantAttorneyBarNumber={setDefendantAttorneyBarNumber}
               defendantAttorneyEmail={defendantAttorneyEmail}
@@ -719,12 +843,14 @@ function Questionaire() {
         activeStep!==9
           &&
             <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-primary mt-1 mb-1"
-                onClick={handleOnPressNext}
-              >
-                {getButtonTitle()}
-              </button>
+              <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={300} duration={500} delay={300}>
+                <button
+                  className="btn btn-primary mt-1 mb-1"
+                  onClick={handleOnPressNext}
+                >
+                  {getButtonTitle()}
+                </button>
+              </RSLink>
             </div>
       }
       <br/><br/><br/>

@@ -34,12 +34,13 @@ const Login = (props) => {
     if(user && isAuthenticated) return (<Redirect to="/" />);
 
     return (
-        <MDBRow>
-            <MDBCol md="6 w-100"><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+        <MDBRow style={{height: "100vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+            <MDBCol md="6 w-100">
+            {/* <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br> */}
                 <h2 className="text-center">Log In</h2>
                 <form onSubmit={handleOnFormSubmit}>
                     <MDBRow>
-                        <MDBCol md="10">
+                        <MDBCol md="12">
                             <Form.Group id="email">
                                 <Form.Label>Email</Form.Label>
                                     <Form.Control
@@ -50,7 +51,7 @@ const Login = (props) => {
                                     />
                             </Form.Group>
                         </MDBCol>
-                        <MDBCol md="10">
+                        <MDBCol md="12">
                             <Form.Group id="password">
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control 
@@ -62,7 +63,7 @@ const Login = (props) => {
                             </Form.Group>
                         </MDBCol><br></br>
                     </MDBRow>
-                    <Button className="w-100 text-center" type="submit">
+                    <Button style={{marginTop: 20}} className="w-100 text-center" type="submit">
                         {
                             isUserSigningIn
                                 ?
@@ -76,14 +77,14 @@ const Login = (props) => {
                         }
                     </Button>
                 </form>
+                <div className="w-100 text-center mt-3">
+                    <Link to="/forgot-password">Forgot Password?</Link>
+                </div>
+                <div className="w-100 text-center mt-2">
+                    Need an account? <Link to="/register">Register Now</Link>
+                </div>
             </MDBCol>
-            <div className="w-100 text-center mt-3">
-                <Link to="/forgot-password">Forgot Password?</Link>
-            </div>
-            <div className="w-100 text-center mt-2">
-                Need an account? <Link to="/register">Register Now</Link>
-            </div>
-            <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+            {/* <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br> */}
         </MDBRow>
     );
 }
