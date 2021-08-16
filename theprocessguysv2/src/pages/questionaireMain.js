@@ -25,6 +25,7 @@ function Questionaire() {
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
   const [courtType, setCourtType] = useState("");
+  const [courtState, setCourtState] = useState("");
   const [countyOf, setCountyOf] = useState("");
   const [courthouseAddress, setCourthouseAddress] = useState("");
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState("");
@@ -55,6 +56,7 @@ function Questionaire() {
   const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
 
   // Questionaire Form 4
+  const [numberOfCaseFilesBeingServed, setNumberOfCaseFilesBeingServed] = useState("");
   const [howManyIndividualsServed, setHowManyIndividualsServed] = useState("");
   const [employmentOfIndividuals, setEmploymentOfIndividuals] = useState("");
   const [nameOfIndividuals, setNameOfIndividuals] = useState("");
@@ -65,7 +67,6 @@ function Questionaire() {
   const [ifYesListFullName, setIfYesListFullName] = useState("");
   const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
   const [emailsOfIndividuals, setEmailsOfIndividuals] = useState("");
-  const [addressForCurrentPlaceOfEmployment, setAddressForCurrentPlaceOfEmployment] = useState("");
   const [knownCoResidentsOfServee, setKnownCoResidentsOfServee] = useState("");
 
   // Questionaire Form 5
@@ -128,6 +129,7 @@ function Questionaire() {
       setCaseNumber(QuestionaireForm1.caseNumber);
       setCourtDate(QuestionaireForm1.courtDate);
       setCourtType(QuestionaireForm1.courtType);
+      setCourtState(QuestionaireForm1.courtState);
       setCountyOf(QuestionaireForm1.countyOf);
       setCourthouseAddress(QuestionaireForm1.courthouseAddress);
       setCourthouseMailingAddress(QuestionaireForm1.courthouseMailingAddress);
@@ -161,6 +163,7 @@ function Questionaire() {
     }
     if(QuestionaireForm4) {
       setActiveStep(5);
+      setNumberOfCaseFilesBeingServed(QuestionaireForm4.numberOfCaseFilesBeingServed);
       setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
       setEmploymentOfIndividuals(QuestionaireForm4.employmentOfIndividuals);
       setNameOfIndividuals(QuestionaireForm4.nameOfIndividuals);
@@ -171,7 +174,6 @@ function Questionaire() {
       setIfYesListFullName(QuestionaireForm4.ifYesListFullName);
       setPhoneNumberOfIndividuals(QuestionaireForm4.phoneNumbersOfIndividuals);
       setEmailsOfIndividuals(QuestionaireForm4.emailsOfIndividuals);
-      setAddressForCurrentPlaceOfEmployment(QuestionaireForm4.addressForCurrentPlaceOfEmployment);
       setKnownCoResidentsOfServee(QuestionaireForm4.knownCoResidentsOfServee);
     }
     if(QuestionaireForm5) {
@@ -235,20 +237,23 @@ function Questionaire() {
         showToast("Please enter court date!", "warning");
       } else if(!courtType.length) {
         showToast("Please select the applicable court!", "warning");
-      } else if(!countyOf.length) {
-        showToast("Please enter county of!", "warning");
+      } else if(!courtState.length) {
+        showToast("Please select the court state!", "warning");
+      } else if(!branchName.length) {
+        showToast("Please enter branch name!", "warning");
       } else if(!courthouseAddress.length) {
         showToast("Please enter courthouse address!", "warning");
       } else if(!courthouseMailingAddress.length) {
         showToast("Please enter courthouse mailing address!", "warning");
-      } else if(!branchName.length) {
-        showToast("Please enter branch name!", "warning");
+      } else if(!countyOf.length) {
+        showToast("Please enter county of!", "warning");
       } else {
         let data = {
           caseTitle,
           caseNumber,
           courtDate,
           courtType,
+          courtState,
           countyOf,
           courthouseAddress,
           courthouseMailingAddress,
@@ -258,12 +263,12 @@ function Questionaire() {
         setActiveStep(2);
       }
     } else if(activeStep === 2) {
-      if(!plaintiffFullName.length) {
+      if(!numberOfAttorneyPlaintiff.length) {
+        showToast("Please select number of plaintiff(s) listed!", "warning");
+      } else if(!plaintiffFullName.length) {
         showToast("Please enter plaintiff's full name!", "warning");
       } else if(!plaintiffAddress.length) {
         showToast("Please enter plaintiff's address!", "warning");
-      } else if(!numberOfAttorneyPlaintiff.length) {
-        showToast("Please select number of plaintiff(s) listed!", "warning");
       } else if(!attorneyRepresentingPlaintiffInfo.length) {
         showToast("Please select number of attorney's representing plaintiff!", "warning");
       } else if(!plaintiffAttorneyName.length) {
@@ -299,10 +304,10 @@ function Questionaire() {
         setActiveStep(3);
       }
     } else if(activeStep === 3) {
-      if(!defendantFullName.length) {
-        showToast("Please enter defendant's full name!", "warning");
-      } else if(!numberOfAttorneyDefendant.length) {
+      if(!numberOfAttorneyDefendant.length) {
         showToast("Please select number of defendant(s) listed!", "warning");
+      } else if(!defendantFullName.length) {
+        showToast("Please enter defendant's full name!", "warning");
       } else if(!attorneyRepresentingDefendantInfo.length) {
         showToast("Please select number of attorney's representing defendant!", "warning");
       } else if(!defendantAttorneyName.length) {
@@ -338,7 +343,9 @@ function Questionaire() {
         setActiveStep(4);
       }
     } else if(activeStep === 4) {
-      if(!howManyIndividualsServed.length) {
+      if(!numberOfCaseFilesBeingServed.length) {
+        showToast("Please select how many case files being served!", "warning");
+      } else if(!howManyIndividualsServed.length) {
         showToast("Please select how many individuals being served!", "warning");
       } else if(!nameOfIndividuals.length) {
         showToast("Please enter full name of individual(s) who is receiving Service!", "warning");
@@ -368,7 +375,6 @@ function Questionaire() {
           ifYesListFullName,
           phoneNumbersOfIndividuals,
           emailsOfIndividuals,
-          addressForCurrentPlaceOfEmployment,
           knownCoResidentsOfServee
         };
         localStorage.setItem('Questionaire4', JSON.stringify(data));
@@ -502,6 +508,7 @@ function Questionaire() {
     setCaseNumber("");
     setCourtDate("");
     setCourtType("");
+    setCourtState("");
     setCountyOf("");
     setCourthouseAddress("");
     setCourthouseMailingAddress("");
@@ -529,6 +536,7 @@ function Questionaire() {
     setDefendantAttorneyEmail("");
     setDefendantAttorneyFaxNumberOptional("");
     // Reset Form 4
+    setNumberOfCaseFilesBeingServed("");
     setHowManyIndividualsServed("");
     setEmploymentOfIndividuals("");
     setNameOfIndividuals("");
@@ -539,7 +547,6 @@ function Questionaire() {
     setIfYesListFullName("");
     setPhoneNumberOfIndividuals("");
     setEmailsOfIndividuals("");
-    setAddressForCurrentPlaceOfEmployment("");
     setKnownCoResidentsOfServee("");
     // Reset Form 5
     setServeIndividualAtEmployment("");
@@ -628,6 +635,8 @@ function Questionaire() {
               setCourtDate={setCourtDate}
               courtType={courtType}
               setCourtType={setCourtType}
+              courtState={courtState}
+              setCourtState={setCourtState}
               countyOf={countyOf}
               setCountyOf={setCountyOf}
               branchName={branchName}
@@ -710,6 +719,8 @@ function Questionaire() {
         activeStep === 4
           &&
             <Questionaire4
+              numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
+              setNumberOfCaseFilesBeingServed={setNumberOfCaseFilesBeingServed}
               howManyIndividualsServed={howManyIndividualsServed}
               setHowManyIndividualsServed={setHowManyIndividualsServed}
               employmentOfIndividuals={employmentOfIndividuals}
@@ -730,8 +741,6 @@ function Questionaire() {
               setPhoneNumberOfIndividuals={setPhoneNumberOfIndividuals}
               emailsOfIndividuals={emailsOfIndividuals}
               setEmailsOfIndividuals={setEmailsOfIndividuals}
-              addressForCurrentPlaceOfEmployment={addressForCurrentPlaceOfEmployment}
-              setAddressForCurrentPlaceOfEmployment={setAddressForCurrentPlaceOfEmployment}
               knownCoResidentsOfServee={knownCoResidentsOfServee}
               setKnownCoResidentsOfServee={setKnownCoResidentsOfServee}
             />

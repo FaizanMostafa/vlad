@@ -11,6 +11,8 @@ const Questionaire1 = (props) => {
     setCourtDate,
     courtType,
     setCourtType,
+    courtState,
+    setCourtState,
     countyOf,
     setCountyOf,
     branchName,
@@ -86,6 +88,18 @@ const Questionaire1 = (props) => {
             <option value="appeals court">Appeals court</option>
             <option value="supreme court">Supreme court</option>
           </select>
+        </div>
+      </MDBCol>
+      <MDBCol md="12" id="court-state">
+        <div id="court-state">
+          <label>Court State*</label>
+          <MDBInput
+            type="text"
+            className="text-white"
+            value={courtState}
+            onChange={(e) => setCourtState(e.target.value)}
+            required
+          />
         </div>
       </MDBCol>
       <MDBCol md="12" id="branch-name">

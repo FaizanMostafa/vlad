@@ -6,6 +6,8 @@ import QuestionaireEmploymentAddressTemplate from "../../pages/questionaireEmplo
 
 const Questionaire4 = (props) => {
   const {
+    numberOfCaseFilesBeingServed,
+    setNumberOfCaseFilesBeingServed,
     howManyIndividualsServed,
     setHowManyIndividualsServed,
     employmentOfIndividuals,
@@ -26,8 +28,6 @@ const Questionaire4 = (props) => {
     setPhoneNumberOfIndividuals,
     emailsOfIndividuals,
     setEmailsOfIndividuals,
-    addressForCurrentPlaceOfEmployment,
-    setAddressForCurrentPlaceOfEmployment,
     knownCoResidentsOfServee,
     setKnownCoResidentsOfServee
   } = props;
@@ -37,6 +37,28 @@ const Questionaire4 = (props) => {
       <h2 className="text-center mb-4 mt-5">Servee Documented Data</h2>
       <br></br>
       <br></br>
+      <MDBCol md="12" id="number-of-case-files">
+        <div id="number-of-case-files">
+          <label>How many case files are being served?*</label>
+          <select className="w-75 m-4 text-center p-2"
+            value={numberOfCaseFilesBeingServed}
+            onChange={(e) => setNumberOfCaseFilesBeingServed(e.target.value)}
+            required
+          >
+            <option value="Please Select" >Please Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select><br></br>
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="how-many-individuals-served">
         <div id="how-many-individuals-served">
           <label>How Many Individuals are Being Served?*</label><br></br>
@@ -46,7 +68,6 @@ const Questionaire4 = (props) => {
             required
           >
             <option value="Please Select" >Please Select</option>
-            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -84,6 +105,50 @@ const Questionaire4 = (props) => {
           />
         </div>
       </MDBCol>
+      <MDBCol md="12" id="phone-numbers-of-individuals">
+        <div id="phone-numbers-of-individuals">
+          <label>Phone Number(s) Pertaining to Servee(s) - Identify via Mobile, Office, and/or Home</label>
+          <MDBInput
+            type="textarea"
+            className="text-white"
+            value={phoneNumbersOfIndividuals}
+            onChange={(e) => setPhoneNumberOfIndividuals(e.target.value)}
+          />
+        </div>
+      </MDBCol>
+      <MDBCol md="12" id="email-of-individuals">
+        <div id="email-of-individuals">
+          <label>E-Mail(s) pertaining Servee(s)*</label>
+          <MDBInput
+            type="textarea"
+            className="text-white"
+            value={emailsOfIndividuals}
+            onChange={(e) => setEmailsOfIndividuals(e.target.value)}
+          />
+        </div>
+      </MDBCol>
+      <br />
+      <MDBCol md="12" id="known-coresidents-of-servee">
+        <div id="known-coresidents-of-servee">
+          <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
+          <MDBInput
+            type="textarea"
+            className="text-white"
+            value={knownCoResidentsOfServee}
+            onChange={(e) => setKnownCoResidentsOfServee(e.target.value)}
+          />
+        </div>
+      </MDBCol>
+      <MDBCol md="12" id="employment-of-individuals">
+        <div id="employment-of-individuals">
+          <label>Is the Servee Currently Employed?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals("yes")} id="employmentOfIndividualsY" name="employmentOfIndividuals" value={employmentOfIndividuals==="yes"?true:false} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("no")} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals==="no"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
+          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">Unknown</label>
+          <br/>
+        </div>
+      </MDBCol>
+      <br></br>
       <MDBCol md="12" id="location-being-served">
         <div id="location-being-served">
           <label>What kind of location is being served?*</label>
@@ -141,66 +206,6 @@ const Questionaire4 = (props) => {
       <br></br>
       <MDBCol>
         <QuestionaireAgentOfService />
-      </MDBCol>
-      <br></br>
-
-      <MDBCol md="12" id="phone-numbers-of-individuals">
-        <div id="phone-numbers-of-individuals">
-          <label>Phone Number(s) Pertaining to Servee(s) - Identify via Mobile, Office, and/or Home</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={phoneNumbersOfIndividuals}
-            onChange={(e) => setPhoneNumberOfIndividuals(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="email-of-individuals">
-        <div id="email-of-individuals">
-          <label>E-Mail(s) pertaining Servee(s)*</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={emailsOfIndividuals}
-            onChange={(e) => setEmailsOfIndividuals(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="employment-of-individuals">
-        <div id="employment-of-individuals">
-          <label>Is the Servee Currently Employed?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals(true)} id="employmentOfIndividualsY" name="employmentOfIndividuals" value={employmentOfIndividuals} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals(false)} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
-          <br/>
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="address-for-current-place-of-employment">
-        <div id="address-for-current-place-of-employment">
-          <label>Address for Current Place of Employment?</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={addressForCurrentPlaceOfEmployment}
-            onChange={(e) => setAddressForCurrentPlaceOfEmployment(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <br></br>
-      <MDBCol>
-        <QuestionaireEmploymentAddressTemplate />
-      </MDBCol>
-      <br></br>
-
-      <MDBCol md="12" id="known-coresidents-of-servee">
-        <div id="known-coresidents-of-servee">
-          <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={knownCoResidentsOfServee}
-            onChange={(e) => setKnownCoResidentsOfServee(e.target.value)}
-          />
-        </div>
       </MDBCol>
       <br></br>
     </>
