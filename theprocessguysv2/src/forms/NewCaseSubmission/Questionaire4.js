@@ -144,7 +144,7 @@ const Questionaire4 = (props) => {
           <label>Is the Servee Currently Employed?*</label><br />
           <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals("yes")} id="employmentOfIndividualsY" name="employmentOfIndividuals" value={employmentOfIndividuals==="yes"?true:false} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("no")} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals==="no"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">Unknown</label>
+          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsU" name="employmentOfIndividuals" value={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsU">Unknown</label>
           <br/>
         </div>
       </MDBCol>
