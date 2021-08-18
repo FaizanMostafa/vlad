@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-function Business({faxNo, setFaxNo, specialty, setSpecialty, firmName, setFirmName, firmAddress, setFirmAddress, jobTitle, setJobTitle, ...props}) {
+function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, setFirmAddress, jobTitle, setJobTitle, SSN, setSSN, SSNState, setSSNState, ...props}) {
 
     return(
         <MDBRow>
@@ -10,30 +10,9 @@ function Business({faxNo, setFaxNo, specialty, setSpecialty, firmName, setFirmNa
             <MDBCol md="12 w-100">
                 <br></br>            
                 <MDBRow md="10" id="business-form-toggle" >
-                    <MDBCol md="12" >
-                        <Form.Group id="company-fax-number">
-                            <Form.Label>Fax Number (**Optional)</Form.Label>
-                            <Form.Control
-                                type="text"
-                                value={faxNo}
-                                onChange={(e) => setFaxNo(e.target.value)}
-                            />
-                        </Form.Group>
-                    </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="company-specialty">
-                            <Form.Label>Specialty</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={specialty}
-                                onChange={(e) => setSpecialty(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                    </MDBCol>
                     <MDBCol md="12">
                         <Form.Group id="company-name">
-                            <Form.Label>Full Firm Name</Form.Label>
+                            <Form.Label>Business Full Name</Form.Label>
                             <Form.Control 
                                 type="text"
                                 value={firmName}
@@ -43,23 +22,93 @@ function Business({faxNo, setFaxNo, specialty, setSpecialty, firmName, setFirmNa
                         </Form.Group>
                     </MDBCol>
                     <MDBCol md="12">
-                        <Form.Group id="company-full-address">
-                            <Form.Label>Full Firm Address</Form.Label>
+                        <Form.Group id="company-street">
+                            <Form.Label>Business Address</Form.Label>
                             <Form.Control 
                                 type="text"
-                                value={firmAddress}
-                                onChange={(e) => setFirmAddress(e.target.value)}
+                                placeholder="Street"
+                                value={firmAddress.street}
+                                onChange={(e) => setFirmAddress({...firmAddress, street: e.target.value})}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group id="company-city">
+                            <Form.Control
+                                type="text"
+                                placeholder="City"
+                                value={firmAddress.city}
+                                onChange={(e) => setFirmAddress({...firmAddress, city: e.target.value})}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group id="company-state">
+                            <Form.Control 
+                                type="text"
+                                placeholder="State"
+                                value={firmAddress.state}
+                                onChange={(e) => setFirmAddress({...firmAddress, state: e.target.value})}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group id="company-zip">
+                            <Form.Control 
+                                type="text"
+                                placeholder="Zip Code"
+                                value={firmAddress.zipCode}
+                                onChange={(e) => setFirmAddress({...firmAddress, zipCode: e.target.value})}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group id="company-country">
+                            <Form.Control 
+                                type="text"
+                                placeholder="Country"
+                                value={firmAddress.country}
+                                onChange={(e) => setFirmAddress({...firmAddress, country: e.target.value})}
+                                required
+                            />
+                        </Form.Group>
+                    </MDBCol>
+                    <MDBCol md="12">
+                        <Form.Group id="company-specialty">
+                            <Form.Label>Business Specialty (What is the nature of your business?)</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                value={specialty}
+                                onChange={(e) => setSpecialty(e.target.value)}
                                 required
                             />
                         </Form.Group>
                     </MDBCol>
                     <MDBCol md="12">
                         <Form.Group id="company-job-title">
-                            <Form.Label>Job Title</Form.Label>
+                            <Form.Label>Business Role (your current position ie. Owner, Partner, Staff Member, etc.) </Form.Label>
                             <Form.Control 
                                 type="text"
                                 value={jobTitle}
                                 onChange={(e) => setJobTitle(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </MDBCol>
+                    <MDBCol md="12">
+                        <Form.Group id="company-job-title">
+                            <Form.Label>Government issued ID number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                value={SSN}
+                                onChange={(e) => setSSN(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </MDBCol>
+                    <MDBCol md="12">
+                        <Form.Group id="company-job-title">
+                            <Form.Label>State of issued ID</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                value={SSNState}
+                                onChange={(e) => setSSNState(e.target.value)}
                                 required
                             />
                         </Form.Group>

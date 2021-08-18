@@ -17,28 +17,33 @@ function Register(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
-    const [name, setName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [middleName, setMiddleName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [address, setAddress] = useState("");
+    const [faxNumber, setFaxNumber] = useState("");
+    const [address, setAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [profilePicture, setProfilePicture] = useState(null);
     const [userType, setUserType] = useState("attorney");
     const [attorneyType, setAttorneyType] = useState("paralegal");
 
-    const [attFaxNo, setAttFaxNo] = useState("");
     const [attSpecialty, setAttSpecialty] = useState("");
     const [attBarNo, setAttBarNo] = useState("");
     const [attFirmName, setAttFirmName] = useState("");
-    const [attFirmAddress, setAttFirmAddress] = useState("");
-    const [attJobTitle, setAttJobTitle] = useState("");
+    const [attFirmAddress, setAttFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+    const [attSSN, setAttSSN] = useState("");
+    const [attSSNState, setAttSSNState] = useState("");
+    const [attFirmRole, setAttFirmRole] = useState("");
     
-    const [busFaxNo, setBusFaxNo] = useState("");
     const [busSpecialty, setBusSpecialty] = useState("");
     const [busFirmName, setBusFirmName] = useState("");
-    const [busFirmAddress, setBusFirmAddress] = useState("");
+    const [busFirmAddress, setBusFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [busJobTitle, setBusJobTitle] = useState("");
+    const [busSSN, setBusSSN] = useState("");
+    const [busSSNState, setBusSSNState] = useState("");
 
     const [perSSN, setPerSSN] = useState("");
-    const [perFaxNo, setPerFaxNo] = useState("");
+    const [perSSNState, setPerSSNState] = useState("");
 
 
     const handleFormSubmit = (e) => {
@@ -51,34 +56,39 @@ function Register(props) {
             showToast("Passwords do not match!", "warning");
         } else {
             let data = {
+                firstName,
+                middleName,
+                lastName,
                 email: email.toLocaleLowerCase(),
                 password,
-                name,
                 address,
                 phoneNumber,
+                faxNumber,
                 profilePicture,
                 userType
             };
             if(userType==="attorney") {
-                data["faxNo"] = attFaxNo;
                 data["firmName"] = attFirmName;
                 data["firmAddress"] = attFirmAddress;
-                data["jobTitle"] = attJobTitle;
                 data["specialty"] = attSpecialty;
                 if(attorneyType==="attorney") {
                     data["barNumber"] = attBarNo;
+                    data["firmRole"] = attFirmRole;
                 } else {
+                    data["SSN"] = attSSN;
+                    data["SSNState"] = attSSNState;
                     data["userType"] = "paralegal";
                 }
             } else if(userType==="business") {
-                data["faxNo"] = busFaxNo;
                 data["firmName"] = busFirmName;
                 data["firmAddress"] = busFirmAddress;
                 data["jobTitle"] = busJobTitle;
                 data["specialty"] = busSpecialty;
+                data["SSN"] = busSSN;
+                data["SSNState"] = busSSNState;
             } else {
-                data["faxNo"] = perFaxNo;
                 data["SSN"] = perSSN;
+                data["SSNState"] = perSSNState;
             }
             dispatch(register(data, ()=>props.history.push("/")));
         }
@@ -91,86 +101,6 @@ function Register(props) {
             <MDBCol md="8 w-50">
                 <h2 className="text-center mb-4 mt-5">Register an Account</h2>
                 <form className="mb-4 justify-content-center" onSubmit={handleFormSubmit}>
-                    <MDBRow md="8" className="text-left">
-                        <MDBCol md="12">
-                            <Form.Group id="text">
-                                <label>Email</label>
-                                <Form.Control 
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="password">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control 
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="password-confirm">
-                                <Form.Label>Password Confirmation</Form.Label>
-                                <Form.Control 
-                                    type="password"
-                                    value={rePassword}
-                                    onChange={(e) => setRePassword(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="full-name">
-                                <Form.Label>Full Name</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="phone-number">
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                    required
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="full-address">
-                                <Form.Label>Applicant Full Address</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    value={address}
-                                    onChange={(e) => setAddress(e.target.value)}
-                                    required 
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                        <MDBCol md="12">
-                            <Form.Group id="image">
-                                <Form.Label>Account Image</Form.Label>
-                                <input
-                                    type='file' 
-                                    onChange={(e)=>{setProfilePicture(e.target.files[0])}}
-                                    accept=".jpg,.png"
-                                    label='Upload' 
-                                    required 
-                                />
-                            </Form.Group>
-                        </MDBCol>
-                    </MDBRow>
                     <MDBRow md="8" id="user-type-form-toggle">
                         <MDBCol md="12">
                             <h4>User Type</h4>
@@ -211,6 +141,156 @@ function Register(props) {
                             <br></br>
                         </MDBCol>
                     </MDBRow>
+                    <MDBRow md="8" className="text-left">
+                        <MDBCol md="12">
+                            <Form.Group id="full-name">
+                                <Form.Label>First Name</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="full-name">
+                                <Form.Label>Middle Name</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    value={middleName}
+                                    onChange={(e) => setMiddleName(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="full-name">
+                                <Form.Label>Last Name</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="street-address">
+                                <Form.Label>Applicant Full Address</Form.Label>
+                                <Form.Control 
+                                    type="text"
+                                    value={address.street}
+                                    placeholder="Street"
+                                    onChange={(e) => setAddress({...address, street: e.target.value})}
+                                    required 
+                                />
+                            </Form.Group>
+                            <Form.Group id="city-address">
+                                <Form.Control 
+                                    type="text"
+                                    placeholder="City"
+                                    value={address.city}
+                                    onChange={(e) => setAddress({...address, city: e.target.value})}
+                                    required 
+                                />
+                            </Form.Group>
+                            <Form.Group id="state-address">
+                                <Form.Control 
+                                    type="text"
+                                    placeholder="State"
+                                    value={address.state}
+                                    onChange={(e) => setAddress({...address, state: e.target.value})}
+                                    required 
+                                />
+                            </Form.Group>
+                            <Form.Group id="zipCode-address">
+                                <Form.Control 
+                                    type="text"
+                                    placeholder="Zip Code"
+                                    value={address.zipCode}
+                                    onChange={(e) => setAddress({...address, zipCode: e.target.value})}
+                                    required 
+                                />
+                            </Form.Group>
+                            <Form.Group id="country-address">
+                                <Form.Control 
+                                    type="text"
+                                    placeholder="Country"
+                                    value={address.country}
+                                    onChange={(e) => setAddress({...address, country: e.target.value})}
+                                    required 
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="phone-number">
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={phoneNumber}
+                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="fax-number">
+                                <Form.Label>Fax Number(**Optional)</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={faxNumber}
+                                    onChange={(e) => setFaxNumber(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="text">
+                                <label>Email</label>
+                                <Form.Control 
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="password">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control 
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="password-confirm">
+                                <Form.Label>Password Confirmation</Form.Label>
+                                <Form.Control 
+                                    type="password"
+                                    value={rePassword}
+                                    onChange={(e) => setRePassword(e.target.value)}
+                                    required
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                        <MDBCol md="12">
+                            <Form.Group id="image">
+                                <Form.Label>Account Image</Form.Label>
+                                <input
+                                    type='file' 
+                                    onChange={(e)=>{setProfilePicture(e.target.files[0])}}
+                                    accept=".jpg,.png"
+                                    label='Upload' 
+                                    required 
+                                />
+                            </Form.Group>
+                        </MDBCol>
+                    </MDBRow>
                     {
                         userType === "attorney"
                             &&
@@ -218,8 +298,6 @@ function Register(props) {
                                     <Attorney
                                         attorneyType={attorneyType}
                                         setAttorneyType={setAttorneyType}
-                                        faxNo={attFaxNo}
-                                        setFaxNo={setAttFaxNo}
                                         specialty={attSpecialty}
                                         setSpecialty={setAttSpecialty}
                                         barNo={attBarNo}
@@ -228,8 +306,12 @@ function Register(props) {
                                         setFirmName={setAttFirmName}
                                         firmAddress={attFirmAddress}
                                         setFirmAddress={setAttFirmAddress}
-                                        jobTitle={attJobTitle}
-                                        setJobTitle={setAttJobTitle}
+                                        SSN={attSSN}
+                                        setSSN={setAttSSN}
+                                        SSNState={attSSNState}
+                                        setSSNState={setAttSSNState}
+                                        firmRole={attFirmRole}
+                                        setFirmRole={setAttFirmRole}
                                     />
                                 </MDBRow>
                     }
@@ -238,8 +320,6 @@ function Register(props) {
                             &&
                                 <MDBRow>
                                     <Business
-                                        faxNo={busFaxNo}
-                                        setFaxNo={setBusFaxNo}
                                         specialty={busSpecialty}
                                         setSpecialty={setBusSpecialty}
                                         firmName={busFirmName}
@@ -248,6 +328,10 @@ function Register(props) {
                                         setFirmAddress={setBusFirmAddress}
                                         jobTitle={busJobTitle}
                                         setJobTitle={setBusJobTitle}
+                                        SSN={busSSN}
+                                        setSSN={setBusSSN}
+                                        SSNState={busSSNState}
+                                        setSSNState={setBusSSNState}
                                     />
                                 </MDBRow>
                     }
@@ -258,8 +342,8 @@ function Register(props) {
                                     <Personal
                                         SSN={perSSN}
                                         setSSN={setPerSSN}
-                                        faxNo={perFaxNo}
-                                        setFaxNo={setPerFaxNo}
+                                        SSNState={perSSNState}
+                                        setSSNState={setPerSSNState}
                                     />
                                 </MDBRow>
                     }

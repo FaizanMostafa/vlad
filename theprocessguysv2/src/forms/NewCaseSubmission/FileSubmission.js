@@ -184,6 +184,13 @@ const FileSubmission = ({...props}) => {
             >
             </input>
           </Form.Group>
+          {
+            fileSubmissionType==="single"
+              ?
+                <b>Only the file with ".pdf" extension is allowed</b>
+              :
+                <b>Only the zipped folder with ".rar" or ".zip" extension is allowed</b>
+          }
         </MDBCol>
         <br></br>
         <br></br>

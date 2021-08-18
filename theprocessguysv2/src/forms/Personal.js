@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-function Personal({SSN, setSSN, faxNo, setFaxNo, ...props}) {
+function Personal({SSN, setSSN, SSNState, setSSNState, ...props}) {
 
     return(
         <MDBRow>
@@ -12,7 +12,7 @@ function Personal({SSN, setSSN, faxNo, setFaxNo, ...props}) {
                 <MDBRow md="10" id="personal-form-toggle">
                     <MDBCol md="12">
                         <Form.Group id="personal-us-id">
-                            <Form.Label>Government US Issued ID Number (NO PASSPORT)</Form.Label>
+                            <Form.Label>Government issued ID Number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
                             <Form.Control 
                                 type="text"
                                 value={SSN}
@@ -22,12 +22,13 @@ function Personal({SSN, setSSN, faxNo, setFaxNo, ...props}) {
                         </Form.Group>
                     </MDBCol>
                     <MDBCol md="12">
-                        <Form.Group id="personal-fax-number">
-                            <Form.Label>Fax Number (**Optional)</Form.Label>
+                        <Form.Group id="personal-us-id">
+                            <Form.Label>State of issued ID</Form.Label>
                             <Form.Control 
                                 type="text"
-                                value={faxNo}
-                                onChange={(e) => setFaxNo(e.target.value)}
+                                value={SSNState}
+                                onChange={(e) => setSSNState(e.target.value)}
+                                required 
                             />
                         </Form.Group>
                     </MDBCol>

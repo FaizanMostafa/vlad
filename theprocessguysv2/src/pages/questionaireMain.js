@@ -359,10 +359,8 @@ function Questionaire() {
         showToast("Please select if there is an agent of service!", "warning");
       } else if(agentOfService && !ifYesListFullName.length) {
         showToast("Please enter full name to agent of service!", "warning");
-      } else if(!emailsOfIndividuals.length) {
-        showToast("Please enter emails of pertaining servee(s)!", "warning");
-      } else if(typeof(employmentOfIndividuals)!=="boolean") {
-        showToast("Please enter employment of individuals!", "warning");
+      } else if(!employmentOfIndividuals.length) {
+        showToast("Please select employment of individuals!", "warning");
       } else {
         let data = {
           howManyIndividualsServed,          

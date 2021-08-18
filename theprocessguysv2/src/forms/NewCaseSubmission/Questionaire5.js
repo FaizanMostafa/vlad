@@ -36,7 +36,7 @@ const Questionaire5 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="process-server-leave-door-tag">
         <div id="process-server-leave-door-tag">
-          <label>May our Process Server leave a door tag on the handle, or business card?*</label><br />
+          <label>May our Process Server leave a door tag on the handle, or business card with contact information?*</label><br />
           <input className="ml-2" type="radio" onClick={()=>setProcessServerLeaveDoorTag(true)} id="processServerLeaveDoorTagY" name="processServerLeaveDoorTag" value={processServerLeaveDoorTag} /><label className="ml-2" for="processServerLeaveDoorTagY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setProcessServerLeaveDoorTag(false)} id="processServerLeaveDoorTagN" name="processServerLeaveDoorTag" value={processServerLeaveDoorTag} /><label className="ml-2" for="processServerLeaveDoorTagN">No</label>
           <br/>
@@ -77,7 +77,7 @@ const Questionaire5 = (props) => {
       <MDBCol md="12" id="drop-serve-force-serve">
         <div id="drop-serve-force-serve">
           <label>Is a “Drop Serve / Force Serve” Allowed,
-            Once Residence/Employment is Confirmed and an Individual(s) Refuses to Accept Documents Upon Contact/Sub-Service?*</label><br />
+            Once Residence/Employment is Confirmed and the listed Individual(s) Refuses to Accept Documents Upon Contact/Sub-Service?*</label><br />
           <input className="ml-2" type="radio" onClick={()=>setDropServeForceServe(true)} id="dropServeForceServeY" name="dropServeForceServe" value={dropServeForceServe} /><label className="ml-2" for="dropServeForceServeY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setDropServeForceServe(false)} id="dropServeForceServeN" name="dropServeForceServe" value={dropServeForceServe} /><label className="ml-2" for="dropServeForceServeN">No</label>
           <br/>

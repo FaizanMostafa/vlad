@@ -21,7 +21,7 @@ const Questionaire7 = (props) => {
 
   return (
     <>
-      <h2 className="text-center mb-4 mt-2">Vehicle Information<i>(If Available)</i>*</h2>
+      <h2 className="text-center mb-4 mt-2">Vehicle Information<i>(Proceed to next page if not available)</i>*</h2>
       <br></br>
 
       <MDBCol md="12" id="insurance-company-of-servee">

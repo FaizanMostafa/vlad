@@ -26,7 +26,7 @@ const Questionaire6 = (props) => {
 
   return (
     <>
-      <h2 className="text-center mb-4 mt-2">Servee Physical Description <i>(If Available)</i>*</h2>
+      <h2 className="text-center mb-4 mt-2">Servee Physical Description <i>(Proceed to next page if not available)</i>*</h2>
       <br></br>
 
       <MDBCol md="12" id="full-name-of-described-servee">
@@ -43,13 +43,12 @@ const Questionaire6 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="gender-of-individuals">
         <div id="gender-of-individuals">
-          <label>Gender of Servee</label>
+          <label>Sex of Servee</label>
           <select className="w-75 m-4 center p-2"
             value={genderOfIndividuals}
             onChange={(e) => setGenderOfIndividuals(e.target.value)}
           >
             <option value="Please Select">Please Select</option>
-            <option value="Non-Binary">Non-Binary</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
           </select>

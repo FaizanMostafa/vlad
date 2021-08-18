@@ -39,7 +39,7 @@ const Questionaire4 = (props) => {
       <br></br>
       <MDBCol md="12" id="number-of-case-files">
         <div id="number-of-case-files">
-          <label>How many case files are being served?*</label>
+          <label>How many case files are being served? (Only if multiple cases are involved in service together (ie. Divorce, Restraining order, Eviction, etc.))*</label>
           <select className="w-75 m-4 text-center p-2"
             value={numberOfCaseFilesBeingServed}
             onChange={(e) => setNumberOfCaseFilesBeingServed(e.target.value)}
@@ -61,7 +61,7 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="how-many-individuals-served">
         <div id="how-many-individuals-served">
-          <label>How Many Individuals are Being Served?*</label><br></br>
+          <label>How many servees are being served?*</label><br></br>
           <select className="w-75 m-4 text-center p-2"
             value={howManyIndividualsServed}
             onChange={(e) => setHowManyIndividualsServed(e.target.value)}
@@ -118,7 +118,7 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="email-of-individuals">
         <div id="email-of-individuals">
-          <label>E-Mail(s) pertaining Servee(s)*</label>
+          <label>E-Mail(s) pertaining Servee(s)</label>
           <MDBInput
             type="textarea"
             className="text-white"
@@ -161,7 +161,7 @@ const Questionaire4 = (props) => {
               Please Select
             </label>
             <option value="Please Select" >Please Select</option>
-            <option value="individual" >Individual</option>
+            <option value="residence" >Residence</option>
             <option value="business">Business</option>
             <option value="unknown">Unknown</option>
           </select><br></br>

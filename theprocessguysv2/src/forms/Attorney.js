@@ -2,11 +2,11 @@ import React from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, setSpecialty, barNo, setBarNo, firmName, setFirmName, firmAddress, setFirmAddress, jobTitle, setJobTitle,  ...props}) {
+function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo, setBarNo, firmName, setFirmName, firmAddress, setFirmAddress, SSN, setSSN, SSNState, setSSNState, firmRole, setFirmRole,  ...props}) {
 
     return(
         <MDBRow>
-            <h2 className="justify-content-center">Attorney / Paralegal Section</h2>
+            <h2 className="justify-content-center">Please Select Role</h2>
             <MDBCol md="12 w-100" >
                 <br></br>            
                 <MDBRow md="8" id="attorney-form-toggle">
@@ -36,27 +36,6 @@ function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, se
                         </div>
                         <br></br>
                     </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="attorney-fax-number">
-                            <Form.Label>Fax Number (**Optional)</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={faxNo}
-                                onChange={(e) => setFaxNo(e.target.value)}
-                            />
-                        </Form.Group>
-                    </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="attorney-specialty">
-                            <Form.Label>Specialty (ie. Defence, Business, Financial Attorney, etc.)</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={specialty}
-                                onChange={(e) => setSpecialty(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                    </MDBCol>
                     {
                         attorneyType === "attorney"
                             &&
@@ -73,6 +52,17 @@ function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, se
                                 </MDBCol>
                     }
                     <MDBCol md="12">
+                        <Form.Group id="attorney-specialty">
+                            <Form.Label>Legal Specialty (ie. Defence, Business, Financial, etc.)</Form.Label>
+                            <Form.Control 
+                                type="text"
+                                value={specialty}
+                                onChange={(e) => setSpecialty(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                    </MDBCol>
+                    <MDBCol md="12">
                         <Form.Group id="attorney-firm-name">
                             <Form.Label>Full Firm Name</Form.Label>
                             <Form.Control 
@@ -88,23 +78,88 @@ function Attorney({attorneyType, setAttorneyType, faxNo, setFaxNo, specialty, se
                             <Form.Label>Full Firm Address</Form.Label>
                             <Form.Control 
                                 type="text"
-                                value={firmAddress}
-                                onChange={(e) => setFirmAddress(e.target.value)}
+                                placeholder="Street"
+                                value={firmAddress.street}
+                                onChange={(e) => setFirmAddress({...firmAddress, street: e.target.value})}
+                                required 
+                            />
+                        </Form.Group>
+                        <Form.Group id="attorney-full-firm-address">
+                            <Form.Control 
+                                type="text"
+                                placeholder="City"
+                                value={firmAddress.city}
+                                onChange={(e) => setFirmAddress({...firmAddress, city: e.target.value})}
+                                required 
+                            />
+                        </Form.Group>
+                        <Form.Group id="attorney-full-firm-address">
+                            <Form.Control 
+                                type="text"
+                                placeholder="State"
+                                value={firmAddress.state}
+                                onChange={(e) => setFirmAddress({...firmAddress, state: e.target.value})}
+                                required 
+                            />
+                        </Form.Group>
+                        <Form.Group id="attorney-full-firm-address">
+                            <Form.Control 
+                                type="text"
+                                placeholder="Zip Code"
+                                value={firmAddress.zipCode}
+                                onChange={(e) => setFirmAddress({...firmAddress, zipCode: e.target.value})}
+                                required 
+                            />
+                        </Form.Group>
+                        <Form.Group id="attorney-full-firm-address">
+                            <Form.Control 
+                                type="text"
+                                placeholder="Country"
+                                value={firmAddress.country}
+                                onChange={(e) => setFirmAddress({...firmAddress, country: e.target.value})}
                                 required 
                             />
                         </Form.Group>
                     </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="attorney-job-title">
-                            <Form.Label>Job Title (Position at firm; ie. Manager, attorney, partner, owner)</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={jobTitle}
-                                onChange={(e) => setJobTitle(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                    </MDBCol>
+                    {
+                        attorneyType === "paralegal"
+                            &&
+                                <MDBCol md="12">
+                                    <Form.Group id="paralegal-ssn">
+                                        <Form.Label>Government Issued ID Number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={SSN}
+                                            onChange={(e) => setSSN(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+                                    <Form.Group id="paralegal-ssn-state">
+                                        <Form.Label>State of issued ID</Form.Label>
+                                        <Form.Control 
+                                            type="text"
+                                            value={SSNState}
+                                            onChange={(e) => setSSNState(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </MDBCol>
+                    }
+                    {
+                        attorneyType === "attorney"
+                            &&
+                                <MDBCol md="12">
+                                    <Form.Group id="firm-role">
+                                        <Form.Label>Firm Role (current position ie Owner, Partner, Staff Member, etc.</Form.Label>
+                                        <Form.Control 
+                                            type="text"
+                                            value={firmRole}
+                                            onChange={(e) => setFirmRole(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </MDBCol>
+                    }
                 </MDBRow>
             </MDBCol>
             <br></br>
