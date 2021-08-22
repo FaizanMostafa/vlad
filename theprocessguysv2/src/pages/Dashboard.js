@@ -55,7 +55,7 @@ const Dashboard = (props) => {
             <div>Phone Number: {user.phoneNumber}</div>
             <br></br>
             
-            <div>Address: {user.address}</div>
+            <div>Address: {user.address.street} {user.address.city} {user.address.state} {user.address.country}</div>
             <br></br>
           <div style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <Link to="/update-profile" className="btn btn-primary w-50 justify-content-center">

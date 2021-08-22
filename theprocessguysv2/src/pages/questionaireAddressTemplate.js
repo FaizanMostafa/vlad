@@ -4,7 +4,7 @@ import { MDBCol, MDBInput } from "mdbreact";
 
 function QuestionaireAddressTemplate() {
     const [showModal, setShow] = useState(false);
-    const [mainAddressForService, setMainAddressForService] = useState("");
+    const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -13,14 +13,7 @@ function QuestionaireAddressTemplate() {
             mainAddressForService
         }
         
-        localStorage.setItem('questionaireAddressTemplate', JSON.stringify(data))
-
-        // .then(() => {
-        //     alert("Address has been added!");
-        //   })
-        //   .catch((error) => {
-        //     alert(error.message);
-        //   });
+        localStorage.setItem('questionaireAddressTemplate', JSON.stringify(data));
     }
   
     const handleClose = () => setShow(false);
@@ -46,10 +39,39 @@ function QuestionaireAddressTemplate() {
                 <div id="main-address-for-service">
                     <label>Adding Address for Service</label>
                     <MDBInput
-                    type="text" 
-                    value={mainAddressForService}
-                    onChange={(e) => setMainAddressForService(e.target.value)}
-                    required
+                      type="text"
+                      hint="Street"
+                      value={mainAddressForService.street}
+                      onChange={(e) => setMainAddressForService({...mainAddressForService, street: e.target.value})}
+                      required
+                    />
+                    <MDBInput
+                      type="text"
+                      hint="City"
+                      value={mainAddressForService.city}
+                      onChange={(e) => setMainAddressForService({...mainAddressForService, city: e.target.value})}
+                      required
+                    />
+                    <MDBInput
+                      type="text"
+                      hint="State"
+                      value={mainAddressForService.state}
+                      onChange={(e) => setMainAddressForService({...mainAddressForService, state: e.target.value})}
+                      required
+                    />
+                    <MDBInput
+                      type="text"
+                      hint="Zip Code"
+                      value={mainAddressForService.zipCode}
+                      onChange={(e) => setMainAddressForService({...mainAddressForService, zipCode: e.target.value})}
+                      required
+                    />
+                    <MDBInput
+                      type="text"
+                      hint="Country"
+                      value={mainAddressForService.country}
+                      onChange={(e) => setMainAddressForService({...mainAddressForService, country: e.target.value})}
+                      required
                     />
                 </div>
             </MDBCol>

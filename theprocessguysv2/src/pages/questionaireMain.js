@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
-import { useSelector } from 'react-redux';
 import { Stepper } from 'react-form-stepper';
 import {
   Questionaire1,
@@ -17,7 +16,6 @@ import { showToast } from "../utils";
 
 function Questionaire() {
 
-  const user = useSelector(state => state.auth.user);
   const [activeStep, setActiveStep] = useState(1);
   
   // Questionaire Form 1
@@ -27,30 +25,32 @@ function Questionaire() {
   const [courtType, setCourtType] = useState("");
   const [courtState, setCourtState] = useState("");
   const [countyOf, setCountyOf] = useState("");
-  const [courthouseAddress, setCourthouseAddress] = useState("");
-  const [courthouseMailingAddress, setCourthouseMailingAddress] = useState("");
+  const [courthouseAddress, setCourthouseAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+  const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [branchName, setBranchName] = useState("");
 
   // Questionaire Form 2
-  const [plaintiffFullName, setPlaintiffFullName] = useState("");
-  const [plaintiffAddress, setPlaintiffAddress] = useState("");
+  const [shouldPGFillPlaintiffInfo, setShouldPGFillPlaintiffInfo] = useState(false);
+  const [plaintiffFullName, setPlaintiffFullName] = useState({firstName: "", middleName: "", lastName: ""});
+  const [plaintiffAddress, setPlaintiffAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [numberOfAttorneyPlaintiff, setNumberOfAttorneyPlaintiff] = useState("");
   const [attorneyRepresentingPlaintiffInfo, setAttorneyRepresentingPlaintiffInfo] = useState("");    
-  const [plaintiffAttorneyName, setPlaintiffAttorneyName] = useState("");
+  const [plaintiffAttorneyName, setPlaintiffAttorneyName] = useState({firstName: "", middleName: "", lastName: ""});
   const [plaintiffAttorneyBarNumber, setPlaintiffAttorneyBarNumber] = useState("");
-  const [plaintiffAttorneyFirmAddress, setPlaintiffAttorneyFirmAddress] = useState({address: "", city: "", state: "", zipCode: "", country: ""});
+  const [plaintiffAttorneyFirmAddress, setPlaintiffAttorneyFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [plaintiffAttorneyPhoneNumberForCalls, setPlaintiffAttorneyPhoneNumberForCalls] = useState("");
   const [plaintiffAttorneyEmail, setPlaintiffAttorneyEmail] = useState("");
   const [plaintiffAttorneyFaxNumberOptional, setPlaintiffAttorneyFaxNumberOptional] = useState("");
 
   // Questionaire Form 3
+  const [shouldPGFillDefendantInfo, setShouldPGFillDefendantInfo] = useState(false);
   const [defendantFullName, setDefendantFullName] = useState("");
   const [defendantAddress, setDefendantAddress] = useState("");
   const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
   const [attorneyRepresentingDefendantInfo, setAttorneyRepresentingDefendantInfo] = useState("");
   const [defendantAttorneyName, setDefendantAttorneyName] = useState("");
   const [defendantAttorneyBarNumber,setDefendantAttorneyBarNumber] = useState("");
-  const [defendantAttorneyFirmAddress, setDefendantAttorneyFirmAddress] = useState({address: "", city: "", state: "", zipCode: "", country: ""});
+  const [defendantAttorneyFirmAddress, setDefendantAttorneyFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [defendantAttorneyPhoneNumberForCalls, setDefendantAttorneyPhoneNumberForCalls] = useState("");
   const [defendantAttorneyEmail, setDefendantAttorneyEmail] = useState("");
   const [defendantAttorneyFaxNumberOptional,setDefendantAttorneyFaxNumberOptional] = useState("");
@@ -62,7 +62,7 @@ function Questionaire() {
   const [nameOfIndividuals, setNameOfIndividuals] = useState("");
   const [dobOfIndividuals, setDobOfIndividuals] = useState("");
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
-  const [mainAddressForService, setMainAddressForService] = useState("");
+  const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [agentOfService, setAgentOfService] = useState("");
   const [ifYesListFullName, setIfYesListFullName] = useState("");
   const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
@@ -138,6 +138,7 @@ function Questionaire() {
     if(QuestionaireForm2) {
       setActiveStep(3);
       setPlaintiffFullName(QuestionaireForm2.plaintiffFullName);
+      setShouldPGFillPlaintiffInfo(QuestionaireForm2.shouldPGFillPlaintiffInfo);
       setPlaintiffAddress(QuestionaireForm2.plaintiffAddress);
       setNumberOfAttorneyPlaintiff(QuestionaireForm2.numberOfAttorneyPlaintiff);
       setAttorneyRepresentingPlaintiffInfo(QuestionaireForm2.attorneyRepresentingPlaintiffInfo) 
@@ -151,6 +152,7 @@ function Questionaire() {
     if(QuestionaireForm3) {
       setActiveStep(4);
       setDefendantFullName(QuestionaireForm3.defendantFullName);
+      setShouldPGFillDefendantInfo(QuestionaireForm3.shouldPGFillDefendantInfo);
       setDefendantAddress(QuestionaireForm3.defendantAddress);
       setNumberOfAttorneyDefendant(QuestionaireForm3.numberOfAttorneyDefendant);
       setAttorneyRepresentingDefendantInfo(QuestionaireForm3.attorneyRepresentingDefendantInfo);
@@ -241,10 +243,26 @@ function Questionaire() {
         showToast("Please select the court state!", "warning");
       } else if(!branchName.length) {
         showToast("Please enter branch name!", "warning");
-      } else if(!courthouseAddress.length) {
-        showToast("Please enter courthouse address!", "warning");
-      } else if(!courthouseMailingAddress.length) {
-        showToast("Please enter courthouse mailing address!", "warning");
+      } else if(!courthouseAddress.street.length) {
+        showToast("Please enter courthouse street!", "warning");
+      } else if(!courthouseAddress.city.length) {
+        showToast("Please enter courthouse city!", "warning");
+      } else if(!courthouseAddress.state.length) {
+        showToast("Please enter courthouse state!", "warning");
+      } else if(!courthouseAddress.zipCode.length) {
+        showToast("Please enter courthouse zip code!", "warning");
+      } else if(!courthouseAddress.country.length) {
+        showToast("Please enter courthouse country!", "warning");
+      } else if(!courthouseMailingAddress.street.length) {
+        showToast("Please enter courthouse mailing street!", "warning");
+      } else if(!courthouseMailingAddress.city.length) {
+        showToast("Please enter courthouse mailing city!", "warning");
+      } else if(!courthouseMailingAddress.state.length) {
+        showToast("Please enter courthouse mailing state!", "warning");
+      } else if(!courthouseMailingAddress.zipCode.length) {
+        showToast("Please enter courthouse mailing zip code!", "warning");
+      } else if(!courthouseMailingAddress.country.length) {
+        showToast("Please enter courthouse mailing country!", "warning");
       } else if(!countyOf.length) {
         showToast("Please enter county of!", "warning");
       } else {
@@ -263,35 +281,36 @@ function Questionaire() {
         setActiveStep(2);
       }
     } else if(activeStep === 2) {
-      if(!numberOfAttorneyPlaintiff.length) {
+      if(!shouldPGFillPlaintiffInfo && !numberOfAttorneyPlaintiff.length) {
         showToast("Please select number of plaintiff(s) listed!", "warning");
-      } else if(!plaintiffFullName.length) {
+      } else if(!shouldPGFillPlaintiffInfo && !plaintiffFullName.length) {
         showToast("Please enter plaintiff's full name!", "warning");
-      } else if(!plaintiffAddress.length) {
+      } else if(!shouldPGFillPlaintiffInfo && !plaintiffAddress.length) {
         showToast("Please enter plaintiff's address!", "warning");
-      } else if(!attorneyRepresentingPlaintiffInfo.length) {
+      } else if(!shouldPGFillPlaintiffInfo && !attorneyRepresentingPlaintiffInfo.length) {
         showToast("Please select number of attorney's representing plaintiff!", "warning");
-      } else if(!plaintiffAttorneyName.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyName.length) {
         showToast("Please enter plaintiff's attorney name!", "warning");
-      } else if(!plaintiffAttorneyBarNumber.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyBarNumber.length) {
         showToast("Please enter plaintiff's attorney bar number!", "warning");
-      } else if(!plaintiffAttorneyEmail.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyEmail.length) {
         showToast("Please enter plaintiff's attorney email!", "warning");
-      } else if(!plaintiffAttorneyFirmAddress.address.length) {
-        showToast("Please enter plaintiff's attorney firm address!", "warning");
-      } else if(!plaintiffAttorneyFirmAddress.city.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.street.length) {
+        showToast("Please enter plaintiff's attorney firm street!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.city.length) {
         showToast("Please enter plaintiff's attorney firm city!", "warning");
-      } else if(!plaintiffAttorneyFirmAddress.state.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.state.length) {
         showToast("Please enter plaintiff's attorney firm state!", "warning");
-      } else if(!plaintiffAttorneyFirmAddress.zipCode.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.zipCode.length) {
         showToast("Please enter plaintiff's attorney firm zip code!", "warning");
-      } else if(!plaintiffAttorneyFirmAddress.country.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.country.length) {
         showToast("Please enter plaintiff's attorney firm country!", "warning");
       } else {
         let data = {
           plaintiffFullName,
           plaintiffAddress,
           numberOfAttorneyPlaintiff,
+          shouldPGFillPlaintiffInfo,
           attorneyRepresentingPlaintiffInfo,
           plaintiffAttorneyName,
           plaintiffAttorneyBarNumber,
@@ -304,33 +323,34 @@ function Questionaire() {
         setActiveStep(3);
       }
     } else if(activeStep === 3) {
-      if(!numberOfAttorneyDefendant.length) {
+      if(!shouldPGFillDefendantInfo && !numberOfAttorneyDefendant.length) {
         showToast("Please select number of defendant(s) listed!", "warning");
-      } else if(!defendantFullName.length) {
+      } else if(!shouldPGFillDefendantInfo && !defendantFullName.length) {
         showToast("Please enter defendant's full name!", "warning");
-      } else if(!attorneyRepresentingDefendantInfo.length) {
+      } else if(!shouldPGFillDefendantInfo && !attorneyRepresentingDefendantInfo.length) {
         showToast("Please select number of attorney's representing defendant!", "warning");
-      } else if(!defendantAttorneyName.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyName.length) {
         showToast("Please enter defendant attorney name!", "warning");
-      } else if(!defendantAttorneyBarNumber.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyBarNumber.length) {
         showToast("Please enter defendant attorney bar number!", "warning");
-      } else if(!defendantAttorneyEmail.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyEmail.length) {
         showToast("Please enter defendant attorney email!", "warning");
-      } else if(!defendantAttorneyFirmAddress.address.length) {
-        showToast("Please enter defendant attorney office address!", "warning");
-      } else if(!defendantAttorneyFirmAddress.city.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.street.length) {
+        showToast("Please enter defendant attorney office street!", "warning");
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.city.length) {
         showToast("Please enter defendant attorney office city!", "warning");
-      } else if(!defendantAttorneyFirmAddress.state.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.state.length) {
         showToast("Please enter defendant attorney office state!", "warning");
-      } else if(!defendantAttorneyFirmAddress.zipCode.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.zipCode.length) {
         showToast("Please enter defendant attorney office zip code!", "warning");
-      } else if(!defendantAttorneyFirmAddress.country.length) {
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.country.length) {
         showToast("Please enter defendant attorney office country!", "warning");
       } else {
         let data = {
           defendantFullName,
           defendantAddress,
           numberOfAttorneyDefendant,
+          shouldPGFillDefendantInfo,
           attorneyRepresentingDefendantInfo,
           defendantAttorneyName,
           defendantAttorneyFirmAddress,
@@ -353,8 +373,16 @@ function Questionaire() {
         showToast("Please enter date of birth of servee!", "warning");
       } else if(!locationForBeingServed.length) {
         showToast("Please select the kind of location being served!", "warning");
-      } else if(!mainAddressForService.length) {
-        showToast("Please enter main address for service!", "warning");
+      } else if(!mainAddressForService.street.length) {
+        showToast("Please enter street for service!", "warning");
+      } else if(!mainAddressForService.city.length) {
+        showToast("Please enter city for service!", "warning");
+      } else if(!mainAddressForService.state.length) {
+        showToast("Please enter state for service!", "warning");
+      } else if(!mainAddressForService.zipCode.length) {
+        showToast("Please enter zip code for service!", "warning");
+      } else if(!mainAddressForService.country.length) {
+        showToast("Please enter country for service!", "warning");
       } else if(typeof(agentOfService)!=="boolean") {
         showToast("Please select if there is an agent of service!", "warning");
       } else if(agentOfService && !ifYesListFullName.length) {
@@ -508,28 +536,30 @@ function Questionaire() {
     setCourtType("");
     setCourtState("");
     setCountyOf("");
-    setCourthouseAddress("");
-    setCourthouseMailingAddress("");
+    setCourthouseAddress({street: "", city: "", state: "", zipCode: "", country: ""});
+    setCourthouseMailingAddress({street: "", city: "", state: "", zipCode: "", country: ""});
     setBranchName("");
     // Reset Form 2
-    setPlaintiffFullName("");
-    setPlaintiffAddress("");
+    setPlaintiffFullName({firstName: "", middleName: "", lastName: ""});
+    setPlaintiffAddress({street: "", city: "", state: "", zipCode: "", country: ""});
+    setShouldPGFillPlaintiffInfo(false);
     setNumberOfAttorneyPlaintiff("");
     setAttorneyRepresentingPlaintiffInfo("");    
-    setPlaintiffAttorneyName("");
+    setPlaintiffAttorneyName({firstName: "", middleName: "", lastName: ""});
     setPlaintiffAttorneyBarNumber("");
-    setPlaintiffAttorneyFirmAddress({address: "", city: "", state: "", zipCode: "", country: ""});
+    setPlaintiffAttorneyFirmAddress({street: "", city: "", state: "", zipCode: "", country: ""});
     setPlaintiffAttorneyPhoneNumberForCalls("");
     setPlaintiffAttorneyEmail("");
     setPlaintiffAttorneyFaxNumberOptional("");
     // Reset Form 3
     setDefendantFullName("");
     setDefendantAddress("");
+    setShouldPGFillDefendantInfo(false);
     setNumberOfAttorneyDefendant("");
     setAttorneyRepresentingDefendantInfo("");
     setDefendantAttorneyName("");
     setDefendantAttorneyBarNumber("");
-    setDefendantAttorneyFirmAddress({address: "", city: "", state: "", zipCode: "", country: ""});
+    setDefendantAttorneyFirmAddress({street: "", city: "", state: "", zipCode: "", country: ""});
     setDefendantAttorneyPhoneNumberForCalls("");
     setDefendantAttorneyEmail("");
     setDefendantAttorneyFaxNumberOptional("");
@@ -540,7 +570,7 @@ function Questionaire() {
     setNameOfIndividuals("");
     setDobOfIndividuals("");
     setLocationForBeingServed("");
-    setMainAddressForService("");
+    setMainAddressForService({street: "", city: "", state: "", zipCode: "", country: ""});
     setAgentOfService("");
     setIfYesListFullName("");
     setPhoneNumberOfIndividuals("");
@@ -649,6 +679,8 @@ function Questionaire() {
         activeStep === 2
           &&
             <Questionaire2
+              shouldPGFillPlaintiffInfo={shouldPGFillPlaintiffInfo}
+              setShouldPGFillPlaintiffInfo={setShouldPGFillPlaintiffInfo}
               plaintiffFullName={plaintiffFullName}
               setPlaintiffFullName={setPlaintiffFullName}
               plaintiffAddress={plaintiffAddress}
@@ -661,8 +693,8 @@ function Questionaire() {
               setPlaintiffAttorneyName={setPlaintiffAttorneyName}
               plaintiffAttorneyBarNumber={plaintiffAttorneyBarNumber}
               setPlaintiffAttorneyBarNumber={setPlaintiffAttorneyBarNumber}
-              address={plaintiffAttorneyFirmAddress.address}
-              setAddress={(address)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, address})}
+              street={plaintiffAttorneyFirmAddress.street}
+              setStreet={(street)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, street})}
               city={plaintiffAttorneyFirmAddress.city}
               setCity={(city)=>setPlaintiffAttorneyFirmAddress({...plaintiffAttorneyFirmAddress, city})}
               state={plaintiffAttorneyFirmAddress.state}
@@ -683,6 +715,8 @@ function Questionaire() {
         activeStep === 3
           &&
             <Questionaire3
+              shouldPGFillDefendantInfo={shouldPGFillDefendantInfo}
+              setShouldPGFillDefendantInfo={setShouldPGFillDefendantInfo}
               defendantFullName={defendantFullName}
               setDefendantFullName={setDefendantFullName}
               defendantAddress={defendantAddress}
@@ -693,8 +727,8 @@ function Questionaire() {
               setAttorneyRepresentingDefendantInfo={setAttorneyRepresentingDefendantInfo}
               defendantAttorneyName={defendantAttorneyName}
               setDefendantAttorneyName={setDefendantAttorneyName}
-              address={defendantAttorneyFirmAddress.address}
-              setAddress={(address)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, address})}
+              street={defendantAttorneyFirmAddress.street}
+              setStreet={(street)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, street})}
               city={defendantAttorneyFirmAddress.city}
               setCity={(city)=>setDefendantAttorneyFirmAddress({...defendantAttorneyFirmAddress, city})}
               state={defendantAttorneyFirmAddress.state}
@@ -849,16 +883,18 @@ function Questionaire() {
       {
         activeStep!==9
           &&
-            <div className="d-flex justify-content-end">
-              <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={300} duration={500} delay={300}>
-                <button
-                  className="btn btn-primary mt-1 mb-1"
-                  onClick={handleOnPressNext}
-                >
-                  {getButtonTitle()}
-                </button>
-              </RSLink>
-            </div>
+            <Element name="next-btn" className="element">
+              <div className="d-flex justify-content-end">
+                <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={250} duration={500} delay={300}>
+                  <button
+                    className="btn btn-primary mt-1 mb-1"
+                    onClick={handleOnPressNext}
+                  >
+                    {getButtonTitle()}
+                  </button>
+                </RSLink>
+              </div>
+            </Element>
       }
       <br/><br/><br/>
     </React.Fragment>

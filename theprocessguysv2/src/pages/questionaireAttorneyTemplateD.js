@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 
-function QuestionaireAttorneyTemplateD() {
+function QuestionaireAttorneyTemplateD({disabled, ...props}) {
     
     const [showModal, setShow] = useState(false);
     const [defendantAttorneyName, setDefendantAttorneyName] = useState("");
@@ -25,26 +25,18 @@ function QuestionaireAttorneyTemplateD() {
       }
 
       localStorage.setItem('questionaireAttorneyTemplateD', JSON.stringify(data))
-
-      // .then(() => {
-      //     alert("Defendant Attorney has been added!");
-      //   })
-      //   .catch((error) => {
-      //     alert(error.message);
-      //   });
   }
     
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
   
     return (
-
-    <React.Fragment>
+      <React.Fragment>
         <div
           className="d-flex align-items-center justify-content-center"
         >
           <Button variant="primary w-50" onClick={handleShow}>
-          + Attorney(s) Representing Defendant
+            + Attorney(s) Representing Defendant
           </Button>
         </div>
         <Modal show={showModal} onHide={handleClose}>
@@ -56,66 +48,105 @@ function QuestionaireAttorneyTemplateD() {
                 <div id="defendant-attorney-name">
                 <label>Enter Attorney Full Name*</label>
                 <MDBInput
-                type="text"
-                value={defendantAttorneyName}
-                onChange={(e) => setDefendantAttorneyName(e.target.value)}
-                required 
-                     />
+                  type="text"
+                  disabled={disabled}
+                  value={defendantAttorneyName}
+                  onChange={(e) => setDefendantAttorneyName(e.target.value)}
+                  required 
+                />
                 </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-bar-number">
                 <div id="defendant-attorney-bar-number">
                 <label>Bar Number*</label>
                 <MDBInput
-                type="text"
-                value={defendantAttorneyBarNumber}
-                onChange={(e) => setDefendantAttorneyBarNumber(e.target.value)}
-                required 
-                     />
+                  type="text"
+                  disabled={disabled}
+                  value={defendantAttorneyBarNumber}
+                  onChange={(e) => setDefendantAttorneyBarNumber(e.target.value)}
+                  required 
+                />
                 </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-phone-number-for-calls">
                 <div id="defendant-attorney-phone-number-for-calls">
                 <label>Phone Number for Calls (you may list multiple)</label>
                 <MDBInput
-                type="textarea"
-                value={defendantAttorneyPhoneNumberForCalls}
-                onChange={(e) => setDefendantAttorneyPhoneNumberForCalls(e.target.value)}
-                required 
-                     />
+                  type="textarea"
+                  disabled={disabled}
+                  value={defendantAttorneyPhoneNumberForCalls}
+                  onChange={(e) => setDefendantAttorneyPhoneNumberForCalls(e.target.value)}
+                  required 
+                />
                 </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-office-address">
                 <div id="defendant-attorney-office-address">
-                <label>Office Address*</label>
-                <MDBInput
-                type="text"
-                value={defendantAttorneyOfficeAddress}
-                onChange={(e) => setDefendantAttorneyOfficeAddress(e.target.value)}
-                required 
-                     />
+                  <label>Firm Address*</label>
+                  <MDBInput
+                    type="text"
+                    hint="Street"
+                    disabled={disabled}
+                    value={defendantAttorneyOfficeAddress.street}
+                    onChange={(e) => setDefendantAttorneyOfficeAddress({...defendantAttorneyOfficeAddress, street: e.target.value})}
+                    required 
+                  />
+                  <MDBInput
+                    type="text"
+                    hint="City"
+                    disabled={disabled}
+                    value={defendantAttorneyOfficeAddress.city}
+                    onChange={(e) => setDefendantAttorneyOfficeAddress({...defendantAttorneyOfficeAddress, city: e.target.value})}
+                    required 
+                  />
+                  <MDBInput
+                    type="text"
+                    hint="State"
+                    disabled={disabled}
+                    value={defendantAttorneyOfficeAddress.state}
+                    onChange={(e) => setDefendantAttorneyOfficeAddress({...defendantAttorneyOfficeAddress, state: e.target.value})}
+                    required 
+                  />
+                  <MDBInput
+                    type="text"
+                    hint="Zip Code"
+                    disabled={disabled}
+                    value={defendantAttorneyOfficeAddress.zipCode}
+                    onChange={(e) => setDefendantAttorneyOfficeAddress({...defendantAttorneyOfficeAddress, zipCode: e.target.value})}
+                    required 
+                  />
+                  <MDBInput
+                    type="text"
+                    hint="Country"
+                    disabled={disabled}
+                    value={defendantAttorneyOfficeAddress.country}
+                    onChange={(e) => setDefendantAttorneyOfficeAddress({...defendantAttorneyOfficeAddress, country: e.target.value})}
+                    required 
+                  />
                 </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-email">
                 <div id="defendant-attorney-email">
-                <label>Attorney E-Mail*</label>
-                <MDBInput
-                type="text"
-                value={defendantAttorneyEmail}
-                onChange={(e) => setDefendantAttorneyEmail(e.target.value)}
-                required 
-                     />
+                  <label>Attorney E-Mail*</label>
+                  <MDBInput
+                    type="text"
+                    disabled={disabled}
+                    value={defendantAttorneyEmail}
+                    onChange={(e) => setDefendantAttorneyEmail(e.target.value)}
+                    required 
+                  />
                 </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-fax-number-optional">
                 <div id="defendant-attorney-fax-number-optional">
-                <label>Fax Number (Optional)</label>
-                <MDBInput
-                type="text"
-                value={defendantAttorneyFaxNumberOptional}
-                onChange={(e) => setDefendantAttorneyFaxNumberOptional(e.target.value)}
-                required 
-                     />
+                  <label>Fax Number (Optional)</label>
+                  <MDBInput
+                    type="text"
+                    disabled={disabled}
+                    value={defendantAttorneyFaxNumberOptional}
+                    onChange={(e) => setDefendantAttorneyFaxNumberOptional(e.target.value)}
+                    required 
+                  />
                 </div>
             </MDBCol>
           </Modal.Body>
@@ -128,7 +159,7 @@ function QuestionaireAttorneyTemplateD() {
             </Button>
           </Modal.Footer>
         </Modal>
-    </React.Fragment>
+      </React.Fragment>
     );
   }
   

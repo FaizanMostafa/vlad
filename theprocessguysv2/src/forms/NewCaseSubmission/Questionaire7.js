@@ -23,18 +23,6 @@ const Questionaire7 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-2">Vehicle Information<i>(Proceed to next page if not available)</i>*</h2>
       <br></br>
-
-      <MDBCol md="12" id="insurance-company-of-servee">
-        <div id="insurance-company-of-servee">
-          <label>Insurance Company of Servee</label>
-          <MDBInput
-            type="text" 
-            className="text-white"
-            value={insuranceCompanyOfServee}
-            onChange={(e) => setInsuranceCompanyOfServee(e.target.value)}
-          />
-        </div>
-      </MDBCol>
       <MDBCol md="12" id="vehicle-type-model-ownership">
         <div id="vehicle-type-model-ownership">
           <label>Vehicle Type/Model Ownership <i>(ie car, motorcycle, boat, RV)</i></label>
@@ -43,6 +31,28 @@ const Questionaire7 = (props) => {
             className="text-white"
             value={vehicleTypeModelOwnership}
             onChange={(e) => setVehicleTypeModelOwnership(e.target.value)}
+          />
+        </div>
+      </MDBCol>
+      <MDBCol md="12" id="vehicle-year-of-individuals">
+        <div id="vehicle-year-of-individuals">
+          <label>Year of Make on Vehicle</label>
+          <MDBInput
+            type="text"
+            className="text-white"
+            value={yearOfMakeOnVehicle}
+            onChange={(e) => setYearOfMakeOnVehicle(e.target.value)}
+          />
+        </div>
+      </MDBCol>
+      <MDBCol md="12" id="vehicle-color-of-individuals">
+        <div id="vehicle-color-of-individuals">
+          <label>Vehicle Color</label>
+          <MDBInput 
+            type="text"
+            className="text-white"
+            value={vehicleColor} 
+            onChange={(e) => setVehicleColor(e.target.value)}
           />
         </div>
       </MDBCol>
@@ -68,25 +78,14 @@ const Questionaire7 = (props) => {
           />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="vehicle-year-of-individuals">
-        <div id="vehicle-year-of-individuals">
-          <label>Year of Make on Vehicle</label>
+      <MDBCol md="12" id="insurance-company-of-servee">
+        <div id="insurance-company-of-servee">
+          <label>Insurance Company of Servee</label>
           <MDBInput
-            type="text"
+            type="text" 
             className="text-white"
-            value={yearOfMakeOnVehicle}
-            onChange={(e) => setYearOfMakeOnVehicle(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="vehicle-color-of-individuals">
-        <div id="vehicle-color-of-individuals">
-          <label>Vehicle Color</label>
-          <MDBInput 
-            type="text"
-            className="text-white"
-            value={vehicleColor} 
-            onChange={(e) => setVehicleColor(e.target.value)}
+            value={insuranceCompanyOfServee}
+            onChange={(e) => setInsuranceCompanyOfServee(e.target.value)}
           />
         </div>
       </MDBCol>

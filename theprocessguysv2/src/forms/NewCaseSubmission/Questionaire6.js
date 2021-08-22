@@ -48,7 +48,7 @@ const Questionaire6 = (props) => {
             value={genderOfIndividuals}
             onChange={(e) => setGenderOfIndividuals(e.target.value)}
           >
-            <option value="Please Select">Please Select</option>
+            <option value="">Please Select</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
           </select>

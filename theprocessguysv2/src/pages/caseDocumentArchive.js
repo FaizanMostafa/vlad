@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MDBCol } from 'mdbreact';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import LoadingPage from "./Loading";
 import Accordian from "../components/Accordian";
 import {

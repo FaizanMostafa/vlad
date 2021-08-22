@@ -39,13 +39,13 @@ const Questionaire4 = (props) => {
       <br></br>
       <MDBCol md="12" id="number-of-case-files">
         <div id="number-of-case-files">
-          <label>How many case files are being served? (Only if multiple cases are involved in service together (ie. Divorce, Restraining order, Eviction, etc.))*</label>
+          <label>How many case files are being served? (Only if multiple cases are being involved for service to the same SERVEE)*</label>
           <select className="w-75 m-4 text-center p-2"
             value={numberOfCaseFilesBeingServed}
             onChange={(e) => setNumberOfCaseFilesBeingServed(e.target.value)}
             required
           >
-            <option value="Please Select" >Please Select</option>
+            <option value="">Please Select</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -61,13 +61,13 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="how-many-individuals-served">
         <div id="how-many-individuals-served">
-          <label>How many servees are being served?*</label><br></br>
+          <label>How many servees are being served? (Only if multiple servees are receiving the same case file)*</label><br></br>
           <select className="w-75 m-4 text-center p-2"
             value={howManyIndividualsServed}
             onChange={(e) => setHowManyIndividualsServed(e.target.value)}
             required
           >
-            <option value="Please Select" >Please Select</option>
+            <option value="">Please Select</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -142,9 +142,9 @@ const Questionaire4 = (props) => {
       <MDBCol md="12" id="employment-of-individuals">
         <div id="employment-of-individuals">
           <label>Is the Servee Currently Employed?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals("yes")} id="employmentOfIndividualsY" name="employmentOfIndividuals" value={employmentOfIndividuals==="yes"?true:false} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("no")} id="employmentOfIndividualsN" name="employmentOfIndividuals" value={employmentOfIndividuals==="no"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsU" name="employmentOfIndividuals" value={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsU">Unknown</label>
+          <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals("yes")} id="employmentOfIndividualsY" name="employmentOfIndividuals" checked={employmentOfIndividuals==="yes"?true:false} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("no")} id="employmentOfIndividualsN" name="employmentOfIndividuals" checked={employmentOfIndividuals==="no"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
+          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsU" name="employmentOfIndividuals" checked={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsU">Unknown</label>
           <br/>
         </div>
       </MDBCol>
@@ -160,7 +160,7 @@ const Questionaire4 = (props) => {
             <label caret color="white">
               Please Select
             </label>
-            <option value="Please Select" >Please Select</option>
+            <option value="" >Please Select</option>
             <option value="residence" >Residence</option>
             <option value="business">Business</option>
             <option value="unknown">Unknown</option>
@@ -172,9 +172,42 @@ const Questionaire4 = (props) => {
           <label>Main Address for Service(Write N/A if unavailable)*</label>
           <MDBInput
             type="text"
+            hint="Street"
             className="text-white"
-            value={mainAddressForService}
-            onChange={(e) => setMainAddressForService(e.target.value)}
+            value={mainAddressForService.street}
+            onChange={(e) => setMainAddressForService({...mainAddressForService, street: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="City"
+            className="text-white"
+            value={mainAddressForService.city}
+            onChange={(e) => setMainAddressForService({...mainAddressForService, city: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="State"
+            className="text-white"
+            value={mainAddressForService.state}
+            onChange={(e) => setMainAddressForService({...mainAddressForService, state: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Zip Code"
+            className="text-white"
+            value={mainAddressForService.zipCode}
+            onChange={(e) => setMainAddressForService({...mainAddressForService, zipCode: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Country"
+            className="text-white"
+            value={mainAddressForService.country}
+            onChange={(e) => setMainAddressForService({...mainAddressForService, country: e.target.value})}
             required
           />
         </div>
@@ -187,8 +220,8 @@ const Questionaire4 = (props) => {
       <MDBCol md="12" id="agent-of-service">
         <div id="agent-of-service">
           <label>Is There an Agent of Service?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setAgentOfService(true)} id="agentOfServiceY" name="agentOfService" value={agentOfService} /><label className="ml-2" for="agentOfServiceY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setAgentOfService(false)} id="agentOfServiceN" name="agentOfService" value={agentOfService} /><label className="ml-2" for="agentOfServiceN">No</label>
+          <input className="ml-2" type="radio" onClick={()=>setAgentOfService(true)} id="agentOfServiceY" name="agentOfService" checked={agentOfService===true} /><label className="ml-2" for="agentOfServiceY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setAgentOfService(false)} id="agentOfServiceN" name="agentOfService" checked={agentOfService===false} /><label className="ml-2" for="agentOfServiceN">No</label>
           <br/>
         </div>
       </MDBCol>

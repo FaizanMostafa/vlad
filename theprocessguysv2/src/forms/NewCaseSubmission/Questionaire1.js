@@ -92,7 +92,7 @@ const Questionaire1 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="court-state">
         <div id="court-state">
-          <label>Court State*</label>
+          <label>Court of*</label>
           <MDBInput
             type="text"
             className="text-white"
@@ -119,9 +119,42 @@ const Questionaire1 = (props) => {
           <label>Courthouse Address*</label>
           <MDBInput
             type="text"
+            hint="Street"
             className="text-white"
-            value={courthouseAddress}
-            onChange={(e) => setCourthouseAddress(e.target.value)}
+            value={courthouseAddress.street}
+            onChange={(e) => setCourthouseAddress({...courthouseAddress, street: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="City"
+            className="text-white"
+            value={courthouseAddress.city}
+            onChange={(e) => setCourthouseAddress({...courthouseAddress, city: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="State"
+            className="text-white"
+            value={courthouseAddress.state}
+            onChange={(e) => setCourthouseAddress({...courthouseAddress, state: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Zip Code"
+            className="text-white"
+            value={courthouseAddress.zipCode}
+            onChange={(e) => setCourthouseAddress({...courthouseAddress, zipCode: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Country"
+            className="text-white"
+            value={courthouseAddress.country}
+            onChange={(e) => setCourthouseAddress({...courthouseAddress, country: e.target.value})}
             required
           />
         </div>
@@ -131,9 +164,42 @@ const Questionaire1 = (props) => {
           <label>Courthouse Mailing Address*</label>
           <MDBInput
             type="text"
+            hint="Street"
             className="text-white"
-            value={courthouseMailingAddress}
-            onChange={(e) => setCourthouseMailingAddress(e.target.value)}
+            value={courthouseMailingAddress.street}
+            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, street: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="City"
+            className="text-white"
+            value={courthouseMailingAddress.city}
+            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, city: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="State"
+            className="text-white"
+            value={courthouseMailingAddress.state}
+            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, state: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Zip Code"
+            className="text-white"
+            value={courthouseMailingAddress.zipCode}
+            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, zipCode: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Country"
+            className="text-white"
+            value={courthouseMailingAddress.country}
+            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, country: e.target.value})}
             required
           />
         </div>

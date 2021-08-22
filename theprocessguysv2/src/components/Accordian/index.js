@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { MDBCol } from 'mdbreact';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Accordion, Card, AccordionContext, useAccordionToggle } from 'react-bootstrap';
 import { getUserCaseDetails } from "../../redux/actions/case";

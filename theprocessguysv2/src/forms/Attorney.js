@@ -150,7 +150,7 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                             &&
                                 <MDBCol md="12">
                                     <Form.Group id="firm-role">
-                                        <Form.Label>Firm Role (current position ie Owner, Partner, Staff Member, etc.</Form.Label>
+                                        <Form.Label>Firm Role (current position ie Owner, Partner, Staff Member, etc.)</Form.Label>
                                         <Form.Control 
                                             type="text"
                                             value={firmRole}

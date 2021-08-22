@@ -1,11 +1,14 @@
 import React from 'react';
 import { Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
+import { Link as RSLink } from 'react-scroll';
 import { Link } from "react-router-dom";
 import QuestionaireAttorneyP from "../../pages/questionaireAttorneyTemplateP";
 
 const Questionaire2 = (props) => {
   const {
+    shouldPGFillPlaintiffInfo,
+    setShouldPGFillPlaintiffInfo,
     plaintiffFullName,
     setPlaintiffFullName,
     plaintiffAddress,
@@ -18,8 +21,8 @@ const Questionaire2 = (props) => {
     setPlaintiffAttorneyName,
     plaintiffAttorneyBarNumber,
     setPlaintiffAttorneyBarNumber,
-    address,
-    setAddress,
+    street,
+    setStreet,
     city,
     setCity,
     state,
@@ -42,10 +45,36 @@ const Questionaire2 = (props) => {
       <br></br>
       <h2 className="text-center mb-4 mt-2">Plaintiff Information</h2>
       <br></br>
-      <Button className="d-flex align-items-center">
-        <Link to="/questionaire-defendant" style={{ color: "white" }} className="mb-0 mt-0">Skip</Link>
-      </Button>
-      <p className="text-center">"Click Here" to skip filling this section out, leave it for our team to complete! (Additional Charge)</p>
+      <center>
+        {
+          shouldPGFillPlaintiffInfo
+            ?
+              <Button variant="secondary" onClick={()=>setShouldPGFillPlaintiffInfo(!shouldPGFillPlaintiffInfo)} className="d-flex align-items-center">
+                <span style={{ color: "white" }} className="mb-0 mt-0">
+                  Fill the form yourself
+                </span>
+              </Button>
+            :
+              <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 10}}>
+                <RSLink activeClass="active" to="next-btn" spy={true} smooth={true} offset={0} duration={500} delay={300}>
+                  <Button onClick={()=>setShouldPGFillPlaintiffInfo(!shouldPGFillPlaintiffInfo)} >
+                    <span style={{ color: "white" }} className="mb-0 mt-0">
+                      Request form fill and skip
+                    </span>
+                  </Button>
+                </RSLink>
+              </div>
+        }
+      </center>
+      <p className="text-center">
+        {
+          shouldPGFillPlaintiffInfo
+            ?
+              'Click "Fill the form yourself" button to enable the input fields to fill the form yourself instead'
+            :
+              'Click "Request form fill and skip" button to skip filling this section out, leave it for our team to complete! (Additional Charges)'
+        }
+      </p>
       <br></br>
       <br></br>
       <MDBCol md="12" id="number-of-plaintiff-listed">
@@ -53,10 +82,11 @@ const Questionaire2 = (props) => {
           <label>Number of Plaintiff(s) listed?*</label>
           <select className="w-75 m-4 text-center p-2"
             value={numberOfAttorneyPlaintiff}
+            disabled={shouldPGFillPlaintiffInfo}
             onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
             required
           >
-            <option value="Please Select" >Please Select</option>
+            <option value="">Please Select</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -75,9 +105,29 @@ const Questionaire2 = (props) => {
           <label>Plaintiff's Full Name*</label>
           <MDBInput
             type="text"
+            hint="First Name"
             className="text-white"
-            value={plaintiffFullName}
-            onChange={(e) => setPlaintiffFullName(e.target.value)}
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffFullName.firstName}
+            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, firstName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Middle Name"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffFullName.middleName}
+            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, middleName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Last Name"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffFullName.lastName}
+            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, lastName: e.target.value})}
             required
           />
         </div>
@@ -87,9 +137,47 @@ const Questionaire2 = (props) => {
           <label>Plaintiff's Address*</label>
           <MDBInput
             type="text"
+            hint="Street"
             className="text-white"
-            value={plaintiffAddress}
-            onChange={(e) => setPlaintiffAddress(e.target.value)}
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAddress.street}
+            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, street: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="City"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAddress.city}
+            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, city: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="State"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAddress.state}
+            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, state: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Zip Code"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAddress.zipCode}
+            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, zipCode: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Country"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAddress.country}
+            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, country: e.target.value})}
             required
           />
         </div>
@@ -100,10 +188,12 @@ const Questionaire2 = (props) => {
           <label>Number of Attorney's Representing the Plaintiff?*</label>
           <select className="w-75 m-4 text-center p-2"
             value={attorneyRepresentingPlaintiffInfo}
+            disabled={shouldPGFillPlaintiffInfo}
             onChange={(e) => setAttorneyRepresentingPlaintiffInfo(e.target.value)}
             required
           >
-            <option value="Please Select" >Please Select</option>
+            <option value="">Please Select</option>
+            <option value="0">0</option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -119,22 +209,43 @@ const Questionaire2 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="plaintiff-attorney-name">
         <div id="plaintiff-attorney-name">
-          <label>Enter Attorney Full Name*</label>
+          <label>Enter Attorney Full Name{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
           <MDBInput
             type="text"
+            hint="First Name"
             className="text-white"
-            value={plaintiffAttorneyName}
-            onChange={(e) => setPlaintiffAttorneyName(e.target.value)}
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAttorneyName.firstName}
+            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, firstName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Middle Name"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAttorneyName.middleName}
+            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, middleName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Last Name"
+            className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
+            value={plaintiffAttorneyName.lastName}
+            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, lastName: e.target.value})}
             required
           />
         </div>
       </MDBCol>
       <MDBCol md="12" id="plaintiff-attorney-bar-number">
         <div id="plaintiff-attorney-bar-number">
-          <label>Bar Number*</label>
+          <label>Bar Number{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             value={plaintiffAttorneyBarNumber}
             onChange={(e) => setPlaintiffAttorneyBarNumber(e.target.value)}
             required
@@ -147,6 +258,7 @@ const Questionaire2 = (props) => {
           <MDBInput
             type="textarea"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             value={plaintiffAttorneyPhoneNumberForCalls}
             onChange={(e) => setPlaintiffAttorneyPhoneNumberForCalls(e.target.value)}
             required
@@ -159,6 +271,7 @@ const Questionaire2 = (props) => {
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             value={plaintiffAttorneyFaxNumberOptional}
             onChange={(e) => setPlaintiffAttorneyFaxNumberOptional(e.target.value)}
             required
@@ -167,10 +280,11 @@ const Questionaire2 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="plaintiff-attorney-email">
         <div id="plaintiff-attorney-email">
-          <label>Attorney E-Mail*</label>
+          <label>Attorney E-Mail{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             value={plaintiffAttorneyEmail}
             onChange={(e) => setPlaintiffAttorneyEmail(e.target.value)}
             required
@@ -179,18 +293,20 @@ const Questionaire2 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="plaintiff-attorney-office-address">
         <div id="plaintiff-attorney-office-address">
-          <label>Firm Address*</label>
+          <label>Firm Address{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
           <MDBInput
             type="text"
             className="text-white"
-            hint="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            disabled={shouldPGFillPlaintiffInfo}
+            hint="Street"
+            value={street}
+            onChange={(e) => setStreet(e.target.value)}
             required
           />
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             hint="City"
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -199,6 +315,7 @@ const Questionaire2 = (props) => {
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             hint="State"
             value={state}
             onChange={(e) => setState(e.target.value)}
@@ -207,6 +324,7 @@ const Questionaire2 = (props) => {
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             hint="Zip Code"
             value={zipCode}
             onChange={(e) => setZipCode(e.target.value)}
@@ -215,6 +333,7 @@ const Questionaire2 = (props) => {
           <MDBInput
             type="text"
             className="text-white"
+            disabled={shouldPGFillPlaintiffInfo}
             hint="Country"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -222,13 +341,20 @@ const Questionaire2 = (props) => {
           />
         </div>
       </MDBCol>
-      
-      <MDBCol>
-        <QuestionaireAttorneyP />
-      </MDBCol>
-      <p className="d-flex align-items-center justify-content-center">
-        **Click button to add another Attorney**
-      </p>
+      {
+        !shouldPGFillPlaintiffInfo
+          &&
+            <>
+              <MDBCol>
+                <QuestionaireAttorneyP
+                  disabled={shouldPGFillPlaintiffInfo}
+                />
+              </MDBCol>
+              <p className="d-flex align-items-center justify-content-center">
+                **Click button to add another Attorney**
+              </p>
+            </>
+        }
       <br />
     </>
   );
