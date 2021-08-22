@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBCol, MDBInput } from "mdbreact";
+import { MDBCol, MDBRow, MDBInput } from "mdbreact";
 import QuestionaireAddressTemplate from "../../pages/questionaireAddressTemplate";
 import QuestionaireAgentOfService from "../../pages/questionaireAgentOfServiceTemplate";
 import QuestionaireEmploymentAddressTemplate from "../../pages/questionaireEmploymentAddressTemplate";
@@ -32,6 +32,20 @@ const Questionaire4 = (props) => {
     setKnownCoResidentsOfServee
   } = props;
 
+  const handleNoOfServeesChanged = (e) => {
+    setHowManyIndividualsServed(e.target.value);
+    if(e.target.value!=="" && parseInt(e.target.value)>1) {
+      setNumberOfCaseFilesBeingServed("1");
+    }
+  }
+
+  const handleNoOfCaseFilesChanged = (e) => {
+    setNumberOfCaseFilesBeingServed(e.target.value);
+    if(e.target.value!=="" && parseInt(e.target.value)>1) {
+      setHowManyIndividualsServed("1");
+    }
+  }
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">Servee Documented Data</h2>
@@ -42,20 +56,28 @@ const Questionaire4 = (props) => {
           <label>How many case files are being served? (Only if multiple cases are being involved for service to the same SERVEE)*</label>
           <select className="w-75 m-4 text-center p-2"
             value={numberOfCaseFilesBeingServed}
-            onChange={(e) => setNumberOfCaseFilesBeingServed(e.target.value)}
+            onChange={handleNoOfCaseFilesChanged}
             required
           >
             <option value="">Please Select</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {
+              howManyIndividualsServed!=="" && parseInt(howManyIndividualsServed)>1
+                ?
+                  <option value="1">1</option>
+                :
+                  <>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </>
+            }
           </select><br></br>
         </div>
       </MDBCol>
@@ -64,20 +86,28 @@ const Questionaire4 = (props) => {
           <label>How many servees are being served? (Only if multiple servees are receiving the same case file)*</label><br></br>
           <select className="w-75 m-4 text-center p-2"
             value={howManyIndividualsServed}
-            onChange={(e) => setHowManyIndividualsServed(e.target.value)}
+            onChange={handleNoOfServeesChanged}
             required
           >
             <option value="">Please Select</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
+            {
+              numberOfCaseFilesBeingServed!=="" && parseInt(numberOfCaseFilesBeingServed)>1
+                ?
+                  <option value="1">1</option>
+                :
+                  <>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </>
+            }
           </select><br></br>
         </div>
       </MDBCol>
@@ -106,15 +136,37 @@ const Questionaire4 = (props) => {
         </div>
       </MDBCol>
       <MDBCol md="12" id="phone-numbers-of-individuals">
-        <div id="phone-numbers-of-individuals">
-          <label>Phone Number(s) Pertaining to Servee(s) - Identify via Mobile, Office, and/or Home</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={phoneNumbersOfIndividuals}
-            onChange={(e) => setPhoneNumberOfIndividuals(e.target.value)}
-          />
-        </div>
+        <label>Phone Number(s) Pertaining to Servee</label>
+        {
+          Object.entries(phoneNumbersOfIndividuals).map(([key, phoneObj])=>(
+            <MDBRow>
+              <MDBCol bottom md="6">
+                <MDBInput
+                  hint="Phone Number"
+                  className="text-white"
+                  value={phoneObj.phoneNumber}
+                  onChange={(e) => setPhoneNumberOfIndividuals({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], phoneNumber: e.target.value}})}
+                />
+              </MDBCol>
+              <MDBCol md="6">
+                <label>What kind of location is the phone number for?*</label>
+                <select className="w-75 m-4 text-center p-2"
+                  value={phoneObj.location}
+                  onChange={(e) => setPhoneNumberOfIndividuals({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], location: e.target.value}})}
+                  required
+                >
+                  <label caret color="white">
+                    Please Select
+                  </label>
+                  <option value="">Please Select</option>
+                  <option value="home">Home</option>
+                  <option value="business">Business</option>
+                  <option value="unknown">Unknown</option>
+                </select>
+              </MDBCol>
+            </MDBRow>
+          ))
+        }
       </MDBCol>
       <MDBCol md="12" id="email-of-individuals">
         <div id="email-of-individuals">
@@ -129,15 +181,48 @@ const Questionaire4 = (props) => {
       </MDBCol>
       <br />
       <MDBCol md="12" id="known-coresidents-of-servee">
-        <div id="known-coresidents-of-servee">
-          <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={knownCoResidentsOfServee}
-            onChange={(e) => setKnownCoResidentsOfServee(e.target.value)}
-          />
-        </div>
+        <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
+        {
+          Object.entries(knownCoResidentsOfServee).map(([key, residentObj])=>(
+            <MDBRow>
+              <MDBCol bottom md="6">
+                <MDBInput
+                  hint="Co-Resident"
+                  className="text-white"
+                  value={residentObj.name}
+                  onChange={(e) => setKnownCoResidentsOfServee({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], name: e.target.value}})}
+                />
+              </MDBCol>
+              <MDBCol md="6">
+                <label>Relation with resident?*</label>
+                <select className="w-75 m-4 text-center p-2"
+                  value={residentObj.relation}
+                  onChange={(e) => setKnownCoResidentsOfServee({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], relation: e.target.value}})}
+                  required
+                >
+                  <label caret color="white">
+                    Please Select
+                  </label>
+                  <option value="">Please Select</option>
+                  <option value="husband">Husband</option>
+                  <option value="wife">Wife</option>
+                  <option value="brother">Brother</option>
+                  <option value="sister">Sister</option>
+                  <option value="rommate">Rommate</option>
+                  <option value="father">Father</option>
+                  <option value="mother">Mother</option>
+                  <option value="son">Son</option>
+                  <option value="daughter">Daughter</option>
+                  <option value="uncle">Uncle</option>
+                  <option value="aunt">Aunt</option>
+                  <option value="cousin">Cousin</option>
+                  <option value="friend">Friend</option>
+                  <option value="unknown">Unknown</option>
+                </select>
+              </MDBCol>
+            </MDBRow>
+          ))
+        }
       </MDBCol>
       <MDBCol md="12" id="employment-of-individuals">
         <div id="employment-of-individuals">

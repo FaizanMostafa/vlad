@@ -65,9 +65,9 @@ function Questionaire() {
   const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [agentOfService, setAgentOfService] = useState("");
   const [ifYesListFullName, setIfYesListFullName] = useState("");
-  const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState("");
+  const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState({0: {phoneNumber: "", location: ""}, 1: {phoneNumber: "", location: ""}});
   const [emailsOfIndividuals, setEmailsOfIndividuals] = useState("");
-  const [knownCoResidentsOfServee, setKnownCoResidentsOfServee] = useState("");
+  const [knownCoResidentsOfServee, setKnownCoResidentsOfServee] = useState({0: {name: "", relation: ""}, 1: {name: "", relation: ""}});
 
   // Questionaire Form 5
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
@@ -283,9 +283,9 @@ function Questionaire() {
     } else if(activeStep === 2) {
       if(!shouldPGFillPlaintiffInfo && !numberOfAttorneyPlaintiff.length) {
         showToast("Please select number of plaintiff(s) listed!", "warning");
-      } else if(!shouldPGFillPlaintiffInfo && !plaintiffFullName.length) {
+      } else if(!shouldPGFillPlaintiffInfo && (!plaintiffFullName.firstName.length || !plaintiffFullName.middleName.length || !plaintiffFullName.lastName.length)) {
         showToast("Please enter plaintiff's full name!", "warning");
-      } else if(!shouldPGFillPlaintiffInfo && !plaintiffAddress.length) {
+      } else if(!shouldPGFillPlaintiffInfo && (!plaintiffAddress.street.length || !plaintiffAddress.city.length || !plaintiffAddress.state.length || !plaintiffAddress.zipCode.length || !plaintiffAddress.country.length)) {
         showToast("Please enter plaintiff's address!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && !attorneyRepresentingPlaintiffInfo.length) {
         showToast("Please select number of attorney's representing plaintiff!", "warning");
