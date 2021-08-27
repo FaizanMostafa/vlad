@@ -63,11 +63,11 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Address of Serve: {caseData.details.ServeeDocumentedData.mainAddressForService}
+                                                        Address of Serve: {caseData.details.ServeeDocumentedData.mainAddressForService.street} {caseData.details.ServeeDocumentedData.mainAddressForService.city} {caseData.details.ServeeDocumentedData.mainAddressForService.state} {caseData.details.ServeeDocumentedData.mainAddressForService.country}
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Plaintiff Name: {caseData.details.PlaintiffInformation.plaintiffFullName}
+                                                        Plaintiff Name: {caseData.details.PlaintiffInformation.plaintiffFullName.firstName} {caseData.details.PlaintiffInformation.plaintiffFullName.middleName} {caseData.details.PlaintiffInformation.plaintiffFullName.lastName}
                                                     </div>
                                                     <br></br>
                                                     <div>
@@ -75,7 +75,7 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Attorney Name: {caseData.details.PlaintiffInformation.plaintiffAttorneyName}
+                                                        Attorney Name: {caseData.details.PlaintiffInformation.plaintiffAttorneyName.firstName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.middleName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.lastName}
                                                     </div>
                                                     <br></br>
                                                     {/* <div>

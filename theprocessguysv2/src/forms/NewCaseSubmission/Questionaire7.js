@@ -58,7 +58,7 @@ const Questionaire7 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="liscence-plate-number-state">
         <div id="liscence-plate-number-state">
-          <label>Liscense Plate Number/State of Individual(s)</label>
+          <label>Liscense Plate Number/State of Registration(s)</label>
           <MDBInput
             type="text"
             className="text-white"
@@ -69,7 +69,7 @@ const Questionaire7 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="vin-number-of-individuals">
         <div id="vin-number-of-individuals">
-          <label>Vehicle Vin Number of Individual(s)</label>
+          <label>Vehicle Vin Number</label>
           <MDBInput 
             type="text"
             className="text-white"

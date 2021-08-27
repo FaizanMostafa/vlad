@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, setFirmAddress, jobTitle, setJobTitle, SSN, setSSN, SSNState, setSSNState, ...props}) {
+function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, setFirmAddress, jobTitle, setJobTitle, ...props}) {
 
     return(
         <MDBRow>
@@ -87,28 +87,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 type="text"
                                 value={jobTitle}
                                 onChange={(e) => setJobTitle(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                    </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="company-job-title">
-                            <Form.Label>Government issued ID number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={SSN}
-                                onChange={(e) => setSSN(e.target.value)}
-                                required
-                            />
-                        </Form.Group>
-                    </MDBCol>
-                    <MDBCol md="12">
-                        <Form.Group id="company-job-title">
-                            <Form.Label>State of issued ID</Form.Label>
-                            <Form.Control 
-                                type="text"
-                                value={SSNState}
-                                onChange={(e) => setSSNState(e.target.value)}
                                 required
                             />
                         </Form.Group>

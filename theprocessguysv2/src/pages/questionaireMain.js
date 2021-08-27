@@ -12,11 +12,15 @@ import {
   Questionaire8,
   FileSubmission
 } from "../forms/NewCaseSubmission";
+import {
+  ResetQuestionairesConfirmation
+} from "../popups";
 import { showToast } from "../utils";
 
 function Questionaire() {
 
   const [activeStep, setActiveStep] = useState(1);
+  const [showResetModal, setShowResetModal] = useState(false);
   
   // Questionaire Form 1
   const [caseTitle, setCaseTitle] = useState("");
@@ -58,16 +62,12 @@ function Questionaire() {
   // Questionaire Form 4
   const [numberOfCaseFilesBeingServed, setNumberOfCaseFilesBeingServed] = useState("");
   const [howManyIndividualsServed, setHowManyIndividualsServed] = useState("");
-  const [employmentOfIndividuals, setEmploymentOfIndividuals] = useState("");
-  const [nameOfIndividuals, setNameOfIndividuals] = useState("");
-  const [dobOfIndividuals, setDobOfIndividuals] = useState("");
+  const [serveesDetail, setServeesDetail] = useState({});
+  const [date, setDate] = useState(new Date());
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
   const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [agentOfService, setAgentOfService] = useState("");
   const [ifYesListFullName, setIfYesListFullName] = useState("");
-  const [phoneNumbersOfIndividuals, setPhoneNumberOfIndividuals] = useState({0: {phoneNumber: "", location: ""}, 1: {phoneNumber: "", location: ""}});
-  const [emailsOfIndividuals, setEmailsOfIndividuals] = useState("");
-  const [knownCoResidentsOfServee, setKnownCoResidentsOfServee] = useState({0: {name: "", relation: ""}, 1: {name: "", relation: ""}});
 
   // Questionaire Form 5
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
@@ -80,7 +80,7 @@ function Questionaire() {
   const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
 
   //  Questionaire Form 6
-  const [fullNameOfDescribedServee, setFullNameOfDescribedServee] = useState("");
+  const [fullNameOfDescribedServee, setFullNameOfDescribedServee] = useState({firstName: "", middleName: "", lastName: ""});
   const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
   const [genderOfIndividuals, setGenderOfIndividuals] = useState("");
   const [ethnicityOfIndividuals, setEthnicityOfIndividuals] = useState("");
@@ -167,16 +167,11 @@ function Questionaire() {
       setActiveStep(5);
       setNumberOfCaseFilesBeingServed(QuestionaireForm4.numberOfCaseFilesBeingServed);
       setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
-      setEmploymentOfIndividuals(QuestionaireForm4.employmentOfIndividuals);
-      setNameOfIndividuals(QuestionaireForm4.nameOfIndividuals);
-      setDobOfIndividuals(QuestionaireForm4.dobOfIndividuals);
+      setServeesDetail(QuestionaireForm4.serveesDetail);
       setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
       setMainAddressForService(QuestionaireForm4.mainAddressForService);
       setAgentOfService(QuestionaireForm4.agentOfService);
       setIfYesListFullName(QuestionaireForm4.ifYesListFullName);
-      setPhoneNumberOfIndividuals(QuestionaireForm4.phoneNumbersOfIndividuals);
-      setEmailsOfIndividuals(QuestionaireForm4.emailsOfIndividuals);
-      setKnownCoResidentsOfServee(QuestionaireForm4.knownCoResidentsOfServee);
     }
     if(QuestionaireForm5) {
       setActiveStep(6);
@@ -228,6 +223,30 @@ function Questionaire() {
       setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
     }
   }, []);
+
+  useEffect(() => {
+    if(howManyIndividualsServed!=="" && parseInt(howManyIndividualsServed)!==Object.keys(serveesDetail).length) {
+      const prevLength = Object.keys(serveesDetail).length;
+      if(parseInt(howManyIndividualsServed)>prevLength) {
+        let newServeesDetail = serveesDetail;
+        for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
+          newServeesDetail[Object.keys(newServeesDetail).length] = {
+            fullName: "", dob: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
+            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: ""
+          }
+        }
+        setServeesDetail(newServeesDetail);
+        setDate(new Date());
+      } else {
+        let newServeesDetail = serveesDetail;
+        for(let index=Object.keys(serveesDetail).length; parseInt(howManyIndividualsServed)!==Object.keys(newServeesDetail).length; index--) {
+          delete newServeesDetail[Object.keys(newServeesDetail).length-1];
+        }
+        setServeesDetail(newServeesDetail);
+        setDate(new Date());
+      }
+    }
+  }, [howManyIndividualsServed]);
 
   const handleOnPressNext = () => {
     if(activeStep === 1) {
@@ -289,7 +308,7 @@ function Questionaire() {
         showToast("Please enter plaintiff's address!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && !attorneyRepresentingPlaintiffInfo.length) {
         showToast("Please select number of attorney's representing plaintiff!", "warning");
-      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyName.length) {
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyName.firstName.length && !plaintiffAttorneyName.middleName.length && !plaintiffAttorneyName.lastName.length) {
         showToast("Please enter plaintiff's attorney name!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyBarNumber.length) {
         showToast("Please enter plaintiff's attorney bar number!", "warning");
@@ -367,10 +386,22 @@ function Questionaire() {
         showToast("Please select how many case files being served!", "warning");
       } else if(!howManyIndividualsServed.length) {
         showToast("Please select how many individuals being served!", "warning");
-      } else if(!nameOfIndividuals.length) {
-        showToast("Please enter full name of individual(s) who is receiving Service!", "warning");
-      } else if(!dobOfIndividuals.length) {
-        showToast("Please enter date of birth of servee!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.length).length) {
+        showToast("Please enter the full names of all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.dob)).filter((dob)=>!dob.length).length) {
+        showToast("Please enter the date of births for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.phoneNumber.length).length) {
+        showToast("Please enter the phone numbers for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.type.length).length) {
+        showToast("Please select the phone number types for all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+        showToast("Please enter the emails for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
+        showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {
+        showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.isEmployed)).filter((isEmployed)=>!isEmployed.length).length) {
+        showToast("Please select the employment option for all the servees that are being served!", "warning");
       } else if(!locationForBeingServed.length) {
         showToast("Please select the kind of location being served!", "warning");
       } else if(!mainAddressForService.street.length) {
@@ -387,21 +418,15 @@ function Questionaire() {
         showToast("Please select if there is an agent of service!", "warning");
       } else if(agentOfService && !ifYesListFullName.length) {
         showToast("Please enter full name to agent of service!", "warning");
-      } else if(!employmentOfIndividuals.length) {
-        showToast("Please select employment of individuals!", "warning");
       } else {
         let data = {
-          howManyIndividualsServed,          
-          employmentOfIndividuals,
-          nameOfIndividuals,
-          dobOfIndividuals,
+          numberOfCaseFilesBeingServed,
+          howManyIndividualsServed,
+          serveesDetail,
           locationForBeingServed,
           mainAddressForService,
           agentOfService,          
-          ifYesListFullName,
-          phoneNumbersOfIndividuals,
-          emailsOfIndividuals,
-          knownCoResidentsOfServee
+          ifYesListFullName
         };
         localStorage.setItem('Questionaire4', JSON.stringify(data));
         setActiveStep(5);
@@ -566,16 +591,11 @@ function Questionaire() {
     // Reset Form 4
     setNumberOfCaseFilesBeingServed("");
     setHowManyIndividualsServed("");
-    setEmploymentOfIndividuals("");
-    setNameOfIndividuals("");
-    setDobOfIndividuals("");
+    setServeesDetail({});
     setLocationForBeingServed("");
     setMainAddressForService({street: "", city: "", state: "", zipCode: "", country: ""});
     setAgentOfService("");
     setIfYesListFullName("");
-    setPhoneNumberOfIndividuals("");
-    setEmailsOfIndividuals("");
-    setKnownCoResidentsOfServee("");
     // Reset Form 5
     setServeIndividualAtEmployment("");
     setProcessServerLeaveDoorTag("");
@@ -586,7 +606,7 @@ function Questionaire() {
     setDropServeForceServe("");
     setParalegalAttorneyClientContactServee("");
     // Reset Form 6
-    setFullNameOfDescribedServee("");
+    setFullNameOfDescribedServee({firstName: "", middleName: "", lastName: ""});
     setImageOfIndividuals(null);
     setGenderOfIndividuals("");
     setEthnicityOfIndividuals("");
@@ -618,6 +638,7 @@ function Questionaire() {
     setRequireZipFileService("");
     setIfYesListAddress("");
     setActiveStep(1);
+    setShowResetModal(false);
     localStorage.removeItem("Questionaire1");
     localStorage.removeItem("Questionaire2");
     localStorage.removeItem("Questionaire3");
@@ -648,7 +669,7 @@ function Questionaire() {
             &&
               <button onClick={()=>setActiveStep(activeStep-1)} className="btn btn-primary">Previous Step</button>
         }
-        <button style={{marginLeft: "auto"}} onClick={handleResetForms} className="btn btn-primary">Reset All Forms</button>
+        <button style={{marginLeft: "auto"}} onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
       </div>
       
       {
@@ -755,12 +776,8 @@ function Questionaire() {
               setNumberOfCaseFilesBeingServed={setNumberOfCaseFilesBeingServed}
               howManyIndividualsServed={howManyIndividualsServed}
               setHowManyIndividualsServed={setHowManyIndividualsServed}
-              employmentOfIndividuals={employmentOfIndividuals}
-              setEmploymentOfIndividuals={setEmploymentOfIndividuals}
-              nameOfIndividuals={nameOfIndividuals}
-              setNameOfIndividuals={setNameOfIndividuals}
-              dobOfIndividuals={dobOfIndividuals}
-              setDobOfIndividuals={setDobOfIndividuals}
+              serveesDetail={serveesDetail}
+              setServeesDetail={setServeesDetail}
               locationForBeingServed={locationForBeingServed}
               setLocationForBeingServed={setLocationForBeingServed}
               mainAddressForService={mainAddressForService}
@@ -769,12 +786,6 @@ function Questionaire() {
               setAgentOfService={setAgentOfService}
               ifYesListFullName={ifYesListFullName}
               setIfYesListFullName={setIfYesListFullName}
-              phoneNumbersOfIndividuals={phoneNumbersOfIndividuals}
-              setPhoneNumberOfIndividuals={setPhoneNumberOfIndividuals}
-              emailsOfIndividuals={emailsOfIndividuals}
-              setEmailsOfIndividuals={setEmailsOfIndividuals}
-              knownCoResidentsOfServee={knownCoResidentsOfServee}
-              setKnownCoResidentsOfServee={setKnownCoResidentsOfServee}
             />
       }
       {
@@ -897,6 +908,11 @@ function Questionaire() {
             </Element>
       }
       <br/><br/><br/>
+      <ResetQuestionairesConfirmation
+        showModal={showResetModal}
+        handleModalClose={()=>setShowResetModal(false)}
+        handleOnClickConfirm={handleResetForms}
+      />
     </React.Fragment>
   )
 };

@@ -12,6 +12,7 @@ firebase.initializeApp({
 });
 
 const uploadMedia = async(file, baseFolder) => {
+  console.log("Recieved File for uploading: ", file)
   var storageRef = firebase.storage().ref();
   var fileRef = storageRef.child(`${baseFolder}${new Date().toISOString()}${file.name}`);
   const snapshot = await fileRef.put(file);

@@ -2,7 +2,7 @@ import React from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo, setBarNo, firmName, setFirmName, firmAddress, setFirmAddress, SSN, setSSN, SSNState, setSSNState, firmRole, setFirmRole,  ...props}) {
+function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo, setBarNo, firmName, setFirmName, firmAddress, setFirmAddress, firmRole, setFirmRole,  ...props}) {
 
     return(
         <MDBRow>
@@ -121,30 +121,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                             />
                         </Form.Group>
                     </MDBCol>
-                    {
-                        attorneyType === "paralegal"
-                            &&
-                                <MDBCol md="12">
-                                    <Form.Group id="paralegal-ssn">
-                                        <Form.Label>Government Issued ID Number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={SSN}
-                                            onChange={(e) => setSSN(e.target.value)}
-                                            required
-                                        />
-                                    </Form.Group>
-                                    <Form.Group id="paralegal-ssn-state">
-                                        <Form.Label>State of issued ID</Form.Label>
-                                        <Form.Control 
-                                            type="text"
-                                            value={SSNState}
-                                            onChange={(e) => setSSNState(e.target.value)}
-                                            required
-                                        />
-                                    </Form.Group>
-                                </MDBCol>
-                    }
                     {
                         attorneyType === "attorney"
                             &&

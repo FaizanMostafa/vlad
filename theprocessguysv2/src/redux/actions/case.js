@@ -33,36 +33,64 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
     try {
       dispatch(setIsFormPosting(true));
+      let serveesDocumentedDataDocRefs = [];
       const caseInformationDocRef = await db.collection("CaseInformation-1").add({uid: data.uid, ...data["CaseInformation-1"]});
       const plaintiffInformationDocRef = await db.collection("PlaintiffInformation-2").add({uid: data.uid, ...data["PlaintiffInformation-2"]});
       const defendantInformationDocRef = await db.collection("DefendantInformation-3").add({uid: data.uid, ...data["DefendantInformation-3"]});
-      const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"]});
+      const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
+      delete data["ServeeDocumentedData-4"].serveesDetail;
+      for (const servee of serveesDetail) {
+        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], ...servee});
+        serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
+      }
       const clearanceOfActionDocRef = await db.collection("ClearanceOfAction-5").add({uid: data.uid, ...data["ClearanceOfAction-5"]});
       const serveePhysicalDescriptionDocRef = await db.collection("ServeePhysicalDescription-6").add({uid: data.uid, ...data["ServeePhysicalDescription-6"]});
       const vehicleInformationDocRef = await db.collection("VehicleInformation-7").add({uid: data.uid, ...data["VehicleInformation-7"]});
       const offeredServicesDocRef = await db.collection("OfferedServices-8").add({uid: data.uid, ...data["OfferedServices-8"]});
       let documentURI;
-      const documents = [];
-      for(const document of data.documents) {
-        documentURI = await uploadMedia(document, `file_submissions/${data.uid}/`);
-        documents.push(documentURI);
+      if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
+        for(const document of data["documents"]) {
+          console.log({document})
+          documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`);
+          const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, caseType: document.caseType, fileContents: document.fileContents, submittedAt: new Date()});
+          const caseDocRef = await db.collection("cases").add({
+            uid: data.uid, filedAt: new Date(),
+            caseTitle: data["CaseInformation-1"].caseTitle,
+            CaseInformationId: caseInformationDocRef.id,
+            PlaintiffInformationId: plaintiffInformationDocRef.id,
+            DefendantInformationId: defendantInformationDocRef.id,
+            ServeeDocumentedDataId: serveesDocumentedDataDocRefs[0].id,
+            ClearanceOfActionId: clearanceOfActionDocRef.id,
+            ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
+            VehicleInformationId: vehicleInformationDocRef.id,
+            OfferedServicesId: offeredServicesDocRef.id,
+            FileSubmissionId: fileSubmissionDocRef.id,
+            status: "pending"
+          });
+          await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${data["PlaintiffInformation-2"].plaintiffFullName} ${data["DefendantInformation-3"].defendantFullName} ${data["PlaintiffInformation-2"].plaintiffAttorneyName} ${data["ServeeDocumentedData-4"].ifYesListFullName} ${data["CaseInformation-1"].courthouseAddress} ${data["CaseInformation-1"].courthouseMailingAddress} ${data["PlaintiffInformation-2"].plaintiffAddress} ${data["PlaintiffInformation-2"].plaintiffAttorneyOfficeAddress} ${data["DefendantInformation-3"].defendantAddress} ${data["DefendantInformation-3"].defendantAttorneyOfficeAddress} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+        }
+      } else {
+        const document = data.documents[0];
+        documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`);
+        const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, caseType: document.caseType, fileContents: document.fileContents, submittedAt: new Date()});
+        for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
+          const caseDocRef = await db.collection("cases").add({
+            uid: data.uid, filedAt: new Date(),
+            caseTitle: data["CaseInformation-1"].caseTitle,
+            CaseInformationId: caseInformationDocRef.id,
+            PlaintiffInformationId: plaintiffInformationDocRef.id,
+            DefendantInformationId: defendantInformationDocRef.id,
+            ServeeDocumentedDataId: serveeDocumentedDataDocRef.id,
+            ClearanceOfActionId: clearanceOfActionDocRef.id,
+            ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
+            VehicleInformationId: vehicleInformationDocRef.id,
+            OfferedServicesId: offeredServicesDocRef.id,
+            FileSubmissionId: fileSubmissionDocRef.id,
+            status: "pending"
+          });
+          await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${data["PlaintiffInformation-2"].plaintiffFullName.firstName} ${data["PlaintiffInformation-2"].plaintiffFullName.middleName} ${data["PlaintiffInformation-2"].plaintiffFullName.lastName} ${data["DefendantInformation-3"].defendantFullName} ${data["PlaintiffInformation-2"].plaintiffAttorneyName.firstName} ${data["PlaintiffInformation-2"].plaintiffAttorneyName.middleName} ${data["PlaintiffInformation-2"].plaintiffAttorneyName.lastName} ${data["ServeeDocumentedData-4"].ifYesListFullName} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${data["PlaintiffInformation-2"].plaintiffAddress.street} ${data["PlaintiffInformation-2"].plaintiffAddress.city} ${data["PlaintiffInformation-2"].plaintiffAddress.state} ${data["PlaintiffInformation-2"].plaintiffAddress.zipCode} ${data["PlaintiffInformation-2"].plaintiffAddress.country} ${data["PlaintiffInformation-2"].plaintiffAttorneyFirmAddress.street} ${data["PlaintiffInformation-2"].plaintiffAttorneyFirmAddress.city} ${data["PlaintiffInformation-2"].plaintiffAttorneyFirmAddress.state} ${data["PlaintiffInformation-2"].plaintiffAttorneyFirmAddress.zipCode} ${data["PlaintiffInformation-2"].plaintiffAttorneyFirmAddress.country} ${data["DefendantInformation-3"].defendantAddress} ${data["DefendantInformation-3"].defendantAttorneyFirmAddress.street} ${data["DefendantInformation-3"].defendantAttorneyFirmAddress.city} ${data["DefendantInformation-3"].defendantAttorneyFirmAddress.state} ${data["DefendantInformation-3"].defendantAttorneyFirmAddress.zipCode} ${data["DefendantInformation-3"].defendantAttorneyFirmAddress.country} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+        }
       }
-      const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documents, submittedAt: new Date()});
-      const caseDocRef = await db.collection("cases").add({
-        uid: data.uid, filedAt: new Date(),
-        caseTitle: data["CaseInformation-1"].caseTitle,
-        CaseInformationId: caseInformationDocRef.id,
-        PlaintiffInformationId: plaintiffInformationDocRef.id,
-        DefendantInformationId: defendantInformationDocRef.id,
-        ServeeDocumentedDataId: serveeDocumentedDataDocRef.id,
-        ClearanceOfActionId: clearanceOfActionDocRef.id,
-        ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
-        VehicleInformationId: vehicleInformationDocRef.id,
-        OfferedServicesId: offeredServicesDocRef.id,
-        FileSubmissionId: fileSubmissionDocRef.id,
-        status: "pending"
-      });
-      await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${data["PlaintiffInformation-2"].plaintiffFullName} ${data["DefendantInformation-3"].defendantFullName} ${data["PlaintiffInformation-2"].plaintiffAttorneyName} ${data["ServeeDocumentedData-4"].ifYesListFullName} ${data["CaseInformation-1"].courthouseAddress} ${data["CaseInformation-1"].courthouseMailingAddress} ${data["PlaintiffInformation-2"].plaintiffAddress} ${data["PlaintiffInformation-2"].plaintiffAttorneyOfficeAddress} ${data["DefendantInformation-3"].defendantAddress} ${data["DefendantInformation-3"].defendantAttorneyOfficeAddress} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
       showToast("Case submitted successfully!", "success");
       dispatch(setIsFormPosting(false));
       onSuccess();

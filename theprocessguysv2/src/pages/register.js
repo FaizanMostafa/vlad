@@ -5,7 +5,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Attorney from "../forms/Attorney";
 import Business from "../forms/Business";
-import Personal from "../forms/Personal";
 import {showToast, validateEmail} from "../utils";
 import { register } from '../redux/actions/auth';
 
@@ -15,6 +14,8 @@ function Register(props) {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const isUserSigningUp = useSelector(state => state.auth.isPosting);
     const [email, setEmail] = useState("");
+    const [SSN, setSSN] = useState("");
+    const [SSNState, setSSNState] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [firstName, setFirstName] = useState("");
@@ -31,19 +32,12 @@ function Register(props) {
     const [attBarNo, setAttBarNo] = useState("");
     const [attFirmName, setAttFirmName] = useState("");
     const [attFirmAddress, setAttFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
-    const [attSSN, setAttSSN] = useState("");
-    const [attSSNState, setAttSSNState] = useState("");
     const [attFirmRole, setAttFirmRole] = useState("");
     
     const [busSpecialty, setBusSpecialty] = useState("");
     const [busFirmName, setBusFirmName] = useState("");
     const [busFirmAddress, setBusFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [busJobTitle, setBusJobTitle] = useState("");
-    const [busSSN, setBusSSN] = useState("");
-    const [busSSNState, setBusSSNState] = useState("");
-
-    const [perSSN, setPerSSN] = useState("");
-    const [perSSNState, setPerSSNState] = useState("");
 
 
     const handleFormSubmit = (e) => {
@@ -75,8 +69,8 @@ function Register(props) {
                     data["barNumber"] = attBarNo;
                     data["firmRole"] = attFirmRole;
                 } else {
-                    data["SSN"] = attSSN;
-                    data["SSNState"] = attSSNState;
+                    data["SSN"] = SSN;
+                    data["SSNState"] = SSNState;
                     data["userType"] = "paralegal";
                 }
             } else if(userType==="business") {
@@ -84,11 +78,11 @@ function Register(props) {
                 data["firmAddress"] = busFirmAddress;
                 data["jobTitle"] = busJobTitle;
                 data["specialty"] = busSpecialty;
-                data["SSN"] = busSSN;
-                data["SSNState"] = busSSNState;
+                data["SSN"] = SSN;
+                data["SSNState"] = SSNState;
             } else {
-                data["SSN"] = perSSN;
-                data["SSNState"] = perSSNState;
+                data["SSN"] = SSN;
+                data["SSNState"] = SSNState;
             }
             dispatch(register(data, ()=>props.history.push("/")));
         }
@@ -245,6 +239,30 @@ function Register(props) {
                                 />
                             </Form.Group>
                         </MDBCol>
+                        {
+                            (attorneyType==="paralegal" || userType==="business" || userType==="personal")
+                                &&
+                                    <MDBCol md="12">
+                                        <Form.Group id="ssn">
+                                            <Form.Label>Government Issued ID Number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                value={SSN}
+                                                onChange={(e) => setSSN(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                        <Form.Group id="ssn-state">
+                                            <Form.Label>State of issued ID</Form.Label>
+                                            <Form.Control 
+                                                type="text"
+                                                value={SSNState}
+                                                onChange={(e) => setSSNState(e.target.value)}
+                                                required
+                                            />
+                                        </Form.Group>
+                                    </MDBCol>
+                        }
                         <MDBCol md="12">
                             <Form.Group id="text">
                                 <label>Email</label>
@@ -306,10 +324,6 @@ function Register(props) {
                                         setFirmName={setAttFirmName}
                                         firmAddress={attFirmAddress}
                                         setFirmAddress={setAttFirmAddress}
-                                        SSN={attSSN}
-                                        setSSN={setAttSSN}
-                                        SSNState={attSSNState}
-                                        setSSNState={setAttSSNState}
                                         firmRole={attFirmRole}
                                         setFirmRole={setAttFirmRole}
                                     />
@@ -328,22 +342,6 @@ function Register(props) {
                                         setFirmAddress={setBusFirmAddress}
                                         jobTitle={busJobTitle}
                                         setJobTitle={setBusJobTitle}
-                                        SSN={busSSN}
-                                        setSSN={setBusSSN}
-                                        SSNState={busSSNState}
-                                        setSSNState={setBusSSNState}
-                                    />
-                                </MDBRow>
-                    }
-                    {
-                        userType === "personal"
-                            &&
-                                <MDBRow>
-                                    <Personal
-                                        SSN={perSSN}
-                                        setSSN={setPerSSN}
-                                        SSNState={perSSNState}
-                                        setSSNState={setPerSSNState}
                                     />
                                 </MDBRow>
                     }

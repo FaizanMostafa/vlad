@@ -10,12 +10,8 @@ const Questionaire4 = (props) => {
     setNumberOfCaseFilesBeingServed,
     howManyIndividualsServed,
     setHowManyIndividualsServed,
-    employmentOfIndividuals,
-    setEmploymentOfIndividuals,
-    nameOfIndividuals,
-    setNameOfIndividuals,
-    dobOfIndividuals,
-    setDobOfIndividuals,
+    serveesDetail,
+    setServeesDetail,
     locationForBeingServed,
     setLocationForBeingServed,
     mainAddressForService,
@@ -23,13 +19,7 @@ const Questionaire4 = (props) => {
     agentOfService,
     setAgentOfService,
     ifYesListFullName,
-    setIfYesListFullName,
-    phoneNumbersOfIndividuals,
-    setPhoneNumberOfIndividuals,
-    emailsOfIndividuals,
-    setEmailsOfIndividuals,
-    knownCoResidentsOfServee,
-    setKnownCoResidentsOfServee
+    setIfYesListFullName
   } = props;
 
   const handleNoOfServeesChanged = (e) => {
@@ -111,128 +101,170 @@ const Questionaire4 = (props) => {
           </select><br></br>
         </div>
       </MDBCol>
-      <MDBCol md="12" id="name-of-individuals">
-        <div id="name-of-individuals">
-          <label>Full Name or Title of who is Receiving Service*</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={nameOfIndividuals}
-            onChange={(e) => setNameOfIndividuals(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="dob-of-individuals">
-        <div id="dob-of-individuals">
-          <label>Date of Birth of Servee (Write N/A if unavailable)*</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={dobOfIndividuals}
-            onChange={(e) => setDobOfIndividuals(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="phone-numbers-of-individuals">
-        <label>Phone Number(s) Pertaining to Servee</label>
-        {
-          Object.entries(phoneNumbersOfIndividuals).map(([key, phoneObj])=>(
-            <MDBRow>
-              <MDBCol bottom md="6">
+      {
+        Object.entries(serveesDetail).map(([key, servee])=>(
+          <>
+            <MDBCol md="12" id="name-of-individuals">
+              <div id="name-of-individuals">
+                <label>Full Name or Title of who is Receiving Service*</label>
                 <MDBInput
-                  hint="Phone Number"
+                  type="text"
                   className="text-white"
-                  value={phoneObj.phoneNumber}
-                  onChange={(e) => setPhoneNumberOfIndividuals({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], phoneNumber: e.target.value}})}
-                />
-              </MDBCol>
-              <MDBCol md="6">
-                <label>What kind of location is the phone number for?*</label>
-                <select className="w-75 m-4 text-center p-2"
-                  value={phoneObj.location}
-                  onChange={(e) => setPhoneNumberOfIndividuals({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], location: e.target.value}})}
+                  value={servee.fullName}
+                  onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], fullName: e.target.value}})}
                   required
-                >
-                  <label caret color="white">
-                    Please Select
-                  </label>
-                  <option value="">Please Select</option>
-                  <option value="home">Home</option>
-                  <option value="business">Business</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </MDBCol>
-            </MDBRow>
-          ))
-        }
-      </MDBCol>
-      <MDBCol md="12" id="email-of-individuals">
-        <div id="email-of-individuals">
-          <label>E-Mail(s) pertaining Servee(s)</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={emailsOfIndividuals}
-            onChange={(e) => setEmailsOfIndividuals(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <br />
-      <MDBCol md="12" id="known-coresidents-of-servee">
-        <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
-        {
-          Object.entries(knownCoResidentsOfServee).map(([key, residentObj])=>(
-            <MDBRow>
-              <MDBCol bottom md="6">
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="dob-of-individuals">
+              <div id="dob-of-individuals">
+                <label>Date of Birth of Servee (Write N/A if unavailable)*</label>
                 <MDBInput
-                  hint="Co-Resident"
+                  type="text"
                   className="text-white"
-                  value={residentObj.name}
-                  onChange={(e) => setKnownCoResidentsOfServee({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], name: e.target.value}})}
-                />
-              </MDBCol>
-              <MDBCol md="6">
-                <label>Relation with resident?*</label>
-                <select className="w-75 m-4 text-center p-2"
-                  value={residentObj.relation}
-                  onChange={(e) => setKnownCoResidentsOfServee({...phoneNumbersOfIndividuals, [key]: {...phoneNumbersOfIndividuals[key], relation: e.target.value}})}
+                  value={servee.dob}
+                  onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], dob: e.target.value}})}
                   required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="phone-numbers-of-individuals">
+              <label>Phone Number(s) Pertaining to Servee</label>
+              {
+                Object.entries(servee.phoneNumbers).map(([phoneKey, phoneObj])=>(
+                  <MDBRow>
+                    <MDBCol bottom md="6">
+                      <MDBInput
+                        hint="Phone Number"
+                        className="text-white"
+                        value={phoneObj.phoneNumber}
+                        onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
+                      />
+                    </MDBCol>
+                    <MDBCol md="6">
+                      <label>What kind of phone number is this?*</label>
+                      <select className="w-75 m-4 text-center p-2"
+                        value={phoneObj.type}
+                        onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], type: e.target.value}}}})}
+                        required
+                      >
+                        <label caret color="white">
+                          Please Select
+                        </label>
+                        <option value="">Please Select</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="business">Business</option>
+                        <option value="landline">Landline</option>
+                      </select>
+                    </MDBCol>
+                  </MDBRow>
+                ))
+              }
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button
+                  className="btn btn-primary"
+                  onClick={()=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [Object.keys(serveesDetail[key].phoneNumbers).length]: {phoneNumber: "", type: ""}}}})}
                 >
-                  <label caret color="white">
-                    Please Select
-                  </label>
-                  <option value="">Please Select</option>
-                  <option value="husband">Husband</option>
-                  <option value="wife">Wife</option>
-                  <option value="brother">Brother</option>
-                  <option value="sister">Sister</option>
-                  <option value="rommate">Rommate</option>
-                  <option value="father">Father</option>
-                  <option value="mother">Mother</option>
-                  <option value="son">Son</option>
-                  <option value="daughter">Daughter</option>
-                  <option value="uncle">Uncle</option>
-                  <option value="aunt">Aunt</option>
-                  <option value="cousin">Cousin</option>
-                  <option value="friend">Friend</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </MDBCol>
-            </MDBRow>
-          ))
-        }
-      </MDBCol>
-      <MDBCol md="12" id="employment-of-individuals">
-        <div id="employment-of-individuals">
-          <label>Is the Servee Currently Employed?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setEmploymentOfIndividuals("yes")} id="employmentOfIndividualsY" name="employmentOfIndividuals" checked={employmentOfIndividuals==="yes"?true:false} /><label className="ml-2" for="employmentOfIndividualsY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("no")} id="employmentOfIndividualsN" name="employmentOfIndividuals" checked={employmentOfIndividuals==="no"?true:false} /><label className="ml-2" for="employmentOfIndividualsN">No</label>
-          <input className="ml-4" type="radio" onClick={()=>setEmploymentOfIndividuals("unknown")} id="employmentOfIndividualsU" name="employmentOfIndividuals" checked={employmentOfIndividuals==="unknown"?true:false} /><label className="ml-2" for="employmentOfIndividualsU">Unknown</label>
-          <br/>
-        </div>
-      </MDBCol>
+                  + Add another phone number
+                </button>
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="email-of-individuals">
+              <div id="email-of-individuals">
+                <label>E-Mail(s) pertaining Servee(s)</label>
+                <MDBInput
+                  type="textarea"
+                  className="text-white"
+                  value={servee.email}
+                  onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], email: e.target.value}})}
+                />
+              </div>
+            </MDBCol>
+            <br />
+            <MDBCol md="12" id="known-coresidents-of-servee">
+              <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
+              {
+                Object.entries(servee.coResidents).map(([residentKey, residentObj])=>(
+                  <MDBRow>
+                    <MDBCol bottom md="6">
+                      <MDBInput
+                        hint="Co-Resident"
+                        className="text-white"
+                        value={residentObj.name}
+                        onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], coResidents: {...serveesDetail[key].coResidents, [residentKey]: {...serveesDetail[key].coResidents[residentKey], name: e.target.value}}}})}
+                      />
+                    </MDBCol>
+                    <MDBCol md="6">
+                      <label>Relation with resident?*</label>
+                      <select className="w-75 m-4 text-center p-2"
+                        value={residentObj.relation}
+                        onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], coResidents: {...serveesDetail[key].coResidents, [residentKey]: {...serveesDetail[key].coResidents[residentKey], relation: e.target.value}}}})}
+                        required
+                      >
+                        <label caret color="white">
+                          Please Select
+                        </label>
+                        <option value="">Please Select</option>
+                        <option value="husband">Husband</option>
+                        <option value="wife">Wife</option>
+                        <option value="brother">Brother</option>
+                        <option value="sister">Sister</option>
+                        <option value="rommate">Rommate</option>
+                        <option value="father">Father</option>
+                        <option value="mother">Mother</option>
+                        <option value="son">Son</option>
+                        <option value="daughter">Daughter</option>
+                        <option value="uncle">Uncle</option>
+                        <option value="aunt">Aunt</option>
+                        <option value="cousin">Cousin</option>
+                        <option value="friend">Friend</option>
+                        <option value="coworker">Co-worker</option>
+                        <option value="manager/boss">Manager/Boss</option>
+                        <option value="unknown">Unknown</option>
+                      </select>
+                    </MDBCol>
+                  </MDBRow>
+                ))
+              }
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button
+                  className="btn btn-primary"
+                  onClick={()=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], coResidents: {...serveesDetail[key].coResidents, [Object.keys(serveesDetail[key].coResidents).length]: {name: "", relation: ""}}}})}
+                >
+                  + Add another co-resident
+                </button>
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="employment-of-individuals">
+              <div id={`employment-of-individuals${key}`}>
+                <label>Is the Servee Currently Employed?*</label><br />
+                <input
+                  className="ml-2" type="radio"
+                  onClick={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], isEmployed: "yes"}})}
+                  id={`employmentOfIndividualsY${key}`}
+                  name={`employmentOfIndividuals${key}`}
+                  checked={servee.isEmployed==="yes"?true:false}
+                /><label className="ml-2" for={`employmentOfIndividualsY${key}`}>Yes</label>
+                <input
+                  className="ml-4" type="radio"
+                  onClick={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], isEmployed: "no"}})}
+                  id={`employmentOfIndividualsN${key}`}
+                  name={`employmentOfIndividuals${key}`}
+                  checked={servee.isEmployed==="no"?true:false}
+                /><label className="ml-2" for={`employmentOfIndividualsN${key}`}>No</label>
+                <input
+                  className="ml-4" type="radio"
+                  onClick={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], isEmployed: "unknown"}})}
+                  id={`employmentOfIndividualsU${key}`}
+                  name={`employmentOfIndividuals${key}`}
+                  checked={servee.isEmployed==="unknown"?true:false}
+                /><label className="ml-2" for={`employmentOfIndividualsU${key}`}>Unknown</label>
+                <br/>
+              </div>
+            </MDBCol>
+          </>
+        ))
+      }
       <br></br>
       <MDBCol md="12" id="location-being-served">
         <div id="location-being-served">

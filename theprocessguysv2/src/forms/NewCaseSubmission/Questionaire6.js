@@ -31,12 +31,29 @@ const Questionaire6 = (props) => {
 
       <MDBCol md="12" id="full-name-of-described-servee">
         <div id="full-name-of-described-servee">
-          <label>Full Name of Described Servee</label>
+          <label>Full Name of Servee</label>
           <MDBInput
             type="text"
+            hint="First Name"
             className="text-white"
-            value={fullNameOfDescribedServee}
-            onChange={(e) => setFullNameOfDescribedServee(e.target.value)}
+            value={fullNameOfDescribedServee.firstName}
+            onChange={(e) => setFullNameOfDescribedServee({...fullNameOfDescribedServee, firstName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Middle Name"
+            className="text-white"
+            value={fullNameOfDescribedServee.middleName}
+            onChange={(e) => setFullNameOfDescribedServee({...fullNameOfDescribedServee, middleName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Last Name"
+            className="text-white"
+            value={fullNameOfDescribedServee.lastName}
+            onChange={(e) => setFullNameOfDescribedServee({...fullNameOfDescribedServee, lastName: e.target.value})}
             required
           />
         </div>
