@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
+import { useIdleTimer } from 'react-idle-timer';
 import TheProcessGuys from "../pages/TheProcessGuys";
 import QuestionaireMain from "../pages/questionaireMain";
 import Login from "../pages/Login";
@@ -11,7 +12,7 @@ import Footer from "../footer/footer";
 import MemberDashboard from "../pages/Dashboard";
 import LoadingPage from "../pages/Loading";
 import UpdateProfilePage from "../pages/UpdateProfile";
-import { fetchUser } from "../redux/actions/auth";
+import { fetchUser, logout } from "../redux/actions/auth";
 import ViewCases from '../pages/viewCases';
 import AdminDashboard from '../pages/adminDashboard';
 import ThankYouForRegistering from '../pages/ThankYouForRegistering';
@@ -37,6 +38,17 @@ const Navigation = (props) => {
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const isFetchingUser = useSelector(state => state.auth.isFetchingUser);
+
+  const handleOnIdle = event => {
+    if(user && isAuthenticated) {
+      dispatch(logout());
+    }
+  }
+
+  useIdleTimer({
+    timeout: 1000 * 60 * 30,
+    onIdle: handleOnIdle
+  });
 
   useEffect(() => {
     dispatch(fetchUser());

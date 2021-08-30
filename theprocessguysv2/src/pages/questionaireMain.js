@@ -48,8 +48,8 @@ function Questionaire() {
 
   // Questionaire Form 3
   const [shouldPGFillDefendantInfo, setShouldPGFillDefendantInfo] = useState(false);
-  const [defendantFullName, setDefendantFullName] = useState("");
-  const [defendantAddress, setDefendantAddress] = useState("");
+  const [defendantFullName, setDefendantFullName] = useState({firstName: "", middleName: "", lastName: ""});
+  const [defendantAddress, setDefendantAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
   const [attorneyRepresentingDefendantInfo, setAttorneyRepresentingDefendantInfo] = useState("");
   const [defendantAttorneyName, setDefendantAttorneyName] = useState("");
@@ -344,8 +344,18 @@ function Questionaire() {
     } else if(activeStep === 3) {
       if(!shouldPGFillDefendantInfo && !numberOfAttorneyDefendant.length) {
         showToast("Please select number of defendant(s) listed!", "warning");
-      } else if(!shouldPGFillDefendantInfo && !defendantFullName.length) {
+      } else if(!shouldPGFillDefendantInfo && (!defendantFullName.firstName.length || !defendantFullName.middleName.length || !defendantFullName.lastName.length)) {
         showToast("Please enter defendant's full name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !defendantAddress.street.length) {
+        showToast("Please enter defendant's street address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !defendantAddress.city.length) {
+        showToast("Please enter defendant's city address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !defendantAddress.state.length) {
+        showToast("Please enter defendant's state!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !defendantAddress.zipCode.length) {
+        showToast("Please enter defendant's zip code!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !defendantAddress.country.length) {
+        showToast("Please enter defendant's country!", "warning");
       } else if(!shouldPGFillDefendantInfo && !attorneyRepresentingDefendantInfo.length) {
         showToast("Please select number of attorney's representing defendant!", "warning");
       } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyName.length) {
@@ -390,16 +400,16 @@ function Questionaire() {
         showToast("Please enter the full names of all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.dob)).filter((dob)=>!dob.length).length) {
         showToast("Please enter the date of births for all the servees that are being served!", "warning");
-      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.phoneNumber.length).length) {
-        showToast("Please enter the phone numbers for all the servees that are being served!", "warning");
-      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.type.length).length) {
-        showToast("Please select the phone number types for all the servees that are being served!", "warning");
+      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.phoneNumber.length).length) {
+      //   showToast("Please enter the phone numbers for all the servees that are being served!", "warning");
+      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.type.length).length) {
+      //   showToast("Please select the phone number types for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
         showToast("Please enter the emails for all the servees that are being served!", "warning");
-      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
-        showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
-      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {
-        showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
+      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
+      //   showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
+      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {
+      //   showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.isEmployed)).filter((isEmployed)=>!isEmployed.length).length) {
         showToast("Please select the employment option for all the servees that are being served!", "warning");
       } else if(!locationForBeingServed.length) {
@@ -577,8 +587,8 @@ function Questionaire() {
     setPlaintiffAttorneyEmail("");
     setPlaintiffAttorneyFaxNumberOptional("");
     // Reset Form 3
-    setDefendantFullName("");
-    setDefendantAddress("");
+    setDefendantFullName({firstName: "", middleName: "", lastName: ""});
+    setDefendantAddress({street: "", city: "", state: "", zipCode: "", country: ""});
     setShouldPGFillDefendantInfo(false);
     setNumberOfAttorneyDefendant("");
     setAttorneyRepresentingDefendantInfo("");

@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { MDBCol, MDBInput } from 'mdbreact';
+import { showToast } from "../../utils";
 import {
   submitCase
 } from "../../redux/actions/case";
@@ -26,7 +27,13 @@ const FileSubmission = ({...props}) => {
   }, []);
 
   const handleCaseSubmit = () => {
-    if(!isPosting) {
+    if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
+      showToast("Please enter the case type in every relevant input field!", "warning");
+    } else if(Object.values(fileData).filter((o)=>!o.fileContents.length).length) {
+      showToast("Please type the file contents in every relevant input field!", "warning");
+    } else if(Object.values(fileData).filter((o)=>o.file===null).length) {
+      showToast("Please upload the files in every relevant input field!", "warning");
+    } else if(!isPosting) {
       let data = {};
       const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
       const QuestionaireForm2 = JSON.parse(localStorage.getItem("Questionaire2"));
@@ -187,7 +194,7 @@ const FileSubmission = ({...props}) => {
                           <MDBInput
                             className="text-white"
                             value={value.fileContents}
-                            hint="Case type, Summons, Complaint, Cover Sheet, Exhibit, Specific Forms, etc"
+                            hint="Summons, Complaint, Cover Sheet, Exhibit, Specific Forms, etc"
                             onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: e.target.value}})}}
                           />
                         </Form.Group>
@@ -272,7 +279,7 @@ const FileSubmission = ({...props}) => {
                           {
                             isPosting
                               ?
-                                <div className="spinner-border text-primary" role="status">
+                                <div style={{color: "white"}} className="spinner-border" role="status">
                                   <span className="sr-only">Loading...</span>
                                 </div>
                               :

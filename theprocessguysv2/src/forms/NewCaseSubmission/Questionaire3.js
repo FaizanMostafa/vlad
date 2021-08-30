@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { MDBCol, MDBInput } from 'mdbreact';
 import { Link as RSLink } from 'react-scroll';
-import { Link, useHistory } from 'react-router-dom';
 import QuestionaireAttorneyTemplateD from "../../pages/questionaireAttorneyTemplateD";
 
 const Questionaire3 = (props) => {
@@ -103,10 +102,29 @@ const Questionaire3 = (props) => {
           <label>Defendant's Full Name*</label>
           <MDBInput
             type="text"
+            hint="First Name"
             className="text-white"
             disabled={shouldPGFillDefendantInfo}
-            value={defendantFullName}
-            onChange={(e) => setDefendantFullName(e.target.value)}
+            value={defendantFullName.firstName}
+            onChange={(e) => setDefendantFullName({...defendantFullName, firstName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Middle Name"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantFullName.middleName}
+            onChange={(e) => setDefendantFullName({...defendantFullName, middleName: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Last Name"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantFullName.lastName}
+            onChange={(e) => setDefendantFullName({...defendantFullName, lastName: e.target.value})}
             required
           />
         </div>
@@ -116,10 +134,47 @@ const Questionaire3 = (props) => {
           <label>Defendant's Address</label>
           <MDBInput
             type="text"
+            hint="Street"
             className="text-white"
             disabled={shouldPGFillDefendantInfo}
-            value={defendantAddress}
-            onChange={(e) => setDefendantAddress(e.target.value)}
+            value={defendantAddress.street}
+            onChange={(e) => setDefendantAddress({...defendantAddress, street: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="City"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantAddress.city}
+            onChange={(e) => setDefendantAddress({...defendantAddress, city: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="State"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantAddress.state}
+            onChange={(e) => setDefendantAddress({...defendantAddress, state: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Zip Code"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantAddress.zipCode}
+            onChange={(e) => setDefendantAddress({...defendantAddress, zipCode: e.target.value})}
+            required
+          />
+          <MDBInput
+            type="text"
+            hint="Country"
+            className="text-white"
+            disabled={shouldPGFillDefendantInfo}
+            value={defendantAddress.country}
+            onChange={(e) => setDefendantAddress({...defendantAddress, country: e.target.value})}
             required
           />
         </div>

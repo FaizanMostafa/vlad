@@ -71,7 +71,7 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Defendant Name: {caseData.details.DefendantInformation.defendantFullName}
+                                                        Defendant Name: {caseData.details.DefendantInformation.defendantFullName.firstName} {caseData.details.DefendantInformation.defendantFullName.middleName} {caseData.details.DefendantInformation.defendantFullName.lastName}
                                                     </div>
                                                     <br></br>
                                                     <div>
