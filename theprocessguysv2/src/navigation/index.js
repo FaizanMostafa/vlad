@@ -30,6 +30,7 @@ import ClientPaymentsPayPal from '../pages/clientPaymentsPayPal';
 import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
 import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
 import ClientPaymentACH from '../pages/clientPaymentACH';
+import NewTermsOfService from '../pages/newTermsOfService';
 
 
 const Navigation = (props) => {
@@ -95,6 +96,7 @@ const Navigation = (props) => {
           <Route path='/client-payment-zelle' component={ClientPaymentsZelle} />
           <Route path='/client-payment-checks' component={ClientPaymentsChecks} />
           <Route path='/client-payment-ach-to-tpg' component={ClientPaymentACH} />
+          <Route path='/terms-of-service' component={NewTermsOfService} />
         </Switch>
       </Router>
       <Footer />
