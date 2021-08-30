@@ -44,7 +44,7 @@ const ClientPaymentACH = () => {
         <br></br>
         <br></br>
         <h5 style={{ color: "gold" }}>
-            If you want to set up this payment, please contact the Process Guys members and they will help you with this process.
+            If you want to set up this payment, please contact the Process Guys representatiives and they will help you with this process.
         <br></br>
         <br></br>
             Or e-mail our team at 

@@ -25,7 +25,7 @@ const ClientPaymentsChecks = () => {
 
         <br></br>
         <br></br>
-        <h2 style={{ color: "white" }}>To make a payment with checks, contact The Process Guys and notify the members that you will pay with a check.
+        <h2 style={{ color: "white" }}>To make a payment with checks, contact The Process Guys and notify the representatives that you will pay with a check.
         <br></br>
         <br></br>
             They will inform you with the information you need to proceed with the transaction.

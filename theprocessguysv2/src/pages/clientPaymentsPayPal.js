@@ -47,7 +47,7 @@ class ClientPaymentPayPal extends React.Component {
                     }}
                 ></div>
         <br></br>
-        <h1>PayPal Payment <h2 style={{ color: "white" }}>( 3% transfer fee )</h2></h1>
+        <h1>PayPal Payment <h2 style={{ color: "white" }}>( Transfer fee included )</h2></h1>
         <br></br>
         <br></br>
         <input name="fullName" className="card" type="" placeholder="Full Name"></input>
