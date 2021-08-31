@@ -15,24 +15,23 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                             <input
                                 class="form-check-input"
                                 type="radio"
-                                checked={attorneyType === "paralegal" ? true : false}
-                                onChange={()=>setAttorneyType("paralegal")}
-                                name="flexRadioDefault"
-                                id="flexRadioDefault1"
-                            />
-                            <label class="form-check-label" for="flexRadioDefault1"> Paralegal </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="radio"
                                 checked={attorneyType === "attorney" ? true : false}
                                 onChange={()=>setAttorneyType("attorney")}
                                 name="flexRadioDefault"
                                 id="flexRadioDefault2"
                             />
                             <label class="form-check-label" for="flexRadioDefault2"> Attorney </label>
+                        </div>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                checked={attorneyType === "paralegal" ? true : false}
+                                onChange={()=>setAttorneyType("paralegal")}
+                                name="flexRadioDefault"
+                                id="flexRadioDefault1"
+                            />
+                            <label class="form-check-label" for="flexRadioDefault1"> Paralegal </label>
                         </div>
                         <br></br>
                     </MDBCol>
@@ -46,7 +45,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                             type="text"
                                             value={barNo}
                                             onChange={(e) => setBarNo(e.target.value)}
-                                            required
                                         />
                                     </Form.Group>
                                 </MDBCol>
@@ -58,7 +56,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 type="text"
                                 value={specialty}
                                 onChange={(e) => setSpecialty(e.target.value)}
-                                required
                             />
                         </Form.Group>
                     </MDBCol>
@@ -69,7 +66,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 type="text"
                                 value={firmName}
                                 onChange={(e) => setFirmName(e.target.value)}
-                                required
                             />
                         </Form.Group>
                     </MDBCol>
@@ -81,7 +77,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 placeholder="Street"
                                 value={firmAddress.street}
                                 onChange={(e) => setFirmAddress({...firmAddress, street: e.target.value})}
-                                required 
                             />
                         </Form.Group>
                         <Form.Group id="attorney-full-firm-address">
@@ -90,7 +85,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 placeholder="City"
                                 value={firmAddress.city}
                                 onChange={(e) => setFirmAddress({...firmAddress, city: e.target.value})}
-                                required 
                             />
                         </Form.Group>
                         <Form.Group id="attorney-full-firm-address">
@@ -99,7 +93,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 placeholder="State"
                                 value={firmAddress.state}
                                 onChange={(e) => setFirmAddress({...firmAddress, state: e.target.value})}
-                                required 
                             />
                         </Form.Group>
                         <Form.Group id="attorney-full-firm-address">
@@ -108,7 +101,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 placeholder="Zip Code"
                                 value={firmAddress.zipCode}
                                 onChange={(e) => setFirmAddress({...firmAddress, zipCode: e.target.value})}
-                                required 
                             />
                         </Form.Group>
                         <Form.Group id="attorney-full-firm-address">
@@ -117,7 +109,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                 placeholder="Country"
                                 value={firmAddress.country}
                                 onChange={(e) => setFirmAddress({...firmAddress, country: e.target.value})}
-                                required 
                             />
                         </Form.Group>
                     </MDBCol>
@@ -131,7 +122,6 @@ function Attorney({attorneyType, setAttorneyType, specialty, setSpecialty, barNo
                                             type="text"
                                             value={firmRole}
                                             onChange={(e) => setFirmRole(e.target.value)}
-                                            required
                                         />
                                     </Form.Group>
                                 </MDBCol>

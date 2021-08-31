@@ -106,7 +106,6 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     <br></br>
                                                     {/* ( Admin 1 will have delete button for cases ) */}
                                                         <div>
-                                                            <button className="btn btn-danger" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"10px"}} disabled>Delete Case</button>
                                                             <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"200px"}}>Pay Invoice</Link>
                                                         </div>
                                                 </MDBCol>

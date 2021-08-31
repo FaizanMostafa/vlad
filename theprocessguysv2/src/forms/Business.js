@@ -17,7 +17,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 type="text"
                                 value={firmName}
                                 onChange={(e) => setFirmName(e.target.value)}
-                                required 
                             />
                         </Form.Group>
                     </MDBCol>
@@ -29,7 +28,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 placeholder="Street"
                                 value={firmAddress.street}
                                 onChange={(e) => setFirmAddress({...firmAddress, street: e.target.value})}
-                                required
                             />
                         </Form.Group>
                         <Form.Group id="company-city">
@@ -38,7 +36,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 placeholder="City"
                                 value={firmAddress.city}
                                 onChange={(e) => setFirmAddress({...firmAddress, city: e.target.value})}
-                                required
                             />
                         </Form.Group>
                         <Form.Group id="company-state">
@@ -47,7 +44,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 placeholder="State"
                                 value={firmAddress.state}
                                 onChange={(e) => setFirmAddress({...firmAddress, state: e.target.value})}
-                                required
                             />
                         </Form.Group>
                         <Form.Group id="company-zip">
@@ -56,7 +52,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 placeholder="Zip Code"
                                 value={firmAddress.zipCode}
                                 onChange={(e) => setFirmAddress({...firmAddress, zipCode: e.target.value})}
-                                required
                             />
                         </Form.Group>
                         <Form.Group id="company-country">
@@ -65,7 +60,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 placeholder="Country"
                                 value={firmAddress.country}
                                 onChange={(e) => setFirmAddress({...firmAddress, country: e.target.value})}
-                                required
                             />
                         </Form.Group>
                     </MDBCol>
@@ -76,7 +70,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 type="text"
                                 value={specialty}
                                 onChange={(e) => setSpecialty(e.target.value)}
-                                required
                             />
                         </Form.Group>
                     </MDBCol>
@@ -87,7 +80,6 @@ function Business({specialty, setSpecialty, firmName, setFirmName, firmAddress, 
                                 type="text"
                                 value={jobTitle}
                                 onChange={(e) => setJobTitle(e.target.value)}
-                                required
                             />
                         </Form.Group>
                     </MDBCol>

@@ -26,7 +26,7 @@ function Register(props) {
     const [address, setAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [profilePicture, setProfilePicture] = useState(null);
     const [userType, setUserType] = useState("attorney");
-    const [attorneyType, setAttorneyType] = useState("paralegal");
+    const [attorneyType, setAttorneyType] = useState("attorney");
 
     const [attSpecialty, setAttSpecialty] = useState("");
     const [attBarNo, setAttBarNo] = useState("");
@@ -42,12 +42,46 @@ function Register(props) {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        if(!validateEmail(email.toLocaleLowerCase())) {
+        if(!firstName.length) {
+            showToast("Please type-in the first name!", "warning");
+        } else if(!middleName.length) {
+            showToast("Please type-in the middle name!", "warning");
+        } else if(!lastName.length) {
+            showToast("Please type-in the last name!", "warning");
+        } else if(!address.street.length || !address.city.length || !address.state.length || !address.zipCode.length || !address.country.length) {
+            showToast("Please type-in the full address!", "warning");
+        } else if(!phoneNumber.length) {
+            showToast("Please type-in the phone number!", "warning");
+        } else if((userType==="personal" || userType==="business" || (userType==="attorney" && attorneyType!=="attorney")) && !SSN.length) {
+            showToast("Please fill-in the government issued ID number!", "warning");
+        } else if((userType==="personal" || userType==="business" || (userType==="attorney" && attorneyType!=="attorney")) && !SSNState.length) {
+            showToast("Please fill-in the state of issued ID!", "warning");
+        } else if(!validateEmail(email.toLocaleLowerCase())) {
             showToast("Invalid email address!", "warning");
         } else if(password.length < 8 || rePassword.length < 8) {
             showToast("Password must be at least 8 characters long!", "warning");
         } else if(password !== rePassword) {
             showToast("Passwords do not match!", "warning");
+        } else if(profilePicture===null) {
+            showToast("Please upload profile/account picture!", "warning");
+        } else if(userType==="attorney" && attorneyType==="attorney" && !attBarNo.length) {
+            showToast("Please fill-in the bar number!", "warning");
+        } else if(userType==="attorney" && !attSpecialty.length) {
+            showToast("Please fill-in the legal specialty!", "warning");
+        } else if(userType==="attorney" && !attFirmName.length) {
+            showToast("Please fill-in the full firm name!", "warning");
+        } else if(userType==="attorney" && (!attFirmAddress.street.length || !attFirmAddress.city.length || !attFirmAddress.state.length || !attFirmAddress.zipCode.length || !attFirmAddress.country.length)) {
+            showToast("Please fill-in the full firm address!", "warning");
+        } else if(userType==="attorney" && attorneyType==="attorney" && !attFirmRole.length) {
+            showToast("Please fill-in the firm role!", "warning");
+        } else if(userType==="business" && !busFirmName.length) {
+            showToast("Please fill-in the full business name!", "warning");
+        } else if(userType==="business" && (!busFirmAddress.street.length || !busFirmAddress.city.length || !busFirmAddress.state.length || !busFirmAddress.zipCode.length || !busFirmAddress.country.length)) {
+            showToast("Please fill-in the full business address!", "warning");
+        } else if(userType==="business" && !busSpecialty.length) {
+            showToast("Please fill-in the business specialty!", "warning");
+        } else if(userType==="business" && !busJobTitle.length) {
+            showToast("Please fill-in the business role!", "warning");
         } else {
             let data = {
                 firstName,
@@ -143,7 +177,6 @@ function Register(props) {
                                     type="text"
                                     value={firstName}
                                     onChange={(e) => setFirstName(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -154,7 +187,6 @@ function Register(props) {
                                     type="text"
                                     value={middleName}
                                     onChange={(e) => setMiddleName(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -165,7 +197,6 @@ function Register(props) {
                                     type="text"
                                     value={lastName}
                                     onChange={(e) => setLastName(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -177,7 +208,6 @@ function Register(props) {
                                     value={address.street}
                                     placeholder="Street"
                                     onChange={(e) => setAddress({...address, street: e.target.value})}
-                                    required 
                                 />
                             </Form.Group>
                             <Form.Group id="city-address">
@@ -186,7 +216,6 @@ function Register(props) {
                                     placeholder="City"
                                     value={address.city}
                                     onChange={(e) => setAddress({...address, city: e.target.value})}
-                                    required 
                                 />
                             </Form.Group>
                             <Form.Group id="state-address">
@@ -195,7 +224,6 @@ function Register(props) {
                                     placeholder="State"
                                     value={address.state}
                                     onChange={(e) => setAddress({...address, state: e.target.value})}
-                                    required 
                                 />
                             </Form.Group>
                             <Form.Group id="zipCode-address">
@@ -204,7 +232,6 @@ function Register(props) {
                                     placeholder="Zip Code"
                                     value={address.zipCode}
                                     onChange={(e) => setAddress({...address, zipCode: e.target.value})}
-                                    required 
                                 />
                             </Form.Group>
                             <Form.Group id="country-address">
@@ -213,7 +240,6 @@ function Register(props) {
                                     placeholder="Country"
                                     value={address.country}
                                     onChange={(e) => setAddress({...address, country: e.target.value})}
-                                    required 
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -224,7 +250,6 @@ function Register(props) {
                                     type="text"
                                     value={phoneNumber}
                                     onChange={(e) => setPhoneNumber(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -235,7 +260,6 @@ function Register(props) {
                                     type="text"
                                     value={faxNumber}
                                     onChange={(e) => setFaxNumber(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -249,7 +273,6 @@ function Register(props) {
                                                 type="text"
                                                 value={SSN}
                                                 onChange={(e) => setSSN(e.target.value)}
-                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group id="ssn-state">
@@ -258,7 +281,6 @@ function Register(props) {
                                                 type="text"
                                                 value={SSNState}
                                                 onChange={(e) => setSSNState(e.target.value)}
-                                                required
                                             />
                                         </Form.Group>
                                     </MDBCol>
@@ -270,7 +292,6 @@ function Register(props) {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -281,7 +302,6 @@ function Register(props) {
                                     type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -292,7 +312,6 @@ function Register(props) {
                                     type="password"
                                     value={rePassword}
                                     onChange={(e) => setRePassword(e.target.value)}
-                                    required
                                 />
                             </Form.Group>
                         </MDBCol>
@@ -303,8 +322,7 @@ function Register(props) {
                                     type='file' 
                                     onChange={(e)=>{setProfilePicture(e.target.files[0])}}
                                     accept=".jpg,.png"
-                                    label='Upload' 
-                                    required 
+                                    label='Upload'
                                 />
                             </Form.Group>
                         </MDBCol>
