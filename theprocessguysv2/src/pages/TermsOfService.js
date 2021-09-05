@@ -10,6 +10,8 @@ class TermsOfService extends React.Component {
                 <MDBRow md="12">
                     <MDBCol>
                         <h2>Terms of Service</h2>
+                        <br></br>
+                        <br></br>
                     </MDBCol>
                 </MDBRow>
             </React.Fragment>

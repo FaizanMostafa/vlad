@@ -31,6 +31,7 @@ import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
 import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
 import ClientPaymentACH from '../pages/clientPaymentACH';
 import NewTermsOfService from '../pages/newTermsOfService';
+import AdminViewAllCases from '../pages/adminDashboardViewAllCases';
 
 
 const Navigation = (props) => {
@@ -97,6 +98,8 @@ const Navigation = (props) => {
           <CustomRoute exact path='/client-payment-checks' component={ClientPaymentsChecks} isProtected redirect="/login" />
           <CustomRoute exact path='/client-payment-ach-to-tpg' component={ClientPaymentACH} isProtected redirect="/login" />
           <CustomRoute exact path='/terms-of-service' component={NewTermsOfService} isProtected redirect="/login" />
+          <Route path='/admin-view-all-cases' component={AdminViewAllCases} />
+          <Route path='/terms-of-service-upload' component={NewTermsOfService} />
         </Switch>
       </Router>
       <Footer />
