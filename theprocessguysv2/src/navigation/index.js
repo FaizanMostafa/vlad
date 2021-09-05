@@ -40,14 +40,14 @@ const Navigation = (props) => {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const isFetchingUser = useSelector(state => state.auth.isFetchingUser);
 
-  const handleOnIdle = event => {
+  const handleOnIdle = (event) => {
     if(user && isAuthenticated) {
       dispatch(logout());
     }
   }
 
   useIdleTimer({
-    timeout: 1000 * 60 * 30,
+    timeout: 1000 * 60 * 15,
     onIdle: handleOnIdle
   });
 
@@ -73,7 +73,7 @@ const Navigation = (props) => {
         <NavBar />
         <Switch>
           <CustomRoute exact path='/' component={TheProcessGuys} redirect="/member-dashboard" />
-          <Route path='/view-cases' component={ViewCases} />
+          <CustomRoute exact path='/view-cases' component={ViewCases} isProtected redirect="/login" />
           <CustomRoute exact path='/admin-dashboard' component={AdminDashboard} isProtected redirect="/login" />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
@@ -81,22 +81,22 @@ const Navigation = (props) => {
           <CustomRoute exact path='/member-dashboard' component={MemberDashboard} isProtected redirect="/login" />
           <CustomRoute exact path='/update-profile' component={UpdateProfilePage} isProtected redirect="/login" />
           <CustomRoute exact path='/questionaire' component={QuestionaireMain} isProtected redirect="/login" />
-          <Route path='/questionaire-finished' component={ThankYouForRegistering} />
-          <Route path='/questionaire-terms-of-service' component={TermsOfServiceTemplate} />
-          <Route path='/case-document-archive' component={CaseDocumentArchive} />
-          <Route path='/news-update-for-clients' component={NewsUpdateForClients} />
-          <Route path='/client-payment-credit-card' component={ClientPayment} />
-          <Route path='/client-payment-options' component={ClientPaymentOptions} />
-          <Route path='/payment-successful' component={PaymentSuccessful} />
-          <Route path='/payment-failure' component={PaymentFailure} />
-          <Route path='/case-submission-success' component={AfterUploadMessage} />
+          <CustomRoute exact path='/questionaire-finished' component={ThankYouForRegistering} isProtected redirect="/login" />
+          <CustomRoute exact path='/questionaire-terms-of-service' component={TermsOfServiceTemplate} isProtected redirect="/login" />
+          <CustomRoute exact path='/case-document-archive' component={CaseDocumentArchive} isProtected redirect="/login" />
+          <CustomRoute exact path='/news-update-for-clients' component={NewsUpdateForClients} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-credit-card' component={ClientPayment} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-options' component={ClientPaymentOptions} isProtected redirect="/login" />
+          <CustomRoute exact path='/payment-successful' component={PaymentSuccessful} isProtected redirect="/login" />
+          <CustomRoute exact path='/payment-failure' component={PaymentFailure} isProtected redirect="/login" />
+          <CustomRoute exact path='/case-submission-success' component={AfterUploadMessage} isProtected redirect="/login" />
           <Route path='/contact-us' component={ContactUs} />
-          <Route path='/client-payment-debit-card' component={ClientPaymentDebit} />
-          <Route path='/client-payment-paypal' component={ClientPaymentsPayPal} />
-          <Route path='/client-payment-zelle' component={ClientPaymentsZelle} />
-          <Route path='/client-payment-checks' component={ClientPaymentsChecks} />
-          <Route path='/client-payment-ach-to-tpg' component={ClientPaymentACH} />
-          <Route path='/terms-of-service' component={NewTermsOfService} />
+          <CustomRoute exact path='/client-payment-debit-card' component={ClientPaymentDebit} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-paypal' component={ClientPaymentsPayPal} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-zelle' component={ClientPaymentsZelle} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-checks' component={ClientPaymentsChecks} isProtected redirect="/login" />
+          <CustomRoute exact path='/client-payment-ach-to-tpg' component={ClientPaymentACH} isProtected redirect="/login" />
+          <CustomRoute exact path='/terms-of-service' component={NewTermsOfService} isProtected redirect="/login" />
         </Switch>
       </Router>
       <Footer />

@@ -67,7 +67,7 @@ const NavBar = ({...props}) => {
           icon: faHeadset,
           isAuth: true,
           onClick: () => {
-
+            history.push("/contact-us");
           }
         },
         {

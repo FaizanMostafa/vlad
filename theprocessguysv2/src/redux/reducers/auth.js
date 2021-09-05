@@ -1,4 +1,5 @@
 import {
+  SET_IS_RESETTING_PASSWORD,
   SET_IS_UPDATING_PASSWORD,
   SET_IS_UPDATING_PHONE_NO,
   SET_IS_UPDATING_ADDRESS,
@@ -19,6 +20,7 @@ const initState = {
   isAuthenticated: false,
   isPosting: false,
   isFetching: false,
+  isResetting: false,
   isFetchingUser: true,
   isUpdatingEmail: false,
   isUpdatingPhoneNo: false,
@@ -57,6 +59,13 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         isUpdatingPassword: payload
+      }
+    }
+
+    case SET_IS_RESETTING_PASSWORD: {
+      return {
+        ...state,
+        isResetting: payload
       }
     }
 

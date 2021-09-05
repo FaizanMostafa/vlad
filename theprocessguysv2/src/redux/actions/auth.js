@@ -1,6 +1,7 @@
 import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
+  SET_IS_RESETTING_PASSWORD,
   SET_IS_UPDATING_PHONE_NO,
   SET_IS_UPDATING_PASSWORD,
   SET_IS_UPDATING_ADDRESS,
@@ -65,6 +66,13 @@ const setIsSigningUp = (status) => {
   };
 }
 
+const setIsResettingPassword = (status) => {
+  return {
+    type: SET_IS_RESETTING_PASSWORD,
+    payload: status
+  };
+}
+
 const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -103,6 +111,23 @@ const login = (data, onSuccess=()=>{}, onError=()=>{}) => (
         onError();
         showToast(error.message, "error");
         dispatch(setIsSigningIn(false));
+      });
+  }
+)
+
+const resetPassword = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    dispatch(setIsResettingPassword(true));
+    firebase.auth().sendPasswordResetEmail(data.email)
+      .then(() => {
+        showToast("An mail with the password reset link has been sent to you email address!", "success");
+        dispatch(setIsResettingPassword(false));
+        onSuccess();
+      })
+      .catch((error) => {
+        onError();
+        showToast(error.message, "error");
+        dispatch(setIsResettingPassword(false));
       });
   }
 )
@@ -255,6 +280,7 @@ export {
   register,
   fetchUser,
   updateEmail,
+  resetPassword,
   updateAddress,
   updatePassword,
   updatePhoneNumber,

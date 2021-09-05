@@ -105,9 +105,13 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>            
                                                     <br></br>
                                                     {/* ( Admin 1 will have delete button for cases ) */}
-                                                        <div>
-                                                            <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"200px"}}>Pay Invoice</Link>
-                                                        </div>
+                                                    {
+                                                        caseData.status!=="pending"
+                                                            &&
+                                                                <div>
+                                                                    <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"20px"}}>Pay Invoice</Link>
+                                                                </div>
+                                                    }
                                                 </MDBCol>
                                             </Card.Body>
                                         :
