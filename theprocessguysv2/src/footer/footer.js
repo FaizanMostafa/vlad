@@ -124,7 +124,7 @@ class Footer extends React.Component {
             </div> */}
             <div className="footer-copyright text-center py-2" color='peach-gradient'>
               <MDBContainer fluid>
-                &copy; {new Date().getFullYear()} Copyright: <a href="#!"> PangeaCentral.us </a>
+                &copy; {new Date().getFullYear()} Copyright: <a href="#!"> The Process Guys 2021 </a>
               </MDBContainer>
             </div>
           </MDBFooter>
