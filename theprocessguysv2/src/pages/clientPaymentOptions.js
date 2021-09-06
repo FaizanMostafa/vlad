@@ -34,10 +34,15 @@ function ClientPaymentOptions() {
             >Debit Card</Link>
             <br></br>
             <br></br>
-            <Link to="/client-payment-paypal" 
-                className="btn btn-primary w-50"
-                style={{ marginRight: "540px" }}
-            >Paypal ( 3% transfer fee )</Link>
+            <button /*to="/client-payment-paypal"*/
+                className="btn btn-primary w-50 text-center"
+                style={{ marginRight: "30px", marginBottom: "-20px" }}
+            ><a href="https://www.paypal.com/us/home" 
+                style={{ 
+                    color: "white", 
+                    marginRight:"410px", 
+                    marginTop: "1px", 
+                    marginBottom: "1px" }}>Paypal ( Transfer Fee Included )</a></button>
             <br></br>
             <br></br>
             <Link to="/client-payment-zelle" 
