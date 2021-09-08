@@ -92,6 +92,10 @@ function NewTermsOfService() {
       <label>Old TOS PDF files:</label>
       <br></br>
       <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </div>
   )
 }

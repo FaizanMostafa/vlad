@@ -32,6 +32,7 @@ import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
 import ClientPaymentACH from '../pages/clientPaymentACH';
 import NewTermsOfService from '../pages/newTermsOfService';
 import AdminViewAllCases from '../pages/adminDashboardViewAllCases';
+import HomePage from '../pages/homePage';
 
 
 const Navigation = (props) => {
@@ -100,6 +101,7 @@ const Navigation = (props) => {
           <Route path='/terms-of-service' component={NewTermsOfService} />
           <Route path='/admin-view-all-cases' component={AdminViewAllCases} />
           <Route path='/terms-of-service-upload' component={NewTermsOfService} />
+          <Route path='/home-page' component={HomePage} />
         </Switch>
       </Router>
       <Footer />
