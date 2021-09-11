@@ -12,7 +12,9 @@ class TermsOfService extends React.Component {
                         <h2>Terms of Service</h2>
                         <br></br>
                         <br></br>
-                        {/* This part will pull PDF from database to show on client side */}
+                        {/* This part will pull PDF from database to show on client side.
+                        Vlad wants the client to accept. If customer does not accept, it will give them two options:
+                        Accept or logout. */}
                         <br></br>
                         <br></br>
                         <label>Signature ( Agreeing to the Terms Of Service ) </label>
