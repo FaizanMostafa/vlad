@@ -109,7 +109,7 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                         caseData.status!=="pending"
                                                             &&
                                                                 <div>
-                                                                    <Link to="/client-payment-options" className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"20px"}}>Pay Invoice</Link>
+                                                                    <Link to={{pathname: "/client-payment-options", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"20px"}}>Pay Invoice</Link>
                                                                 </div>
                                                     }
                                                 </MDBCol>

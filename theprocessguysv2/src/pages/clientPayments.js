@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Elements,
   CardElement,
@@ -6,23 +6,37 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createPaymentIntent
+} from "../redux/actions/stripe";
 import "../App.css";
-import { Link } from 'react-router-dom';
 
-function ClientPayments() {
+function ClientPayments(props) {
   const stripe = loadStripe(
     "pk_test_51JDeUhHP8jMIq74DWG4uYGfHdWZm0Puvn61GNXXUcgTMcSjIrlxr8AGWj2Wi0x8bNvIGKoBhb8YreUzNuF0uEm41005QVA1EVR"
   );
   return (
     <Elements stripe={stripe}>
-      <CheckoutForm />
+      <CheckoutForm {...props} />
     </Elements>
   );
 };
-function CheckoutForm() {
-  const [isPaymentLoading, setPaymentLoading] = useState(false);
+
+function CheckoutForm(props) {
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
+  const [clientSecret, setClientSecret] = useState('');
+  const [isPaymentLoading, setPaymentLoading] = useState(false);
+  const isCreatingIntent = useSelector(state => state.stripe.isCreatingPaymentIntent);
+  
+  useEffect(() => {
+    dispatch(createPaymentIntent({caseId: props.location.state.caseId}, (secret)=>setClientSecret(secret)));
+  }, [dispatch]);
+
   const payMoney = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
@@ -30,12 +44,12 @@ function CheckoutForm() {
     }
     setPaymentLoading(true);
     // eslint-disable-next-line no-undef
-    const clientSecret = getClientSecret();
     const paymentResult = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: "",
+          name,
+          address
         },
       },
     });
@@ -50,7 +64,7 @@ function CheckoutForm() {
   };
 
   return (
-    
+
     <div
       style={{
         padding: "3rem",
@@ -58,28 +72,25 @@ function CheckoutForm() {
     >
       <br></br>
       <br></br>
-      <br></br>
-      <br></br>
-      <Link to="/member-dashboard" className="btn btn-primary" style={{ marginLeft: "auto"}}>Back to Dashboard</Link>
       <div
         style={{
           maxWidth: "500px",
           margin: "0 auto",
         }}
       >
-            <br></br>
-            <br></br>
-            <br></br>
-          <h1 className="text-center">Payment</h1>               
-            <br></br>
-            <br></br>
-            <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <h1 className="text-center">Payment</h1>
+        <br></br>
+        <br></br>
+        <br></br>
         <form
           style={{
             display: "block",
             width: "100%",
           }}
-          onSubmit = {payMoney}
+          onSubmit={payMoney}
         >
           <div
             style={{
@@ -88,40 +99,48 @@ function CheckoutForm() {
               alignItems: "center",
             }}
           >
-        <h4>Full Name</h4>
-        <input name="fullName" className="card" type="" placeholder="Full Name"/>
-        <br></br>
-        <h4>Address</h4>
-        <input name="address" className="card" type="" placeholder="Address under the Card"/>
-        <br></br>
-        <br></br>
-          <h4>Credit Card Information</h4>
+            <h4>Full Name</h4>
+            <input
+              name="fullName" value={name}
+              onChange={(e)=>setName(e.target.value)}
+              className="card" type="" placeholder="Full Name"
+            />
+            <br></br>
+            <h4>Address</h4>
+            <input
+              name="address" value={address}
+              onChange={(e)=>setAddress(e.target.value)}
+              className="card" type="" placeholder="Address under the Card"
+            />
+            <br></br>
+            <br></br>
+            <h4>Credit Card Information</h4>
             <CardElement
               className="card"
               options={{
                 style: {
                   base: {
                     backgroundColor: "white"
-                  } 
+                  }
                 },
               }}
             />
             <br></br>
             <button
               className="pay-button"
-              disabled={isPaymentLoading}
+              disabled={isPaymentLoading || isCreatingIntent}
             >
-              {isPaymentLoading ? "Loading..." : "Make Payment"}
+              {(isPaymentLoading || isCreatingIntent) ? "Loading..." : "Make Payment"}
             </button>
           </div>
         </form>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
       </div>
     </div>
   );
