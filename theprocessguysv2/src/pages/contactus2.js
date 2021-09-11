@@ -11,20 +11,23 @@ const ContactPage = () => {
   const [customerName, setCustomerName] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     emailjs.sendForm("gmail","template_jfbrizk", e.target, 'user_v5poyBuxjFwarjqQ9FrBR',{
-      phone_number: customerPhoneNumber,
-      to_name: "yellowfever619@gmail.com",
-      from_name: customerName,
-      message: customerMessage,
-      reply_to: customerEmail
     })
-    .then((result) => {
-        // window.location.reload()
+      .then((result) => {
         console.log(result.text);
     }, (error) => {
         console.log(error.text);
-    });
+    });      
+      let data = {
+        customerEmail,
+        customerMessage,
+        customerName,
+        customerPhoneNumber
+      }
+      localStorage.setItem('contactUsAdmin', JSON.stringify(data));
+      alert("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬");
+      e.target.reset();
   }
 
   return (
@@ -33,9 +36,9 @@ const ContactPage = () => {
         Contact us
       </h2>
       <p className="text-center w-responsive mx-auto pb-5">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit,
-        error amet numquam iure provident voluptate esse quasi, veritatis
-        totam voluptas nostrum quisquam eum porro a pariatur veniam.
+        Hello! Please contact us if you have any questions or concerns.
+        Our representatiives will get back to you shortly.
+        If you scroll down, there are a few contacts you can e-mail or call.
       </p>
       <br></br>
       <MDBRow className="text-center justify-content-center" style={{ marginLeft: "180px"}}>
@@ -50,24 +53,28 @@ const ContactPage = () => {
               <p className="dark-grey-text">
                 We'll write rarely, but only the best content.
               </p>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit}  style={{ marginRight: "25px", flex: "1 0px", msFlex: "1" }}>
               <div className="md-form">
                 <MDBInput
                   icon="user"
-                  label="Your Name"
+                  label="Your Full Name*"
                   iconClass="grey-text"
                   type="text"
                   id="form-name"
+                  name="yourname"
+                  required
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
               <div className="md-form">
                 <MDBInput
                   icon="envelope"
-                  label="Your E-mail"
+                  label="Your E-mail*"
                   iconClass="grey-text"
-                  type="text"
+                  type="email"
                   id="form-email"
+                  name="youremail"
+                  required
                   onChange={(e) => setCustomerEmail(e.target.value)}
                 />
               </div>
@@ -76,8 +83,9 @@ const ContactPage = () => {
                   icon="phone"
                   label="Phone Number"
                   iconClass="grey-text"
-                  type="text"
+                  type="phone"
                   id="form-subject"
+                  name="yourphonenumber"
                   onChange={(e) => setCustomerPhoneNumber(e.target.value)}
                 />
               </div>
@@ -88,6 +96,7 @@ const ContactPage = () => {
                   iconClass="grey-text"
                   type="textarea"
                   id="form-text"
+                  name="yourmessage"
                   onChange={(e) => setCustomerMessage(e.target.value)}
                 />
               </div>
@@ -95,11 +104,12 @@ const ContactPage = () => {
                 <button className="btn btn-primary" type="submit">Submit</button>
               </div>
               </form>
+              
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
         <MDBCol lg="12">
-          <div
+          {/* <div
             id="map-container"
             className="rounded z-depth-1-half map-container"
             style={{ height: "400px" }}
@@ -112,8 +122,7 @@ const ContactPage = () => {
               frameBorder="0"
               style={{ border: 0, marginRight: "180px" }}
             />
-          </div>
-          <br />
+          </div> */}
           <br></br>
       <br></br>
       <br></br>

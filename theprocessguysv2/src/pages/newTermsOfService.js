@@ -49,6 +49,10 @@ function NewTermsOfService() {
     e.preventDefault();
     if(pdfFile!==null){
       setViewPdf(pdfFile);
+      let data ={
+        pdfFile
+      }
+      localStorage.setItem('newTermsOfServiceUploadAdmin', JSON.stringify(data));
     }
     else{
       setViewPdf(null);
@@ -85,15 +89,15 @@ function NewTermsOfService() {
       </div>
       <br></br>
       <br></br>
+      <label>Old TOS PDF files:</label>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
     </div>
   )
 }
 
-export default NewTermsOfService;      
-
-      // <Document
-      //   file=""/*{"/docs/InvoiceAL101.pdf"}*/
-      //   onLoadSuccess={onDocumentLoadSuccess}
-      // >
-      //   <Page pageNumber={pageNumber} />
-      // </Document>
+export default NewTermsOfService;

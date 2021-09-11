@@ -58,7 +58,7 @@ const AdminDashboard = (props) => {
             <div>Address: {user.address.street} {user.address.city} {user.address.state} {user.address.country}</div>
             <br></br>
 
-            {/*This will show either client ID or government ID of whatever option they chose at the register*/}
+            {/*This will show either client driver liscense ID or government ID of whatever option they chose at the register*/}
             <div>Driver Liscence / US Government ID: {"user.driver.id or user.government.id"} </div>
             <br></br>
 

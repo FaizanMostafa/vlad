@@ -59,9 +59,10 @@ class ClientPaymentPayPal extends React.Component {
         <input name="routingNumber" className="card" type="" placeholder="Routing Number"></input>
         <br></br>
             <button className="btn btn-primary"
+                href="https://www.paypal.com/us/home"
                 createOrder={(data, actions) => this.createOrder(data, actions)}
                 onApprove={(data, actions) => this.onApprove(data, actions)}>
-                    Make Payment 
+                Make Payment
             </button>
         <br></br>
         <br></br>

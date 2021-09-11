@@ -26,12 +26,13 @@ import PaymentFailure from '../pages/paymentFailure';
 import AfterUploadMessage from '../pages/afterUploadMessage';
 import ContactUs from '../pages/contactus2';
 import ClientPaymentDebit from '../pages/clientPaymentsDebit';
-import ClientPaymentsPayPal from '../pages/clientPaymentsPayPal';
+// import ClientPaymentsPayPal from '../pages/clientPaymentsPayPal';
 import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
 import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
 import ClientPaymentACH from '../pages/clientPaymentACH';
 import NewTermsOfService from '../pages/newTermsOfService';
 import AdminViewAllCases from '../pages/adminDashboardViewAllCases';
+import HomePage from '../pages/homePage';
 
 
 const Navigation = (props) => {
@@ -100,6 +101,7 @@ const Navigation = (props) => {
           <CustomRoute exact path='/terms-of-service' component={NewTermsOfService} isProtected redirect="/login" />
           <Route path='/admin-view-all-cases' component={AdminViewAllCases} />
           <Route path='/terms-of-service-upload' component={NewTermsOfService} />
+          <Route path='/home-page' component={HomePage} />
         </Switch>
       </Router>
       <Footer />
