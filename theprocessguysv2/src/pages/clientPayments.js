@@ -8,8 +8,10 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  createPaymentIntent
+  createPaymentIntent,
+  updatePaymentStatus
 } from "../redux/actions/stripe";
+import { showToast } from "../utils";
 import "../App.css";
 
 function ClientPayments(props) {
@@ -29,36 +31,48 @@ function CheckoutForm(props) {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
-  const [clientSecret, setClientSecret] = useState('');
+  const [clientSecret, setClientSecret] = useState(null);
   const [isPaymentLoading, setPaymentLoading] = useState(false);
   const isCreatingIntent = useSelector(state => state.stripe.isCreatingPaymentIntent);
   
   useEffect(() => {
-    dispatch(createPaymentIntent({caseId: props.location.state.caseId}, (secret)=>setClientSecret(secret)));
+    dispatch(createPaymentIntent(
+      {caseId: props.location.state.caseId},
+      (secret)=>setClientSecret(secret),
+      ()=>setClientSecret(undefined)
+    ));
   }, [dispatch]);
 
   const payMoney = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
-    }
-    setPaymentLoading(true);
-    // eslint-disable-next-line no-undef
-    const paymentResult = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name,
-          address
-        },
-      },
-    });
-    setPaymentLoading(false);
-    if (paymentResult.error) {
-      alert(paymentResult.error.message);
+    } else if(clientSecret === undefined) {
+      showToast("An error occurred while initiating your transaction, please try later!", "error");
+    } else if(!name.length) {
+      showToast("Please add your full name!", "error");
+    } else if(!address.length) {
+      showToast("Please add your address!", "error");
+    } else if(clientSecret === null) {
+      showToast("Please wait a moment, information is being processed!", "warning");
     } else {
-      if (paymentResult.paymentIntent.status === "succeeded") {
-        alert("Success!");
+      setPaymentLoading(true);
+      const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name,
+            address
+          },
+        },
+      });
+      setPaymentLoading(false);
+      if (paymentResult.error) {
+        showToast(paymentResult.error.message, "error");
+      } else if (paymentResult.paymentIntent.status === "succeeded") {
+        dispatch(updatePaymentStatus({caseId: props.location.state.caseId, transactionId: paymentResult.paymentIntent.id}));
+        showToast("Payment was made successfully!", "success");
+        props.history.push("/case-document-archive");
       }
     }
   };
@@ -130,7 +144,7 @@ function CheckoutForm(props) {
               className="pay-button"
               disabled={isPaymentLoading || isCreatingIntent}
             >
-              {(isPaymentLoading || isCreatingIntent) ? "Loading..." : "Make Payment"}
+              {(isPaymentLoading || isCreatingIntent) ? "Processing..." : "Make Payment"}
             </button>
           </div>
         </form>

@@ -13,11 +13,7 @@ function ClientPaymentOptions(props) {
                             state: {caseId: props.location.state.caseId}
                         }}
                         className="btn btn-primary w-50 mb-3"
-                    >Credit Card</Link>
-                    <Link
-                        to="/client-payment-debit-card"
-                        className="btn btn-primary w-50 mb-3"
-                    >Debit Card</Link>
+                    >Credit/Debit Card</Link>
                     <Link
                         to="/client-payment-paypal"
                         className="btn btn-primary w-50 mb-3"

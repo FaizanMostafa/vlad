@@ -94,7 +94,7 @@ const Navigation = (props) => {
           <CustomRoute exact path='/case-submission-success' component={AfterUploadMessage} isProtected redirect="/login" />
           <Route path='/contact-us' component={ContactUs} />
           <CustomRoute exact path='/client-payment-debit-card' component={ClientPaymentDebit} isProtected redirect="/login" />
-          <CustomRoute exact path='/client-payment-paypal' component={ClientPaymentsPayPal} isProtected redirect="/login" />
+          {/* <CustomRoute exact path='/client-payment-paypal' component={ClientPaymentsPayPal} isProtected redirect="/login" /> */}
           <CustomRoute exact path='/client-payment-zelle' component={ClientPaymentsZelle} isProtected redirect="/login" />
           <CustomRoute exact path='/client-payment-checks' component={ClientPaymentsChecks} isProtected redirect="/login" />
           <CustomRoute exact path='/client-payment-ach-to-tpg' component={ClientPaymentACH} isProtected redirect="/login" />
