@@ -99,9 +99,9 @@ const Navigation = (props) => {
           <CustomRoute exact path='/client-payment-checks' component={ClientPaymentsChecks} isProtected redirect="/login" />
           <CustomRoute exact path='/client-payment-ach-to-tpg' component={ClientPaymentACH} isProtected redirect="/login" />
           <CustomRoute exact path='/terms-of-service' component={NewTermsOfService} isProtected redirect="/login" />
-          <Route path='/admin-view-all-cases' component={AdminViewAllCases} />
-          <Route path='/terms-of-service-upload' component={NewTermsOfService} />
-          <Route path='/home-page' component={HomePage} />
+          <CustomRoute path='/admin-view-all-cases' component={AdminViewAllCases} />
+          <CustomRoute path='/terms-of-service-upload' component={NewTermsOfService} />
+          <CustomRoute path='/home-page' component={HomePage} />
         </Switch>
       </Router>
       <Footer />
