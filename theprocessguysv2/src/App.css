@@ -21,7 +21,7 @@
 .homepage {
   background-image: 
   linear-gradient(to bottom, rgba(25, 29, 63, 0.924), rgba(21, 19, 29, 0.644)),
-  url("../src/pictures/SanFrancisco2015.jpg");
+  url("../src/pictures/SanFrancisco2015.webp");
   background-size: cover;
   background-repeat: repeat;
   top: 0;
@@ -38,42 +38,6 @@ div a{
     margin-left: 10px;
     margin-bottom: -10px;
 }
-
-/* .move-name {
-  margin-top: 20px
-} */
-
-/* nav ul {
-  margin-right: 4;
-  margin-left: 4;
-  padding-left: 4;
-  padding-right: 4; 
-  display: flex;
-} */
-/* a > img {
-  height: 400px;
-} */
-
-/* a {
-  text-decoration: none;
-}
-a:hover {
-  color: rgb(192,167,101)
-}
-a:active {
-  color: white
-} */
-
-/*a.left {
-   color: white; 
-  text-decoration: none;
-}*/
-/* a.left:hover {
-  color: rgb(192,167,101);
-}
-a.left:active {
-  color: rgb(192,167,101)
-} */
 
 span.white1{
   color:white;

@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from 'reactjs-navbar';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import logo from "../pictures/The Process Guys word logo2.png";
+import logo from "../pictures/TPG_logo.webp";
 import {
   logout
 } from "../redux/actions/auth";

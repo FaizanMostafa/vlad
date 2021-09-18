@@ -32,7 +32,8 @@
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "toastr": "^2.1.4",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "webpack-bundle-analyzer": "^4.4.2"
   },
   "scripts": {
     "start": "react-scripts start",

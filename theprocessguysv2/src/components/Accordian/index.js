@@ -59,11 +59,19 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                 <MDBCol key={caseData.id} className="" style={{border: "solid"}}>
                                                     <br></br>
                                                     <div>
-                                                        Case Title Name: {caseData.details.CaseInformation.caseTitle}
+                                                        Case Title: {caseData.details.CaseInformation.caseTitle}
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Address of Serve: {caseData.details.ServeeDocumentedData.mainAddressForService.street} {caseData.details.ServeeDocumentedData.mainAddressForService.city} {caseData.details.ServeeDocumentedData.mainAddressForService.state} {caseData.details.ServeeDocumentedData.mainAddressForService.country}
+                                                        Date of Case Submission: {new Date(caseData.filedAt.toDate()).toDateString()}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        Court provided Case Number: {caseData.details.CaseInformation.caseNumber}
+                                                    </div>
+                                                    <br></br>
+                                                    <div>
+                                                        TPG provided Case Number: TPG{caseData.id}
                                                     </div>
                                                     <br></br>
                                                     <div>
@@ -78,6 +86,14 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                         Attorney Name: {caseData.details.PlaintiffInformation.plaintiffAttorneyName.firstName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.middleName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.lastName}
                                                     </div>
                                                     <br></br>
+                                                    <div className="">
+                                                        Case Status: {caseData.status}
+                                                    </div>           
+                                                    <br></br>
+                                                    <div>
+                                                        Address of Servee: {caseData.details.ServeeDocumentedData.mainAddressForService.street} {caseData.details.ServeeDocumentedData.mainAddressForService.city} {caseData.details.ServeeDocumentedData.mainAddressForService.state} {caseData.details.ServeeDocumentedData.mainAddressForService.country}
+                                                    </div>
+                                                    <br></br>
                                                     {/* <div>
                                                         Attorney Firm: {attorneyFirm}
                                                     </div>
@@ -86,32 +102,21 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                         Phone Number: {caseData.details.PlaintiffInformation.plaintiffAttorneyPhoneNumberForCalls}
                                                     </div>
                                                     <br></br>
-                                                    <div>
-                                                        Court Case Number: {caseData.details.CaseInformation.caseNumber}
+                                                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                                        <Link to={{pathname: "/case-questionare", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Open Case Questionare</Link>
+                                                        <Link to={{pathname: "/attempt-logs", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Attempt Logs</Link>
+                                                        {
+                                                            caseData.status!=="pending"
+                                                                &&
+                                                                    <Link to={{pathname: "/client-payment-options", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Make Payment</Link>
+                                                        }
+                                                        {
+                                                            caseData.status!=="pending"
+                                                                &&
+                                                                    <Link to={{pathname: "/view-invoice", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>View Invoice</Link>
+                                                        }
+                                                        <Link to={{pathname: "/submitted-documents", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>View Submitted Case Documents</Link>
                                                     </div>
-                                                    <br></br>
-                                                    {/* Case Number from the invoice */}
-                                                    <div>
-                                                        Process Guys Case Number: TPG{caseData.id}
-                                                    </div>
-                                                    <br></br>
-                                                    {/* Case Status can be only changed in admin 1 & 2 (Not client) | Client will always have file as "Active" | Options: Active/Pending/Closed/Cancelled */}
-                                                    <div className="">
-                                                        Case Status: {caseData.status}
-                                                    </div>            
-                                                    <br></br>
-                                                    <div>
-                                                        Date of Submission: {new Date(caseData.filedAt.toDate()).toDateString()}
-                                                    </div>            
-                                                    <br></br>
-                                                    {/* ( Admin 1 will have delete button for cases ) */}
-                                                    {
-                                                        caseData.status!=="pending"
-                                                            &&
-                                                                <div>
-                                                                    <Link to={{pathname: "/client-payment-options", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ position:"absolute", right:"0", bottom:"0", marginBottom: "20px", marginRight:"20px"}}>Pay Invoice</Link>
-                                                                </div>
-                                                    }
                                                 </MDBCol>
                                             </Card.Body>
                                         :

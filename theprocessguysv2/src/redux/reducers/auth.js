@@ -5,6 +5,7 @@ import {
   SET_IS_UPDATING_ADDRESS,
   SET_IS_UPDATING_IMAGE,
   SET_IS_UPDATING_EMAIL,
+  SET_IS_FETCHING_USER,
   UPDATE_USER_PHONE_NO,
   UPDATE_USER_ADDRESS,
   UPDATE_USER_IMAGE,
@@ -38,6 +39,13 @@ const authReducer = (state = initState, action) => {
         user: payload,
         isAuthenticated: true,
         isFetchingUser: false
+      };
+    }
+
+    case SET_IS_FETCHING_USER: {
+      return {
+        ...state,
+        isFetchingUser: payload
       };
     }
 

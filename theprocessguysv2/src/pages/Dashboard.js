@@ -24,7 +24,7 @@ const Dashboard = (props) => {
               user.userType === "personal"
                 &&
                   <>
-                    <div>Name: {user.name}</div>
+                    <div>Name: {user.firstName} {user.middleName} {user.lastName}</div>
                     <br></br>
                   </>
             }

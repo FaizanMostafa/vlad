@@ -68,6 +68,7 @@ const Questionaire6 = (props) => {
             <option value="">Please Select</option>
             <option value="Female">Female</option>
             <option value="Male">Male</option>
+            <option value="Unknown">Unknown</option>
           </select>
         </div>
       </MDBCol>

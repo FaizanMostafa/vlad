@@ -142,7 +142,7 @@ const Questionaire4 = (props) => {
                       />
                     </MDBCol>
                     <MDBCol md="6">
-                      <label>What kind of phone number is this?*</label>
+                      <label>What kind of phone number is this?</label>
                       <select className="w-75 m-4 text-center p-2"
                         value={phoneObj.type}
                         onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], type: e.target.value}}}})}
@@ -195,7 +195,7 @@ const Questionaire4 = (props) => {
                       />
                     </MDBCol>
                     <MDBCol md="6">
-                      <label>Relation with resident?*</label>
+                      <label>Relation with resident?</label>
                       <select className="w-75 m-4 text-center p-2"
                         value={residentObj.relation}
                         onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], coResidents: {...serveesDetail[key].coResidents, [residentKey]: {...serveesDetail[key].coResidents[residentKey], relation: e.target.value}}}})}
@@ -347,9 +347,17 @@ const Questionaire4 = (props) => {
           <label>If yes, List the Full Name to Agent of Service</label>
           <MDBInput
             type="text"
+            hint="First Name"
             className="text-white"
-            value={ifYesListFullName}
-            onChange={(e) => setIfYesListFullName(e.target.value)}
+            value={ifYesListFullName.firstName}
+            onChange={(e) => setIfYesListFullName({...ifYesListFullName, firstName: e.target.value})}
+          />
+          <MDBInput
+            type="text"
+            hint="Last Name"
+            className="text-white"
+            value={ifYesListFullName.lastName}
+            onChange={(e) => setIfYesListFullName({...ifYesListFullName, lastName: e.target.value})}
           />
         </div>
       </MDBCol>

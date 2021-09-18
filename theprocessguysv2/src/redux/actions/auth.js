@@ -7,6 +7,7 @@ import {
   SET_IS_UPDATING_ADDRESS,
   SET_IS_UPDATING_IMAGE,
   SET_IS_UPDATING_EMAIL,
+  SET_IS_FETCHING_USER,
   UPDATE_USER_PHONE_NO,
   UPDATE_USER_ADDRESS,
   UPDATE_USER_IMAGE,
@@ -20,6 +21,13 @@ import {
 const setIsSigningIn = (status) => {
   return {
     type: SET_IS_SIGNING_IN,
+    payload: status
+  };
+}
+
+const setIsFetchingUser = (status) => {
+  return {
+    type: SET_IS_FETCHING_USER,
     payload: status
   };
 }
@@ -77,18 +85,23 @@ const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        var uid = user.uid;
-        db.collection("users").doc(uid)
-          .get().then((doc) => {
-            var userData = doc.data();
-            dispatch({
-              type: FETCH_USER,
-              payload: {uid, ...userData}
+        if(user.emailVerified) {
+          var uid = user.uid;
+          db.collection("users").doc(uid)
+            .get().then((doc) => {
+              var userData = doc.data();
+              dispatch({
+                type: FETCH_USER,
+                payload: {uid, ...userData}
+              });
+              console.log("\n User: ", {uid, ...userData}, "\n");
+            }).catch((error) => {
+              console.log("Error getting user data:", error);
             });
-            console.log("\n User: ", {uid, ...userData}, "\n");
-          }).catch((error) => {
-            console.log("Error getting user data:", error);
-          });
+        } else {
+          dispatch(setIsFetchingUser(false));
+          showToast("Please verify your email!", "warning");
+        }
       } else {
         dispatch({
           type: LOGOUT
@@ -103,9 +116,14 @@ const login = (data, onSuccess=()=>{}, onError=()=>{}) => (
     dispatch(setIsSigningIn(true));
     firebase.auth().signInWithEmailAndPassword(data.email, data.password)
       .then((userCredential) => {
-        showToast("User logged in successfully!", "success");
-        dispatch(setIsSigningIn(false));
-        onSuccess();
+        if(userCredential.user.emailVerified) {
+          showToast("User logged in successfully!", "success");
+          dispatch(setIsSigningIn(false));
+          onSuccess();
+        } else {
+          dispatch(setIsSigningIn(false));
+          showToast("Please verify your email first!", "warning");
+        }
       })
       .catch((error) => {
         onError();
@@ -136,16 +154,19 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     dispatch(setIsSigningUp(true));
     firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
-      .then(async(userCredential) => {
-        var user = userCredential.user;
-        delete data["password"];
-        const profilePicturePath = `profile_pictures/${user.uid}/${new Date().toISOString()}${data["profilePicture"].name}`;
-        const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`);
-        delete data["profilePicture"];
-        await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
-        showToast("User registered successfully!", "success");
-        onSuccess();
-        dispatch(setIsSigningUp(false));
+      .then((userCredential) => {
+        firebase.auth().currentUser.sendEmailVerification()
+          .then(async() => {
+            var user = userCredential.user;
+            delete data["password"];
+            const profilePicturePath = `profile_pictures/${user.uid}/${new Date().toISOString()}${data["profilePicture"].name}`;
+            const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`);
+            delete data["profilePicture"];
+            await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            showToast("User registered successfully!", "success");
+            onSuccess();
+            dispatch(setIsSigningUp(false));
+          });
       })
       .catch((error) => {
         onError();

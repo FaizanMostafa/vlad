@@ -1,11 +1,11 @@
 import React from 'react';
-import img from '../pictures/The Process Guys Icons.png';
+import img from '../pictures/TPG_icon.webp';
 
 const HomePage = () => {
 
     return(
         <React.Fragment>
-            <img src={img} style={{ marginLeft: "200px", marginBottom: "-300px", marginTop: " -300px"}}/>
+            <img src={img} loading="lazy" style={{ marginLeft: "200px", marginBottom: "-300px", marginTop: " -300px"}}/>
             <br></br>
            <h1 className="text-center"> <b>Welcome to The Process Guys</b></h1>
             <br></br>

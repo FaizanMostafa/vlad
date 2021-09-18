@@ -67,7 +67,7 @@ function Questionaire() {
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
   const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
   const [agentOfService, setAgentOfService] = useState("");
-  const [ifYesListFullName, setIfYesListFullName] = useState("");
+  const [ifYesListFullName, setIfYesListFullName] = useState({firstName: "", lastName: ""});
 
   // Questionaire Form 5
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
@@ -404,8 +404,8 @@ function Questionaire() {
       //   showToast("Please enter the phone numbers for all the servees that are being served!", "warning");
       // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.type.length).length) {
       //   showToast("Please select the phone number types for all the servees that are being served!", "warning");
-      } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
-        showToast("Please enter the emails for all the servees that are being served!", "warning");
+      // } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+      //   showToast("Please enter the emails for all the servees that are being served!", "warning");
       // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
       //   showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
       // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {
@@ -426,7 +426,7 @@ function Questionaire() {
         showToast("Please enter country for service!", "warning");
       } else if(typeof(agentOfService)!=="boolean") {
         showToast("Please select if there is an agent of service!", "warning");
-      } else if(agentOfService && !ifYesListFullName.length) {
+      } else if(agentOfService && (!ifYesListFullName.firstName.length || !ifYesListFullName.lastName.length)) {
         showToast("Please enter full name to agent of service!", "warning");
       } else {
         let data = {
@@ -605,7 +605,7 @@ function Questionaire() {
     setLocationForBeingServed("");
     setMainAddressForService({street: "", city: "", state: "", zipCode: "", country: ""});
     setAgentOfService("");
-    setIfYesListFullName("");
+    setIfYesListFullName({firstName: "", lastName: ""});
     // Reset Form 5
     setServeIndividualAtEmployment("");
     setProcessServerLeaveDoorTag("");
