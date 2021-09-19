@@ -74,7 +74,7 @@ const Navigation = (props) => {
       <Router>
         <NavBar />
         <Switch>
-          <CustomRoute exact path='/' component={TheProcessGuys} redirect="/member-dashboard" />
+          <Route exact path='/' component={HomePage} />
           <CustomRoute exact path='/view-cases' component={ViewCases} isProtected redirect="/login" />
           <CustomRoute exact path='/admin-dashboard' component={AdminDashboard} isProtected redirect="/login" />
           <Route path='/login' component={Login} />
@@ -101,7 +101,6 @@ const Navigation = (props) => {
           <CustomRoute exact path='/terms-of-service' component={NewTermsOfService} isProtected redirect="/login" />
           <CustomRoute path='/admin-view-all-cases' component={AdminViewAllCases} />
           <CustomRoute path='/terms-of-service-upload' component={NewTermsOfService} />
-          <CustomRoute path='/home-page' component={HomePage} />
         </Switch>
       </Router>
       <Footer />

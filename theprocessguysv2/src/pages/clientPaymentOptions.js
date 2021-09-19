@@ -1,7 +1,14 @@
-import React from 'react';
+import {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 
 function ClientPaymentOptions(props) {
+
+    useEffect(() => {
+        if(!props.location.state || !props.location.state.hasOwnProperty("caseId")) {
+            props.history.goBack();
+        }
+    }, []);
+
     return (
         <div style={{minHeight: "100vh"}}>
             <form className="payments text-center">
@@ -10,7 +17,7 @@ function ClientPaymentOptions(props) {
                     <Link
                         to={{
                             pathname: "/client-payment-credit-card",
-                            state: {caseId: props.location.state.caseId}
+                            state: {caseId: props.location.state?.caseId}
                         }}
                         className="btn btn-primary w-50 mb-3"
                     >Credit/Debit Card</Link>

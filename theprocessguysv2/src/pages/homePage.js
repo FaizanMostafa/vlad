@@ -5,7 +5,9 @@ const HomePage = () => {
 
     return(
         <React.Fragment>
-            <img src={img} loading="lazy" style={{ marginLeft: "200px", marginBottom: "-300px", marginTop: " -300px"}}/>
+            <center>
+                <img src={img} loading="lazy" style={{height: 400, width: 400, objectFit: "contain"}}/>
+            </center>
             <br></br>
            <h1 className="text-center"> <b>Welcome to The Process Guys</b></h1>
             <br></br>
