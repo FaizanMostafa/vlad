@@ -1,33 +1,35 @@
 import React, { useState } from "react";
 import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon, MDBInput } from "mdbreact";
-// import { Link } from 'react-router-dom';
 import emailjs from 'emailjs-com';
+import { showToast } from "../utils";
 
-const ContactPage = () => {
+const ContactPage = (props) => {
 
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhoneNumber, setCustomerPhoneNumber] = useState("");
   const [customerMessage, setCustomerMessage] = useState("");
   const [customerName, setCustomerName] = useState("");
+  const [isPosting, setIsPosting] = useState(false);
 
   const handleSubmit = (e) => {
-    // e.preventDefault();
-    emailjs.sendForm("gmail","template_jfbrizk", e.target, 'user_v5poyBuxjFwarjqQ9FrBR',{
-    })
-      .then((result) => {
-        console.log(result.text);
-    }, (error) => {
-        console.log(error.text);
-    });      
-      let data = {
-        customerEmail,
-        customerMessage,
-        customerName,
-        customerPhoneNumber
-      }
-      localStorage.setItem('contactUsAdmin', JSON.stringify(data));
-      alert("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬");
-      e.target.reset();
+    e.preventDefault();
+    if(!isPosting) {
+      setIsPosting(true);
+      emailjs.sendForm("gmail", "template_jfbrizk", e.target, 'user_v5poyBuxjFwarjqQ9FrBR', {})
+        .then((result) => {
+          console.log({result});
+          setIsPosting(false);
+          showToast("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬", "success");
+          setCustomerEmail("");
+          setCustomerPhoneNumber("");
+          setCustomerName("");
+          setCustomerMessage("");
+        }, (error) => {
+          console.log(error.text);
+          showToast(error.text, "error")
+          setIsPosting(false);
+        });
+    }
   }
 
   return (
@@ -37,12 +39,12 @@ const ContactPage = () => {
       </h2>
       <p className="text-center w-responsive mx-auto pb-5">
         Hello! Please contact us if you have any questions or concerns.
-        Our representatiives will get back to you shortly.
+        Our representatives will get back to you shortly.
         If you scroll down, there are a few contacts you can e-mail or call.
       </p>
       <br></br>
       <MDBRow className="text-center justify-content-center" style={{ marginLeft: "180px"}}>
-        <MDBCol lg="5" className="lg-0 mb-4">
+        <MDBCol lg="8" className="lg-0 mb-4">
           <MDBCard style={{ width:"75%", height: "100%" }}>
             <MDBCardBody>
               <div className="form-header white  accent-1">
@@ -53,58 +55,76 @@ const ContactPage = () => {
               <p className="dark-grey-text">
                 We'll write rarely, but only the best content.
               </p>
-              <form onSubmit={handleSubmit}  style={{ marginRight: "25px", flex: "1 0px", msFlex: "1" }}>
-              <div className="md-form">
-                <MDBInput
-                  icon="user"
-                  label="Your Full Name*"
-                  iconClass="grey-text"
-                  type="text"
-                  id="form-name"
-                  name="yourname"
-                  required
-                  onChange={(e) => setCustomerName(e.target.value)}
-                />
-              </div>
-              <div className="md-form">
-                <MDBInput
-                  icon="envelope"
-                  label="Your E-mail*"
-                  iconClass="grey-text"
-                  type="email"
-                  id="form-email"
-                  name="youremail"
-                  required
-                  onChange={(e) => setCustomerEmail(e.target.value)}
-                />
-              </div>
-              <div className="md-form">
-                <MDBInput
-                  icon="phone"
-                  label="Phone Number"
-                  iconClass="grey-text"
-                  type="phone"
-                  id="form-subject"
-                  name="yourphonenumber"
-                  onChange={(e) => setCustomerPhoneNumber(e.target.value)}
-                />
-              </div>
-              <div className="md-form">
-                <MDBInput
-                  icon="pencil-alt"
-                  label="Message"
-                  iconClass="grey-text"
-                  type="textarea"
-                  id="form-text"
-                  name="yourmessage"
-                  onChange={(e) => setCustomerMessage(e.target.value)}
-                />
-              </div>
-              <div className="text-center">
-                <button className="btn btn-primary" type="submit">Submit</button>
-              </div>
+              <form onSubmit={handleSubmit} method="POST"  style={{ marginRight: "25px", flex: "1 0px", msFlex: "1" }}>
+                <div className="md-form text-left">
+                  <MDBInput
+                    icon="user"
+                    label="Your Full Name*"
+                    iconClass="grey-text"
+                    type="text"
+                    id="form-name"
+                    name="Name"
+                    required
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                  />
+                </div>
+                <div className="md-form text-left">
+                  <MDBInput
+                    icon="envelope"
+                    label="Your E-mail*"
+                    iconClass="grey-text"
+                    type="email"
+                    id="form-email"
+                    name="Email"
+                    required
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                  />
+                </div>
+                <div className="md-form text-left">
+                  <MDBInput
+                    icon="phone"
+                    label="Phone Number*"
+                    iconClass="grey-text"
+                    type="phone"
+                    id="form-subject"
+                    name="Phone Number"
+                    value={customerPhoneNumber}
+                    required
+                    onChange={(e) => setCustomerPhoneNumber(e.target.value)}
+                  />
+                </div>
+                <div className="md-form text-left">
+                  <MDBInput
+                    icon="pencil-alt"
+                    label="Message*"
+                    iconClass="grey-text"
+                    type="textarea"
+                    rows="6"
+                    id="form-text"
+                    name="Message"
+                    required
+                    value={customerMessage}
+                    onChange={(e) => setCustomerMessage(e.target.value)}
+                  />
+                </div>
+                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                  <button className="btn btn-primary" type="submit">
+                    {
+                      isPosting
+                        ?
+                          <div style={{display: "flex", flex: 1, color: "white", alignItems: "center", justifyContent: "center"}}>
+                            <div style={{width: 20, height: 20}} className="spinner-border" role="status">
+                              <span className="sr-only">Loading...</span>
+                            </div>  
+                          </div>
+                        :
+                          <span className="white-text">Submit</span>
+                    }
+                  </button>
+                </div>
               </form>
-              
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
