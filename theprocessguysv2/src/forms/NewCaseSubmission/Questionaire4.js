@@ -135,7 +135,7 @@ const Questionaire4 = (props) => {
                   <MDBRow>
                     <MDBCol bottom md="6">
                       <MDBInput
-                        hint="Phone Number"
+                        hint="(###)#######"
                         className="text-white"
                         value={phoneObj.phoneNumber}
                         onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
@@ -171,7 +171,7 @@ const Questionaire4 = (props) => {
             </MDBCol>
             <MDBCol md="12" id="email-of-individuals">
               <div id="email-of-individuals">
-                <label>E-Mail(s) pertaining Servee(s)</label>
+                <label>E-Mail(s) pertaining Servee(s) (you may list multiple , each email separated with whitespace)</label>
                 <MDBInput
                   type="textarea"
                   className="text-white"

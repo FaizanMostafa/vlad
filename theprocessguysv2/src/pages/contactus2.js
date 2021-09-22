@@ -63,7 +63,7 @@ const ContactPage = (props) => {
                     iconClass="grey-text"
                     type="text"
                     id="form-name"
-                    name="Name"
+                    name="customerName"
                     required
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
@@ -76,7 +76,7 @@ const ContactPage = (props) => {
                     iconClass="grey-text"
                     type="email"
                     id="form-email"
-                    name="Email"
+                    name="customerEmail"
                     required
                     value={customerEmail}
                     onChange={(e) => setCustomerEmail(e.target.value)}
@@ -89,7 +89,7 @@ const ContactPage = (props) => {
                     iconClass="grey-text"
                     type="phone"
                     id="form-subject"
-                    name="Phone Number"
+                    name="customerPhoneNumber"
                     value={customerPhoneNumber}
                     required
                     onChange={(e) => setCustomerPhoneNumber(e.target.value)}
@@ -103,7 +103,7 @@ const ContactPage = (props) => {
                     type="textarea"
                     rows="6"
                     id="form-text"
-                    name="Message"
+                    name="customerMessage"
                     required
                     value={customerMessage}
                     onChange={(e) => setCustomerMessage(e.target.value)}

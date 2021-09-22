@@ -254,9 +254,10 @@ const Questionaire2 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="plaintiff-attorney-phone-number-for-calls">
         <div id="plaintiff-attorney-phone-number-for-calls">
-          <label>Phone Number for Calls (you may list multiple)</label>
+          <label>Phone Number for Calls (you may list multiple, separated by whitespace)</label>
           <MDBInput
             type="textarea"
+            hint="(###)#######"
             className="text-white"
             disabled={shouldPGFillPlaintiffInfo}
             value={plaintiffAttorneyPhoneNumberForCalls}

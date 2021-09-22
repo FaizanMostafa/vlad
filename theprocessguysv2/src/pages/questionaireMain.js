@@ -15,7 +15,7 @@ import {
 import {
   ResetQuestionairesConfirmation
 } from "../popups";
-import { showToast } from "../utils";
+import { showToast, validateEmail } from "../utils";
 
 function Questionaire() {
 
@@ -312,8 +312,12 @@ function Questionaire() {
         showToast("Please enter plaintiff's attorney name!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyBarNumber.length) {
         showToast("Please enter plaintiff's attorney bar number!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && plaintiffAttorneyPhoneNumberForCalls.length && plaintiffAttorneyPhoneNumberForCalls.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length) {
+        showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
       } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyEmail.length) {
         showToast("Please enter plaintiff's attorney email!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !validateEmail(plaintiffAttorneyEmail)) {
+        showToast("Invalid plaintiff's attorney email address!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.street.length) {
         showToast("Please enter plaintiff's attorney firm street!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && attorneyRepresentingPlaintiffInfo!=="0" && !plaintiffAttorneyFirmAddress.city.length) {
@@ -362,8 +366,12 @@ function Questionaire() {
         showToast("Please enter defendant attorney name!", "warning");
       } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyBarNumber.length) {
         showToast("Please enter defendant attorney bar number!", "warning");
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && defendantAttorneyPhoneNumberForCalls.length && defendantAttorneyPhoneNumberForCalls.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length) {
+        showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
       } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyEmail.length) {
         showToast("Please enter defendant attorney email!", "warning");
+      } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !validateEmail(defendantAttorneyEmail)) {
+        showToast("Invalid defendant attorney email address!", "warning");
       } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.street.length) {
         showToast("Please enter defendant attorney office street!", "warning");
       } else if(!shouldPGFillDefendantInfo && attorneyRepresentingDefendantInfo!=="0" && !defendantAttorneyFirmAddress.city.length) {
@@ -400,12 +408,12 @@ function Questionaire() {
         showToast("Please enter the full names of all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.dob)).filter((dob)=>!dob.length).length) {
         showToast("Please enter the date of births for all the servees that are being served!", "warning");
-      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.phoneNumber.length).length) {
-      //   showToast("Please enter the phone numbers for all the servees that are being served!", "warning");
-      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>!p.type.length).length) {
-      //   showToast("Please select the phone number types for all the servees that are being served!", "warning");
-      // } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
-      //   showToast("Please enter the emails for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && p.phoneNumber.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length)).length) {
+        showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the phone number types for all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>(email.length && !validateEmail(email))).length) {
+        showToast("One or more invalid email addresses encountered!", "warning");
       // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
       //   showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
       // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {

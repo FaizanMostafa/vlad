@@ -7,6 +7,7 @@ import {
   logout
 } from "../redux/actions/auth";
 import {
+  faHome,
   faUser,
   faSignOutAlt,
   faChartLine,
@@ -45,6 +46,14 @@ const NavBar = ({...props}) => {
           onClick: () => {
             history.push("/register");
           }
+        },
+        {
+          title: "Homepage",
+          icon: faHome,
+          isAuth: !user || !isAuthenticated,
+          onClick: () => {
+            history.push("/");
+          },
         },
         {
           title: "Dashboard",
