@@ -44,8 +44,6 @@ function Register(props) {
         e.preventDefault();
         if(!firstName.length) {
             showToast("Please type-in the first name!", "warning");
-        } else if(!middleName.length) {
-            showToast("Please type-in the middle name!", "warning");
         } else if(!lastName.length) {
             showToast("Please type-in the last name!", "warning");
         } else if(!address.street.length || !address.city.length || !address.state.length || !address.zipCode.length || !address.country.length) {

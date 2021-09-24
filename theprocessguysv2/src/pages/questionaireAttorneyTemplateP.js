@@ -36,7 +36,7 @@ function QuestionaireAttorneyTemplateP({disabled, ...props}) {
           className="d-flex align-items-center justify-content-center"
         >
           <Button variant="primary w-50" onClick={handleShow}>
-            + Attorney(s) Representing Plaintiff
+            + Attorney(s) information representing Plaintiff
           </Button>
         </div>
         <Modal show={showModal} onHide={handleClose}>

@@ -46,7 +46,6 @@ const Questionaire6 = (props) => {
             className="text-white"
             value={fullNameOfDescribedServee.middleName}
             onChange={(e) => setFullNameOfDescribedServee({...fullNameOfDescribedServee, middleName: e.target.value})}
-            required
           />
           <MDBInput
             type="text"

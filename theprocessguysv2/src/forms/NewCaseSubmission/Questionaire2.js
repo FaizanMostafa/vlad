@@ -2,41 +2,20 @@ import React from 'react';
 import { Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import { Link as RSLink } from 'react-scroll';
-import { Link } from "react-router-dom";
 import QuestionaireAttorneyP from "../../pages/questionaireAttorneyTemplateP";
 
 const Questionaire2 = (props) => {
   const {
     shouldPGFillPlaintiffInfo,
     setShouldPGFillPlaintiffInfo,
-    plaintiffFullName,
-    setPlaintiffFullName,
-    plaintiffAddress,
-    setPlaintiffAddress,
+    plaintiffsDetail,
+    setPlaintiffsDetail,
     numberOfAttorneyPlaintiff,
     setNumberOfAttorneyPlaintiff,
-    attorneyRepresentingPlaintiffInfo,
-    setAttorneyRepresentingPlaintiffInfo,
-    plaintiffAttorneyName,
-    setPlaintiffAttorneyName,
-    plaintiffAttorneyBarNumber,
-    setPlaintiffAttorneyBarNumber,
-    street,
-    setStreet,
-    city,
-    setCity,
-    state,
-    setState,
-    zipCode,
-    setZipCode,
-    country,
-    setCountry,
-    plaintiffAttorneyEmail,
-    setPlaintiffAttorneyEmail,
-    plaintiffAttorneyPhoneNumberForCalls,
-    setPlaintiffAttorneyPhoneNumberForCalls,
-    plaintiffAttorneyFaxNumberOptional,
-    setPlaintiffAttorneyFaxNumberOptional
+    numberOfAttorneysRepresentingPlaintiff,
+    setNumberOfAttorneysRepresentingPlaintiff,
+    plaintiffAttorneysDetail,
+    setPlaintiffAttorneysDetail
   } = props;
 
   return (
@@ -100,96 +79,100 @@ const Questionaire2 = (props) => {
           </select><br></br>
         </div>
       </MDBCol>
-      <MDBCol md="12" id="plaintiff-full-name">
-        <div id="plaintiff-full-name">
-          <label>Plaintiff's Full Name*</label>
-          <MDBInput
-            type="text"
-            hint="First Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffFullName.firstName}
-            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, firstName: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Middle Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffFullName.middleName}
-            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, middleName: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Last Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffFullName.lastName}
-            onChange={(e) => setPlaintiffFullName({...plaintiffFullName, lastName: e.target.value})}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-address">
-        <div id="plaintiff-address">
-          <label>Plaintiff's Address*</label>
-          <MDBInput
-            type="text"
-            hint="Street"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAddress.street}
-            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, street: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="City"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAddress.city}
-            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, city: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="State"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAddress.state}
-            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, state: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Zip Code"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAddress.zipCode}
-            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, zipCode: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Country"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAddress.country}
-            onChange={(e) => setPlaintiffAddress({...plaintiffAddress, country: e.target.value})}
-            required
-          />
-        </div>
-      </MDBCol>
-
+      {
+        Object.entries(plaintiffsDetail).map(([key, plaintiff])=>(
+          <>
+            <MDBCol md="12" id="plaintiff-full-name">
+              <div id="plaintiff-full-name">
+                <label>Plaintiff's Full Name*</label>
+                <MDBInput
+                  type="text"
+                  hint="First Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.fullName.firstName}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, fullName: {...plaintiff.fullName, firstName: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="Middle Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.fullName.middleName}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, fullName: {...plaintiff.fullName, middleName: e.target.value}}})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Last Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.fullName.lastName}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, fullName: {...plaintiff.fullName, lastName: e.target.value}}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-address">
+              <div id="plaintiff-address">
+                <label>Plaintiff's Address*</label>
+                <MDBInput
+                  type="text"
+                  hint="Street"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.street}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, address: {...plaintiff.address, street: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="City"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.city}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, address: {...plaintiff.address, city: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="State"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.state}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, address: {...plaintiff.address, state: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="Zip Code"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.zipCode}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, address: {...plaintiff.address, zipCode: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="Country"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.country}
+                  onChange={(e)=>setPlaintiffsDetail({...plaintiffsDetail, [key]: {...plaintiff, address: {...plaintiff.address, country: e.target.value}}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+          </>
+        ))
+      }
       <MDBCol md="12" id="number-of-attorney-representing-plaintiff">
         <div id="number-of-attorney-representing-plaintiff">
           <label>Number of Attorney's Representing the Plaintiff?*</label>
           <select className="w-75 m-4 text-center p-2"
-            value={attorneyRepresentingPlaintiffInfo}
+            value={numberOfAttorneysRepresentingPlaintiff}
             disabled={shouldPGFillPlaintiffInfo}
-            onChange={(e) => setAttorneyRepresentingPlaintiffInfo(e.target.value)}
+            onChange={(e) => setNumberOfAttorneysRepresentingPlaintiff(e.target.value)}
             required
           >
             <option value="">Please Select</option>
@@ -207,143 +190,148 @@ const Questionaire2 = (props) => {
           </select><br></br>
         </div>
       </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-name">
-        <div id="plaintiff-attorney-name">
-          <label>Enter Attorney Full Name{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
-          <MDBInput
-            type="text"
-            hint="First Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyName.firstName}
-            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, firstName: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Middle Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyName.middleName}
-            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, middleName: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Last Name"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyName.lastName}
-            onChange={(e) => setPlaintiffAttorneyName({...plaintiffAttorneyName, lastName: e.target.value})}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-bar-number">
-        <div id="plaintiff-attorney-bar-number">
-          <label>Bar Number{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyBarNumber}
-            onChange={(e) => setPlaintiffAttorneyBarNumber(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-phone-number-for-calls">
-        <div id="plaintiff-attorney-phone-number-for-calls">
-          <label>Phone Number for Calls (you may list multiple, separated by whitespace)</label>
-          <MDBInput
-            type="textarea"
-            hint="(###)#######"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyPhoneNumberForCalls}
-            onChange={(e) => setPlaintiffAttorneyPhoneNumberForCalls(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-fax-number-optional">
-        <div id="plaintiff-fax-number-optional">
-          <label>Fax Number (Optional)</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyFaxNumberOptional}
-            onChange={(e) => setPlaintiffAttorneyFaxNumberOptional(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-email">
-        <div id="plaintiff-attorney-email">
-          <label>Attorney E-Mail{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            value={plaintiffAttorneyEmail}
-            onChange={(e) => setPlaintiffAttorneyEmail(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="plaintiff-attorney-office-address">
-        <div id="plaintiff-attorney-office-address">
-          <label>Firm Address{attorneyRepresentingPlaintiffInfo!=="0"&&"*"}</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            hint="Street"
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
-            required
-          />
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            hint="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            required
-          />
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            hint="State"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            required
-          />
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            hint="Zip Code"
-            value={zipCode}
-            onChange={(e) => setZipCode(e.target.value)}
-            required
-          />
-          <MDBInput
-            type="text"
-            className="text-white"
-            disabled={shouldPGFillPlaintiffInfo}
-            hint="Country"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-          />
-        </div>
-      </MDBCol>
       {
-        !shouldPGFillPlaintiffInfo
+        Object.entries(plaintiffAttorneysDetail).map(([key, attorney])=>(
+          <>
+            <MDBCol md="12" id="plaintiff-attorney-name">
+              <div id="plaintiff-attorney-name">
+                <label>Enter Attorney Full Name{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
+                <MDBInput
+                  type="text"
+                  hint="First Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.fullName.firstName}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, firstName: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  hint="Middle Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.fullName.middleName}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, middleName: e.target.value}}})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Last Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.fullName.lastName}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, lastName: e.target.value}}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-attorney-bar-number">
+              <div id="plaintiff-attorney-bar-number">
+                <label>Bar Number{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.barNumber}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, barNumber: e.target.value}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-attorney-phone-number-for-calls">
+              <div id="plaintiff-attorney-phone-number-for-calls">
+                <label>Phone Number for Calls (you may list multiple, separated by whitespace)</label>
+                <MDBInput
+                  type="textarea"
+                  hint="(###)#######"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.phoneNumbers}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, phoneNumbers: e.target.value}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-fax-number-optional">
+              <div id="plaintiff-fax-number-optional">
+                <label>Fax Number (Optional)</label>
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.faxNumber}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, faxNumber: e.target.value}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-attorney-email">
+              <div id="plaintiff-attorney-email">
+                <label>Attorney E-Mail{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={attorney.email}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, email: e.target.value}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+            <MDBCol md="12" id="plaintiff-attorney-office-address">
+              <div id="plaintiff-attorney-office-address">
+                <label>Firm Address{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="Street"
+                  value={attorney.address.street}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, address: {...attorney.address, street: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="City"
+                  value={attorney.address.city}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, address: {...attorney.address, city: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="State"
+                  value={attorney.address.state}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, address: {...attorney.address, state: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="Zip Code"
+                  value={attorney.address.zipCode}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, address: {...attorney.address, zipCode: e.target.value}}})}
+                  required
+                />
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="Country"
+                  value={attorney.address.country}
+                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, address: {...attorney.address, country: e.target.value}}})}
+                  required
+                />
+              </div>
+            </MDBCol>
+          </>
+        ))
+      }
+      {
+        (!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff !== "")
           &&
             <>
               <MDBCol>
