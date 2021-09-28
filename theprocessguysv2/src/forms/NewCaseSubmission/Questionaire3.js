@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { MDBCol, MDBInput } from 'mdbreact';
+import { MDBRow, MDBCol, MDBInput } from 'mdbreact';
 import { Link as RSLink } from 'react-scroll';
-import QuestionaireAttorneyTemplateD from "../../pages/questionaireAttorneyTemplateD";
 
 const Questionaire3 = (props) => {
   const {
+    isOrRepresentingDefendant,
+    setIsOrRepresentingDefendant,
     shouldPGFillDefendantInfo,
     setShouldPGFillDefendantInfo,
     defendantsDetail,
@@ -49,11 +50,19 @@ const Questionaire3 = (props) => {
             ?
               'Click "Fill the form yourself" button to enable the input fields to fill the form yourself instead'
             :
-              'Click "Request form fill and skip" button to skip filling this section out, leave it for our team to complete! (Additional Charges)'
+              'Click "Request form fill and skip" button to skip filling this section out, leave it for our team to complete!'
         }
       </p>
       <br></br>
       <br></br>
+      <MDBCol md="12" id="is-or-representing-defendant-col">
+        <div id="is-or-representing-defendant-cont">
+          <label>Are you representing the Defendant, or are yourself the Defendant?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingDefendant(true)} id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingDefendant(false)} id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
+          <br/>
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="number-of-defendant-listed">
         <div id="number-of-defendant-listed">
           <label>Number of Defendant(s) listed?*</label><br></br>
@@ -89,7 +98,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.fullName.firstName}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ firstName: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ ...defendant.fullName, firstName: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -98,7 +107,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.fullName.middleName}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ middleName: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ ...defendant.fullName, middleName: e.target.value}}})}
                 />
                 <MDBInput
                   type="text"
@@ -106,7 +115,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.fullName.lastName}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ lastName: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, fullName:{ ...defendant.fullName, lastName: e.target.value}}})}
                   required
                 />
               </div>
@@ -120,7 +129,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.address.street}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendantsDetail.address, street: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendant.address, street: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -129,7 +138,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.address.city}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendantsDetail.address, city: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendant.address, city: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -138,7 +147,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.address.state}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendantsDetail.address, state: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendant.address, state: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -147,7 +156,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.address.zipCode}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendantsDetail.address, zipCode: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendant.address, zipCode: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -156,7 +165,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={defendant.address.country}
-                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendantsDetail.address, country: e.target.value}}})}
+                  onChange={(e)=>setDefendantsDetail({...defendantsDetail, [key]: {...defendant, address:{ ...defendant.address, country: e.target.value}}})}
                   required
                 />
               </div>
@@ -200,7 +209,7 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={attorney.fullName.firstName}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {firstName: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, firstName: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -209,16 +218,16 @@ const Questionaire3 = (props) => {
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={attorney.fullName.middleName}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {middleName: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, middleName: e.target.value}}})}
                   required
                 />
                 <MDBInput
                   type="text"
-                  hint="First Name"
+                  hint="Last Name"
                   className="text-white"
                   disabled={shouldPGFillDefendantInfo}
                   value={attorney.fullName.lastName}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {lastName: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, fullName: {...attorney.fullName, lastName: e.target.value}}})}
                   required
                 />
               </div>
@@ -236,18 +245,46 @@ const Questionaire3 = (props) => {
                 />
               </div>
             </MDBCol>
-            <MDBCol md="12" id="defendant-attorney-phone-number-for-calls">
-              <div id="defendant-attorney-phone-number-for-calls">
-                <label>Phone Number for Calls (you may list multiple, separated by whitespace)</label>
-                <MDBInput
-                  type="textarea"
-                  className="text-white"
-                  hint="(###)#######"
-                  disabled={shouldPGFillDefendantInfo}
-                  value={attorney.phoneNumbers}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: e.target.value}})}
-                  required
-                />
+            <MDBCol md="12" id="phone-numbers-of-individuals">
+              <label>Phone Number(s) for calls</label>
+              {
+                Object.entries(attorney.phoneNumbers).map(([phoneKey, phoneObj])=>(
+                  <MDBRow>
+                    <MDBCol bottom md="6">
+                      <MDBInput
+                        hint="(###) ###-####"
+                        className="text-white"
+                        value={phoneObj.phoneNumber}
+                        onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
+                      />
+                    </MDBCol>
+                    <MDBCol md="6">
+                      <label>What kind of phone number is this?</label>
+                      <select className="w-75 m-4 text-center p-2"
+                        value={phoneObj.type}
+                        onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], type: e.target.value}}}})}
+                        required
+                      >
+                        <label caret color="white">
+                          Please Select
+                        </label>
+                        <option value="">Please Select</option>
+                        <option value="home">Home</option>
+                        <option value="office">Office</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="unknown">Unknown</option>
+                      </select>
+                    </MDBCol>
+                  </MDBRow>
+                ))
+              }
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button
+                  className="btn btn-primary"
+                  onClick={()=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [Object.keys(attorney.phoneNumbers).length]: {phoneNumber: "", type: ""}}}})}
+                >
+                  + Add another phone number
+                </button>
               </div>
             </MDBCol>
             <MDBCol md="12" id="defendant-attorney-fax-number-optional">
@@ -286,7 +323,7 @@ const Questionaire3 = (props) => {
                   hint="Street"
                   value={attorney.address.street}
                   disabled={shouldPGFillDefendantInfo}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {street: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {...attorney.address, street: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -295,7 +332,7 @@ const Questionaire3 = (props) => {
                   hint="City"
                   value={attorney.address.city}
                   disabled={shouldPGFillDefendantInfo}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {city: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {...attorney.address, city: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -304,7 +341,7 @@ const Questionaire3 = (props) => {
                   hint="State"
                   value={attorney.address.state}
                   disabled={shouldPGFillDefendantInfo}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {state: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {...attorney.address, state: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -313,7 +350,7 @@ const Questionaire3 = (props) => {
                   hint="Zip Code"
                   value={attorney.address.zipCode}
                   disabled={shouldPGFillDefendantInfo}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {zipCode: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {...attorney.address, zipCode: e.target.value}}})}
                   required
                 />
                 <MDBInput
@@ -322,27 +359,13 @@ const Questionaire3 = (props) => {
                   hint="Country"
                   value={attorney.address.country}
                   disabled={shouldPGFillDefendantInfo}
-                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {country: e.target.value}}})}
+                  onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, address: {...attorney.address, country: e.target.value}}})}
                   required
                 />
               </div>
             </MDBCol>
           </>
         ))
-      }
-      {
-        (!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="")
-          &&
-            <>
-              <MDBCol>
-                <QuestionaireAttorneyTemplateD
-                  disabled={shouldPGFillDefendantInfo}
-                />
-              </MDBCol>
-              <p className="d-flex align-items-center justify-content-center">
-                **Click button to add another Attorney**
-              </p>
-            </>
       }
       <br />
     </>

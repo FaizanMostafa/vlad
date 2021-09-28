@@ -2,7 +2,6 @@ import React from 'react';
 import { MDBCol, MDBRow, MDBInput } from "mdbreact";
 import QuestionaireAddressTemplate from "../../pages/questionaireAddressTemplate";
 import QuestionaireAgentOfService from "../../pages/questionaireAgentOfServiceTemplate";
-import QuestionaireEmploymentAddressTemplate from "../../pages/questionaireEmploymentAddressTemplate";
 
 const Questionaire4 = (props) => {
   const {
@@ -135,7 +134,7 @@ const Questionaire4 = (props) => {
                   <MDBRow>
                     <MDBCol bottom md="6">
                       <MDBInput
-                        hint="(###)#######"
+                        hint="(###) ###-####"
                         className="text-white"
                         value={phoneObj.phoneNumber}
                         onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
@@ -152,9 +151,10 @@ const Questionaire4 = (props) => {
                           Please Select
                         </label>
                         <option value="">Please Select</option>
+                        <option value="home">Home</option>
+                        <option value="office">Office</option>
                         <option value="mobile">Mobile</option>
-                        <option value="business">Business</option>
-                        <option value="landline">Landline</option>
+                        <option value="unknown">Unknown</option>
                       </select>
                     </MDBCol>
                   </MDBRow>

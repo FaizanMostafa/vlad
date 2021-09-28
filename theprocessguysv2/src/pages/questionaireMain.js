@@ -15,7 +15,7 @@ import {
 import {
   ResetQuestionairesConfirmation
 } from "../popups";
-import { showToast, validateEmail } from "../utils";
+import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 
 function Questionaire() {
 
@@ -34,6 +34,7 @@ function Questionaire() {
   const [branchName, setBranchName] = useState("");
 
   // Questionaire Form 2
+  const [isOrRepresentingPlaintiff, setIsOrRepresentingPlaintiff] = useState("");
   const [shouldPGFillPlaintiffInfo, setShouldPGFillPlaintiffInfo] = useState(false);
   const [numberOfAttorneyPlaintiff, setNumberOfAttorneyPlaintiff] = useState("");
   const [plaintiffsDetail, setPlaintiffsDetail] = useState({});
@@ -41,6 +42,7 @@ function Questionaire() {
   const [plaintiffAttorneysDetail, setPlaintiffAttorneysDetail] = useState({});
 
   // Questionaire Form 3
+  const [isOrRepresentingDefendant, setIsOrRepresentingDefendant] = useState("");
   const [shouldPGFillDefendantInfo, setShouldPGFillDefendantInfo] = useState(false);
   const [defendantsDetail, setDefendantsDetail] = useState({});
   const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
@@ -125,6 +127,7 @@ function Questionaire() {
     }
     if(QuestionaireForm2) {
       setActiveStep(3);
+      setIsOrRepresentingPlaintiff(QuestionaireForm2.isOrRepresentingPlaintiff);
       setPlaintiffsDetail(QuestionaireForm2.plaintiffsDetail);
       setShouldPGFillPlaintiffInfo(QuestionaireForm2.shouldPGFillPlaintiffInfo);
       setNumberOfAttorneyPlaintiff(QuestionaireForm2.numberOfAttorneyPlaintiff);
@@ -133,6 +136,7 @@ function Questionaire() {
     }
     if(QuestionaireForm3) {
       setActiveStep(4);
+      setIsOrRepresentingDefendant(QuestionaireForm3.isOrRepresentingDefendant);
       setDefendantsDetail(QuestionaireForm3.defendantsDetail);
       setShouldPGFillDefendantInfo(QuestionaireForm3.shouldPGFillDefendantInfo);
       setNumberOfAttorneyDefendant(QuestionaireForm3.numberOfAttorneyDefendant);
@@ -231,7 +235,7 @@ function Questionaire() {
         for(let index=0; index < (parseInt(numberOfAttorneysRepresentingPlaintiff)-prevLength); index++) {
           newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
             fullName: {firstName: "", middleName: "", lastName: ""}, barNumber: "",
-            phoneNumbers: "", faxNumber: "", email: "",
+            phoneNumbers: {0: {phoneNumber: "", type: ""}}, faxNumber: "", email: "",
             address: {street: "", city: "", state: "", zipCode: "", country: ""}
           };
         }
@@ -280,7 +284,7 @@ function Questionaire() {
         for(let index=0; index < (parseInt(numberOfAttorneysRepresentingDefendant)-prevLength); index++) {
           newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
             fullName: {firstName: "", middleName: "", lastName: ""}, barNumber: "",
-            phoneNumbers: "", faxNumber: "", email: "",
+            phoneNumbers: {0: {phoneNumber: "", type: ""}}, faxNumber: "", email: "",
             address: {street: "", city: "", state: "", zipCode: "", country: ""}
           };
         }
@@ -332,7 +336,7 @@ function Questionaire() {
       } else if(!courtType.length) {
         showToast("Please select the applicable court!", "warning");
       } else if(!courtState.length) {
-        showToast("Please select the court state!", "warning");
+        showToast("Please enter the court state!", "warning");
       } else if(!branchName.length) {
         showToast("Please enter branch name!", "warning");
       } else if(!courthouseAddress.street.length) {
@@ -373,38 +377,55 @@ function Questionaire() {
         setActiveStep(2);
       }
     } else if(activeStep === 2) {
-      if(!shouldPGFillPlaintiffInfo && !numberOfAttorneyPlaintiff.length) {
+      if(!shouldPGFillPlaintiffInfo && typeof(isOrRepresentingPlaintiff)!=="boolean") {
+        showToast("Please select if you are representing the Plaintiff, or are yourself the Plaintiff", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && !numberOfAttorneyPlaintiff.length) {
         showToast("Please select number of plaintiff(s) listed!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && (!plaintiffFullName.firstName.length || !plaintiffFullName.lastName.length)) {
-      //   showToast("Please enter plaintiff's full name!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && (!plaintiffAddress.street.length || !plaintiffAddress.city.length || !plaintiffAddress.state.length || !plaintiffAddress.zipCode.length || !plaintiffAddress.country.length)) {
-      //   showToast("Please enter plaintiff's address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length)) {
+        showToast("Please enter plaintiff's first name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length)) {
+        showToast("Please enter plaintiff's last name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length)) {
+        showToast("Please enter plaintiff's street address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length)) {
+        showToast("Please enter plaintiff's city address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length)) {
+        showToast("Please enter plaintiff's state address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length)) {
+        showToast("Please enter plaintiff's address's zip code!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length)) {
+        showToast("Please enter plaintiff's address's country!", "warning");
       } else if(!shouldPGFillPlaintiffInfo && !numberOfAttorneysRepresentingPlaintiff.length) {
         showToast("Please select number of attorney's representing plaintiff!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyName.firstName.length && !plaintiffAttorneyName.lastName.length) {
-      //   showToast("Please enter plaintiff's attorney name!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyBarNumber.length) {
-      //   showToast("Please enter plaintiff's attorney bar number!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && plaintiffAttorneyPhoneNumberForCalls.length && plaintiffAttorneyPhoneNumberForCalls.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length) {
-      //   showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyEmail.length) {
-      //   showToast("Please enter plaintiff's attorney email!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !validateEmail(plaintiffAttorneyEmail)) {
-      //   showToast("Invalid plaintiff's attorney email address!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyFirmAddress.street.length) {
-      //   showToast("Please enter plaintiff's attorney firm street!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyFirmAddress.city.length) {
-      //   showToast("Please enter plaintiff's attorney firm city!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyFirmAddress.state.length) {
-      //   showToast("Please enter plaintiff's attorney firm state!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyFirmAddress.zipCode.length) {
-      //   showToast("Please enter plaintiff's attorney firm zip code!", "warning");
-      // } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && !plaintiffAttorneyFirmAddress.country.length) {
-      //   showToast("Please enter plaintiff's attorney firm country!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter plaintiff's attorney's first name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter plaintiff's attorney's last name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.barNumber)).filter((barNumber)=>!barNumber.length).length) {
+        showToast("Please enter plaintiff's attorney bar number!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && [].concat.apply([], Object.values(plaintiffAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && [].concat.apply([], Object.values(plaintiffAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the appropriate phone number types for all the Attorneys numbers!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+        showToast("Please enter plaintiff's attorney email!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.email)).filter((email)=>!validateEmail(email)).length) {
+        showToast("Invalid plaintiff's attorney email address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length) {
+        showToast("Please enter plaintiff's attorney firm street!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length) {
+        showToast("Please enter plaintiff's attorney firm city!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length) {
+        showToast("Please enter plaintiff's attorney firm state!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter plaintiff's attorney firm zip code!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
+        showToast("Please enter plaintiff's attorney firm country!", "warning");
       } else {
         let data = {
           plaintiffsDetail,
           numberOfAttorneyPlaintiff,
+          isOrRepresentingPlaintiff,
           shouldPGFillPlaintiffInfo,
           numberOfAttorneysRepresentingPlaintiff,
           plaintiffAttorneysDetail
@@ -413,46 +434,55 @@ function Questionaire() {
         setActiveStep(3);
       }
     } else if(activeStep === 3) {
-      if(!shouldPGFillDefendantInfo && !numberOfAttorneyDefendant.length) {
+      if(!shouldPGFillDefendantInfo && typeof(isOrRepresentingDefendant)!=="boolean") {
+        showToast("Please select if you are representing the Defendant, or are yourself the Defendant", "warning");
+      } else if(!shouldPGFillDefendantInfo && !numberOfAttorneyDefendant.length) {
         showToast("Please select number of defendant(s) listed!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && (!defendantFullName.firstName.length || !defendantFullName.lastName.length)) {
-      //   showToast("Please enter defendant's full name!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && !defendantAddress.street.length) {
-      //   showToast("Please enter defendant's street address!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && !defendantAddress.city.length) {
-      //   showToast("Please enter defendant's city address!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && !defendantAddress.state.length) {
-      //   showToast("Please enter defendant's state!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && !defendantAddress.zipCode.length) {
-      //   showToast("Please enter defendant's zip code!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && !defendantAddress.country.length) {
-      //   showToast("Please enter defendant's country!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length)) {
+        showToast("Please enter defendant's first name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length)) {
+        showToast("Please enter defendant's last name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length)) {
+        showToast("Please enter defendant's street address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length)) {
+        showToast("Please enter defendant's city address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length)) {
+        showToast("Please enter defendant's state!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length)) {
+        showToast("Please enter defendant's zip code!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length)) {
+        showToast("Please enter defendant's country!", "warning");
       } else if(!shouldPGFillDefendantInfo && !numberOfAttorneysRepresentingDefendant.length) {
         showToast("Please select number of attorney's representing defendant!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyName.length) {
-      //   showToast("Please enter defendant attorney name!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyBarNumber.length) {
-      //   showToast("Please enter defendant attorney bar number!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && defendantAttorneyPhoneNumberForCalls.length && defendantAttorneyPhoneNumberForCalls.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length) {
-      //   showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyEmail.length) {
-      //   showToast("Please enter defendant attorney email!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !validateEmail(defendantAttorneyEmail)) {
-      //   showToast("Invalid defendant attorney email address!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyFirmAddress.street.length) {
-      //   showToast("Please enter defendant attorney office street!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyFirmAddress.city.length) {
-      //   showToast("Please enter defendant attorney office city!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyFirmAddress.state.length) {
-      //   showToast("Please enter defendant attorney office state!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyFirmAddress.zipCode.length) {
-      //   showToast("Please enter defendant attorney office zip code!", "warning");
-      // } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && !defendantAttorneyFirmAddress.country.length) {
-      //   showToast("Please enter defendant attorney office country!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter defendant's attorney's first name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter defendant's attorney's last name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.barNumber)).filter((barNumber)=>!barNumber.length).length) {
+        showToast("Please enter defendant's attorney's bar number!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && [].concat.apply([], Object.values(defendantAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && [].concat.apply([], Object.values(defendantAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the appropriate phone number types for all the Attorneys numbers!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+        showToast("Please enter defendant's attorney's email!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.email)).filter((email)=>!validateEmail(email)).length) {
+        showToast("Invalid defendant's attorney's email address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length) {
+        showToast("Please enter defendant's attorney's firm street!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length) {
+        showToast("Please enter defendant's attorney's firm city!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length) {
+        showToast("Please enter defendant's attorney's firm state!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter defendant's attorney's firm zip code!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
+        showToast("Please enter defendant's attorney's firm country!", "warning");
       } else {
         let data = {
           defendantsDetail,
           numberOfAttorneyDefendant,
+          isOrRepresentingDefendant,
           shouldPGFillDefendantInfo,
           numberOfAttorneysRepresentingDefendant,
           defendantAttorneysDetail
@@ -646,12 +676,14 @@ function Questionaire() {
     // Reset Form 2
     setPlaintiffsDetail({});
     setShouldPGFillPlaintiffInfo(false);
+    setIsOrRepresentingPlaintiff("");
     setNumberOfAttorneyPlaintiff("");
     setPlaintiffAttorneysDetail({});
     setNumberOfAttorneysRepresentingPlaintiff("");
     // Reset Form 3
     setDefendantsDetail({});
     setShouldPGFillDefendantInfo(false);
+    setIsOrRepresentingDefendant("");
     setNumberOfAttorneyDefendant("");
     setNumberOfAttorneysRepresentingDefendant("");
     setDefendantAttorneysDetail({});
@@ -767,6 +799,8 @@ function Questionaire() {
         activeStep === 2
           &&
             <Questionaire2
+              isOrRepresentingPlaintiff={isOrRepresentingPlaintiff}
+              setIsOrRepresentingPlaintiff={setIsOrRepresentingPlaintiff}
               shouldPGFillPlaintiffInfo={shouldPGFillPlaintiffInfo}
               setShouldPGFillPlaintiffInfo={setShouldPGFillPlaintiffInfo}
               plaintiffsDetail={plaintiffsDetail}
@@ -785,6 +819,8 @@ function Questionaire() {
         activeStep === 3
           &&
             <Questionaire3
+              isOrRepresentingDefendant={isOrRepresentingDefendant}
+              setIsOrRepresentingDefendant={setIsOrRepresentingDefendant}
               shouldPGFillDefendantInfo={shouldPGFillDefendantInfo}
               setShouldPGFillDefendantInfo={setShouldPGFillDefendantInfo}
               numberOfAttorneyDefendant={numberOfAttorneyDefendant}

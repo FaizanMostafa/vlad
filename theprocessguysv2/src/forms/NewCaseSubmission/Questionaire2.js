@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from "react-bootstrap";
-import { MDBCol, MDBInput } from "mdbreact";
+import { MDBRow, MDBCol, MDBInput } from "mdbreact";
 import { Link as RSLink } from 'react-scroll';
-import QuestionaireAttorneyP from "../../pages/questionaireAttorneyTemplateP";
 
 const Questionaire2 = (props) => {
   const {
+    isOrRepresentingPlaintiff,
+    setIsOrRepresentingPlaintiff,
     shouldPGFillPlaintiffInfo,
     setShouldPGFillPlaintiffInfo,
     plaintiffsDetail,
@@ -51,11 +52,19 @@ const Questionaire2 = (props) => {
             ?
               'Click "Fill the form yourself" button to enable the input fields to fill the form yourself instead'
             :
-              'Click "Request form fill and skip" button to skip filling this section out, leave it for our team to complete! (Additional Charges)'
+              'Click "Request form fill and skip" button to skip filling this section out, leave it for our team to complete!'
         }
       </p>
       <br></br>
       <br></br>
+      <MDBCol md="12" id="is-or-representing-plaintiff-col">
+        <div id="is-or-representing-plaintiff-cont">
+          <label>Are you representing the Plaintiff, or are yourself the Plaintiff?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(true)} id="isPlaintiffY" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===true} /><label className="ml-2" for="isPlaintiffY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(false)} id="isPlaintiffN" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===false} /><label className="ml-2" for="isPlaintiffN">No</label>
+          <br/>
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="number-of-plaintiff-listed">
         <div id="number-of-plaintiff-listed">
           <label>Number of Plaintiff(s) listed?*</label>
@@ -237,18 +246,46 @@ const Questionaire2 = (props) => {
                 />
               </div>
             </MDBCol>
-            <MDBCol md="12" id="plaintiff-attorney-phone-number-for-calls">
-              <div id="plaintiff-attorney-phone-number-for-calls">
-                <label>Phone Number for Calls (you may list multiple, separated by whitespace)</label>
-                <MDBInput
-                  type="textarea"
-                  hint="(###)#######"
-                  className="text-white"
-                  disabled={shouldPGFillPlaintiffInfo}
-                  value={attorney.phoneNumbers}
-                  onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, phoneNumbers: e.target.value}})}
-                  required
-                />
+            <MDBCol md="12" id="phone-numbers-of-individuals">
+              <label>Phone Number(s) for calls</label>
+              {
+                Object.entries(attorney.phoneNumbers).map(([phoneKey, phoneObj])=>(
+                  <MDBRow>
+                    <MDBCol bottom md="6">
+                      <MDBInput
+                        hint="(###) ###-####"
+                        className="text-white"
+                        value={phoneObj.phoneNumber}
+                        onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
+                      />
+                    </MDBCol>
+                    <MDBCol md="6">
+                      <label>What kind of phone number is this?</label>
+                      <select className="w-75 m-4 text-center p-2"
+                        value={phoneObj.type}
+                        onChange={(e)=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], type: e.target.value}}}})}
+                        required
+                      >
+                        <label caret color="white">
+                          Please Select
+                        </label>
+                        <option value="">Please Select</option>
+                        <option value="home">Home</option>
+                        <option value="office">Office</option>
+                        <option value="mobile">Mobile</option>
+                        <option value="unknown">Unknown</option>
+                      </select>
+                    </MDBCol>
+                  </MDBRow>
+                ))
+              }
+              <div style={{display: "flex", justifyContent: "flex-end"}}>
+                <button
+                  className="btn btn-primary"
+                  onClick={()=>setPlaintiffAttorneysDetail({...plaintiffAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [Object.keys(attorney.phoneNumbers).length]: {phoneNumber: "", type: ""}}}})}
+                >
+                  + Add another phone number
+                </button>
               </div>
             </MDBCol>
             <MDBCol md="12" id="plaintiff-fax-number-optional">
@@ -330,20 +367,6 @@ const Questionaire2 = (props) => {
           </>
         ))
       }
-      {
-        (!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff !== "")
-          &&
-            <>
-              <MDBCol>
-                <QuestionaireAttorneyP
-                  disabled={shouldPGFillPlaintiffInfo}
-                />
-              </MDBCol>
-              <p className="d-flex align-items-center justify-content-center">
-                **Click button to add another Attorney**
-              </p>
-            </>
-        }
       <br />
     </>
   );
