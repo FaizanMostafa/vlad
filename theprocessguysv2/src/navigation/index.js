@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import { useIdleTimer } from 'react-idle-timer';
-import TheProcessGuys from "../pages/TheProcessGuys";
+import TOSAgreement from "../pages/TOSAgreement";
 import QuestionaireMain from "../pages/questionaireMain";
 import Login from "../pages/Login";
 import Register from "../pages/register";
@@ -61,7 +61,11 @@ const Navigation = (props) => {
 
   const CustomRoute = ({path, isProtected, exact, redirect, component, ...props}) => {
     if(isProtected && user && isAuthenticated) {
-      return <Route exact={exact} path={path} component={component} />;
+      if(user.hasAgreedToTOS) {
+        return <Route exact={exact} path={path} component={component} />;
+      } else {
+        return <Redirect to="/tos-agreement" />;
+      }
     } else if(!isProtected && user && isAuthenticated && path === "/") {
       return <Redirect to={redirect} />;
     } else {
@@ -80,6 +84,7 @@ const Navigation = (props) => {
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route path='/forgot-password' component={ForgotPassword} />
+          <Route exact={true} path="/tos-agreement" component={TOSAgreement} />
           <CustomRoute exact path='/member-dashboard' component={MemberDashboard} isProtected redirect="/login" />
           <CustomRoute exact path='/update-profile' component={UpdateProfilePage} isProtected redirect="/login" />
           <CustomRoute exact path='/questionaire' component={QuestionaireMain} isProtected redirect="/login" />

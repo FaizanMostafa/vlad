@@ -58,7 +58,7 @@ const NavBar = ({...props}) => {
         {
           title: "Dashboard",
           icon: faChartLine,
-          isAuth: user && isAuthenticated,
+          isAuth: user && isAuthenticated && user.hasAgreedToTOS,
           onClick: () => {
             history.push("/member-dashboard");
           },
@@ -66,7 +66,7 @@ const NavBar = ({...props}) => {
         {
           title: "Services",
           icon: faTools,
-          isAuth: user && isAuthenticated,
+          isAuth: user && isAuthenticated && user.hasAgreedToTOS,
           onClick: () => {
             history.push("/services");
           }
