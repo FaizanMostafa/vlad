@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
 import { Stepper } from 'react-form-stepper';
 import {
@@ -325,6 +325,18 @@ function Questionaire() {
     }
   }, [howManyIndividualsServed]);
 
+  useEffect(() => {
+    if(isOrRepresentingPlaintiff) {
+      setIsOrRepresentingDefendant(false);
+    }
+  }, [isOrRepresentingPlaintiff]);
+
+  useEffect(() => {
+    if(isOrRepresentingDefendant) {
+      setIsOrRepresentingPlaintiff(false);
+    }
+  }, [isOrRepresentingDefendant]);
+
   const handleOnPressNext = () => {
     if(activeStep === 1) {
       if(!caseTitle.length) {
@@ -499,8 +511,8 @@ function Questionaire() {
         showToast("Please enter the full names of all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.dob)).filter((dob)=>!dob.length).length) {
         showToast("Please enter the date of births for all the servees that are being served!", "warning");
-      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && p.phoneNumber.split(" ").filter((pn)=>((!pn.includes("(")||!pn.includes(")"))||pn.length!==12)).length)).length) {
-        showToast('Every phone number should be exactly 12 characters in length including "()", multiple numbers should be separated with one whitespace!', "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
       } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
         showToast("Please select the phone number types for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>(email.length && !validateEmail(email))).length) {
@@ -749,7 +761,7 @@ function Questionaire() {
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       <br></br>
       <br></br>
       <br></br>
@@ -978,7 +990,7 @@ function Questionaire() {
         handleModalClose={()=>setShowResetModal(false)}
         handleOnClickConfirm={handleResetForms}
       />
-    </React.Fragment>
+    </Fragment>
   )
 };
 

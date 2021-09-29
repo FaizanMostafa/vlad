@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button } from 'react-bootstrap';
 import { MDBRow, MDBCol, MDBInput } from 'mdbreact';
 import { Link as RSLink } from 'react-scroll';
@@ -18,6 +17,16 @@ const Questionaire3 = (props) => {
     defendantAttorneysDetail,
     setDefendantAttorneysDetail
   } = props;
+
+  const handleOnChangePhoneNumber = (key, phoneKey, attorney, phoneNumber) => {
+    if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `(${phoneNumber}) `}}}});
+    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `${phoneNumber}-`}}}});
+    } else {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber}}}});
+    }
+  }
 
   return (
     <>
@@ -61,7 +70,14 @@ const Questionaire3 = (props) => {
           <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingDefendant(true)} id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingDefendant(false)} id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
           <br/>
-        </div>
+          {
+            isOrRepresentingDefendant
+              ?
+                <i>Please fill out attorney information pertaining to your counsel! (If you have any)</i>
+              :
+                <i>Opposing counsel does not need to be filled out, if information isn't available</i>
+          }
+        </div><br/>
       </MDBCol>
       <MDBCol md="12" id="number-of-defendant-listed">
         <div id="number-of-defendant-listed">
@@ -255,7 +271,8 @@ const Questionaire3 = (props) => {
                         hint="(###) ###-####"
                         className="text-white"
                         value={phoneObj.phoneNumber}
-                        onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
+                        onChange={(e)=>handleOnChangePhoneNumber(key, phoneKey, attorney, e.target.value)}
+                        // onChange={(e)=>setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
                       />
                     </MDBCol>
                     <MDBCol md="6">

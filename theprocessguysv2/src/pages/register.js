@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form, Button } from 'react-bootstrap';
 import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Attorney from "../forms/Attorney";
 import Business from "../forms/Business";
-import {showToast, validateEmail} from "../utils";
+import {showToast, validateEmail, validatePhoneNumber} from "../utils";
 import { register } from '../redux/actions/auth';
 
 function Register(props) {
@@ -39,6 +39,15 @@ function Register(props) {
     const [busFirmAddress, setBusFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [busJobTitle, setBusJobTitle] = useState("");
 
+    const handleOnChangePhoneNumber = (phoneNumber) => {
+        if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
+            setPhoneNumber(`(${phoneNumber}) `);
+        } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
+            setPhoneNumber(`${phoneNumber}-`);
+        } else {
+            setPhoneNumber(phoneNumber);
+        }
+    }
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -50,6 +59,8 @@ function Register(props) {
             showToast("Please type-in the full address!", "warning");
         } else if(!phoneNumber.length) {
             showToast("Please type-in the phone number!", "warning");
+        } else if(!validatePhoneNumber(phoneNumber)) {
+            showToast("Invalid phone number, please type-in correct phone number!", "warning");
         } else if((userType==="personal" || userType==="business" || (userType==="attorney" && attorneyType!=="attorney")) && !SSN.length) {
             showToast("Please fill-in the government issued ID number!", "warning");
         } else if((userType==="personal" || userType==="business" || (userType==="attorney" && attorneyType!=="attorney")) && !SSNState.length) {
@@ -246,8 +257,9 @@ function Register(props) {
                                 <Form.Label>Phone Number</Form.Label>
                                 <Form.Control
                                     type="text"
+                                    placeholder="(###) ###-####"
                                     value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
+                                    onChange={(e) => handleOnChangePhoneNumber(e.target.value)}
                                 />
                             </Form.Group>
                         </MDBCol>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { MDBCol, MDBRow, MDBInput } from "mdbreact";
 import QuestionaireAddressTemplate from "../../pages/questionaireAddressTemplate";
 import QuestionaireAgentOfService from "../../pages/questionaireAgentOfServiceTemplate";
@@ -32,6 +31,16 @@ const Questionaire4 = (props) => {
     setNumberOfCaseFilesBeingServed(e.target.value);
     if(e.target.value!=="" && parseInt(e.target.value)>1) {
       setHowManyIndividualsServed("1");
+    }
+  }
+
+  const handleOnChangePhoneNumber = (key, phoneKey, phoneNumber) => {
+    if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `(${phoneNumber}) `}}}});
+    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `${phoneNumber}-`}}}});
+    } else {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber}}}});
     }
   }
 
@@ -137,7 +146,8 @@ const Questionaire4 = (props) => {
                         hint="(###) ###-####"
                         className="text-white"
                         value={phoneObj.phoneNumber}
-                        onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
+                        onChange={(e)=>handleOnChangePhoneNumber(key, phoneKey, e.target.value)}
+                        // onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: e.target.value}}}})}
                       />
                     </MDBCol>
                     <MDBCol md="6">
@@ -182,7 +192,7 @@ const Questionaire4 = (props) => {
             </MDBCol>
             <br />
             <MDBCol md="12" id="known-coresidents-of-servee">
-              <label>Any Known Co-Resident(s) of the Servee and Their Relationship to the Individual?</label>
+              <label>Any Known Co-Resident(s)?</label>
               {
                 Object.entries(servee.coResidents).map(([residentKey, residentObj])=>(
                   <MDBRow>
@@ -195,7 +205,7 @@ const Questionaire4 = (props) => {
                       />
                     </MDBCol>
                     <MDBCol md="6">
-                      <label>Relation with resident?</label>
+                      <label>Relationship to resident?</label>
                       <select className="w-75 m-4 text-center p-2"
                         value={residentObj.relation}
                         onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], coResidents: {...serveesDetail[key].coResidents, [residentKey]: {...serveesDetail[key].coResidents[residentKey], relation: e.target.value}}}})}
@@ -209,7 +219,9 @@ const Questionaire4 = (props) => {
                         <option value="wife">Wife</option>
                         <option value="brother">Brother</option>
                         <option value="sister">Sister</option>
-                        <option value="rommate">Rommate</option>
+                        <option value="roommate">Roommate</option>
+                        <option value="girlfriend">Girlfriend</option>
+                        <option value="boyfriend">Boyfriend</option>
                         <option value="father">Father</option>
                         <option value="mother">Mother</option>
                         <option value="son">Son</option>
