@@ -55,9 +55,9 @@ function Questionaire() {
   const [serveesDetail, setServeesDetail] = useState({});
   const [date, setDate] = useState(new Date());
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
-  const [mainAddressForService, setMainAddressForService] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+  const [mainAddressesForService, setMainAddressesForService] = useState({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
   const [agentOfService, setAgentOfService] = useState("");
-  const [ifYesListFullName, setIfYesListFullName] = useState({firstName: "", lastName: ""});
+  const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
 
   // Questionaire Form 5
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
@@ -70,23 +70,17 @@ function Questionaire() {
   const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
 
   //  Questionaire Form 6
-  const [fullNameOfDescribedServee, setFullNameOfDescribedServee] = useState({firstName: "", middleName: "", lastName: ""});
-  const [imageOfIndividuals, setImageOfIndividuals] = useState(null);
-  const [genderOfIndividuals, setGenderOfIndividuals] = useState("");
-  const [ethnicityOfIndividuals, setEthnicityOfIndividuals] = useState("");
-  const [heightOfIndividuals, setHeightOfIndividuals] = useState("");
-  const [weightOfIndividuals, setWeightOfIndividuals] = useState("");
-  const [hairColorOfIndividuals, setHairColorOfIndividuals] = useState("");
-  const [eyeColorOfIndividuals, setEyeColorOfIndividuals] = useState("");
-  const [physicalOutlineOfIndividuals, setPhysicalOutlineOfIndividuals] = useState("");
+  const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({0: {
+    fullName: {firstName: "", middleName: "", lastName: ""},
+    gender: "", ethnicity: "", height: "", weight: "",
+    hairColor: "", eyeColor: "", physicalOutline: "", image: null
+  }});
 
   // Questionaire Form 7
-  const [insuranceCompanyOfServee, setInsuranceCompanyOfServee] = useState("");
-  const [licensePlateNumberState, setLicensePlateNumberState] = useState("");
-  const [vinNumberOfIndividuals, setVinNumberOfIndividuals] = useState("");
-  const [yearOfMakeOnVehicle, setYearOfMakeOnVehicle] = useState("");
-  const [vehicleColor, setVehicleColor] = useState("");
-  const [vehicleTypeModelOwnership, setVehicleTypeModelOwnership] = useState("");
+  const [vehiclesInformation, setVehiclesInformation] = useState({0: {
+    insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
+    yearOfMake: "", color: "", modelType: ""
+  }});
 
   // Questionaire Form 8
   const [requireStakeOutService, setRequireStakeoutService] = useState("");
@@ -148,9 +142,9 @@ function Questionaire() {
       setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
       setServeesDetail(QuestionaireForm4.serveesDetail);
       setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
-      setMainAddressForService(QuestionaireForm4.mainAddressForService);
+      setMainAddressesForService(QuestionaireForm4.mainAddressesForService);
       setAgentOfService(QuestionaireForm4.agentOfService);
-      setIfYesListFullName(QuestionaireForm4.ifYesListFullName);
+      setAgentsFullNames(QuestionaireForm4.agentsFullNames);
     }
     if(QuestionaireForm5) {
       setActiveStep(6);
@@ -165,24 +159,11 @@ function Questionaire() {
     }
     if(QuestionaireForm6) {
       setActiveStep(7);
-      setFullNameOfDescribedServee(QuestionaireForm6.fullNameOfDescribedServee);
-      setImageOfIndividuals(QuestionaireForm6.imageOfIndividuals);
-      setGenderOfIndividuals(QuestionaireForm6.genderOfIndividuals);
-      setEthnicityOfIndividuals(QuestionaireForm6.ethnicityOfIndividuals);
-      setHeightOfIndividuals(QuestionaireForm6.heightOfIndividuals);
-      setWeightOfIndividuals(QuestionaireForm6.weightOfIndividuals);
-      setHairColorOfIndividuals(QuestionaireForm6.hairColorOfIndividuals);
-      setEyeColorOfIndividuals(QuestionaireForm6.eyeColorOfIndividuals);
-      setPhysicalOutlineOfIndividuals(QuestionaireForm6.physicalOutlineOfIndividuals);
+      setServeesPhysicalDescription(QuestionaireForm6.serveesPhysicalDescription);
     }
     if(QuestionaireForm7) {
       setActiveStep(8);
-      setInsuranceCompanyOfServee(QuestionaireForm7.insuranceCompanyOfServee);
-      setLicensePlateNumberState(QuestionaireForm7.licensePlateNumberState);
-      setVinNumberOfIndividuals(QuestionaireForm7.vinNumberOfIndividuals);
-      setYearOfMakeOnVehicle(QuestionaireForm7.yearOfMakeOnVehicle);
-      setVehicleColor(QuestionaireForm7.vehicleColor);
-      setVehicleTypeModelOwnership(QuestionaireForm7.vehicleTypeModelOwnership);
+      setVehiclesInformation(Questionaire7.vehiclesInformation);
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
@@ -517,37 +498,37 @@ function Questionaire() {
         showToast("Please select the phone number types for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>(email.length && !validateEmail(email))).length) {
         showToast("One or more invalid email addresses encountered!", "warning");
-      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.name.length).length) {
-      //   showToast("Please enter the names for all the co-residents of the servees that are being served!", "warning");
-      // } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>!p.relation.length).length) {
-      //   showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>(p.name.length && !p.relation.length)).length) {
+        showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.isEmployed)).filter((isEmployed)=>!isEmployed.length).length) {
         showToast("Please select the employment option for all the servees that are being served!", "warning");
       } else if(!locationForBeingServed.length) {
         showToast("Please select the kind of location being served!", "warning");
-      } else if(!mainAddressForService.street.length) {
-        showToast("Please enter street for service!", "warning");
-      } else if(!mainAddressForService.city.length) {
-        showToast("Please enter city for service!", "warning");
-      } else if(!mainAddressForService.state.length) {
-        showToast("Please enter state for service!", "warning");
-      } else if(!mainAddressForService.zipCode.length) {
-        showToast("Please enter zip code for service!", "warning");
-      } else if(!mainAddressForService.country.length) {
-        showToast("Please enter country for service!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.street.length).length) {
+        showToast("Please enter street address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.city.length).length) {
+        showToast("Please enter city address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.state.length).length) {
+        showToast("Please enter state address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter zip code address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.country.length).length) {
+        showToast("Please enter country address for all service addresses!", "warning");
       } else if(typeof(agentOfService)!=="boolean") {
         showToast("Please select if there is an agent of service!", "warning");
-      } else if(agentOfService && (!ifYesListFullName.firstName.length || !ifYesListFullName.lastName.length)) {
-        showToast("Please enter full name to agent of service!", "warning");
+      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter first names of all the agents of service!", "warning");
+      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter last names of all the agents of service!", "warning");
       } else {
         let data = {
           numberOfCaseFilesBeingServed,
           howManyIndividualsServed,
           serveesDetail,
           locationForBeingServed,
-          mainAddressForService,
+          mainAddressesForService,
           agentOfService,          
-          ifYesListFullName
+          agentsFullNames
         };
         localStorage.setItem('Questionaire4', JSON.stringify(data));
         setActiveStep(5);
@@ -585,26 +566,13 @@ function Questionaire() {
       }
     } else if(activeStep===6) {
       let data = {
-        fullNameOfDescribedServee,
-        imageOfIndividuals,
-        genderOfIndividuals,
-        ethnicityOfIndividuals,
-        heightOfIndividuals,
-        weightOfIndividuals,
-        hairColorOfIndividuals,
-        eyeColorOfIndividuals,
-        physicalOutlineOfIndividuals
+        serveesPhysicalDescription
       };
       localStorage.setItem('Questionaire6', JSON.stringify(data));
       setActiveStep(7);
     } else if(activeStep===7) {
       let data = {
-        insuranceCompanyOfServee,
-        vehicleTypeModelOwnership,
-        licensePlateNumberState,
-        vinNumberOfIndividuals,
-        yearOfMakeOnVehicle,
-        vehicleColor
+        vehiclesInformation
       };
       localStorage.setItem('Questionaire7', JSON.stringify(data));
       setActiveStep(8);
@@ -704,9 +672,9 @@ function Questionaire() {
     setHowManyIndividualsServed("");
     setServeesDetail({});
     setLocationForBeingServed("");
-    setMainAddressForService({street: "", city: "", state: "", zipCode: "", country: ""});
+    setMainAddressesForService({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
     setAgentOfService("");
-    setIfYesListFullName({firstName: "", lastName: ""});
+    setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
     // Reset Form 5
     setServeIndividualAtEmployment("");
     setProcessServerLeaveDoorTag("");
@@ -717,22 +685,16 @@ function Questionaire() {
     setDropServeForceServe("");
     setParalegalAttorneyClientContactServee("");
     // Reset Form 6
-    setFullNameOfDescribedServee({firstName: "", middleName: "", lastName: ""});
-    setImageOfIndividuals(null);
-    setGenderOfIndividuals("");
-    setEthnicityOfIndividuals("");
-    setHeightOfIndividuals("");
-    setWeightOfIndividuals("");
-    setHairColorOfIndividuals("");
-    setEyeColorOfIndividuals("");
-    setPhysicalOutlineOfIndividuals("");
+    setServeesPhysicalDescription({0: {
+      fullName: {firstName: "", middleName: "", lastName: ""},
+      gender: "", ethnicity: "", height: "", weight: "",
+      hairColor: "", eyeColor: "", physicalOutline: "", image: null
+    }});
     // Reset Form 7
-    setInsuranceCompanyOfServee("");
-    setLicensePlateNumberState("");
-    setVinNumberOfIndividuals("");
-    setYearOfMakeOnVehicle("");
-    setVehicleColor("");
-    setVehicleTypeModelOwnership("");
+    setVehiclesInformation({0: {
+      insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
+      yearOfMake: "", color: "", modelType: ""
+    }});
     // Reset Form 8
     setRequireStakeoutService("");
     setSpecifyDatesForStakeOutService("");
@@ -857,12 +819,12 @@ function Questionaire() {
               setServeesDetail={setServeesDetail}
               locationForBeingServed={locationForBeingServed}
               setLocationForBeingServed={setLocationForBeingServed}
-              mainAddressForService={mainAddressForService}
-              setMainAddressForService={setMainAddressForService}
+              mainAddressesForService={mainAddressesForService}
+              setMainAddressesForService={setMainAddressesForService}
               agentOfService={agentOfService}
               setAgentOfService={setAgentOfService}
-              ifYesListFullName={ifYesListFullName}
-              setIfYesListFullName={setIfYesListFullName}
+              agentsFullNames={agentsFullNames}
+              setAgentsFullNames={setAgentsFullNames}
             />
       }
       {
@@ -891,42 +853,16 @@ function Questionaire() {
         activeStep === 6
           &&
             <Questionaire6
-              fullNameOfDescribedServee={fullNameOfDescribedServee}
-              setFullNameOfDescribedServee={setFullNameOfDescribedServee}
-              imageOfIndividuals={imageOfIndividuals}
-              setImageOfIndividuals={setImageOfIndividuals}
-              genderOfIndividuals={genderOfIndividuals}
-              setGenderOfIndividuals={setGenderOfIndividuals}
-              ethnicityOfIndividuals={ethnicityOfIndividuals}
-              setEthnicityOfIndividuals={setEthnicityOfIndividuals}
-              heightOfIndividuals={heightOfIndividuals}
-              setHeightOfIndividuals={setHeightOfIndividuals}
-              weightOfIndividuals={weightOfIndividuals}
-              setWeightOfIndividuals={setWeightOfIndividuals}
-              hairColorOfIndividuals={hairColorOfIndividuals}
-              setHairColorOfIndividuals={setHairColorOfIndividuals}
-              eyeColorOfIndividuals={eyeColorOfIndividuals}
-              setEyeColorOfIndividuals={setEyeColorOfIndividuals}
-              physicalOutlineOfIndividuals={physicalOutlineOfIndividuals}
-              setPhysicalOutlineOfIndividuals={setPhysicalOutlineOfIndividuals}
+              serveesPhysicalDescription={serveesPhysicalDescription}
+              setServeesPhysicalDescription={setServeesPhysicalDescription}
             />
       }
       {
         activeStep===7
           &&
             <Questionaire7
-              insuranceCompanyOfServee={insuranceCompanyOfServee}
-              setInsuranceCompanyOfServee={setInsuranceCompanyOfServee}
-              licensePlateNumberState={licensePlateNumberState}
-              setLicensePlateNumberState={setLicensePlateNumberState}
-              vinNumberOfIndividuals={vinNumberOfIndividuals}
-              setVinNumberOfIndividuals={setVinNumberOfIndividuals}
-              yearOfMakeOnVehicle={yearOfMakeOnVehicle}
-              setYearOfMakeOnVehicle={setYearOfMakeOnVehicle}
-              vehicleColor={vehicleColor}
-              setVehicleColor={setVehicleColor}
-              vehicleTypeModelOwnership={vehicleTypeModelOwnership}
-              setVehicleTypeModelOwnership={setVehicleTypeModelOwnership}
+              vehiclesInformation={vehiclesInformation}
+              setVehiclesInformation={setVehiclesInformation}
             />
       }
       {

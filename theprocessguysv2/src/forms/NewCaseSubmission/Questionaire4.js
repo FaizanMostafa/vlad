@@ -12,12 +12,12 @@ const Questionaire4 = (props) => {
     setServeesDetail,
     locationForBeingServed,
     setLocationForBeingServed,
-    mainAddressForService,
-    setMainAddressForService,
+    mainAddressesForService,
+    setMainAddressesForService,
     agentOfService,
     setAgentOfService,
-    ifYesListFullName,
-    setIfYesListFullName
+    agentsFullNames,
+    setAgentsFullNames
   } = props;
 
   const handleNoOfServeesChanged = (e) => {
@@ -297,52 +297,64 @@ const Questionaire4 = (props) => {
         </div>
       </MDBCol>
       <MDBCol md="12" id="main-address-for-service">
-        <div id="main-address-for-service">
-          <label>Main Address for Service(Write N/A if unavailable)*</label>
-          <MDBInput
-            type="text"
-            hint="Street"
-            className="text-white"
-            value={mainAddressForService.street}
-            onChange={(e) => setMainAddressForService({...mainAddressForService, street: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="City"
-            className="text-white"
-            value={mainAddressForService.city}
-            onChange={(e) => setMainAddressForService({...mainAddressForService, city: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="State"
-            className="text-white"
-            value={mainAddressForService.state}
-            onChange={(e) => setMainAddressForService({...mainAddressForService, state: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Zip Code"
-            className="text-white"
-            value={mainAddressForService.zipCode}
-            onChange={(e) => setMainAddressForService({...mainAddressForService, zipCode: e.target.value})}
-            required
-          />
-          <MDBInput
-            type="text"
-            hint="Country"
-            className="text-white"
-            value={mainAddressForService.country}
-            onChange={(e) => setMainAddressForService({...mainAddressForService, country: e.target.value})}
-            required
-          />
-        </div>
+        <label>Main Address for Service(Write N/A if unavailable)*</label>
+        {
+          Object.entries(mainAddressesForService).map(([key, address])=>(
+            <div id="main-address-for-service">
+              {
+                Object.keys(mainAddressesForService).length>1
+                  &&
+                    <label>Address {parseInt(key)+1} of Service</label>
+              }
+              <MDBInput
+                type="text"
+                hint="Street"
+                className="text-white"
+                value={mainAddressesForService[key].street}
+                onChange={(e) => setMainAddressesForService({...mainAddressesForService, [key]: {...address, street: e.target.value}})}
+                required
+              />
+              <MDBInput
+                type="text"
+                hint="City"
+                className="text-white"
+                value={mainAddressesForService[key].city}
+                onChange={(e) => setMainAddressesForService({...mainAddressesForService, [key]: {...address, city: e.target.value}})}
+                required
+              />
+              <MDBInput
+                type="text"
+                hint="State"
+                className="text-white"
+                value={mainAddressesForService[key].state}
+                onChange={(e) => setMainAddressesForService({...mainAddressesForService, [key]: {...address, state: e.target.value}})}
+                required
+              />
+              <MDBInput
+                type="text"
+                hint="Zip Code"
+                className="text-white"
+                value={mainAddressesForService[key].zipCode}
+                onChange={(e) => setMainAddressesForService({...mainAddressesForService, [key]: {...address, zipCode: e.target.value}})}
+                required
+              />
+              <MDBInput
+                type="text"
+                hint="Country"
+                className="text-white"
+                value={mainAddressesForService[key].country}
+                onChange={(e) => setMainAddressesForService({...mainAddressesForService, [key]: {...address, country: e.target.value}})}
+                required
+              />
+            </div>
+          ))
+        }
       </MDBCol>
       <MDBCol>
-        <QuestionaireAddressTemplate />
+        <QuestionaireAddressTemplate
+          mainAddressesForService={mainAddressesForService}
+          setMainAddressesForService={setMainAddressesForService}
+        />
       </MDBCol>
       <br></br>
 
@@ -357,25 +369,46 @@ const Questionaire4 = (props) => {
       <MDBCol md="12" id="if-yes-list-full-name">
         <div id="if-yes-list-full-name">
           <label>If yes, List the Full Name to Agent of Service</label>
-          <MDBInput
-            type="text"
-            hint="First Name"
-            className="text-white"
-            value={ifYesListFullName.firstName}
-            onChange={(e) => setIfYesListFullName({...ifYesListFullName, firstName: e.target.value})}
-          />
-          <MDBInput
-            type="text"
-            hint="Last Name"
-            className="text-white"
-            value={ifYesListFullName.lastName}
-            onChange={(e) => setIfYesListFullName({...ifYesListFullName, lastName: e.target.value})}
-          />
+          {
+            Object.entries(agentsFullNames).map(([key, fullName])=>(
+              <div>
+                {
+                  Object.keys(agentsFullNames).length>1
+                    &&
+                      <label>Agent of Service {parseInt(key)+1}</label>
+                }
+                <MDBInput
+                  type="text"
+                  hint="First Name"
+                  className="text-white"
+                  value={fullName.firstName}
+                  onChange={(e) => setAgentsFullNames({...agentsFullNames, [key]: {...fullName, firstName: e.target.value}})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Middle Name"
+                  className="text-white"
+                  value={fullName.middleName}
+                  onChange={(e) => setAgentsFullNames({...agentsFullNames, [key]: {...fullName, middleName: e.target.value}})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Last Name"
+                  className="text-white"
+                  value={fullName.lastName}
+                  onChange={(e) => setAgentsFullNames({...agentsFullNames, [key]: {...fullName, lastName: e.target.value}})}
+                />
+              </div>
+            ))
+          }
         </div>
       </MDBCol>
       <br></br>
       <MDBCol>
-        <QuestionaireAgentOfService />
+        <QuestionaireAgentOfService
+          agentsFullNames={agentsFullNames}
+          setAgentsFullNames={setAgentsFullNames}
+        />
       </MDBCol>
       <br></br>
     </>
