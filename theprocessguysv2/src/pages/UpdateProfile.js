@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { Fragment, useState } from 'react';
+import { Form, Button, Card } from 'react-bootstrap';
+import { MDBInput } from "mdbreact";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -9,17 +10,16 @@ import {
   updatePhoneNumber,
   updateProfilePicture
 } from "../redux/actions/auth";
-import { showToast, validateEmail } from "../utils";
+import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 
 export default function UpdateProfile() {
   const dispatch = useDispatch();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
-  const phoneNumberRef = useRef();
-  const addressRef = useRef();
-  const imageRef = useRef();
-  const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rePassword, setRePassword] = useState("");
+  const [address, setAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [image, setImage] = useState(null);
 
   const isUpdatingEmail = useSelector(state => state.auth.isUpdatingEmail);
   const isUpdatingPassword = useSelector(state => state.auth.isUpdatingPassword);
@@ -28,16 +28,28 @@ export default function UpdateProfile() {
   const isUpdatingImage = useSelector(state => state.auth.isUpdatingImage);
   const user = useSelector(state => state.auth.user);
 
+  const handleOnChangePhoneNumber = (phoneNumber) => {
+    if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
+      setPhoneNumber(`(${phoneNumber}) `);
+    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
+      setPhoneNumber(`${phoneNumber}-`);
+    } else {
+      setPhoneNumber(phoneNumber);
+    }
+  }
+
   function handleSubmitUpdateEmail(e) {
     e.preventDefault();
     if(!isUpdatingEmail) {
-      if(!validateEmail(emailRef.current.value)) {
-        showToast("Invalid email address!", "error");
+      if(!email.length) {
+        showToast("Please type-in your email address!", "warning");
+      } else if(!validateEmail(email)) {
+        showToast("Invalid email address!", "warning");
       } else {
         dispatch(
           updateEmail(
-            {email: emailRef.current.value, uid: user.uid},
-            ()=>{emailRef.current.value="";}
+            {email, uid: user.uid},
+            ()=>setEmail("")
           )
         );
       }
@@ -47,15 +59,17 @@ export default function UpdateProfile() {
   function handleSubmitUpdatePassword(e) {
     e.preventDefault();
     if(!isUpdatingPassword) {
-      if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-        showToast("Passwords do not match!", "error");
+      if(!password.length || !rePassword.length) {
+        showToast("Please type-in password and confirmation password!", "warning");
+      } else if(password !== rePassword) {
+        showToast("Passwords do not match!", "warning");
       } else {
         dispatch(
           updatePassword(
-            {password: passwordRef.current.value},
+            {password},
             ()=>{
-              passwordRef.current.value="";
-              passwordConfirmRef.current.value="";
+              setPassword("");
+              setRePassword("");
             }
           )
         );
@@ -66,14 +80,22 @@ export default function UpdateProfile() {
   function handleSubmitUpdateAddress(e) {
     e.preventDefault();
     if(!isUpdatingAddress) {
-      if(!addressRef.current.value.length) {
-        showToast("Please type in your address!", "error");
+      if(!address.street.length) {
+        showToast("Please type in your street address!", "warning");
+      } else if(!address.city.length) {
+        showToast("Please type in your city address!", "warning");
+      } else if(!address.state.length) {
+        showToast("Please type in your state!", "warning");
+      } else if(!address.zipCode.length) {
+        showToast("Please type in your address zip code!", "warning");
+      } else if(!address.country.length) {
+        showToast("Please type in your country!", "warning");
       } else {
         dispatch(
           updateAddress(
-            {address: addressRef.current.value, uid: user.uid},
+            {address, uid: user.uid},
             ()=>{
-              addressRef.current.value="";
+              setAddress({street: "", city: "", state: "", zipCode: "", country: ""});
             }
           )
         );
@@ -84,14 +106,16 @@ export default function UpdateProfile() {
   function handleSubmitUpdatePhoneNo(e) {
     e.preventDefault();
     if(!isUpdatingPhoneNo) {
-      if(!phoneNumberRef.current.value.length) {
-        showToast("Please type in your phone number!", "error");
+      if(!phoneNumber.length) {
+        showToast("Please type in your phone number!", "warning");
+      } else if(!validatePhoneNumber(phoneNumber)) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
       } else {
         dispatch(
           updatePhoneNumber(
-            {phoneNumber: phoneNumberRef.current.value, uid: user.uid},
+            {phoneNumber, uid: user.uid},
             ()=>{
-              phoneNumberRef.current.value="";
+              setPhoneNumber("");
             }
           )
         );
@@ -102,19 +126,19 @@ export default function UpdateProfile() {
   function handleSubmitUpdateDP(e) {
     e.preventDefault();
     if(!isUpdatingImage) {
-      if(!imageRef.current.files[0]) {
-        showToast("Please attach your profile picture!", "error");
+      if(!image) {
+        showToast("Please attach your profile picture!", "warning");
       } else {
         const data = {
           uid: user.uid,
-          profilePicture: imageRef.current.files[0],
+          profilePicture: image,
           oldProfilePicturePath: user.profilePicturePath
         }
         dispatch(
           updateProfilePicture(
             data,
             ()=>{
-              imageRef.current.value="";
+              setImage(null);
             }
           )
         );
@@ -123,31 +147,30 @@ export default function UpdateProfile() {
   }
 
   return (
-    <>
-    <React.Fragment>
+    <Fragment>
       <Card className="w-100 text-center homepage">
         <Card.Body>
           <h2 className="text-center mb-4">Update Profile Data</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
           <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
           <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", borderRadius: 8}} onSubmit={handleSubmitUpdateEmail}>
             <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Email</h2>
             <div style={{display: "flex", flexDirection: "column"}}>
-              <Form.Group id="email">
-                <Form.Label>New Email</Form.Label>
-                <Form.Control
+              <div id="email">
+                <label style={{float: "left", marginBottom: 12}}>New Email</label>
+                <MDBInput
                   type="email"
-                  ref={emailRef}
-                  // defaultValue={currentUser.email}
+                  className="text-black px-3 bg-white rounded"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-              </Form.Group>
+              </div>
               <Button style={{alignSelf: "flex-end"}} type="submit">
                 {
                   isUpdatingEmail
@@ -164,20 +187,24 @@ export default function UpdateProfile() {
             <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Password</h2>
             <div style={{display: "flex", flexDirection: "column"}}>
               <div>
-                <Form.Group id="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
+                <div id="password">
+                  <label style={{float: "left", marginBottom: 12}}>Password</label>
+                  <MDBInput
                     type="password"
-                    ref={passwordRef}
+                    className="text-black px-3 bg-white rounded"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                </Form.Group>
-                <Form.Group id="password-confirm">
-                  <Form.Label>Password Confirmation</Form.Label>
-                  <Form.Control
+                </div>
+                <div id="password-confirm">
+                  <label style={{float: "left", marginBottom: 12}}>Password Confirmation</label>
+                  <MDBInput
                     type="password"
-                    ref={passwordConfirmRef}
+                    className="text-black px-3 bg-white rounded"
+                    value={rePassword}
+                    onChange={(e) => setRePassword(e.target.value)}
                   />
-                </Form.Group>
+                </div>
               </div>
               <Button style={{alignSelf: "flex-end"}} type="submit">
                 {
@@ -194,13 +221,44 @@ export default function UpdateProfile() {
           <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdateAddress}>
             <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Address</h2>
             <div style={{display: "flex", flexDirection: "column"}}>
-              <Form.Group id="update-address">
-                <Form.Label>Update Address</Form.Label>
-                <Form.Control
+              <div id="update-address">
+                <label style={{float: "left", marginBottom: 12}}>Update Address</label>
+                <MDBInput
                   type="text"
-                  ref={addressRef}
+                  hint="Street"
+                  className="text-black px-3 bg-white rounded"
+                  value={address.street}
+                  onChange={(e) => setAddress({...address, street: e.target.value})}
                 />
-              </Form.Group>
+                <MDBInput
+                  type="text"
+                  hint="City"
+                  className="text-black px-3 bg-white rounded"
+                  value={address.city}
+                  onChange={(e) => setAddress({...address, city: e.target.value})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="State"
+                  className="text-black px-3 bg-white rounded"
+                  value={address.state}
+                  onChange={(e) => setAddress({...address, state: e.target.value})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Zip Code"
+                  className="text-black px-3 bg-white rounded"
+                  value={address.zipCode}
+                  onChange={(e) => setAddress({...address, zipCode: e.target.value})}
+                />
+                <MDBInput
+                  type="text"
+                  hint="Country"
+                  className="text-black px-3 bg-white rounded"
+                  value={address.country}
+                  onChange={(e) => setAddress({...address, country: e.target.value})}
+                />
+              </div>
               <Button style={{alignSelf: "flex-end"}} type="submit">
                 {
                   isUpdatingAddress
@@ -216,13 +274,16 @@ export default function UpdateProfile() {
           <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdatePhoneNo}>
             <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Phone Number</h2>
             <div style={{display: "flex", flexDirection: "column"}}>
-              <Form.Group id="update-phone-number">
-                <Form.Label>Update Phone Number</Form.Label>
-                <Form.Control
+              <div id="update-phone-number">
+                <label style={{float: "left", marginBottom: 12}}>Update Phone Number</label>
+                <MDBInput
                   type="text"
-                  ref={phoneNumberRef}
+                  hint="(###) ###-####"
+                  className="text-black px-3 bg-white rounded"
+                  value={phoneNumber}
+                  onChange={(e) => handleOnChangePhoneNumber(e.target.value)}
                 />
-              </Form.Group>
+              </div>
               <Button style={{alignSelf: "flex-end"}} type="submit">
                 {
                   isUpdatingPhoneNo
@@ -238,15 +299,14 @@ export default function UpdateProfile() {
           <Form style={{backgroundColor: "rgba(0, 0, 0, 0.5)", padding: "30px 15px", marginTop: 70, borderRadius: 8}} onSubmit={handleSubmitUpdateDP}>
             <h2 style={{color: "#909090", textAlign: "left", marginBottom: 15}}>Update Profile Picture</h2>
             <div style={{display: "flex", flexDirection: "column"}}>
-              <Form.Group id="update-image">
-                <Form.Label>Update Image</Form.Label>
-                <Form.Control
-                  type='file' 
-                  accept=".jpg,.png" 
-                  label='Upload' 
-                  ref={imageRef}
+              <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}} id="update-image">
+                <label>Update Image</label>
+                <input
+                  type="file"
+                  onChange={(e)=>{setImage(e.target.files[0])}}
+                  accept=".jpg,.png,.jpeg"
                 />
-              </Form.Group>
+              </div>
               <Button style={{alignSelf: "flex-end"}} type="submit">
                 {
                   isUpdatingImage
@@ -262,13 +322,11 @@ export default function UpdateProfile() {
             <Link to="/member-dashboard" className="btn btn-primary justify-content-center">Close</Link>
           </div>
         </Card.Body>
-
       </Card>
-      </React.Fragment>
       <br></br>
       <br></br>
       <br></br>
       <br></br>
-    </>
+    </Fragment>
   )
 }

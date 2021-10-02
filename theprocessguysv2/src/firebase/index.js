@@ -11,9 +11,9 @@ firebase.initializeApp({
   measurementId: "G-TYPTXTCZGS"
 });
 
-const uploadMedia = async(file, baseFolder) => {
+const uploadMedia = async(file, timestamp=new Date().toISOString(), baseFolder) => {
   var storageRef = firebase.storage().ref();
-  var fileRef = storageRef.child(`${baseFolder}${new Date().toISOString()}${file.name}`);
+  var fileRef = storageRef.child(`${baseFolder}${timestamp}${file.name}`);
   const snapshot = await fileRef.put(file);
   return snapshot.ref.getDownloadURL();
 }

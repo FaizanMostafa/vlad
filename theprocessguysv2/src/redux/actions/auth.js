@@ -85,7 +85,7 @@ const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        if(user.emailVerified) {
+        // if(user.emailVerified) {
           var uid = user.uid;
           db.collection("users").doc(uid)
             .get().then((doc) => {
@@ -98,10 +98,10 @@ const fetchUser = () => (
             }).catch((error) => {
               console.log("Error getting user data:", error);
             });
-        } else {
-          dispatch(setIsFetchingUser(false));
-          showToast("Please verify your email!", "warning");
-        }
+        // } else {
+        //   dispatch(setIsFetchingUser(false));
+        //   showToast("Please verify your email!", "warning");
+        // }
       } else {
         dispatch({
           type: LOGOUT
@@ -159,8 +159,9 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
           .then(async() => {
             var user = userCredential.user;
             delete data["password"];
-            const profilePicturePath = `profile_pictures/${user.uid}/${new Date().toISOString()}${data["profilePicture"].name}`;
-            const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`);
+            const timestamp = new Date().toISOString();
+            const profilePicturePath = `profile_pictures/${user.uid}/${timestamp}${data["profilePicture"].name}`;
+            const profilePictureURI = await uploadMedia(data["profilePicture"], timestamp, `profile_pictures/${user.uid}/`);
             delete data["profilePicture"];
             await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
             showToast("User registered successfully!", "success");
@@ -192,11 +193,13 @@ const updateEmail = (data, onSuccess=()=>{}, onError=()=>{}) => (
           dispatch(setIsUpdatingEmail(false));
           onSuccess();
         }).catch((error) => {
+          console.log("\nError: ", error);
           showToast(error.message, "error");
           dispatch(setIsUpdatingEmail(false));
           onError();
         });
     }).catch((error) => {
+      console.log("\nError: ", error);
       showToast(error.message, "error");
       dispatch(setIsUpdatingEmail(false));
       onError();
@@ -264,28 +267,35 @@ const updatePhoneNumber = (data, onSuccess=()=>{}, onError=()=>{}) => (
 
 const updateProfilePicture = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
-    dispatch(setIsUpdatingImage(true));
-    await deleteMedia(data.oldProfilePicturePath);
-    const profilePicturePath = `profile_pictures/${data.uid}/${new Date().toISOString()}${data["profilePicture"].name}`;
-    const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${data.uid}/`);
-    db.collection("users").doc(data.uid)
-      .update({profilePictureURI: profilePictureURI, profilePicturePath: profilePicturePath})
-      .then(() => {
-        dispatch({
-          type: UPDATE_USER_IMAGE,
-          payload: {
-            profilePictureURI,
-            profilePicturePath
-          }
+    try {
+      dispatch(setIsUpdatingImage(true));
+      await deleteMedia(data.oldProfilePicturePath);
+      const timestamp = new Date().toISOString();
+      const profilePicturePath = `profile_pictures/${data.uid}/${timestamp}${data["profilePicture"].name}`;
+      const profilePictureURI = await uploadMedia(data["profilePicture"], timestamp, `profile_pictures/${data.uid}/`);
+      db.collection("users").doc(data.uid)
+        .update({profilePictureURI: profilePictureURI, profilePicturePath: profilePicturePath})
+        .then(() => {
+          dispatch({
+            type: UPDATE_USER_IMAGE,
+            payload: {
+              profilePictureURI,
+              profilePicturePath
+            }
+          });
+          showToast("Profile picture updated successfully!", "success");
+          dispatch(setIsUpdatingImage(false));
+          onSuccess();
+        }).catch((error) => {
+          showToast(error.message, "error");
+          dispatch(setIsUpdatingImage(false));
+          onError();
         });
-        showToast("Profile picture updated successfully!", "success");
-        dispatch(setIsUpdatingImage(false));
-        onSuccess();
-      }).catch((error) => {
-        showToast(error.message, "error");
-        dispatch(setIsUpdatingImage(false));
-        onError();
-      });
+    } catch (error) {
+      showToast(error.message, "error");
+      dispatch(setIsUpdatingImage(false));
+      onError();
+    }
   }
 )
 
