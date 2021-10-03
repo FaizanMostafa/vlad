@@ -44,13 +44,17 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
       }
       const clearanceOfActionDocRef = await db.collection("ClearanceOfAction-5").add({uid: data.uid, ...data["ClearanceOfAction-5"]});
+      Object.entries(data["ServeePhysicalDescription-6"].serveesPhysicalDescription).map(async([key, servee])=>{
+        const image = servee.image;
+        const imageURI = await uploadMedia(image, `servees_pictures/${data.uid}/`);
+        data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image = imageURI;
+      })
       const serveePhysicalDescriptionDocRef = await db.collection("ServeePhysicalDescription-6").add({uid: data.uid, ...data["ServeePhysicalDescription-6"]});
       const vehicleInformationDocRef = await db.collection("VehicleInformation-7").add({uid: data.uid, ...data["VehicleInformation-7"]});
       const offeredServicesDocRef = await db.collection("OfferedServices-8").add({uid: data.uid, ...data["OfferedServices-8"]});
       let documentURI;
       if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
         for(const document of data["documents"]) {
-          console.log({document})
           documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`);
           const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, caseType: document.caseType, fileContents: document.fileContents, submittedAt: new Date()});
           const caseDocRef = await db.collection("cases").add({

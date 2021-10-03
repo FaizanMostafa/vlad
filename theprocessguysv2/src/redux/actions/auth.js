@@ -161,7 +161,7 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
             delete data["password"];
             const timestamp = new Date().toISOString();
             const profilePicturePath = `profile_pictures/${user.uid}/${timestamp}${data["profilePicture"].name}`;
-            const profilePictureURI = await uploadMedia(data["profilePicture"], timestamp, `profile_pictures/${user.uid}/`);
+            const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
             delete data["profilePicture"];
             await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
             showToast("User registered successfully!", "success");
@@ -274,7 +274,7 @@ const updateProfilePicture = (data, onSuccess=()=>{}, onError=()=>{}) => (
       await deleteMedia(data.oldProfilePicturePath);
       const timestamp = new Date().toISOString();
       const profilePicturePath = `profile_pictures/${data.uid}/${timestamp}${data["profilePicture"].name}`;
-      const profilePictureURI = await uploadMedia(data["profilePicture"], timestamp, `profile_pictures/${data.uid}/`);
+      const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${data.uid}/`, timestamp);
       db.collection("users").doc(data.uid)
         .update({profilePictureURI: profilePictureURI, profilePicturePath: profilePicturePath})
         .then(() => {

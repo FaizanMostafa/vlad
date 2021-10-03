@@ -111,25 +111,12 @@ const FileSubmission = ({...props}) => {
       }
       if(QuestionaireForm6) {
         data["ServeePhysicalDescription-6"] = {
-          fullNameOfDescribedServee: QuestionaireForm6.fullNameOfDescribedServee,
-          imageOfIndividuals: QuestionaireForm6.imageOfIndividuals,
-          genderOfIndividuals: QuestionaireForm6.genderOfIndividuals,
-          ethnicityOfIndividuals: QuestionaireForm6.ethnicityOfIndividuals,
-          heightOfIndividuals: QuestionaireForm6.heightOfIndividuals,
-          weightOfIndividuals: QuestionaireForm6.weightOfIndividuals,
-          hairColorOfIndividuals: QuestionaireForm6.hairColorOfIndividuals,
-          eyeColorOfIndividuals: QuestionaireForm6.eyeColorOfIndividuals,
-          physicalOutlineOfIndividuals: QuestionaireForm6.physicalOutlineOfIndividuals
+          serveesPhysicalDescription: QuestionaireForm6.serveesPhysicalDescription
         };
       }
       if(QuestionaireForm7) {
         data["VehicleInformation-7"] = {
-          insuranceCompanyOfServee: QuestionaireForm7.insuranceCompanyOfServee,
-          vehicleTypeModelOwnership: QuestionaireForm7.vehicleTypeModelOwnership,
-          licensePlateNumberState: QuestionaireForm7.licensePlateNumberState,
-          vinNumberOfIndividuals: QuestionaireForm7.vinNumberOfIndividuals,
-          yearOfMakeOnVehicle: QuestionaireForm7.yearOfMakeOnVehicle,
-          vehicleColor: QuestionaireForm7.vehicleColor,
+          vehiclesInformation: QuestionaireForm7.vehiclesInformation
         };
       }
       if(QuestionaireForm8) {
