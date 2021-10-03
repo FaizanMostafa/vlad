@@ -85,7 +85,7 @@ const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        // if(user.emailVerified) {
+        if(user.emailVerified) {
           var uid = user.uid;
           db.collection("users").doc(uid)
             .get().then((doc) => {
@@ -98,10 +98,10 @@ const fetchUser = () => (
             }).catch((error) => {
               console.log("Error getting user data:", error);
             });
-        // } else {
-        //   dispatch(setIsFetchingUser(false));
-        //   showToast("Please verify your email!", "warning");
-        // }
+        } else {
+          dispatch(setIsFetchingUser(false));
+          showToast("Please verify your email!", "warning");
+        }
       } else {
         dispatch({
           type: LOGOUT
@@ -184,12 +184,14 @@ const updateEmail = (data, onSuccess=()=>{}, onError=()=>{}) => (
     user.updateEmail(data.email).then(() => {
       db.collection("users").doc(data.uid)
         .update({email: data.email})
-        .then(() => {
+        .then(async() => {
           dispatch({
             type: UPDATE_USER_EMAIL,
             payload: {email: data.email}
           });
           showToast("Email updated successfully!", "success");
+          await firebase.auth().currentUser.sendEmailVerification();
+          showToast("Please verify your email!", "warning");
           dispatch(setIsUpdatingEmail(false));
           onSuccess();
         }).catch((error) => {
