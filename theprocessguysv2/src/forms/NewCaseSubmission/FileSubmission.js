@@ -58,32 +58,22 @@ const FileSubmission = ({...props}) => {
       }
       if(QuestionaireForm2) {
         data["PlaintiffInformation-2"] = {
-          plaintiffFullName: QuestionaireForm2.plaintiffFullName,
-          plaintiffAddress: QuestionaireForm2.plaintiffAddress,
+          plaintiffsDetail: QuestionaireForm2.plaintiffsDetail,
           numberOfAttorneyPlaintiff: QuestionaireForm2.numberOfAttorneyPlaintiff,
+          isOrRepresentingPlaintiff: QuestionaireForm2.isOrRepresentingPlaintiff,
           shouldPGFillPlaintiffInfo: QuestionaireForm2.shouldPGFillPlaintiffInfo,
-          attorneyRepresentingPlaintiffInfo: QuestionaireForm2.attorneyRepresentingPlaintiffInfo,
-          plaintiffAttorneyName: QuestionaireForm2.plaintiffAttorneyName,
-          plaintiffAttorneyBarNumber: QuestionaireForm2.plaintiffAttorneyBarNumber,
-          plaintiffAttorneyFirmAddress: QuestionaireForm2.plaintiffAttorneyFirmAddress,
-          plaintiffAttorneyEmail: QuestionaireForm2.plaintiffAttorneyEmail,
-          plaintiffAttorneyPhoneNumberForCalls: QuestionaireForm2.plaintiffAttorneyPhoneNumberForCalls,
-          plaintiffAttorneyFaxNumberOptional: QuestionaireForm2.plaintiffAttorneyFaxNumberOptional
+          numberOfAttorneysRepresentingPlaintiff: QuestionaireForm2.numberOfAttorneysRepresentingPlaintiff,
+          plaintiffAttorneysDetail: QuestionaireForm2.plaintiffAttorneysDetail
         };
       }
       if(QuestionaireForm3) {
         data["DefendantInformation-3"] = {
-          defendantFullName: QuestionaireForm3.defendantFullName,
-          defendantAddress: QuestionaireForm3.defendantAddress,
+          defendantsDetail: QuestionaireForm3.defendantsDetail,
           numberOfAttorneyDefendant: QuestionaireForm3.numberOfAttorneyDefendant,
+          isOrRepresentingDefendant: QuestionaireForm3.isOrRepresentingDefendant,
           shouldPGFillDefendantInfo: QuestionaireForm3.shouldPGFillDefendantInfo,
-          attorneyRepresentingDefendantInfo: QuestionaireForm3.attorneyRepresentingDefendantInfo,
-          defendantAttorneyName: QuestionaireForm3.defendantAttorneyName,
-          defendantAttorneyFirmAddress: QuestionaireForm3.defendantAttorneyFirmAddress,
-          defendantAttorneyBarNumber: QuestionaireForm3.defendantAttorneyBarNumber,
-          defendantAttorneyEmail: QuestionaireForm3.defendantAttorneyEmail,
-          defendantAttorneyPhoneNumberForCalls: QuestionaireForm3.defendantAttorneyPhoneNumberForCalls,
-          defendantAttorneyFaxNumberOptional: QuestionaireForm3.defendantAttorneyFaxNumberOptional
+          numberOfAttorneysRepresentingDefendant: QuestionaireForm3.numberOfAttorneysRepresentingDefendant,
+          defendantAttorneysDetail: QuestionaireForm3.defendantAttorneysDetail
         };
       }
       if(QuestionaireForm4) {
@@ -92,9 +82,9 @@ const FileSubmission = ({...props}) => {
           howManyIndividualsServed: QuestionaireForm4.howManyIndividualsServed,
           serveesDetail: Object.values(QuestionaireForm4.serveesDetail),
           locationForBeingServed: QuestionaireForm4.locationForBeingServed,
-          mainAddressForService: QuestionaireForm4.mainAddressForService,
+          mainAddressesForService: QuestionaireForm4.mainAddressesForService,
           agentOfService: QuestionaireForm4.agentOfService,
-          ifYesListFullName: QuestionaireForm4.ifYesListFullName
+          agentsFullNames: QuestionaireForm4.agentsFullNames
         };
       }
       if(QuestionaireForm5) {
@@ -205,7 +195,7 @@ const FileSubmission = ({...props}) => {
                     {
                       isPosting
                         ?
-                          <div className="spinner-border text-primary" role="status">
+                          <div className="spinner-border text-white" role="status">
                             <span className="sr-only">Loading...</span>
                           </div>
                         :

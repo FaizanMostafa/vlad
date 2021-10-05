@@ -163,7 +163,7 @@ function Questionaire() {
     }
     if(QuestionaireForm7) {
       setActiveStep(8);
-      setVehiclesInformation(Questionaire7.vehiclesInformation);
+      setVehiclesInformation(QuestionaireForm7.vehiclesInformation);
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
