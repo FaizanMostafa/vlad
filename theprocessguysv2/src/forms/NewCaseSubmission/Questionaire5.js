@@ -2,6 +2,8 @@ import { MDBCol } from "mdbreact";
 
 const Questionaire5 = (props) => {
   const {
+    typeOfServe,
+    setTypeOfServe,
     serveIndividualAtEmployment,
     setServeIndividualAtEmployment,
     processServerLeaveDoorTag,
@@ -24,6 +26,14 @@ const Questionaire5 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-2">Clearance of Action</h2>
       <br></br>
+      <MDBCol md="12" id="require-first-24-hour-service">
+        <div id="require-first-24-hour-service">
+          <label>Is this a "normal serve" or a "personal serve"?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setTypeOfServe("personal")} id="typeOfServeP" name="typeOfServe" checked={typeOfServe==="personal"} /><label className="ml-2" for="typeOfServeP">Personal</label>
+          <input className="ml-4" type="radio" onClick={()=>setTypeOfServe("normal")} id="typeOfServeN" name="typeOfServe" checked={typeOfServe==="normal"} /><label className="ml-2" for="typeOfServeN">Normal</label>
+          <br/>
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="paralegal-attorney-client-contact-servee">
         <div id="paralegal-attorney-client-contact-servee">
           <label>Has a paralegal/attorney, or your client contacted the Individual regarding service on this case? <i>(Thus prompting them to expect attempts)</i></label><br />
@@ -42,7 +52,7 @@ const Questionaire5 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="subserve-after-three-attempts">
         <div id="subserve-after-three-attempts">
-          <label>Is a “Subserve” to a Co-Resident/Co-Worker After 4 Attempts <i>(3 Attempts in California)</i> Allowed?*</label><br />
+          <label>Is a “Subserve” to a Co-Resident/Co-Worker After 4 Attempts <i>(3 Attempts in California)</i> Allowed?{typeOfServe==="normal" && "*"}</label><br />
           <input className="ml-2" type="radio" onClick={()=>setSubserveAfterThreeAttempts(true)} id="subserveAfterThreeAttemptsY" name="subserveAfterThreeAttempts" checked={subserveAfterThreeAttempts===true} /><label className="ml-2" for="subserveAfterThreeAttemptsY">Yes</label>
           <input className="ml-4" type="radio" onClick={()=>setSubserveAfterThreeAttempts(false)} id="subserveAfterThreeAttemptsN" name="subserveAfterThreeAttempts" checked={subserveAfterThreeAttempts===false} /><label className="ml-2" for="subserveAfterThreeAttemptsN">No</label>
           <br/>

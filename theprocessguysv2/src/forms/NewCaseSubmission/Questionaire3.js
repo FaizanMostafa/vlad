@@ -32,6 +32,21 @@ const Questionaire3 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-5">Defendant Information</h2>
       <br></br>
+      <MDBCol md="12" id="is-or-representing-defendant-col">
+        <div id="is-or-representing-defendant-cont">
+          <label>Are you representing the Defendant, or are yourself the Defendant?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingDefendant(true)} id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingDefendant(false)} id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
+          <br/>
+          {
+            isOrRepresentingDefendant
+              ?
+                <i>Please fill out attorney information pertaining to your counsel! (If you have any)</i>
+              :
+                <i>Opposing counsel does not need to be filled out, if information isn't available</i>
+          }
+        </div><br/>
+      </MDBCol>
       <center>
         {
           shouldPGFillDefendantInfo
@@ -64,21 +79,6 @@ const Questionaire3 = (props) => {
       </p>
       <br></br>
       <br></br>
-      <MDBCol md="12" id="is-or-representing-defendant-col">
-        <div id="is-or-representing-defendant-cont">
-          <label>Are you representing the Defendant, or are yourself the Defendant?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingDefendant(true)} id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingDefendant(false)} id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
-          <br/>
-          {
-            isOrRepresentingDefendant
-              ?
-                <i>Please fill out attorney information pertaining to your counsel! (If you have any)</i>
-              :
-                <i>Opposing counsel does not need to be filled out, if information isn't available</i>
-          }
-        </div><br/>
-      </MDBCol>
       <MDBCol md="12" id="number-of-defendant-listed">
         <div id="number-of-defendant-listed">
           <label>Number of Defendant(s) listed?*</label><br></br>

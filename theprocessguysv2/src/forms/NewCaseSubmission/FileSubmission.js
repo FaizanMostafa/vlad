@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -21,7 +21,7 @@ const FileSubmission = ({...props}) => {
     const numberOfCaseFilesBeingServed = JSON.parse(localStorage.getItem("Questionaire4")).numberOfCaseFilesBeingServed;
     let caseFileData = {};
     for (let index = 0; index < parseInt(numberOfCaseFilesBeingServed); index++) {
-      caseFileData[index] = {file: null, caseType: "", fileContents: ""};
+      caseFileData[index] = {file: null, caseType: "", description: "", fileContents: {coverSheet: false, civilCoverSheet: false, summons: false, complaint: false, contract: false, alternativeDisputeResolution: false, exhibit: false, dissolutionOfMarriage: false, temporaryRestrainingOrder: false, restrainingOrder: false, petition: false, statementOfLocation: false, declarationOfVenue: false, declarationOfReducedFilingFee: false}};
     }
     setFileData(caseFileData);
   }, []);
@@ -29,8 +29,8 @@ const FileSubmission = ({...props}) => {
   const handleCaseSubmit = () => {
     if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
       showToast("Please enter the case type in every relevant input field!", "warning");
-    } else if(Object.values(fileData).filter((o)=>!o.fileContents.length).length) {
-      showToast("Please type the file contents in every relevant input field!", "warning");
+    } else if(Object.values(fileData).filter((o)=>!o.description.length && !Object.values(o.fileContents).includes(true)).length) {
+      showToast("Please either select the file contents or type-in description for every relevant file!", "warning");
     } else if(Object.values(fileData).filter((o)=>o.file===null).length) {
       showToast("Please upload the files in every relevant input field!", "warning");
     } else if(!isPosting) {
@@ -89,6 +89,7 @@ const FileSubmission = ({...props}) => {
       }
       if(QuestionaireForm5) {
         data["ClearanceOfAction-5"] = {
+          typeOfServe: QuestionaireForm5.typeOfServe,
           serveIndividualAtEmployment: QuestionaireForm5.serveIndividualAtEmployment,
           processServerLeaveDoorTag: QuestionaireForm5.processServerLeaveDoorTag,
           subserveAfterThreeAttempts: QuestionaireForm5.subserveAfterThreeAttempts,
@@ -128,7 +129,6 @@ const FileSubmission = ({...props}) => {
         };
       }
       data["documents"] = Object.values(fileData);
-      console.log(Object.values(fileData))
       dispatch(submitCase({uid: user.uid, ...data}, ()=>{
         localStorage.removeItem("Questionaire1");
         localStorage.removeItem("Questionaire2");
@@ -144,7 +144,7 @@ const FileSubmission = ({...props}) => {
   }
 
   return (
-    <React.Fragment className="text-center mb-4 mt-5 homepage">
+    <Fragment>
       <br/><br/><br/><br/>
       {
         fileSubmissionType==="single"
@@ -168,11 +168,142 @@ const FileSubmission = ({...props}) => {
                         </Form.Group>
                         <Form.Group id="mS-file-upload">
                           <label>File Contents</label>
+                          <div style={{display: "flex", flexWrap: "wrap", paddingLeft: 30}}>
+                            <div style={{width: 300}}>
+                              <input
+                                id="coverSheet"
+                                value={value.fileContents.coverSheet}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, coverSheet: !fileData[key].fileContents.coverSheet}}})}}
+                              />
+                              <label className="ml-2" for="coverSheet">Cover Sheet</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="civilCoverSheet"
+                                value={value.fileContents.civilCoverSheet}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, civilCoverSheet: !fileData[key].fileContents.civilCoverSheet}}})}}
+                              />
+                              <label className="ml-2" for="civilCoverSheet">Civil Cover Sheet</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="summons"
+                                value={value.fileContents.summons}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, summons: !fileData[key].fileContents.summons}}})}}
+                              />
+                              <label className="ml-2" for="summons">Summons</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="complaint"
+                                value={value.fileContents.complaint}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, complaint: !fileData[key].fileContents.complaint}}})}}
+                              />
+                              <label className="ml-2" for="complaint">Complaint</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="contract"
+                                value={value.fileContents.contract}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, contract: !fileData[key].fileContents.contract}}})}}
+                              />
+                              <label className="ml-2" for="contract">Contract</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="alternativeDisputeResolution"
+                                value={value.fileContents.alternativeDisputeResolution}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, alternativeDisputeResolution: !fileData[key].fileContents.alternativeDisputeResolution}}})}}
+                              />
+                              <label className="ml-2" for="alternativeDisputeResolution">Alternative Dispute Resolution</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="exhibit"
+                                value={value.fileContents.exhibit}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, exhibit: !fileData[key].fileContents.exhibit}}})}}
+                              />
+                              <label className="ml-2" for="exhibit">Exhibit</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="dissolutionOfMarriage"
+                                value={value.fileContents.dissolutionOfMarriage}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, dissolutionOfMarriage: !fileData[key].fileContents.dissolutionOfMarriage}}})}}
+                              />
+                              <label className="ml-2" for="dissolutionOfMarriage">Dissolution Of Marriage</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="temporaryRestrainingOrder"
+                                value={value.fileContents.temporaryRestrainingOrder}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, temporaryRestrainingOrder: !fileData[key].fileContents.temporaryRestrainingOrder}}})}}
+                              />
+                              <label className="ml-2" for="temporaryRestrainingOrder">Temporary Restraining Order</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="restrainingOrder"
+                                value={value.fileContents.restrainingOrder}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, restrainingOrder: !fileData[key].fileContents.restrainingOrder}}})}}
+                              />
+                              <label className="ml-2" for="restrainingOrder">Restraining Order</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="petition"
+                                value={value.fileContents.petition}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, petition: !fileData[key].fileContents.petition}}})}}
+                              />
+                              <label className="ml-2" for="petition">Petition</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="statementOfLocation"
+                                value={value.fileContents.statementOfLocation}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, statementOfLocation: !fileData[key].fileContents.statementOfLocation}}})}}
+                              />
+                              <label className="ml-2" for="statementOfLocation">Statement Of Locations/Venue</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="declarationOfVenue"
+                                value={value.fileContents.declarationOfVenue}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfVenue: !fileData[key].fileContents.declarationOfVenue}}})}}
+                              />
+                              <label className="ml-2" for="declarationOfVenue">Declaration Of Venue</label>
+                            </div>
+                            <div style={{width: 300}}>
+                              <input
+                                id="declarationOfReducedFilingFee"
+                                value={value.fileContents.declarationOfReducedFilingFee}
+                                type="checkbox"
+                                onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfReducedFilingFee: !fileData[key].fileContents.declarationOfReducedFilingFee}}})}}
+                              />
+                              <label className="ml-2" for="declarationOfReducedFilingFee">Declaration Of Reduced Filing Fee</label>
+                            </div>
+                          </div>
+                        </Form.Group>
+                        <Form.Group id="mS-file-upload">
+                          <label>File Description</label>
                           <MDBInput
                             className="text-white"
-                            value={value.fileContents}
-                            hint="Summons, Complaint, Cover Sheet, Exhibit, Specific Forms, etc"
-                            onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: e.target.value}})}}
+                            value={value.description}
+                            hint=""
+                            onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], description: e.target.value}})}}
                           />
                         </Form.Group>
                         <Form.Group id="mS-file-upload">
@@ -290,7 +421,7 @@ const FileSubmission = ({...props}) => {
       <br/>
       <br/>
       <br/>
-    </React.Fragment>
+    </Fragment>
   )
 }
 

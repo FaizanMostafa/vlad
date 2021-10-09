@@ -34,6 +34,21 @@ const Questionaire2 = (props) => {
       <br></br>
       <h2 className="text-center mb-4 mt-2">Plaintiff Information</h2>
       <br></br>
+      <MDBCol md="12" id="is-or-representing-plaintiff-col">
+        <div id="is-or-representing-plaintiff-cont">
+          <label>Are you representing the Plaintiff, or are yourself the Plaintiff?*</label><br />
+          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(true)} id="isPlaintiffY" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===true} /><label className="ml-2" for="isPlaintiffY">Yes</label>
+          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(false)} id="isPlaintiffN" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===false} /><label className="ml-2" for="isPlaintiffN">No</label>
+          <br/>
+          {
+            isOrRepresentingPlaintiff
+              ?
+                <i>Please fill out attorney information pertaining to your counsel! (If you have any)</i>
+              :
+                <i>Opposing counsel does not need to be filled out, if information isn't available</i>
+          }
+        </div><br/>
+      </MDBCol>
       <center>
         {
           shouldPGFillPlaintiffInfo
@@ -66,21 +81,6 @@ const Questionaire2 = (props) => {
       </p>
       <br></br>
       <br></br>
-      <MDBCol md="12" id="is-or-representing-plaintiff-col">
-        <div id="is-or-representing-plaintiff-cont">
-          <label>Are you representing the Plaintiff, or are yourself the Plaintiff?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(true)} id="isPlaintiffY" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===true} /><label className="ml-2" for="isPlaintiffY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingPlaintiff(false)} id="isPlaintiffN" name="isOrRepresentingPlaintiff" checked={isOrRepresentingPlaintiff===false} /><label className="ml-2" for="isPlaintiffN">No</label>
-          <br/>
-          {
-            isOrRepresentingPlaintiff
-              ?
-                <i>Please fill out attorney information pertaining to your counsel! (If you have any)</i>
-              :
-                <i>Opposing counsel does not need to be filled out, if information isn't available</i>
-          }
-        </div><br/>
-      </MDBCol>
       <MDBCol md="12" id="number-of-plaintiff-listed">
         <div id="number-of-plaintiff-listed">
           <label>Number of Plaintiff(s) listed?*</label>

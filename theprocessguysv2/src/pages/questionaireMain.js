@@ -60,6 +60,7 @@ function Questionaire() {
   const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
 
   // Questionaire Form 5
+  const [typeOfServe, setTypeOfServe] = useState("");
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
   const [processServerLeaveDoorTag,setProcessServerLeaveDoorTag] = useState("");
   const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
@@ -148,6 +149,7 @@ function Questionaire() {
     }
     if(QuestionaireForm5) {
       setActiveStep(6);
+      setTypeOfServe(QuestionaireForm5.typeOfServe);
       setServeIndividualAtEmployment(QuestionaireForm5.serveIndividualAtEmployment);
       setProcessServerLeaveDoorTag(QuestionaireForm5.processServerLeaveDoorTag);
       setSubserveAfterThreeAttempts(QuestionaireForm5.subserveAfterThreeAttempts);
@@ -534,11 +536,13 @@ function Questionaire() {
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
-      if(typeof(serveIndividualAtEmployment)!=="boolean") {
+      if(typeOfServe==="") {
+        showToast("Please select an option for type of serve!", "warning");
+      } if(typeof(serveIndividualAtEmployment)!=="boolean") {
         showToast("Please select should the servee be served at the place of employment!", "warning");
       } else if(typeof(processServerLeaveDoorTag)!=="boolean") {
         showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
-      } else if(typeof(subserveAfterThreeAttempts)!=="boolean") {
+      } else if(typeOfServe==="normal" && typeof(subserveAfterThreeAttempts)!=="boolean") {
         showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
       } else if(typeof(requireServerNotifyPersonOfInterest)!=="boolean") {
         showToast("Please select should process server verbally notify the Servee", "warning");
@@ -552,6 +556,7 @@ function Questionaire() {
         showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
       } else {
         let data = {
+          typeOfServe,
           serveIndividualAtEmployment,
           processServerLeaveDoorTag,
           subserveAfterThreeAttempts,          
@@ -676,6 +681,7 @@ function Questionaire() {
     setAgentOfService("");
     setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
     // Reset Form 5
+    setTypeOfServe("");
     setServeIndividualAtEmployment("");
     setProcessServerLeaveDoorTag("");
     setSubserveAfterThreeAttempts("");
@@ -726,6 +732,9 @@ function Questionaire() {
     <Fragment>
       <br></br>
       <br></br>
+      <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+        <button onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
+      </div>
       <br></br>
       <br></br>
       <Element name="stepper" className="element">
@@ -742,7 +751,6 @@ function Questionaire() {
             &&
               <button onClick={()=>setActiveStep(activeStep-1)} className="btn btn-primary">Previous Step</button>
         }
-        <button style={{marginLeft: "auto"}} onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
       </div>
       
       {
@@ -831,6 +839,8 @@ function Questionaire() {
         activeStep === 5
           &&
             <Questionaire5
+              typeOfServe={typeOfServe}
+              setTypeOfServe={setTypeOfServe}
               serveIndividualAtEmployment={serveIndividualAtEmployment}
               setServeIndividualAtEmployment={setServeIndividualAtEmployment}
               processServerLeaveDoorTag={processServerLeaveDoorTag}
