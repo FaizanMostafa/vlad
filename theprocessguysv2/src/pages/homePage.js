@@ -1,10 +1,10 @@
-import React from 'react';
+import {Fragment} from 'react';
 import tpg_logo_rgb from '../pictures/TPG_logo_rgb.webp';
 
 const HomePage = () => {
 
     return(
-        <React.Fragment>
+        <Fragment>
             <center>
                 <img src={tpg_logo_rgb} loading="lazy" style={{height: 400, width: 400, marginTop: 50, objectFit: "contain"}}/>
             </center>
@@ -91,7 +91,7 @@ const HomePage = () => {
             <br></br>
             <br></br>
             <br></br>
-        </React.Fragment>
+        </Fragment>
     )
 }
 

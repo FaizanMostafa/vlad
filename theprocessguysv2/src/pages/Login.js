@@ -26,7 +26,7 @@ const Login = (props) => {
                     email: email.toLocaleLowerCase(),
                     password
                 };
-                dispatch(login(data, ()=>props.history.push("/member-dashboard")));
+                dispatch(login(data, ()=>props.history.push("/")));
             }
         }
     }

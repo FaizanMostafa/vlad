@@ -23,7 +23,9 @@ const NavBar = ({...props}) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
- 
+
+  if(user && (user.role==="superuser" || user.role==="admin")) return null;
+
   return (
     <Navbar
       logo={logo}
@@ -89,7 +91,7 @@ const NavBar = ({...props}) => {
               icon: faSignOutAlt,
               isAuth: true,
               onClick: () => {
-                dispatch(logout());
+                dispatch(logout(()=>history.push("/")));
               },
             }
           ],

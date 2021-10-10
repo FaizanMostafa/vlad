@@ -301,9 +301,10 @@ const updateProfilePicture = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
-const logout = () => (
+const logout = (onSuccess=()=>{}) => (
   async (dispatch) => {
     await firebase.auth().signOut();
+    onSuccess();
   }
 )
 
