@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {BrowserRouter as Router, useHistory, Switch, Route, Redirect } from 'react-router-dom';
+import {useEffect} from 'react';
+import {BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import { useIdleTimer } from 'react-idle-timer';
 import NavBar from "../navbar/navBar";
@@ -13,7 +13,6 @@ import routes from "./routes";
 const Navigation = (props) => {
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const isFetchingUser = useSelector(state => state.auth.isFetchingUser);
@@ -25,7 +24,7 @@ const Navigation = (props) => {
   }
 
   useIdleTimer({
-    timeout: 1000 * 60 * 2,
+    timeout: 1000 * 60 * 15,
     onIdle: handleOnIdle
   });
 

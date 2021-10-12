@@ -48,7 +48,7 @@ const AdminDashboard = (props) => {
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("terms-of-service") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/terms-of-service`}>Terms Of Service</Link>
         </div>
       </div>
-      <div style={{padding: 20, zIndex: 0}}>
+      <div style={{width: "100%", height: "100%", padding: 20, zIndex: 0}}>
         <Switch>
           <Route path={`${path}/members`} component={Members} />
           <Route path={`${path}/cases`} component={Cases} />

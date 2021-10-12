@@ -26,7 +26,7 @@ import AdminViewAllCases from '../pages/adminDashboardViewAllCases';
 import HomePage from '../pages/homePage';
 
 const routes = {
-  "superuser": [
+  "superadmin": [
     {exact: true, path: '/', redirect: "/admin-dashboard"},
     {exact: false, path: '/admin-dashboard', component: AdminDashboard, isProtected: true, redirect: "/login"},
   ],

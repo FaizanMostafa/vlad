@@ -24,7 +24,7 @@ const NavBar = ({...props}) => {
   const user = useSelector(state => state.auth.user);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
-  if(user && (user.role==="superuser" || user.role==="admin")) return null;
+  if(user && (user.role==="superadmin" || user.role==="admin")) return null;
 
   return (
     <Navbar
