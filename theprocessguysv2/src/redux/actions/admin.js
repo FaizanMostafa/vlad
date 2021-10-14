@@ -2,7 +2,9 @@ import {db} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USERS,
+  FETCH_METADATA,
   SET_IS_FETCHING_USERS,
+  SET_IS_FETCHING_METADATA
 } from "../constants";
 
 const setIsFetchingUsers = (status) => {
@@ -12,7 +14,36 @@ const setIsFetchingUsers = (status) => {
   };
 }
 
-const fetchUsers = (data, onSuccess=()=>{}, onError=()=>{}) => (
+const setIsFetchingMetadata = (status) => {
+  return {
+    type: SET_IS_FETCHING_METADATA,
+    payload: status
+  };
+}
+
+const getMetadataInfo = () => (
+  (dispatch) => {
+    try {
+      setIsFetchingMetadata(true);
+      db.collection("metadatas")
+        .onSnapshot((querySnapshot) => {
+          const metadata = {};
+          querySnapshot.forEach((doc) => {
+            metadata[doc.id] = doc.data().count;
+          });
+          dispatch({
+            type: FETCH_METADATA,
+            payload: {metadata}
+          });
+        });
+    } catch (error) {
+      setIsFetchingMetadata(false);
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const fetchUsers = () => (
   (dispatch) => {
     try {
       setIsFetchingUsers(true);
@@ -37,5 +68,6 @@ const fetchUsers = (data, onSuccess=()=>{}, onError=()=>{}) => (
 )
 
 export {
-  fetchUsers
+  fetchUsers,
+  getMetadataInfo
 };
