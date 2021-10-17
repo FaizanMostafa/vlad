@@ -101,6 +101,7 @@ function Register(props) {
                 middleName,
                 lastName,
                 email: email.toLocaleLowerCase(),
+                role: "user",
                 password,
                 address,
                 phoneNumber,

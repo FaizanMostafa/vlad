@@ -9,8 +9,10 @@ import {
 
 const Members = () => {
   const dispatch = useDispatch();
+  const [endIndex, setEndIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
-  const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
+  const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(25);
   const users = useSelector(state => state.admin.users);
   const isFetchingUsers = useSelector(state => state.admin.isFetchingUsers);
   const metadata = useSelector(state => state.admin.metadata);
@@ -25,6 +27,11 @@ const Members = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setStartIndex((activePageNo-1)*noOfRowsPerPage);
+    setEndIndex(((activePageNo-1)*noOfRowsPerPage)+noOfRowsPerPage);
+  }, [activePageNo, noOfRowsPerPage]);
+
   const handleActivePageNoChanged = (newActivePageNo) => {
     if(newActivePageNo*noOfRowsPerPage < metadata.users) {
       // fetch next chunk of users
@@ -36,7 +43,7 @@ const Members = () => {
     if(activePageNo*noOfRowsPerPage < metadata.users) {
       // fetch next chunk of users
     }
-    setNoOfRowsPerPage(newNoOfRowsPerPage);
+    setNoOfRowsPerPage(parseInt(newNoOfRowsPerPage));
   }
 
   return (
@@ -53,7 +60,6 @@ const Members = () => {
         </thead>
         <tbody>
           {
-            
             isFetchingUsers
               ?
                 <tr>
@@ -62,9 +68,9 @@ const Members = () => {
                   </td>
                 </tr>
               :
-                users.map((user, index)=>(
+                users.slice(startIndex, endIndex).map((user, index)=>(
                   <tr>
-                    <td>{index+1}</td>
+                    <td>{startIndex+index+1}</td>
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
                     <td>{user.email}</td>

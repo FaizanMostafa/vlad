@@ -5,16 +5,40 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
   const lastPageNo = Math.ceil(totalCount/noOfRowsPerPage);
 
   const generatePaginationItems = () => {
-    const paginationItems = [];
-    for(let index = 1; index <= lastPageNo; index++) {
-      paginationItems.push(
+    const paginationItems = {};
+    for(let index = activePageNo; (index<=lastPageNo-3 && index <= activePageNo+2); index++) {
+      paginationItems[index] = (
         <Pagination.Item
-          onClick={()=>setActivePageNo(1)}
-          active={activePageNo===1 ? true : false}
-        >{1}</Pagination.Item>
+          onClick={()=>setActivePageNo(index)}
+          active={activePageNo===index ? true : false}
+        >{index}</Pagination.Item>
       )
     }
-    return paginationItems;
+    if(Object.keys(paginationItems).length && Object.keys(paginationItems).length>1) {
+      paginationItems[parseInt(Object.keys(paginationItems)[Object.keys(paginationItems).length-1])+1] = (
+        <Pagination.Ellipsis />
+      )
+    } else if((lastPageNo-5)>0) {
+      for(let index = lastPageNo-5; index<=lastPageNo-2; index++) {
+        paginationItems[index] = (
+          <Pagination.Item
+            onClick={()=>setActivePageNo(index)}
+            active={activePageNo===index ? true : false}
+          >{index}</Pagination.Item>
+        )
+      }
+    }
+    for(let index = lastPageNo-2; (index > 1 && index <= lastPageNo); index++) {
+      if(!Object.keys(paginationItems).includes(index)) {
+        paginationItems[index] = (
+          <Pagination.Item
+            onClick={()=>setActivePageNo(index)}
+            active={activePageNo===index ? true : false}
+          >{index}</Pagination.Item>
+        );
+      }
+    }
+    return Object.values(paginationItems);
   }
 
   return (
@@ -42,24 +66,8 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
           onClick={()=>setActivePageNo(activePageNo-1)}
         />
         {
-          lastPageNo<=6
-            ?
-              generatePaginationItems()
-            :
-              <>
-              </>
+          generatePaginationItems()
         }
-        {/* <Pagination.Item>{1}</Pagination.Item>
-        <Pagination.Ellipsis />
-
-        <Pagination.Item>{10}</Pagination.Item>
-        <Pagination.Item>{11}</Pagination.Item>
-        <Pagination.Item active>{12}</Pagination.Item>
-        <Pagination.Item>{13}</Pagination.Item>
-        <Pagination.Item disabled>{14}</Pagination.Item>
-
-        <Pagination.Ellipsis />
-        <Pagination.Item>{20}</Pagination.Item> */}
         <Pagination.Next
           disabled={activePageNo===lastPageNo ? true : false}
           onClick={()=>setActivePageNo(activePageNo+1)}

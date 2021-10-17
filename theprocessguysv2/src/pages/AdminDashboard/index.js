@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Members from "./Members";
 import Cases from "./Cases";
+import NotFound404 from "../NotFound404";
 import Notifications from "./Notifications";
 import BulletinUpdate from "./BulletinUpdate";
 import { logout } from '../../redux/actions/auth';
@@ -56,6 +57,7 @@ const AdminDashboard = (props) => {
           <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />
           <Route path={`${path}/terms-of-service`} component={TOSAgreement} />
           <Route path={`${path}/update-profile`} component={UpdateProfile} />
+          <Route path='*' component={NotFound404} />
         </Switch>
       </div>
     </div>
