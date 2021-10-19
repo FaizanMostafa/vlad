@@ -392,7 +392,7 @@ function Register(props) {
                             isUserSigningUp
                                 ?
                                     <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
-                                        <div className="spinner-border text-success" role="status">
+                                        <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div>  
                                     </div>

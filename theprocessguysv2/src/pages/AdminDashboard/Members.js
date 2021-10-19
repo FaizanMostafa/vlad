@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
+import CreateNewUser from "../../popups/CreateNewUser";
+import DeleteUser from "../../popups/DeleteUser";
+import EditUser from "../../popups/EditUser";
 import {
   fetchUsers,
   getMetadataInfo
@@ -9,6 +12,7 @@ import {
 
 const Members = () => {
   const dispatch = useDispatch();
+  const [searchString, setSearchString] = useState("");
   const [endIndex, setEndIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
@@ -48,7 +52,14 @@ const Members = () => {
 
   return (
     <div style={{backgroundColor: "white", borderRadius: 6, padding: 20, width: "100% !important"}}>
-      <h1>Members</h1>
+      <div style={{width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: 10, padding: "8px 15px"}}>
+        {/* <input
+          style={{borderRadius: 8, width: "40%", borderWidth: 2, outline: "none", borderColor: "#c0c0c0"}}
+          value={searchString}
+          onChange={(e)=>setSearchString(e.target.value)}
+        /> */}
+        <CreateNewUser />
+      </div>
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
@@ -56,6 +67,9 @@ const Members = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Has Agreed To TOS</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -74,6 +88,12 @@ const Members = () => {
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
                     <td>{user.email}</td>
+                    <td>{user.hasAgreedToTOS ? "Yes" : "No"}</td>
+                    <td>Enabled</td>
+                    <td>
+                      <DeleteUser userName={`${user.firstName} ${user.lastName}`}/>
+                      <EditUser userName={`${user.firstName} ${user.lastName}`}/>
+                    </td>
                   </tr>
                 ))
           }
