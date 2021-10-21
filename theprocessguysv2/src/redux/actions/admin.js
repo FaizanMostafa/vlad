@@ -1,15 +1,31 @@
-import {db} from "../../firebase";
+import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USERS,
   FETCH_METADATA,
+  SET_IS_DELETING_USER,
+  SET_IS_CREATING_USER,
   SET_IS_FETCHING_USERS,
-  SET_IS_FETCHING_METADATA
+  SET_IS_FETCHING_METADATA,
 } from "../constants";
 
 const setIsFetchingUsers = (status) => {
   return {
     type: SET_IS_FETCHING_USERS,
+    payload: status
+  };
+}
+
+const setIsDeletingUser = (status) => {
+  return {
+    type: SET_IS_DELETING_USER,
+    payload: status
+  };
+}
+
+const setIsCreatingUser = (status) => {
+  return {
+    type: SET_IS_CREATING_USER,
     payload: status
   };
 }
@@ -24,7 +40,7 @@ const setIsFetchingMetadata = (status) => {
 const getMetadataInfo = () => (
   (dispatch) => {
     try {
-      setIsFetchingMetadata(true);
+      dispatch(setIsFetchingMetadata(true));
       db.collection("metadatas")
         .onSnapshot((querySnapshot) => {
           const metadata = {};
@@ -37,7 +53,7 @@ const getMetadataInfo = () => (
           });
         });
     } catch (error) {
-      setIsFetchingMetadata(false);
+      dispatch(setIsFetchingMetadata(false));
       showToast(error.message, "error");
     }
   }
@@ -46,13 +62,13 @@ const getMetadataInfo = () => (
 const fetchUsers = () => (
   (dispatch) => {
     try {
-      setIsFetchingUsers(true);
+      dispatch(setIsFetchingUsers(true));
       db.collection("users")
         .where("role", "!=", "superadmin")
         .onSnapshot((querySnapshot) => {
           let users = [];
           for(const doc of querySnapshot.docs) {
-            users.push(doc.data());
+            users.push({docId: doc.id, ...doc.data()});
           }
           console.log({users})
           dispatch({
@@ -61,13 +77,62 @@ const fetchUsers = () => (
           });
         });
     } catch (error) {
-      setIsFetchingUsers(false);
+      dispatch(setIsFetchingUsers(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+
+const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    dispatch(setIsCreatingUser(true));
+    firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
+      .then((userCredential) => {
+        firebase.auth().currentUser.sendEmailVerification()
+          .then(async() => {
+            var user = userCredential.user;
+            delete data["password"];
+            const timestamp = new Date().toISOString();
+            const profilePicturePath = `profile_pictures/${user.uid}/${timestamp}${data["profilePicture"].name}`;
+            const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
+            delete data["profilePicture"];
+            await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            showToast("User created successfully!", "success");
+            onSuccess();
+            dispatch(setIsCreatingUser(false));
+          });
+      })
+      .catch((error) => {
+        onError();
+        showToast(error.message, "error");
+        dispatch(setIsCreatingUser(false));
+      });
+  }
+)
+
+const deleteUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    try {
+      dispatch(setIsDeletingUser(true));
+      db.collection("users")
+        .doc(data.docId)
+        .delete().then(() => {
+          onSuccess();
+          dispatch(setIsDeletingUser(false));
+          showToast("User has been deleted from the system successfully!", "success");
+        });
+    } catch (error) {
+      onError();
+      dispatch(setIsDeletingUser(false));
       showToast(error.message, "error");
     }
   }
 )
 
 export {
+  createUser,
+  deleteUser,
   fetchUsers,
   getMetadataInfo
 };

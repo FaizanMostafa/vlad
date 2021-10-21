@@ -2,15 +2,13 @@ import { useState } from 'react';
 import { MDBRow, MDBCol } from 'mdbreact';
 import { Form, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import Attorney from "../forms/Attorney";
-import Business from "../forms/Business";
 import {showToast, validateEmail, validatePhoneNumber} from "../utils";
-import { register } from '../redux/actions/auth';
+import { createUser } from '../redux/actions/admin';
 
 const CreateNewUser = (props) => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const isUserSigningUp = useSelector(state => state.auth.isPosting);
+  const isCreatingUser = useSelector(state => state.admin.isCreatingUser);
   const [email, setEmail] = useState("");
   const [SSN, setSSN] = useState("");
   const [SSNState, setSSNState] = useState("");
@@ -45,6 +43,33 @@ const CreateNewUser = (props) => {
     } else {
       setPhoneNumber(phoneNumber);
     }
+  }
+
+  const resetForm = () => {
+    setShow(false);
+    setEmail("");
+    setSSN("");
+    setSSNState("");
+    setPassword("");
+    setRePassword("");
+    setFirstName("");
+    setMiddleName("");
+    setLastName("");
+    setPhoneNumber("");
+    setFaxNumber("");
+    setAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
+    setProfilePicture(null);
+    setUserType("attorney");
+    setAttorneyType("attorney");
+    setAttSpecialty("");
+    setAttBarNo("");
+    setAttFirmName("");
+    setAttFirmAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
+    setAttFirmRole("");
+    setBusSpecialty("");
+    setBusFirmName("");
+    setBusFirmAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
+    setBusJobTitle("");
   }
 
   const handleFormSubmit = (e) => {
@@ -89,7 +114,7 @@ const CreateNewUser = (props) => {
         showToast("Please fill-in the business specialty!", "warning");
     } else if(userType==="business" && !busJobTitle.length) {
         showToast("Please fill-in the business role!", "warning");
-    } else {
+    } else if(!isCreatingUser) {
         let data = {
             firstName,
             middleName,
@@ -126,7 +151,7 @@ const CreateNewUser = (props) => {
             data["SSN"] = SSN;
             data["SSNState"] = SSNState;
         }
-        dispatch(register(data, ()=>props.history.push("/")));
+        dispatch(createUser(data, resetForm));
     }
   }
 
@@ -640,19 +665,20 @@ const CreateNewUser = (props) => {
             }
             <Button
               className="w-100 mt-4"
+              disabled={isCreatingUser}
               color="default"
               type="submit"
             >
               {
-                isUserSigningUp
+                isCreatingUser
                   ?
-                  <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
-                    <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
-                      <span className="sr-only">Loading...</span>
+                    <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+                      <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
                     </div>
-                  </div>
                   :
-                  <span className="text-white">Create</span>
+                    <span className="text-white">Create</span>
               }
             </Button>
             <br></br>

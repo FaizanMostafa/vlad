@@ -67,8 +67,8 @@ const Login = (props) => {
                         {
                             isUserSigningIn
                                 ?
-                                    <div style={{display: "flex", flex: 1, color: "white", alignItems: "center", justifyContent: "center"}}>
-                                        <div className="spinner-border" role="status">
+                                    <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                                        <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
                                             <span className="sr-only">Loading...</span>
                                         </div>  
                                     </div>

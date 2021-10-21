@@ -1,6 +1,8 @@
 import {
   SET_IS_FETCHING_METADATA,
   SET_IS_FETCHING_USERS,
+  SET_IS_CREATING_USER,
+  SET_IS_DELETING_USER,
   FETCH_METADATA,
   FETCH_USERS,
   LOGOUT
@@ -9,6 +11,8 @@ import {
 const initState = {
   users: [],
   metadata: null,
+  isCreatingUser: false,
+  isDeletingUser: false,
   isFetchingMetadata: false,
   isFetchingUsers: true,
 };
@@ -19,6 +23,20 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingUsers: payload
+      };
+    }
+
+    case SET_IS_CREATING_USER: {
+      return {
+        ...state,
+        isCreatingUser: payload
+      };
+    }
+
+    case SET_IS_DELETING_USER: {
+      return {
+        ...state,
+        isDeletingUser: payload
       };
     }
 
@@ -40,6 +58,7 @@ export default (state=initState, {type, payload}) => {
     case FETCH_METADATA: {
       return {
         ...state,
+        isFetchingMetadata: false,
         metadata: payload.metadata
       }
     }
