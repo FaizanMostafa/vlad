@@ -11,6 +11,7 @@ import {
 const initState = {
   users: [],
   metadata: null,
+  lastVisible: null,
   isCreatingUser: false,
   isDeletingUser: false,
   isFetchingMetadata: false,
@@ -44,7 +45,8 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingUsers: false,
-        users: [...state.users, ...payload.users]
+        users: [...state.users, ...payload.users],
+        lastVisible: payload.lastVisible
       };
     }
 

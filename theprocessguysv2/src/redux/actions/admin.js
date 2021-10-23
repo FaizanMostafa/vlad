@@ -59,21 +59,25 @@ const getMetadataInfo = () => (
   }
 )
 
-const fetchUsers = () => (
+const fetchUsers = (data) => (
   (dispatch) => {
     try {
       dispatch(setIsFetchingUsers(true));
       db.collection("users")
         .where("role", "!=", "superadmin")
-        .onSnapshot((querySnapshot) => {
+        .orderBy("role")
+        .orderBy("registeredAt", "desc")
+        .startAfter(data.lastVisible)
+        .limit(data.limit).get()
+        .then((querySnapshot) => {
           let users = [];
+          let lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
           for(const doc of querySnapshot.docs) {
             users.push({docId: doc.id, ...doc.data()});
           }
-          console.log({users})
           dispatch({
             type: FETCH_USERS,
-            payload: {users}
+            payload: {users, lastVisible}
           });
         });
     } catch (error) {

@@ -19,17 +19,22 @@ const Members = () => {
   const [endIndex, setEndIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
-  const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(25);
+  const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const users = useSelector(state => state.admin.users);
+  const lastVisible = useSelector(state => state.admin.lastVisible);
   const isFetchingUsers = useSelector(state => state.admin.isFetchingUsers);
   const metadata = useSelector(state => state.admin.metadata);
   const isFetchingMetadata = useSelector(state => state.admin.isFetchingMetadata);
 
   useEffect(()=>{
     if(!users.length) {
-      dispatch(fetchUsers());
+      const data = {
+        limit: noOfRowsPerPage,
+        lastVisible
+      };
+      dispatch(fetchUsers(data));
     }
     if(!metadata && !isFetchingMetadata) {
       dispatch(getMetadataInfo());
@@ -42,15 +47,25 @@ const Members = () => {
   }, [activePageNo, noOfRowsPerPage]);
 
   const handleActivePageNoChanged = (newActivePageNo) => {
-    if(newActivePageNo*noOfRowsPerPage < metadata.users) {
-      // fetch next chunk of users
+    if(metadata.users > activePageNo*noOfRowsPerPage && users.length<metadata.users) {
+      console.log("Fetching next chunk of users for next page...")
+      const data = {
+        limit: noOfRowsPerPage,
+        lastVisible
+      };
+      dispatch(fetchUsers(data));
     }
     setActivePageNo(newActivePageNo);
   }
 
   const handleNoOfRowsPerPageChanged = (newNoOfRowsPerPage) => {
-    if(activePageNo*noOfRowsPerPage < metadata.users) {
-      // fetch next chunk of users
+    if(metadata.users > activePageNo*noOfRowsPerPage && users.length<metadata.users) {
+      console.log("Fetching next chunk of users for changed no of rows per page...")
+      const data = {
+        limit: parseInt(newNoOfRowsPerPage),
+        lastVisible
+      };
+      dispatch(fetchUsers(data));
     }
     setNoOfRowsPerPage(parseInt(newNoOfRowsPerPage));
   }
@@ -99,7 +114,7 @@ const Members = () => {
                 </tr>
               :
                 users.slice(startIndex, endIndex).map((user, index)=>(
-                  <tr>
+                  <tr key={user.docId}>
                     <td>{startIndex+index+1}</td>
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>

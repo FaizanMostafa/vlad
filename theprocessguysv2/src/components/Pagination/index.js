@@ -6,7 +6,7 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
 
   const generatePaginationItems = () => {
     const paginationItems = {};
-    for(let index = activePageNo; (index<=lastPageNo-3 && index <= activePageNo+2); index++) {
+    for(let index = activePageNo; (index<=Math.abs(lastPageNo-3) && index <= activePageNo+2); index++) {
       paginationItems[index] = (
         <Pagination.Item
           onClick={()=>setActivePageNo(index)}
@@ -54,6 +54,8 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
           <option value={15}>15</option>
           <option value={20}>20</option>
           <option value={25}>25</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
         </select>
       </div>
       <Pagination>
