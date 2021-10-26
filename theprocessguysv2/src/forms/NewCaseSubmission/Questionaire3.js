@@ -18,13 +18,15 @@ const Questionaire3 = (props) => {
     setDefendantAttorneysDetail
   } = props;
 
-  const handleOnChangePhoneNumber = (key, phoneKey, attorney, phoneNumber) => {
-    if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
-      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `(${phoneNumber}) `}}}});
-    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
-      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `${phoneNumber}-`}}}});
+  const handleOnChangePhoneNumber = (key, phoneKey, attorney, newPhoneNumber) => {
+    if(/^\s*\d{3}\s*$/.test(newPhoneNumber) && newPhoneNumber.length>attorney.phoneNumbers[phoneKey].phoneNumber.length) {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `(${newPhoneNumber}) `}}}});
+    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(newPhoneNumber) && newPhoneNumber.length>attorney.phoneNumbers[phoneKey].phoneNumber.length) {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `${newPhoneNumber}-`}}}});
+    } else if(newPhoneNumber.length>=7 && !newPhoneNumber.includes("(") && !newPhoneNumber.includes(")") && !newPhoneNumber.includes(" ") && !newPhoneNumber.includes("-")) {
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: `(${newPhoneNumber.slice(0, 3)}) ${newPhoneNumber.slice(3, 6)}-${newPhoneNumber.slice(6)}`}}}});
     } else {
-      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber}}}});
+      setDefendantAttorneysDetail({...defendantAttorneysDetail, [key]: {...attorney, phoneNumbers: {...attorney.phoneNumbers, [phoneKey]: {...attorney.phoneNumbers[phoneKey], phoneNumber: newPhoneNumber}}}});
     }
   }
 

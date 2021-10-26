@@ -34,13 +34,15 @@ const Questionaire4 = (props) => {
     }
   }
 
-  const handleOnChangePhoneNumber = (key, phoneKey, phoneNumber) => {
-    if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
-      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `(${phoneNumber}) `}}}});
-    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
-      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `${phoneNumber}-`}}}});
+  const handleOnChangePhoneNumber = (key, phoneKey, newPhoneNumber) => {
+    if(/^\s*\d{3}\s*$/.test(newPhoneNumber) && newPhoneNumber.length>serveesDetail[key].phoneNumbers[phoneKey].phoneNumber.length) {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `(${newPhoneNumber}) `}}}});
+    } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(newPhoneNumber) && newPhoneNumber.length>serveesDetail[key].phoneNumbers[phoneKey].phoneNumber.length) {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `${newPhoneNumber}-`}}}});
+    } else if(newPhoneNumber.length>=7 && !newPhoneNumber.includes("(") && !newPhoneNumber.includes(")") && !newPhoneNumber.includes(" ") && !newPhoneNumber.includes("-")) {
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: `(${newPhoneNumber.slice(0, 3)}) ${newPhoneNumber.slice(3, 6)}-${newPhoneNumber.slice(6)}`}}}});
     } else {
-      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber}}}});
+      setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], phoneNumbers: {...serveesDetail[key].phoneNumbers, [phoneKey]: {...serveesDetail[key].phoneNumbers[phoneKey], phoneNumber: newPhoneNumber}}}});
     }
   }
 

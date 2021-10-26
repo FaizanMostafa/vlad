@@ -41,13 +41,15 @@ function Register(props) {
 
     const [hasAgreedToTOS, setHasAgreedToTOS] = useState(false);
 
-    const handleOnChangePhoneNumber = (phoneNumber) => {
-        if(/^\s*\d{3}\s*$/.test(phoneNumber)) {
-            setPhoneNumber(`(${phoneNumber}) `);
-        } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(phoneNumber)) {
-            setPhoneNumber(`${phoneNumber}-`);
+    const handleOnChangePhoneNumber = (newPhoneNumber) => {
+        if(/^\s*\d{3}\s*$/.test(newPhoneNumber) && newPhoneNumber.length>phoneNumber.length) {
+            setPhoneNumber(`(${newPhoneNumber}) `);
+        } else if(/^\s*\(\d{3}\)\s*\d{3}$/.test(newPhoneNumber) && newPhoneNumber.length>phoneNumber.length) {
+            setPhoneNumber(`${newPhoneNumber}-`);
+        } else if(newPhoneNumber.length>=7 && !newPhoneNumber.includes("(") && !newPhoneNumber.includes(")") && !newPhoneNumber.includes(" ") && !newPhoneNumber.includes("-")) {
+            setPhoneNumber(`(${newPhoneNumber.slice(0, 3)}) ${newPhoneNumber.slice(3, 6)}-${newPhoneNumber.slice(6)}`)
         } else {
-            setPhoneNumber(phoneNumber);
+            setPhoneNumber(newPhoneNumber);
         }
     }
 
