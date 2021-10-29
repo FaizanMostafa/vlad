@@ -38,8 +38,18 @@ const validatePhoneNumber = (phoneNumber) => {
     return /^\(\d{3}\) \d{3}\-\d{4}\s*$/.test(phoneNumber);
 }
 
+const objectsEqual = (o1, o2) => {
+    return typeof o1 === 'object' && Object.keys(o1).length > 0 ? Object.keys(o1).length === Object.keys(o2).length && Object.keys(o1).every(p => objectsEqual(o1[p], o2[p])) : o1 === o2;
+}
+
+const capitalizeString = (phrase) => {
+    return phrase.replace(/\b\w/g, c => c.toUpperCase());
+}
+
 export {
     showToast,
+    objectsEqual,
     validateEmail,
+    capitalizeString,
     validatePhoneNumber
 };

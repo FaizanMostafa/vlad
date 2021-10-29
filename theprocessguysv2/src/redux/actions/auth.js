@@ -85,16 +85,34 @@ const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
+        const unsubscribeSetInterval = setInterval(() => {
+          firebase.auth().currentUser.reload();
+          const updatedUser = firebase.auth().currentUser;
+          if(updatedUser.emailVerified) {
+            clearInterval(unsubscribeSetInterval);
+            const uid = user.uid;
+            db.collection("users").doc(uid)
+              .get().then((doc) => {
+                const userData = doc.data();
+                dispatch({
+                  type: FETCH_USER,
+                  payload: {uid, ...userData}
+                });
+              }).catch((error) => {
+                console.log("Error getting user data:", error);
+              });
+          }
+        }, 5000);
         if(user.emailVerified) {
-          var uid = user.uid;
+          clearInterval(unsubscribeSetInterval);
+          const uid = user.uid;
           db.collection("users").doc(uid)
             .get().then((doc) => {
-              var userData = doc.data();
+              const userData = doc.data();
               dispatch({
                 type: FETCH_USER,
                 payload: {uid, ...userData}
               });
-              console.log("\n User: ", {uid, ...userData}, "\n");
             }).catch((error) => {
               console.log("Error getting user data:", error);
             });
@@ -155,7 +173,7 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
     dispatch(setIsSigningUp(true));
     firebase.auth().createUserWithEmailAndPassword(data.email, data.password)
       .then((userCredential) => {
-        firebase.auth().currentUser.sendEmailVerification()
+        firebase.auth().currentUser.sendEmailVerification({url: "https://www.theprocessguys.com"})
           .then(async() => {
             var user = userCredential.user;
             delete data["password"];

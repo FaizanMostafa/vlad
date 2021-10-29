@@ -2,12 +2,21 @@ import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USERS,
+  UPDATE_USER,
   FETCH_METADATA,
+  SET_IS_UPDATING_USER,
   SET_IS_DELETING_USER,
   SET_IS_CREATING_USER,
   SET_IS_FETCHING_USERS,
-  SET_IS_FETCHING_METADATA,
+  SET_IS_FETCHING_METADATA
 } from "../constants";
+
+const setIsUpdatingUser = (status) => {
+  return {
+    type: SET_IS_UPDATING_USER,
+    payload: status
+  };
+}
 
 const setIsFetchingUsers = (status) => {
   return {
@@ -115,6 +124,35 @@ const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const updateUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsUpdatingUser(true));
+      if(data.user.profilePicture) {
+        await deleteMedia(data.user.profilePicturePath);
+        const timestamp = new Date().toISOString();
+        data.user["profilePicturePath"] = `profile_pictures/${data.uid}/${timestamp}${data.user["profilePicture"].name}`;
+        data.user["profilePictureURI"] = await uploadMedia(data.user["profilePicture"], `profile_pictures/${data.uid}/`, timestamp);
+        delete data.user["profilePicture"];
+      }
+      db.collection("users")
+        .doc(data.docId)
+        .update({...data.user}).then(() => {
+          onSuccess();
+          dispatch({
+            type: UPDATE_USER,
+            payload: {user: {uid: data.uid, ...data.user}}
+          });
+          showToast("User has been updated in the system successfully!", "success");
+        });
+    } catch (error) {
+      onError();
+      dispatch(setIsUpdatingUser(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
 const deleteUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     try {
@@ -135,6 +173,7 @@ const deleteUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
 )
 
 export {
+  updateUser,
   createUser,
   deleteUser,
   fetchUsers,

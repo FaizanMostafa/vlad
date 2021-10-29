@@ -2,6 +2,7 @@ import { Link, Switch, Route, useRouteMatch, useLocation } from 'react-router-do
 import { useDispatch, useSelector } from 'react-redux';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Members from "./Members";
+import MemberDetails from "./MemberDetails";
 import Cases from "./Cases";
 import NotFound404 from "../NotFound404";
 import Notifications from "./Notifications";
@@ -25,7 +26,7 @@ const AdminDashboard = (props) => {
   }
 
   return (
-    <div style={{minHeight: "100vh", minWidth: "100vw", display: "flex"}}>
+    <div style={{minHeight: "100vh", minWidth: "100vw", boxSizing: "border-box", display: "flex"}}>
       <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
         <div style={{display: "flex", zIndex: 100000, padding: "20px 17px", alignItems: "center", justifyContent: "space-between"}}>
           <div>
@@ -49,9 +50,10 @@ const AdminDashboard = (props) => {
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("terms-of-service") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/terms-of-service`}>Terms Of Service</Link>
         </div>
       </div>
-      <div style={{width: "100%", height: "100%", padding: 20, zIndex: 0}}>
+      <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, marginBottom: 35, zIndex: 0}}>
         <Switch>
-          <Route path={`${path}/members`} component={Members} />
+          <Route exact path={`${path}/members`} component={Members} />
+          <Route exact path={`${path}/members/:userId`} component={MemberDetails} />
           <Route path={`${path}/cases`} component={Cases} />
           <Route path={`${path}/notifications`} component={Notifications} />
           <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />

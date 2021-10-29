@@ -42,7 +42,7 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
   }
 
   return (
-    <div style={{display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
+    <div style={{boxSizing: "border-box", display: "flex", justifyContent: "flex-end", alignItems: "center"}}>
       <div>
         <label>Rows per page</label>
         <select

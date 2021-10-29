@@ -1,10 +1,12 @@
 import {
+  SET_IS_UPDATING_USER,
   SET_IS_FETCHING_METADATA,
   SET_IS_FETCHING_USERS,
   SET_IS_CREATING_USER,
   SET_IS_DELETING_USER,
   FETCH_METADATA,
   FETCH_USERS,
+  UPDATE_USER,
   LOGOUT
 } from "../constants";
 
@@ -13,6 +15,7 @@ const initState = {
   metadata: null,
   lastVisible: null,
   isCreatingUser: false,
+  isUpdatingUser: false,
   isDeletingUser: false,
   isFetchingMetadata: false,
   isFetchingUsers: true,
@@ -24,6 +27,13 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingUsers: payload
+      };
+    }
+
+    case SET_IS_UPDATING_USER: {
+      return {
+        ...state,
+        isUpdatingUser: payload
       };
     }
 
@@ -47,6 +57,22 @@ export default (state=initState, {type, payload}) => {
         isFetchingUsers: false,
         users: [...state.users, ...payload.users],
         lastVisible: payload.lastVisible
+      };
+    }
+
+    case UPDATE_USER: {
+      const updatedUsers = [];
+      for(const user of state.users) {
+        if(user.uid!==payload.user.uid) {
+          updatedUsers.push(user);
+        } else {
+          updatedUsers.push({...user, ...payload.user});
+        }
+      }
+      return {
+        ...state,
+        users: updatedUsers,
+        isUpdatingUser: false
       };
     }
 

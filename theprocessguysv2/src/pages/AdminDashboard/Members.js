@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import CreateNewUser from "../../popups/CreateNewUser";
@@ -11,6 +12,7 @@ import {
   fetchUsers,
   getMetadataInfo
 } from "../../redux/actions/admin";
+import { capitalizeString } from '../../utils';
 
 const Members = () => {
   const dispatch = useDispatch();
@@ -81,8 +83,8 @@ const Members = () => {
   }
 
   return (
-    <div style={{backgroundColor: "white", borderRadius: 6, padding: 20, width: "100% !important"}}>
-      <div style={{width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: 10, padding: "8px 15px"}}>
+    <div style={{boxSizing: "border-box", backgroundColor: "white", borderRadius: 6, padding: 20, width: "100%"}}>
+      <div style={{boxSizing: "border-box", width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: 10, padding: "8px 15px"}}>
         {/* <input
           style={{borderRadius: 8, width: "40%", borderWidth: 2, outline: "none", borderColor: "#c0c0c0"}}
           value={searchString}
@@ -114,24 +116,30 @@ const Members = () => {
                 </tr>
               :
                 users.slice(startIndex, endIndex).map((user, index)=>(
-                  <tr key={user.docId}>
+                  <tr style={{boxSizing: "border-box"}} key={user.docId}>
                     <td>{startIndex+index+1}</td>
                     <td>{user.firstName}</td>
                     <td>{user.lastName}</td>
                     <td>{user.email}</td>
                     <td>{user.hasAgreedToTOS ? "Yes" : "No"}</td>
-                    <td>Enabled</td>
-                    <td>
+                    <td>{capitalizeString(user.status)}</td>
+                    <td style={{boxSizing: "border-box"}}>
                       <MDBIcon
-                        style={{color: 'red', margin: 8, cursor: "pointer"}}
+                        style={{color: 'red', margin: "0px 8px", cursor: "pointer"}}
                         onClick={() => handleOnClickDelete(user)}
                         icon="trash-alt"
                       />
                       <MDBIcon
-                        style={{color: 'blue', margin: 8, cursor: "pointer"}}
-                        onClick={() => setEditModalShow(true)}
+                        style={{color: 'blue', margin: "0px 8px", cursor: "pointer"}}
+                        onClick={() => handleOnClickEdit(user)}
                         icon="pencil-alt"
                       />
+                      <Link style={{float: "none"}} to={{pathname: `members/${user.uid}`, state: {user}}}>
+                        <MDBIcon
+                          style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
+                          icon="eye"
+                        />
+                      </Link>
                     </td>
                   </tr>
                 ))
