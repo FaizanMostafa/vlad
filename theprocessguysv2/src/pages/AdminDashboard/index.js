@@ -28,10 +28,10 @@ const AdminDashboard = (props) => {
   return (
     <div style={{minHeight: "100vh", minWidth: "100vw", boxSizing: "border-box", display: "flex"}}>
       <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
-        <div style={{display: "flex", zIndex: 100000, padding: "20px 17px", alignItems: "center", justifyContent: "space-between"}}>
+        <div style={{display: "flex", flexWrap: "wrap", zIndex: 100000, padding: "20px 17px", alignItems: "center", justifyContent: "space-between"}}>
           <div>
             <span style={{fontWeight: "bold", fontSize: 20}}>{user.firstName} {user.lastName}</span><br/>
-            <span style={{fontWeight: "bold", fontSize: 14}}>{user.email}</span>
+            <span style={{fontWeight: "bold", fontSize: 14}}>{user.email}{user.email}</span>
           </div>
           <DropdownMenu
             trigger={<img style={{width: 40, height: 40, cursor: 'pointer', borderRadius: 20}} src={user.profilePictureURI} />}
