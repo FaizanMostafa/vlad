@@ -29,15 +29,15 @@ const AdminDashboard = (props) => {
     <div style={{minHeight: "100vh", minWidth: "100vw", boxSizing: "border-box", display: "flex"}}>
       <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
         <div style={{display: "flex", flexWrap: "wrap", zIndex: 100000, padding: "20px 17px", alignItems: "center", justifyContent: "space-between"}}>
-          <div>
-            <span style={{fontWeight: "bold", fontSize: 20}}>{user.firstName} {user.lastName}</span><br/>
-            <span style={{fontWeight: "bold", fontSize: 14}}>{user.email}{user.email}</span>
+          <div style={{width: "20vw"}}>
+            <span style={{fontWeight: "bold", fontSize: 20, overflowWrap: "break-word"}}>{user.firstName} {user.lastName}</span><br/>
+            <span style={{fontWeight: "bold", fontSize: 14, overflowWrap: "break-word"}}>{user.email}</span>
           </div>
           <DropdownMenu
             trigger={<img style={{width: 40, height: 40, cursor: 'pointer', borderRadius: 20}} src={user.profilePictureURI} />}
           >
             <DropdownItemGroup>
-              <DropdownItem onMouseDown={handleOnClickUpdate}>Update</DropdownItem>
+              <DropdownItem style={{width: 100}} onMouseDown={handleOnClickUpdate}>Update</DropdownItem>
               <DropdownItem onMouseDown={handleOnClickLogout}>Logout</DropdownItem>
             </DropdownItemGroup>
           </DropdownMenu>
