@@ -2,23 +2,32 @@ import {
   SET_IS_UPDATING_USER,
   SET_IS_FETCHING_METADATA,
   SET_IS_FETCHING_USERS,
+  SET_IS_FETCHING_CASES,
   SET_IS_CREATING_USER,
   SET_IS_DELETING_USER,
+  SET_IS_DELETING_CASE,
   FETCH_METADATA,
+  DELETE_USER,
   FETCH_USERS,
+  FETCH_CASES,
+  DELETE_CASE,
   UPDATE_USER,
   LOGOUT
 } from "../constants";
 
 const initState = {
   users: [],
+  cases: [],
   metadata: null,
-  lastVisible: null,
+  lastUserVisible: null,
+  lastCaseVisible: null,
   isCreatingUser: false,
   isUpdatingUser: false,
   isDeletingUser: false,
+  isDeletingCase: false,
   isFetchingMetadata: false,
   isFetchingUsers: true,
+  isFetchingCases: true,
 };
 
 export default (state=initState, {type, payload}) => {
@@ -27,6 +36,13 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingUsers: payload
+      };
+    }
+
+    case SET_IS_FETCHING_CASES: {
+      return {
+        ...state,
+        isFetchingCases: payload
       };
     }
 
@@ -56,7 +72,7 @@ export default (state=initState, {type, payload}) => {
         ...state,
         isFetchingUsers: false,
         users: [...state.users, ...payload.users],
-        lastVisible: payload.lastVisible
+        lastUserVisible: payload.lastVisible
       };
     }
 
@@ -73,6 +89,38 @@ export default (state=initState, {type, payload}) => {
         ...state,
         users: updatedUsers,
         isUpdatingUser: false
+      };
+    }
+
+    case DELETE_USER: {
+      return {
+        ...state,
+        users: state.users.filter((user)=>user.uid!==payload.uid),
+        isDeletingUser: false
+      };
+    }
+
+    case FETCH_CASES: {
+      return {
+        ...state,
+        isFetchingCases: false,
+        cases: [...state.cases, ...payload.cases],
+        lastCaseVisible: payload.lastVisible
+      };
+    }
+
+    case SET_IS_DELETING_CASE: {
+      return {
+        ...state,
+        isDeletingCase: payload
+      };
+    }
+
+    case DELETE_CASE: {
+      return {
+        ...state,
+        cases: state.cases.filter((userCase)=>userCase.docId!==payload.docId),
+        isDeletingCase: false
       };
     }
 

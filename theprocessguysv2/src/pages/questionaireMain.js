@@ -793,8 +793,6 @@ function Questionaire() {
               setPlaintiffAttorneysDetail={setPlaintiffAttorneysDetail}
               numberOfAttorneysRepresentingPlaintiff={numberOfAttorneysRepresentingPlaintiff}
               setNumberOfAttorneysRepresentingPlaintiff={setNumberOfAttorneysRepresentingPlaintiff}
-              plaintiffAttorneysDetail={plaintiffAttorneysDetail}
-              setPlaintiffAttorneysDetail={setPlaintiffAttorneysDetail}
             />
       }
       {

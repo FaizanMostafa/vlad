@@ -2,13 +2,18 @@ import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USERS,
+  FETCH_CASES,
   UPDATE_USER,
   FETCH_METADATA,
   SET_IS_UPDATING_USER,
   SET_IS_DELETING_USER,
   SET_IS_CREATING_USER,
   SET_IS_FETCHING_USERS,
-  SET_IS_FETCHING_METADATA
+  SET_IS_FETCHING_CASES,
+  SET_IS_DELETING_CASE,
+  SET_IS_FETCHING_METADATA,
+  DELETE_USER,
+  DELETE_CASE
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -21,6 +26,20 @@ const setIsUpdatingUser = (status) => {
 const setIsFetchingUsers = (status) => {
   return {
     type: SET_IS_FETCHING_USERS,
+    payload: status
+  };
+}
+
+const setIsFetchingCases = (status) => {
+  return {
+    type: SET_IS_FETCHING_CASES,
+    payload: status
+  };
+}
+
+const setIsDeletingCase = (status) => {
+  return {
+    type: SET_IS_DELETING_CASE,
     payload: status
   };
 }
@@ -96,7 +115,6 @@ const fetchUsers = (data) => (
   }
 )
 
-
 const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     dispatch(setIsCreatingUser(true));
@@ -161,7 +179,10 @@ const deleteUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
         .doc(data.docId)
         .delete().then(() => {
           onSuccess();
-          dispatch(setIsDeletingUser(false));
+          dispatch({
+            type: DELETE_USER,
+            payload: {...data}
+          });
           showToast("User has been deleted from the system successfully!", "success");
         });
     } catch (error) {
@@ -172,10 +193,88 @@ const deleteUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const fetchCases = (data) => (
+  (dispatch) => {
+    try {
+      dispatch(setIsFetchingCases(true));
+      let query = db.collection("cases").orderBy("filedAt", "desc")
+      if(data.lastVisible) query = query.startAfter(data.lastVisible)
+        query
+        .limit(data.limit).get()
+        .then((querySnapshot) => {
+          let cases = [];
+          let lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+          for(const doc of querySnapshot.docs) {
+            cases.push({docId: doc.id, ...doc.data()});
+          }
+          dispatch({
+            type: FETCH_CASES,
+            payload: {cases, lastVisible}
+          });
+        });
+    } catch (error) {
+      dispatch(setIsFetchingCases(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const deleteCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsDeletingCase(true));
+      const caseInfo = await db.collection("cases").where("CaseInformationId", "==", data.CaseInformationId).get();
+      if(caseInfo.docs.length === 1) await db.collection("CaseInformation-1").doc(data.CaseInformationId).delete();
+      const plaintiffInfo = await db.collection("cases").where("PlaintiffInformationId", "==", data.PlaintiffInformationId).get();
+      if(plaintiffInfo.docs.length === 1) await db.collection("PlaintiffInformation-2").doc(data.PlaintiffInformationId).delete();
+      const defendantInfo = await db.collection("cases").where("DefendantInformationId", "==", data.DefendantInformationId).get();
+      if(defendantInfo.docs.length === 1) await db.collection("DefendantInformation-3").doc(data.DefendantInformationId).delete();
+      const serveeDD = await db.collection("cases").where("ServeeDocumentedDataId", "==", data.ServeeDocumentedDataId).get();
+      if(serveeDD.docs.length === 1) await db.collection("ServeeDocumentedData-4").doc(data.ServeeDocumentedDataId).delete();
+      const clearanceOA = await db.collection("cases").where("ClearanceOfActionId", "==", data.ClearanceOfActionId).get();
+      if(clearanceOA.docs.length === 1) await db.collection("ClearanceOfAction-5").doc(data.ClearanceOfActionId).delete();
+      const serveePD = await db.collection("cases").where("ServeePhysicalDescriptionId", "==", data.ServeePhysicalDescriptionId).get();
+      if(serveePD.docs.length === 1) {
+        let serveesPDDoc = await db.collection("ServeePhysicalDescription-6").doc(data.ServeePhysicalDescriptionId).get();
+        for (const servee of Object.values(serveesPDDoc.data().serveesPhysicalDescription)) {
+          if(servee.hasOwnProperty("imagePath")) {
+            await deleteMedia(servee.imagePath);
+          }
+        }
+        await db.collection("ServeePhysicalDescription-6").doc(data.ServeePhysicalDescriptionId).delete();
+      }
+      const vehicleI = await db.collection("cases").where("VehicleInformationId", "==", data.VehicleInformationId).get();
+      if(vehicleI.docs.length === 1) await db.collection("VehicleInformation-7").doc(data.VehicleInformationId).delete();
+      const offeredS = await db.collection("cases").where("OfferedServicesId", "==", data.OfferedServicesId).get();
+      if(offeredS.docs.length === 1) await db.collection("OfferedServices-8").doc(data.OfferedServicesId).delete();
+      const filesDoc = await db.collection("cases").where("FileSubmissionId", "==", data.FileSubmissionId).get();
+      if(filesDoc.docs.length === 1) {
+        let fileSubmissionDoc = await db.collection("FileSubmission-9").doc(data.FileSubmissionId).get();
+        await deleteMedia(fileSubmissionDoc.data().documentPath);
+        await db.collection("FileSubmission-9").doc(data.FileSubmissionId).delete();
+      }
+      await db.collection("cases").doc(data.docId).delete();
+      onSuccess();
+      dispatch({
+        type: DELETE_CASE,
+        payload: {docId: data.docId}
+      });
+      showToast("Case has been deleted from the system successfully!", "success");
+    } catch (error) {
+      onError();
+      dispatch(setIsDeletingCase(false));
+      showToast(error.message, "error");
+      console.error(error)
+    }
+  }
+)
+
 export {
   updateUser,
   createUser,
   deleteUser,
   fetchUsers,
+  fetchCases,
+  deleteCase,
   getMetadataInfo
 };

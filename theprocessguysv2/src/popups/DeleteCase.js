@@ -1,16 +1,15 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser } from "../redux/actions/admin";
+import { deleteCase } from "../redux/actions/admin";
 
-const DeleteUser = (props) => {
+const DeleteCase = (props) => {
   const dispatch = useDispatch();
-  const isDeletingUser = useSelector(state => state.admin.isDeletingUser);
+  const isDeletingCase = useSelector(state => state.admin.isDeletingCase);
   
-  const handleOnDeleteUser = () => {
-    if(!isDeletingUser) {
-      const data = {docId: props.user.docId, uid: props.user.uid};
-      dispatch(deleteUser(data, ()=>props.setModalShow(false)));
+  const handleOnDeleteCase = () => {
+    if(!isDeletingCase) {
+      dispatch(deleteCase({...props.case}, ()=>props.setModalShow(false)));
     }
   }
 
@@ -24,24 +23,24 @@ const DeleteUser = (props) => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Delete User
+          Delete Case
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h4>{props.user?.firstName} {props.user?.lastName}</h4>
+        <h4>{props.case?.caseTitle}</h4>
         <p>
-          Are you sure you want to delete <strong>{props.user?.firstName} {props.user?.lastName}</strong> from the system permanently?
+          Are you sure you want to delete <strong>{props.case?.caseTitle}</strong> from the system permanently?
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="success" onClick={() => props.setModalShow(false)}>Close</Button>
         <Button
           variant="danger"
-          disabled={isDeletingUser}
-          onClick={handleOnDeleteUser}
+          disabled={isDeletingCase}
+          onClick={handleOnDeleteCase}
         >
           {
-            isDeletingUser
+            isDeletingCase
               ?
                 <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
                   <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
@@ -57,4 +56,4 @@ const DeleteUser = (props) => {
   );
 }
 
-export default DeleteUser;
+export default DeleteCase;

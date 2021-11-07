@@ -25,7 +25,7 @@ const Members = () => {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const users = useSelector(state => state.admin.users);
-  const lastVisible = useSelector(state => state.admin.lastVisible);
+  const lastVisible = useSelector(state => state.admin.lastUserVisible);
   const isFetchingUsers = useSelector(state => state.admin.isFetchingUsers);
   const metadata = useSelector(state => state.admin.metadata);
   const isFetchingMetadata = useSelector(state => state.admin.isFetchingMetadata);
@@ -36,6 +36,7 @@ const Members = () => {
         limit: noOfRowsPerPage,
         lastVisible
       };
+      console.log({data})
       dispatch(fetchUsers(data));
     }
     if(!metadata && !isFetchingMetadata) {

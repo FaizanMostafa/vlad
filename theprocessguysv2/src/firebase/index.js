@@ -18,6 +18,13 @@ const uploadMedia = async(file, baseFolder, timestamp=new Date().toISOString()) 
   return snapshot.ref.getDownloadURL();
 }
 
+const uploadBase64Media = async(file, baseFolder, timestamp=new Date().toISOString()) => {
+  var storageRef = firebase.storage().ref();
+  var fileRef = storageRef.child(`${baseFolder}${timestamp}${file.name}`);
+  await fileRef.putString(file.base64, 'data_url');
+  return fileRef.getDownloadURL();
+}
+
 const deleteMedia = async(filePath) => {
   var storageRef = firebase.storage().ref();
   return storageRef.child(filePath).delete();
@@ -45,5 +52,6 @@ export {
   db,
   deleteMedia,
   uploadMedia,
+  uploadBase64Media
 };
 export default firebase;

@@ -171,129 +171,129 @@ const FileSubmission = ({...props}) => {
                           <div style={{display: "flex", flexWrap: "wrap", paddingLeft: 30}}>
                             <div style={{width: 300}}>
                               <input
-                                id="coverSheet"
+                                id={`coverSheet${key}`}
                                 value={value.fileContents.coverSheet}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, coverSheet: !fileData[key].fileContents.coverSheet}}})}}
                               />
-                              <label className="ml-2" for="coverSheet">Cover Sheet</label>
+                              <label className="ml-2" for={`coverSheet${key}`}>Cover Sheet</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="civilCoverSheet"
+                                id={`civilCoverSheet${key}`}
                                 value={value.fileContents.civilCoverSheet}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, civilCoverSheet: !fileData[key].fileContents.civilCoverSheet}}})}}
                               />
-                              <label className="ml-2" for="civilCoverSheet">Civil Cover Sheet</label>
+                              <label className="ml-2" for={`civilCoverSheet${key}`}>Civil Cover Sheet</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="summons"
+                                id={`summons${key}`}
                                 value={value.fileContents.summons}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, summons: !fileData[key].fileContents.summons}}})}}
                               />
-                              <label className="ml-2" for="summons">Summons</label>
+                              <label className="ml-2" for={`summons${key}`}>Summons</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="complaint"
+                                id={`complaint${key}`}
                                 value={value.fileContents.complaint}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, complaint: !fileData[key].fileContents.complaint}}})}}
                               />
-                              <label className="ml-2" for="complaint">Complaint</label>
+                              <label className="ml-2" for={`complaint${key}`}>Complaint</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="contract"
+                                id={`contract${key}`}
                                 value={value.fileContents.contract}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, contract: !fileData[key].fileContents.contract}}})}}
                               />
-                              <label className="ml-2" for="contract">Contract</label>
+                              <label className="ml-2" for={`contract${key}`}>Contract</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="alternativeDisputeResolution"
+                                id={`alternativeDisputeResolution${key}`}
                                 value={value.fileContents.alternativeDisputeResolution}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, alternativeDisputeResolution: !fileData[key].fileContents.alternativeDisputeResolution}}})}}
                               />
-                              <label className="ml-2" for="alternativeDisputeResolution">Alternative Dispute Resolution</label>
+                              <label className="ml-2" for={`alternativeDisputeResolution${key}`}>Alternative Dispute Resolution</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="exhibit"
+                                id={`exhibit${key}`}
                                 value={value.fileContents.exhibit}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, exhibit: !fileData[key].fileContents.exhibit}}})}}
                               />
-                              <label className="ml-2" for="exhibit">Exhibit</label>
+                              <label className="ml-2" for={`exhibit${key}`}>Exhibit</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="dissolutionOfMarriage"
+                                id={`dissolutionOfMarriage${key}`}
                                 value={value.fileContents.dissolutionOfMarriage}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, dissolutionOfMarriage: !fileData[key].fileContents.dissolutionOfMarriage}}})}}
                               />
-                              <label className="ml-2" for="dissolutionOfMarriage">Dissolution Of Marriage</label>
+                              <label className="ml-2" for={`dissolutionOfMarriage${key}`}>Dissolution Of Marriage</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="temporaryRestrainingOrder"
+                                id={`temporaryRestrainingOrder${key}`}
                                 value={value.fileContents.temporaryRestrainingOrder}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, temporaryRestrainingOrder: !fileData[key].fileContents.temporaryRestrainingOrder}}})}}
                               />
-                              <label className="ml-2" for="temporaryRestrainingOrder">Temporary Restraining Order</label>
+                              <label className="ml-2" for={`temporaryRestrainingOrder${key}`}>Temporary Restraining Order</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="restrainingOrder"
+                                id={`restrainingOrder${key}`}
                                 value={value.fileContents.restrainingOrder}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, restrainingOrder: !fileData[key].fileContents.restrainingOrder}}})}}
                               />
-                              <label className="ml-2" for="restrainingOrder">Restraining Order</label>
+                              <label className="ml-2" for={`restrainingOrder${key}`}>Restraining Order</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="petition"
+                                id={`petition${key}`}
                                 value={value.fileContents.petition}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, petition: !fileData[key].fileContents.petition}}})}}
                               />
-                              <label className="ml-2" for="petition">Petition</label>
+                              <label className="ml-2" for={`petition${key}`}>Petition</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="statementOfLocation"
+                                id={`statementOfLocation${key}`}
                                 value={value.fileContents.statementOfLocation}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, statementOfLocation: !fileData[key].fileContents.statementOfLocation}}})}}
                               />
-                              <label className="ml-2" for="statementOfLocation">Statement Of Locations/Venue</label>
+                              <label className="ml-2" for={`statementOfLocation${key}`}>Statement Of Locations/Venue</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="declarationOfVenue"
+                                id={`declarationOfVenue${key}`}
                                 value={value.fileContents.declarationOfVenue}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfVenue: !fileData[key].fileContents.declarationOfVenue}}})}}
                               />
-                              <label className="ml-2" for="declarationOfVenue">Declaration Of Venue</label>
+                              <label className="ml-2" for={`declarationOfVenue${key}`}>Declaration Of Venue</label>
                             </div>
                             <div style={{width: 300}}>
                               <input
-                                id="declarationOfReducedFilingFee"
+                                id={`declarationOfReducedFilingFee${key}`}
                                 value={value.fileContents.declarationOfReducedFilingFee}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfReducedFilingFee: !fileData[key].fileContents.declarationOfReducedFilingFee}}})}}
                               />
-                              <label className="ml-2" for="declarationOfReducedFilingFee">Declaration Of Reduced Filing Fee</label>
+                              <label className="ml-2" for={`declarationOfReducedFilingFee${key}`}>Declaration Of Reduced Filing Fee</label>
                             </div>
                           </div>
                         </Form.Group>
@@ -360,11 +360,142 @@ const FileSubmission = ({...props}) => {
                               </Form.Group>
                               <Form.Group id="mS-file-upload">
                                 <label>File Contents</label>
+                                <div style={{display: "flex", flexWrap: "wrap", paddingLeft: 30}}>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`coverSheet${key}`}
+                                      value={value.fileContents.coverSheet}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, coverSheet: !fileData[key].fileContents.coverSheet}}})}}
+                                    />
+                                    <label className="ml-2" for={`coverSheet${key}`}>Cover Sheet</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`civilCoverSheet${key}`}
+                                      value={value.fileContents.civilCoverSheet}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, civilCoverSheet: !fileData[key].fileContents.civilCoverSheet}}})}}
+                                    />
+                                    <label className="ml-2" for={`civilCoverSheet${key}`}>Civil Cover Sheet</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`summons${key}`}
+                                      value={value.fileContents.summons}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, summons: !fileData[key].fileContents.summons}}})}}
+                                    />
+                                    <label className="ml-2" for={`summons${key}`}>Summons</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`complaint${key}`}
+                                      value={value.fileContents.complaint}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, complaint: !fileData[key].fileContents.complaint}}})}}
+                                    />
+                                    <label className="ml-2" for={`complaint${key}`}>Complaint</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`contract${key}`}
+                                      value={value.fileContents.contract}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, contract: !fileData[key].fileContents.contract}}})}}
+                                    />
+                                    <label className="ml-2" for={`contract${key}`}>Contract</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`alternativeDisputeResolution${key}`}
+                                      value={value.fileContents.alternativeDisputeResolution}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, alternativeDisputeResolution: !fileData[key].fileContents.alternativeDisputeResolution}}})}}
+                                    />
+                                    <label className="ml-2" for={`alternativeDisputeResolution${key}`}>Alternative Dispute Resolution</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`exhibit${key}`}
+                                      value={value.fileContents.exhibit}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, exhibit: !fileData[key].fileContents.exhibit}}})}}
+                                    />
+                                    <label className="ml-2" for={`exhibit${key}`}>Exhibit</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`dissolutionOfMarriage${key}`}
+                                      value={value.fileContents.dissolutionOfMarriage}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, dissolutionOfMarriage: !fileData[key].fileContents.dissolutionOfMarriage}}})}}
+                                    />
+                                    <label className="ml-2" for={`dissolutionOfMarriage${key}`}>Dissolution Of Marriage</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`temporaryRestrainingOrder${key}`}
+                                      value={value.fileContents.temporaryRestrainingOrder}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, temporaryRestrainingOrder: !fileData[key].fileContents.temporaryRestrainingOrder}}})}}
+                                    />
+                                    <label className="ml-2" for={`temporaryRestrainingOrder${key}`}>Temporary Restraining Order</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`restrainingOrder${key}`}
+                                      value={value.fileContents.restrainingOrder}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, restrainingOrder: !fileData[key].fileContents.restrainingOrder}}})}}
+                                    />
+                                    <label className="ml-2" for={`restrainingOrder${key}`}>Restraining Order</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`petition${key}`}
+                                      value={value.fileContents.petition}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, petition: !fileData[key].fileContents.petition}}})}}
+                                    />
+                                    <label className="ml-2" for={`petition${key}`}>Petition</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`statementOfLocation${key}`}
+                                      value={value.fileContents.statementOfLocation}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, statementOfLocation: !fileData[key].fileContents.statementOfLocation}}})}}
+                                    />
+                                    <label className="ml-2" for={`statementOfLocation${key}`}>Statement Of Locations/Venue</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`declarationOfVenue${key}`}
+                                      value={value.fileContents.declarationOfVenue}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfVenue: !fileData[key].fileContents.declarationOfVenue}}})}}
+                                    />
+                                    <label className="ml-2" for={`declarationOfVenue${key}`}>Declaration Of Venue</label>
+                                  </div>
+                                  <div style={{width: 300}}>
+                                    <input
+                                      id={`declarationOfReducedFilingFee${key}`}
+                                      value={value.fileContents.declarationOfReducedFilingFee}
+                                      type="checkbox"
+                                      onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfReducedFilingFee: !fileData[key].fileContents.declarationOfReducedFilingFee}}})}}
+                                    />
+                                    <label className="ml-2" for={`declarationOfReducedFilingFee${key}`}>Declaration Of Reduced Filing Fee</label>
+                                  </div>
+                                </div>
+                              </Form.Group>
+                              <Form.Group id="mS-file-upload">
+                                <label>File Description</label>
                                 <MDBInput
                                   className="text-white"
-                                  value={value.fileContents}
-                                  hint="Case type, Summons, Complaint, Cover Sheet, Exhibit, Specific Forms, etc"
-                                  onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: e.target.value}})}}
+                                  value={value.description}
+                                  hint=""
+                                  onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], description: e.target.value}})}}
                                 />
                               </Form.Group>
                               <Form.Group id="mS-file-upload">

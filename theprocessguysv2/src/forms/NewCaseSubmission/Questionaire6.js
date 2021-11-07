@@ -1,4 +1,5 @@
 import { MDBCol, MDBInput } from "mdbreact";
+import FileBase64 from "../../components/FileBase64";
 import QuestionaireAdditionalServeeTemplate from '../../pages/questionaireAdditionalServeeTemplate';
 
 const Questionaire6 = (props) => {
@@ -6,6 +7,11 @@ const Questionaire6 = (props) => {
     serveesPhysicalDescription,
     setServeesPhysicalDescription
   } = props;
+
+  const handleSaveImage = (image, key, servee) => {
+    delete image.file;
+    setServeesPhysicalDescription({...serveesPhysicalDescription, [key]: {...servee, image}})
+  }
 
   return (
     <>
@@ -131,10 +137,10 @@ const Questionaire6 = (props) => {
             <MDBCol md="12 mb-4" id="image-of-individuals">
               <div id="image-of-individuals">
                 <label>Servee Image <i>(If Available)</i></label>
-                <input type='file'
+                <FileBase64
+                  multiple={false}
+                  onDone={(image)=>handleSaveImage(image, key, servee)}
                   accept=".jpg,.png"
-                  label='Upload'
-                  onChange={(e) => setServeesPhysicalDescription({...serveesPhysicalDescription, [key]: {...servee, image: e.target.files[0]}})}
                 />
               </div>
             </MDBCol>
