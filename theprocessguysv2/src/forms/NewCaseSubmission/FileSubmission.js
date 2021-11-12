@@ -172,7 +172,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`coverSheet${key}`}
-                                value={value.fileContents.coverSheet}
+                                checked={value.fileContents.coverSheet}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, coverSheet: !fileData[key].fileContents.coverSheet}}})}}
                               />
@@ -181,7 +181,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`civilCoverSheet${key}`}
-                                value={value.fileContents.civilCoverSheet}
+                                checked={value.fileContents.civilCoverSheet}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, civilCoverSheet: !fileData[key].fileContents.civilCoverSheet}}})}}
                               />
@@ -190,7 +190,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`summons${key}`}
-                                value={value.fileContents.summons}
+                                checked={value.fileContents.summons}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, summons: !fileData[key].fileContents.summons}}})}}
                               />
@@ -199,7 +199,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`complaint${key}`}
-                                value={value.fileContents.complaint}
+                                checked={value.fileContents.complaint}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, complaint: !fileData[key].fileContents.complaint}}})}}
                               />
@@ -208,7 +208,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`contract${key}`}
-                                value={value.fileContents.contract}
+                                checked={value.fileContents.contract}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, contract: !fileData[key].fileContents.contract}}})}}
                               />
@@ -217,7 +217,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`alternativeDisputeResolution${key}`}
-                                value={value.fileContents.alternativeDisputeResolution}
+                                checked={value.fileContents.alternativeDisputeResolution}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, alternativeDisputeResolution: !fileData[key].fileContents.alternativeDisputeResolution}}})}}
                               />
@@ -226,7 +226,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`exhibit${key}`}
-                                value={value.fileContents.exhibit}
+                                checked={value.fileContents.exhibit}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, exhibit: !fileData[key].fileContents.exhibit}}})}}
                               />
@@ -235,7 +235,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`dissolutionOfMarriage${key}`}
-                                value={value.fileContents.dissolutionOfMarriage}
+                                checked={value.fileContents.dissolutionOfMarriage}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, dissolutionOfMarriage: !fileData[key].fileContents.dissolutionOfMarriage}}})}}
                               />
@@ -244,7 +244,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`temporaryRestrainingOrder${key}`}
-                                value={value.fileContents.temporaryRestrainingOrder}
+                                checked={value.fileContents.temporaryRestrainingOrder}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, temporaryRestrainingOrder: !fileData[key].fileContents.temporaryRestrainingOrder}}})}}
                               />
@@ -253,7 +253,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`restrainingOrder${key}`}
-                                value={value.fileContents.restrainingOrder}
+                                checked={value.fileContents.restrainingOrder}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, restrainingOrder: !fileData[key].fileContents.restrainingOrder}}})}}
                               />
@@ -262,7 +262,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`petition${key}`}
-                                value={value.fileContents.petition}
+                                checked={value.fileContents.petition}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, petition: !fileData[key].fileContents.petition}}})}}
                               />
@@ -271,7 +271,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`statementOfLocation${key}`}
-                                value={value.fileContents.statementOfLocation}
+                                checked={value.fileContents.statementOfLocation}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, statementOfLocation: !fileData[key].fileContents.statementOfLocation}}})}}
                               />
@@ -280,7 +280,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`declarationOfVenue${key}`}
-                                value={value.fileContents.declarationOfVenue}
+                                checked={value.fileContents.declarationOfVenue}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfVenue: !fileData[key].fileContents.declarationOfVenue}}})}}
                               />
@@ -289,7 +289,7 @@ const FileSubmission = ({...props}) => {
                             <div style={{width: 300}}>
                               <input
                                 id={`declarationOfReducedFilingFee${key}`}
-                                value={value.fileContents.declarationOfReducedFilingFee}
+                                checked={value.fileContents.declarationOfReducedFilingFee}
                                 type="checkbox"
                                 onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfReducedFilingFee: !fileData[key].fileContents.declarationOfReducedFilingFee}}})}}
                               />
@@ -364,7 +364,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`coverSheet${key}`}
-                                      value={value.fileContents.coverSheet}
+                                      checked={value.fileContents.coverSheet}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, coverSheet: !fileData[key].fileContents.coverSheet}}})}}
                                     />
@@ -373,7 +373,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`civilCoverSheet${key}`}
-                                      value={value.fileContents.civilCoverSheet}
+                                      checked={value.fileContents.civilCoverSheet}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, civilCoverSheet: !fileData[key].fileContents.civilCoverSheet}}})}}
                                     />
@@ -382,7 +382,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`summons${key}`}
-                                      value={value.fileContents.summons}
+                                      checked={value.fileContents.summons}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, summons: !fileData[key].fileContents.summons}}})}}
                                     />
@@ -391,7 +391,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`complaint${key}`}
-                                      value={value.fileContents.complaint}
+                                      checked={value.fileContents.complaint}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, complaint: !fileData[key].fileContents.complaint}}})}}
                                     />
@@ -400,7 +400,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`contract${key}`}
-                                      value={value.fileContents.contract}
+                                      checked={value.fileContents.contract}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, contract: !fileData[key].fileContents.contract}}})}}
                                     />
@@ -409,7 +409,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`alternativeDisputeResolution${key}`}
-                                      value={value.fileContents.alternativeDisputeResolution}
+                                      checked={value.fileContents.alternativeDisputeResolution}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, alternativeDisputeResolution: !fileData[key].fileContents.alternativeDisputeResolution}}})}}
                                     />
@@ -418,7 +418,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`exhibit${key}`}
-                                      value={value.fileContents.exhibit}
+                                      checked={value.fileContents.exhibit}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, exhibit: !fileData[key].fileContents.exhibit}}})}}
                                     />
@@ -427,7 +427,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`dissolutionOfMarriage${key}`}
-                                      value={value.fileContents.dissolutionOfMarriage}
+                                      checked={value.fileContents.dissolutionOfMarriage}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, dissolutionOfMarriage: !fileData[key].fileContents.dissolutionOfMarriage}}})}}
                                     />
@@ -436,7 +436,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`temporaryRestrainingOrder${key}`}
-                                      value={value.fileContents.temporaryRestrainingOrder}
+                                      checked={value.fileContents.temporaryRestrainingOrder}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, temporaryRestrainingOrder: !fileData[key].fileContents.temporaryRestrainingOrder}}})}}
                                     />
@@ -445,7 +445,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`restrainingOrder${key}`}
-                                      value={value.fileContents.restrainingOrder}
+                                      checked={value.fileContents.restrainingOrder}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, restrainingOrder: !fileData[key].fileContents.restrainingOrder}}})}}
                                     />
@@ -454,7 +454,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`petition${key}`}
-                                      value={value.fileContents.petition}
+                                      checked={value.fileContents.petition}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, petition: !fileData[key].fileContents.petition}}})}}
                                     />
@@ -463,7 +463,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`statementOfLocation${key}`}
-                                      value={value.fileContents.statementOfLocation}
+                                      checked={value.fileContents.statementOfLocation}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, statementOfLocation: !fileData[key].fileContents.statementOfLocation}}})}}
                                     />
@@ -472,7 +472,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`declarationOfVenue${key}`}
-                                      value={value.fileContents.declarationOfVenue}
+                                      checked={value.fileContents.declarationOfVenue}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfVenue: !fileData[key].fileContents.declarationOfVenue}}})}}
                                     />
@@ -481,7 +481,7 @@ const FileSubmission = ({...props}) => {
                                   <div style={{width: 300}}>
                                     <input
                                       id={`declarationOfReducedFilingFee${key}`}
-                                      value={value.fileContents.declarationOfReducedFilingFee}
+                                      checked={value.fileContents.declarationOfReducedFilingFee}
                                       type="checkbox"
                                       onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], fileContents: {...fileData[key].fileContents, declarationOfReducedFilingFee: !fileData[key].fileContents.declarationOfReducedFilingFee}}})}}
                                     />
@@ -518,8 +518,10 @@ const FileSubmission = ({...props}) => {
                           {
                             isPosting
                               ?
-                                <div style={{color: "white"}} className="spinner-border" role="status">
-                                  <span className="sr-only">Loading...</span>
+                                <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                                  <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                  </div>  
                                 </div>
                               :
                                 <span className="text-white">Submit Case</span>

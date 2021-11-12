@@ -5,6 +5,7 @@ import {
   FETCH_CASES,
   UPDATE_USER,
   FETCH_METADATA,
+  FETCH_CASE_DETAILS,
   SET_IS_UPDATING_USER,
   SET_IS_DELETING_USER,
   SET_IS_CREATING_USER,
@@ -13,7 +14,8 @@ import {
   SET_IS_DELETING_CASE,
   SET_IS_FETCHING_METADATA,
   DELETE_USER,
-  DELETE_CASE
+  DELETE_CASE,
+  SET_IS_FETCHING_CASE_DETAILS
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -33,6 +35,13 @@ const setIsFetchingUsers = (status) => {
 const setIsFetchingCases = (status) => {
   return {
     type: SET_IS_FETCHING_CASES,
+    payload: status
+  };
+}
+
+const setIsFetchingCaseDetails = (status) => {
+  return {
+    type: SET_IS_FETCHING_CASE_DETAILS,
     payload: status
   };
 }
@@ -219,6 +228,46 @@ const fetchCases = (data) => (
   }
 )
 
+const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsFetchingCaseDetails(true));
+      let caseData = {};
+      let subQuerySnapshot = {};
+      subQuerySnapshot = await db.collection("CaseInformation-1").doc(data.CaseInformationId).get();
+      caseData["CaseInformation"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("PlaintiffInformation-2").doc(data.PlaintiffInformationId).get();
+      caseData["PlaintiffInformation"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("DefendantInformation-3").doc(data.DefendantInformationId).get();
+      caseData["DefendantInformation"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("ServeeDocumentedData-4").doc(data.ServeeDocumentedDataId).get();
+      caseData["ServeeDocumentedData"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("ClearanceOfAction-5").doc(data.ClearanceOfActionId).get();
+      caseData["ClearanceOfAction"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("ServeePhysicalDescription-6").doc(data.ServeePhysicalDescriptionId).get();
+      caseData["ServeePhysicalDescription"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("VehicleInformation-7").doc(data.VehicleInformationId).get();
+      caseData["VehicleInformation"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("OfferedServices-8").doc(data.OfferedServicesId).get();
+      caseData["OfferedServices"] = subQuerySnapshot.data();
+      subQuerySnapshot = await db.collection("FileSubmission-9").doc(data.FileSubmissionId).get();
+      caseData["FileSubmission"] = subQuerySnapshot.data();
+      dispatch({
+        type: FETCH_CASE_DETAILS,
+        payload: {
+          caseId: data.docId,
+          ...caseData
+        }
+      });
+      onSuccess();
+    } catch(error) {
+      onError();
+      dispatch(setIsFetchingCaseDetails(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
 const deleteCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async(dispatch) => {
     try {
@@ -276,5 +325,6 @@ export {
   fetchUsers,
   fetchCases,
   deleteCase,
-  getMetadataInfo
+  getMetadataInfo,
+  fetchCaseDetails,
 };

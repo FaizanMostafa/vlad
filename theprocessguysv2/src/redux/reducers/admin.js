@@ -6,19 +6,23 @@ import {
   SET_IS_CREATING_USER,
   SET_IS_DELETING_USER,
   SET_IS_DELETING_CASE,
+  FETCH_CASE_DETAILS,
   FETCH_METADATA,
   DELETE_USER,
   FETCH_USERS,
   FETCH_CASES,
   DELETE_CASE,
   UPDATE_USER,
-  LOGOUT
+  LOGOUT,
+  SET_IS_FETCHING_CASE_DETAILS
 } from "../constants";
 
 const initState = {
   users: [],
   cases: [],
+  caseDetails: null,
   metadata: null,
+  isFetchingCaseDetails: true,
   lastUserVisible: null,
   lastCaseVisible: null,
   isCreatingUser: false,
@@ -67,6 +71,13 @@ export default (state=initState, {type, payload}) => {
       };
     }
 
+    case SET_IS_FETCHING_CASE_DETAILS: {
+      return {
+        ...state,
+        isFetchingCaseDetails: payload
+      };
+    }
+
     case FETCH_USERS: {
       return {
         ...state,
@@ -106,6 +117,14 @@ export default (state=initState, {type, payload}) => {
         isFetchingCases: false,
         cases: [...state.cases, ...payload.cases],
         lastCaseVisible: payload.lastVisible
+      };
+    }
+
+    case FETCH_CASE_DETAILS: {
+      return {
+        ...state,
+        isFetchingCaseDetails: false,
+        caseDetails: payload
       };
     }
 

@@ -27,6 +27,7 @@ export const UPDATE_USER = "UPDATE_USER";
 export const FETCH_USERS = "FETCH_USERS";
 export const DELETE_USER = "DELETE_USER";
 export const FETCH_CASES = "FETCH_CASES";
+export const FETCH_CASE_DETAILS = "FETCH_CASE_DETAILS";
 export const DELETE_CASE = "DELETE_CASE";
 export const FETCH_METADATA = "FETCH_METADATA";
 export const SET_IS_CREATING_USER = "SET_IS_CREATING_USER";

@@ -131,7 +131,7 @@ const Cases = () => {
                         onClick={() => handleOnClickEdit(userCase)}
                         icon="pencil-alt"
                       />
-                      <Link style={{float: "none"}} to={{pathname: `cases/${userCase.uid}`, state: {userCase}}}>
+                      <Link style={{float: "none"}} to={{pathname: `cases/${userCase.docId}`, state: {userCase}}}>
                         <MDBIcon
                           style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
                           icon="eye"
