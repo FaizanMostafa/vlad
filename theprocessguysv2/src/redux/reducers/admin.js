@@ -1,5 +1,7 @@
 import {
   SET_IS_UPDATING_USER,
+  SET_IS_CREATING_CASE,
+  SET_IS_UPDATING_CASE,
   SET_IS_FETCHING_METADATA,
   SET_IS_FETCHING_USERS,
   SET_IS_FETCHING_CASES,
@@ -28,6 +30,8 @@ const initState = {
   isCreatingUser: false,
   isUpdatingUser: false,
   isDeletingUser: false,
+  isCreatingCase: false,
+  isUpdatingCase: false,
   isDeletingCase: false,
   isFetchingMetadata: false,
   isFetchingUsers: true,
@@ -68,6 +72,20 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isDeletingUser: payload
+      };
+    }
+
+    case SET_IS_CREATING_CASE: {
+      return {
+        ...state,
+        isCreatingCase: payload
+      };
+    }
+
+    case SET_IS_UPDATING_CASE: {
+      return {
+        ...state,
+        isUpdatingCase: payload
       };
     }
 

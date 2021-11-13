@@ -4,8 +4,7 @@ import { MDBIcon } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
-// import CreateNewUser from "../../popups/CreateNewUser";
-// import CreateNewAdmin from "../../popups/CreateNewAdmin";
+import CreateNewCase from "../../popups/CreateNewCase";
 import DeleteCase from "../../popups/DeleteCase";
 import EditUser from "../../popups/EditUser";
 import {
@@ -91,8 +90,7 @@ const Cases = () => {
           value={searchString}
           onChange={(e)=>setSearchString(e.target.value)}
         /> */}
-        {/* <CreateNewAdmin />
-        <CreateNewUser /> */}
+        <CreateNewCase />
       </div>
       <Table striped bordered hover size="sm">
         <thead>

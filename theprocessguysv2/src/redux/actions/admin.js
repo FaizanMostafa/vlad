@@ -1,4 +1,4 @@
-import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
+import firebase, {db, uploadMedia, deleteMedia, uploadBase64Media} from "../../firebase";
 import {showToast} from "../../utils";
 import {
   FETCH_USERS,
@@ -15,7 +15,9 @@ import {
   SET_IS_FETCHING_METADATA,
   DELETE_USER,
   DELETE_CASE,
-  SET_IS_FETCHING_CASE_DETAILS
+  SET_IS_FETCHING_CASE_DETAILS,
+  SET_IS_CREATING_CASE,
+  SET_IS_UPDATING_CASE
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -63,6 +65,20 @@ const setIsDeletingUser = (status) => {
 const setIsCreatingUser = (status) => {
   return {
     type: SET_IS_CREATING_USER,
+    payload: status
+  };
+}
+
+const setIsCreatingCase = (status) => {
+  return {
+    type: SET_IS_CREATING_CASE,
+    payload: status
+  };
+}
+
+const setIsUpdatingCase = (status) => {
+  return {
+    type: SET_IS_UPDATING_CASE,
     payload: status
   };
 }
@@ -228,6 +244,94 @@ const fetchCases = (data) => (
   }
 )
 
+const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async (dispatch) => {
+    try {
+      dispatch(setIsCreatingCase(true));
+      let serveesDocumentedDataDocRefs = [];
+      const caseInformationDocRef = await db.collection("CaseInformation-1").add({uid: data.uid, ...data["CaseInformation-1"]});
+      const plaintiffInformationDocRef = await db.collection("PlaintiffInformation-2").add({uid: data.uid, ...data["PlaintiffInformation-2"]});
+      const defendantInformationDocRef = await db.collection("DefendantInformation-3").add({uid: data.uid, ...data["DefendantInformation-3"]});
+      const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
+      delete data["ServeeDocumentedData-4"].serveesDetail;
+      for (const servee of serveesDetail) {
+        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], serveesDetail: {0: servee}});
+        serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
+      }
+      const clearanceOfActionDocRef = await db.collection("ClearanceOfAction-5").add({uid: data.uid, ...data["ClearanceOfAction-5"]});
+      for (const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
+        const image = data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
+        if(image) {
+          const timestamp = new Date().toISOString();
+          const imagePath = `servees_pictures/${data.uid}/${timestamp}${image.name}`;
+          const imageURI = await uploadBase64Media(image, `servees_pictures/${data.uid}/`, timestamp);
+          delete data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
+          data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].imageURI = imageURI;
+          data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].imagePath = imagePath;
+        }
+      }
+      const serveePhysicalDescriptionDocRef = await db.collection("ServeePhysicalDescription-6").add({uid: data.uid, ...data["ServeePhysicalDescription-6"]});
+      const vehicleInformationDocRef = await db.collection("VehicleInformation-7").add({uid: data.uid, ...data["VehicleInformation-7"]});
+      const offeredServicesDocRef = await db.collection("OfferedServices-8").add({uid: data.uid, ...data["OfferedServices-8"]});
+      let documentURI;
+      let documentPath;
+      if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
+        for(const document of data["documents"]) {
+          const timestamp = new Date().toISOString();
+          documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
+          documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
+          const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
+          const caseDocRef = await db.collection("cases").add({
+            uid: data.uid, filedAt: new Date(),
+            caseTitle: data["CaseInformation-1"].caseTitle,
+            CaseInformationId: caseInformationDocRef.id,
+            PlaintiffInformationId: plaintiffInformationDocRef.id,
+            DefendantInformationId: defendantInformationDocRef.id,
+            ServeeDocumentedDataId: serveesDocumentedDataDocRefs[0].id,
+            ClearanceOfActionId: clearanceOfActionDocRef.id,
+            ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
+            VehicleInformationId: vehicleInformationDocRef.id,
+            OfferedServicesId: offeredServicesDocRef.id,
+            FileSubmissionId: fileSubmissionDocRef.id,
+            status: "pending"
+          });
+          await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+        }
+      } else {
+        const document = data.documents[0];
+        const timestamp = new Date().toISOString();
+        documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
+        documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
+        const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
+        for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
+          const caseDocRef = await db.collection("cases").add({
+            uid: data.uid, filedAt: new Date(),
+            caseTitle: data["CaseInformation-1"].caseTitle,
+            CaseInformationId: caseInformationDocRef.id,
+            PlaintiffInformationId: plaintiffInformationDocRef.id,
+            DefendantInformationId: defendantInformationDocRef.id,
+            ServeeDocumentedDataId: serveeDocumentedDataDocRef.id,
+            ClearanceOfActionId: clearanceOfActionDocRef.id,
+            ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
+            VehicleInformationId: vehicleInformationDocRef.id,
+            OfferedServicesId: offeredServicesDocRef.id,
+            FileSubmissionId: fileSubmissionDocRef.id,
+            status: "pending"
+          });
+          await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+        }
+      }
+      showToast("Case submitted successfully!", "success");
+      dispatch(setIsCreatingCase(false));
+      onSuccess();
+    } catch(error) {
+      onError();
+      dispatch(setIsCreatingCase(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
 const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async(dispatch) => {
     try {
@@ -325,6 +429,7 @@ export {
   fetchUsers,
   fetchCases,
   deleteCase,
+  createCase,
   getMetadataInfo,
   fetchCaseDetails,
 };
