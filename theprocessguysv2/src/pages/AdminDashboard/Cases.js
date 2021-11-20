@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import CreateNewCase from "../../popups/CreateNewCase";
 import DeleteCase from "../../popups/DeleteCase";
-import EditUser from "../../popups/EditUser";
+import EditCase from "../../popups/EditCase";
 import {
+  fetchCaseDetails,
   fetchCases,
   getMetadataInfo
 } from "../../redux/actions/admin";
@@ -78,6 +79,7 @@ const Cases = () => {
   }
 
   const handleOnClickEdit = (userCase) => {
+    dispatch(fetchCaseDetails({...userCase}));
     setUserCase(userCase);
     setEditModalShow(true);
   }
@@ -157,10 +159,9 @@ const Cases = () => {
         setModalShow={setDeleteModalShow}
         case={userCase}
       />
-      <EditUser
+      <EditCase
         modalShow={editModalShow}
         setModalShow={setEditModalShow}
-        case={userCase}
       />
     </div>
   );

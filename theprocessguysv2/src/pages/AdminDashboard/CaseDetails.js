@@ -199,6 +199,7 @@ const CaseDetails = (props) => {
           &&
             <FileSubmission
               isFormDisabled={true}
+              documentURI={caseDetails.FileSubmission.documentURI}
               fileData={caseDetails.FileSubmission.fileData}
             />
       }

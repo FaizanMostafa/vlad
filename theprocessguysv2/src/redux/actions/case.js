@@ -47,7 +47,7 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       for (const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
         const image = data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
         if(image) {
-          const timestamp = new Date().toISOString();
+          const timestamp = new Date().getMilliseconds();
           const imagePath = `servees_pictures/${data.uid}/${timestamp}${image.name}`;
           const imageURI = await uploadBase64Media(image, `servees_pictures/${data.uid}/`, timestamp);
           delete data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
@@ -62,10 +62,11 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let documentPath;
       if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
         for(const document of data["documents"]) {
-          const timestamp = new Date().toISOString();
-          documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
+          const timestamp = new Date().getMilliseconds();
+          const fileName = document.file.name.trim().replaceAll(" ", "");
+          documentPath = `file_submissions/${data.uid}/${timestamp}${fileName}`;
           documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
-          const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
+          const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
           const caseDocRef = await db.collection("cases").add({
             uid: data.uid, filedAt: new Date(),
             caseTitle: data["CaseInformation-1"].caseTitle,
@@ -84,10 +85,11 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         }
       } else {
         const document = data.documents[0];
-        const timestamp = new Date().toISOString();
-        documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
+        const timestamp = new Date().getMilliseconds();
+        const fileName = document.file.name.trim().replaceAll(" ", "");
+        documentPath = `file_submissions/${data.uid}/${timestamp}${fileName}`;
         documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
-        const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
+        const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
         for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
           const caseDocRef = await db.collection("cases").add({
             uid: data.uid, filedAt: new Date(),

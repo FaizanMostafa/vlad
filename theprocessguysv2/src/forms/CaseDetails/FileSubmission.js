@@ -2,23 +2,24 @@ import { Fragment, useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { MDBCol, MDBInput } from 'mdbreact';
+import { MDBCol } from 'mdbreact';
 import { showToast } from "../../utils";
 import {
   submitCase
 } from "../../redux/actions/case";
 
-const FileSubmission = ({isFormDisabled, ...props}) => {
+const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(state => state.auth.user);
   const isPosting = useSelector(state => state.caseReducer.isPosting);
+  const [isFileVisible, setIsFileVisible] = useState(false);
   const [fileData, setFileData] = useState({});
   const [fileSubmissionType, setFileSubmissionType] = useState("");
 
   useEffect(() => {
-    if(isFormDisabled && props.fileData) {
+    if(props.fileData) {
       setFileData(props.fileData);
     } else {
       const numberOfCaseFilesBeingServed = JSON.parse(localStorage.getItem("Questionaire4")).numberOfCaseFilesBeingServed;
@@ -143,6 +144,35 @@ const FileSubmission = ({isFormDisabled, ...props}) => {
         localStorage.removeItem("Questionaire7");
         localStorage.removeItem("Questionaire8");
       }));
+    }
+  }
+
+  const forceDownload = (blob, filename) => {
+    var a = document.createElement('a');
+    a.download = filename;
+    a.href = blob;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+  
+  const downloadResource = (url, filename) => {
+    showToast("Your download will begin shortly!", "success");
+    if (!filename) filename = url.split('\\').pop().split('/').pop();
+    fetch(url)
+      .then(response => response.blob())
+      .then(blob => {
+        let blobUrl = window.URL.createObjectURL(blob);
+        forceDownload(blobUrl, filename);
+      })
+      .catch(e => console.error(e));
+  }
+
+  const handleOnClickViewFile = (fileName) => {
+    if(fileName===isFileVisible) {
+      setIsFileVisible(false);
+    } else {
+      setIsFileVisible(fileName);
     }
   }
 
@@ -332,7 +362,7 @@ const FileSubmission = ({isFormDisabled, ...props}) => {
                       </div>
                     </Form.Group>
                     {
-                      isFormDisabled
+                      (isFormDisabled || isFormUpdating)
                         &&
                           <Form.Group>
                             <Form.Label>File Name</Form.Label>
@@ -342,7 +372,7 @@ const FileSubmission = ({isFormDisabled, ...props}) => {
                             />
                           </Form.Group>
                     }
-                    <Form.Group id="mS-file-upload">
+                    <Form.Group id="mS-file-description">
                       <Form.Label>File Description</Form.Label>
                       <Form.Control
                         type="textarea"
@@ -351,6 +381,27 @@ const FileSubmission = ({isFormDisabled, ...props}) => {
                         onChange={(e)=>{setFileData({...fileData, [key]: {...fileData[key], description: e.target.value}})}}
                       />
                     </Form.Group>
+                    <div>
+                      {
+                        value.fileType==="single"
+                          &&
+                            <>
+                              <span
+                                onClick={()=>handleOnClickViewFile(value.documentName)}
+                                style={{cursor: "pointer", fontWeight: "bold"}}
+                              >{isFileVisible===value.documentName ? "Hide" : "View"} File</span>
+                              <span
+                                onClick={()=>downloadResource(props.documentURI, props.documentURI.slice(props.documentURI.lastIndexOf('%2F')+3, props.documentURI.lastIndexOf('?')))}
+                                style={{cursor: "pointer", fontWeight: "bold", marginLeft: 20}}
+                              >Download File</span>
+                              {
+                                isFileVisible===value.documentName
+                                  &&
+                                    <iframe src={props.documentURI} width="100%"  height="750px" frameborder="0"/>
+                              }
+                            </>
+                      }
+                    </div>
                     <Form.Group id="mS-file-upload">
                       {
                         !isFormDisabled

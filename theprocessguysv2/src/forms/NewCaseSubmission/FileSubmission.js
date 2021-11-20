@@ -26,6 +26,14 @@ const FileSubmission = ({...props}) => {
     setFileData(caseFileData);
   }, []);
 
+  useEffect(() => {
+    let caseFileData = {};
+    for(let index = 0; index < Object.keys(fileData).length; index++) {
+      caseFileData[index] = {...fileData[index], fileType: fileSubmissionType};
+    }
+    setFileData(caseFileData);
+  }, [fileSubmissionType]);
+
   const handleCaseSubmit = () => {
     if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
       showToast("Please enter the case type in every relevant input field!", "warning");
@@ -326,8 +334,10 @@ const FileSubmission = ({...props}) => {
                     {
                       isPosting
                         ?
-                          <div className="spinner-border text-white" role="status">
-                            <span className="sr-only">Loading...</span>
+                          <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                            <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
+                              <span className="sr-only">Loading...</span>
+                            </div>  
                           </div>
                         :
                           <span className="text-white">Submit Case</span>

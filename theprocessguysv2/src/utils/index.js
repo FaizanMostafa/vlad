@@ -30,6 +30,22 @@ const showToast = (message, type="success") => {
     }
 }
 
+const getMediaType = (fileName="") => {
+    if(fileName.includes(".pdf")) {
+        return 'application/pdf';
+    } else if(fileName.includes(".docx")) {
+        return 'application/docx';
+    } else if(fileName.includes(".doc")) {
+        return 'application/doc';
+    } else if(fileName.includes(".jpg")) {
+        return 'image/jpg';
+    } else if(fileName.includes(".jpeg")) {
+        return 'image/jpeg';
+    } else if(fileName.includes(".png")) {
+        return 'image/png';
+    }
+}
+
 const validateEmail = (email) => {
     return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
 }
@@ -49,6 +65,7 @@ const capitalizeString = (phrase) => {
 export {
     showToast,
     objectsEqual,
+    getMediaType,
     validateEmail,
     capitalizeString,
     validatePhoneNumber

@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { getMediaType } from '../utils';
 
 // Initialize Cloud Firestore through Firebase
 firebase.initializeApp({
@@ -12,15 +13,18 @@ firebase.initializeApp({
 });
 
 const uploadMedia = async(file, baseFolder, timestamp=new Date().toISOString()) => {
+  const fileName = file.name.trim().replaceAll(" ", "");
+  const contentType = getMediaType(fileName);
   var storageRef = firebase.storage().ref();
-  var fileRef = storageRef.child(`${baseFolder}${timestamp}${file.name}`);
-  const snapshot = await fileRef.put(file);
+  var fileRef = storageRef.child(`${baseFolder}${timestamp}${fileName}`);
+  const snapshot = await fileRef.put(file, {contentType});
   return snapshot.ref.getDownloadURL();
 }
 
 const uploadBase64Media = async(file, baseFolder, timestamp=new Date().toISOString()) => {
+  const fileName = file.name.trim().replaceAll(" ", "");
   var storageRef = firebase.storage().ref();
-  var fileRef = storageRef.child(`${baseFolder}${timestamp}${file.name}`);
+  var fileRef = storageRef.child(`${baseFolder}${timestamp}${fileName}`);
   await fileRef.putString(file.base64, 'data_url');
   return fileRef.getDownloadURL();
 }

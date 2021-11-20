@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
-import { MDBRow, MDBCol } from 'mdbreact';
-import { Form, Button, Modal } from 'react-bootstrap';
+import { Link as RSLink, Element } from 'react-scroll';
+import { Stepper } from 'react-form-stepper';
+import { Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
-import { updateUser } from '../redux/actions/admin';
+import { createCase } from '../redux/actions/admin';
+import {
+  ResetQuestionairesConfirmation
+} from "../popups";
 import {
   Questionaire1,
   Questionaire2,
@@ -15,728 +19,940 @@ import {
   Questionaire8,
   FileSubmission
 } from "../forms/CaseDetails";
+import CaseDetails from '../pages/AdminDashboard/CaseDetails';
 
 const EditCase = (props) => {
-  const dispatch = useDispatch();
-  const isUpdatingUser = useSelector(state => state.admin.isUpdatingUser);
-  const [email, setEmail] = useState("");
-  const [SSN, setSSN] = useState("");
-  const [SSNState, setSSNState] = useState("");
-  const [role, setRole] = useState("");
-  const [status, setStatus] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [faxNumber, setFaxNumber] = useState("");
-  const [address, setAddress] = useState({ street: "", city: "", state: "", zipCode: "", country: "" });
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [userType, setUserType] = useState("attorney");
-  const [attorneyType, setAttorneyType] = useState("attorney");
+  const [activeStep, setActiveStep] = useState(1);
+  const [showResetModal, setShowResetModal] = useState(false);
+  const caseDetails = useSelector(state => state.admin.caseDetails);
+  const isFetchingCaseDetails = useSelector(state => state.admin.isFetchingCaseDetails);
+  
+  // Questionaire Form 1
+  const [caseTitle, setCaseTitle] = useState("");
+  const [caseNumber, setCaseNumber] = useState("");
+  const [courtDate, setCourtDate] = useState("");
+  const [courtType, setCourtType] = useState("");
+  const [courtState, setCourtState] = useState("");
+  const [countyOf, setCountyOf] = useState("");
+  const [courthouseAddress, setCourthouseAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+  const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
+  const [branchName, setBranchName] = useState("");
 
-  const [attSpecialty, setAttSpecialty] = useState("");
-  const [attBarNo, setAttBarNo] = useState("");
-  const [attFirmName, setAttFirmName] = useState("");
-  const [attFirmAddress, setAttFirmAddress] = useState({ street: "", city: "", state: "", zipCode: "", country: "" });
-  const [attFirmRole, setAttFirmRole] = useState("");
+  // Questionaire Form 2
+  const [isOrRepresentingPlaintiff, setIsOrRepresentingPlaintiff] = useState("");
+  const [shouldPGFillPlaintiffInfo, setShouldPGFillPlaintiffInfo] = useState(false);
+  const [numberOfAttorneyPlaintiff, setNumberOfAttorneyPlaintiff] = useState("");
+  const [plaintiffsDetail, setPlaintiffsDetail] = useState({});
+  const [numberOfAttorneysRepresentingPlaintiff, setNumberOfAttorneysRepresentingPlaintiff] = useState("");
+  const [plaintiffAttorneysDetail, setPlaintiffAttorneysDetail] = useState({});
 
-  const [busSpecialty, setBusSpecialty] = useState("");
-  const [busFirmName, setBusFirmName] = useState("");
-  const [busFirmAddress, setBusFirmAddress] = useState({ street: "", city: "", state: "", zipCode: "", country: "" });
-  const [busJobTitle, setBusJobTitle] = useState("");
+  // Questionaire Form 3
+  const [isOrRepresentingDefendant, setIsOrRepresentingDefendant] = useState("");
+  const [shouldPGFillDefendantInfo, setShouldPGFillDefendantInfo] = useState(false);
+  const [defendantsDetail, setDefendantsDetail] = useState({});
+  const [numberOfAttorneyDefendant, setNumberOfAttorneyDefendant] = useState("");
+  const [numberOfAttorneysRepresentingDefendant, setNumberOfAttorneysRepresentingDefendant] = useState("");
+  const [defendantAttorneysDetail, setDefendantAttorneysDetail] = useState({});
+
+  // Questionaire Form 4
+  const [numberOfCaseFilesBeingServed, setNumberOfCaseFilesBeingServed] = useState("");
+  const [howManyIndividualsServed, setHowManyIndividualsServed] = useState("");
+  const [serveesDetail, setServeesDetail] = useState({});
+  const [date, setDate] = useState(new Date());
+  const [locationForBeingServed, setLocationForBeingServed] = useState("");
+  const [mainAddressesForService, setMainAddressesForService] = useState({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
+  const [agentOfService, setAgentOfService] = useState("");
+  const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
+
+  // Questionaire Form 5
+  const [typeOfServe, setTypeOfServe] = useState("");
+  const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
+  const [processServerLeaveDoorTag,setProcessServerLeaveDoorTag] = useState("");
+  const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
+  const [requireServerNotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
+  const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
+  const [serverPostDocumentsWithRubberBand,setServerPostDocumentsWithRubberBand] = useState("");
+  const [dropServeForceServe, setDropServeForceServe] = useState("");
+  const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
+
+  //  Questionaire Form 6
+  const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({0: {
+    fullName: {firstName: "", middleName: "", lastName: ""},
+    gender: "", ethnicity: "", height: "", weight: "",
+    hairColor: "", eyeColor: "", physicalOutline: "", image: null
+  }});
+
+  // Questionaire Form 7
+  const [vehiclesInformation, setVehiclesInformation] = useState({0: {
+    insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
+    yearOfMake: "", color: "", modelType: ""
+  }});
+
+  // Questionaire Form 8
+  const [requireStakeOutService, setRequireStakeoutService] = useState("");
+  const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
+  const [requireRushService, setRequireRushService] = useState("");
+  const [listDateWhenServiceAttemptsClosed, setListDateWhenServiceAttemptsClosed] = useState("");
+  const [requireFirst24HourService,setRequireFirst24HourService] = useState("");
+  const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
+  const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
+  const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
+  const [poBoxAllowedToServe, setPOBoxAllowedToServe] = useState("");
+  const [requireServiceByMail, setRequireServiceByMail] = useState("");
+  const [requireByEmail, setRequireByEmail] = useState("");
+  const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
+  const [requireZipFileService, setRequireZipFileService] = useState("");
+  const [ifYesListAddress, setIfYesListAddress] = useState("");
+
+  useEffect(()=>{
+    if(!props.modalShow && activeStep!==1) {
+      setActiveStep(1);
+      handleResetForms();
+    }
+  }, [props.modalShow]);
 
   useEffect(() => {
-    const user = props.user;
-    if(user) {
-      setEmail(user.email);
-      setRole(user.role);
-      setStatus(user.status);
-      setFirstName(user.firstName);
-      setMiddleName(user.middleName);
-      setLastName(user.lastName);
-      setPhoneNumber(user.phoneNumber);
-      setFaxNumber(user.faxNumber);
-      setAddress(user.address);
-      setUserType(user.userType);
-      setAttorneyType(user.attorneyType);
-      if(user.userType === "attorney") {
-        setAttFirmName(user.firmName);
-        setAttFirmAddress(user.firmAddress);
-        setAttSpecialty(user.specialty);
-        setAttorneyType("attorney");
-        setAttBarNo(user.barNumber);
-        setAttFirmRole(user.firmRole);
-      } else if(user.userType === "paralegal") {
-        setSSN(user.SSN);
-        setSSNState(user.SSNState);
-        setAttorneyType("paralegal");
-      } else if (user.userType === "business") {
-        setBusFirmName(user.firmName);
-        setBusFirmAddress(user.firmAddress);
-        setBusJobTitle(user.jobTitle);
-        setBusSpecialty(user.specialty);
-        setSSN(user.SSN);
-        setSSNState(user.SSNState);
+    if(caseDetails) {
+      // Questionaire Form 1
+      setCaseTitle(caseDetails?.CaseInformation.caseTitle);
+      setCaseNumber(caseDetails?.CaseInformation.caseNumber);
+      setCourtDate(caseDetails?.CaseInformation.courtDate);
+      setCourtType(caseDetails?.CaseInformation.courtType);
+      setCourtState(caseDetails?.CaseInformation.courtState);
+      setCountyOf(caseDetails?.CaseInformation.countyOf);
+      setCourthouseAddress(caseDetails?.CaseInformation.courthouseAddress);
+      setCourthouseMailingAddress(caseDetails?.CaseInformation.courthouseMailingAddress);
+      setBranchName(caseDetails?.CaseInformation.branchName);
+      
+      // Questionaire Form 2
+      setIsOrRepresentingPlaintiff(caseDetails?.PlaintiffInformation.isOrRepresentingPlaintiff);
+      setPlaintiffsDetail(caseDetails?.PlaintiffInformation.plaintiffsDetail);
+      setShouldPGFillPlaintiffInfo(caseDetails?.PlaintiffInformation.shouldPGFillPlaintiffInfo);
+      setNumberOfAttorneyPlaintiff(caseDetails?.PlaintiffInformation.numberOfAttorneyPlaintiff);
+      setNumberOfAttorneysRepresentingPlaintiff(caseDetails?.PlaintiffInformation.numberOfAttorneysRepresentingPlaintiff) 
+      setPlaintiffAttorneysDetail(caseDetails?.PlaintiffInformation.plaintiffAttorneysDetail);
+      
+      // Questionaire Form 3
+      setIsOrRepresentingDefendant(caseDetails?.DefendantInformation.isOrRepresentingDefendant);
+      setDefendantsDetail(caseDetails?.DefendantInformation.defendantsDetail);
+      setShouldPGFillDefendantInfo(caseDetails?.DefendantInformation.shouldPGFillDefendantInfo);
+      setNumberOfAttorneyDefendant(caseDetails?.DefendantInformation.numberOfAttorneyDefendant);
+      setNumberOfAttorneysRepresentingDefendant(caseDetails?.DefendantInformation.numberOfAttorneysRepresentingDefendant);
+      
+      // Questionaire Form 4
+      setNumberOfCaseFilesBeingServed(caseDetails?.ServeeDocumentedData.numberOfCaseFilesBeingServed);
+      setHowManyIndividualsServed(caseDetails?.ServeeDocumentedData.howManyIndividualsServed);
+      setServeesDetail(caseDetails?.ServeeDocumentedData.serveesDetail);
+      setLocationForBeingServed(caseDetails?.ServeeDocumentedData.locationForBeingServed);
+      setMainAddressesForService(caseDetails?.ServeeDocumentedData.mainAddressesForService);
+      setAgentOfService(caseDetails?.ServeeDocumentedData.agentOfService);
+      setAgentsFullNames(caseDetails?.ServeeDocumentedData.agentsFullNames);
+      
+      // Questionaire Form 5
+      setTypeOfServe(caseDetails?.ClearanceOfAction.typeOfServe);
+      setServeIndividualAtEmployment(caseDetails?.ClearanceOfAction.serveIndividualAtEmployment);
+      setProcessServerLeaveDoorTag(caseDetails?.ClearanceOfAction.processServerLeaveDoorTag);
+      setSubserveAfterThreeAttempts(caseDetails?.ClearanceOfAction.subserveAfterThreeAttempts);
+      setRequireServerNotifyPersonOfInterest(caseDetails?.ClearanceOfAction.requireServerNotifyPersonOfInterest);
+      setServerContactServeeByPhone(caseDetails?.ClearanceOfAction.serverContactServeeByPhone);
+      setServerPostDocumentsWithRubberBand(caseDetails?.ClearanceOfAction.serverPostDocumentsWithRubberBand);
+      setDropServeForceServe(caseDetails?.ClearanceOfAction.dropServeForceServe);
+      setParalegalAttorneyClientContactServee(caseDetails?.ClearanceOfAction.paralegalAttorneyClientContactServee);
+      
+      // Questionaire Form 6
+      setServeesPhysicalDescription(caseDetails?.ServeePhysicalDescription.serveesPhysicalDescription);
+    
+      // Questionaire Form 7
+      setVehiclesInformation(caseDetails?.VehicleInformation.vehiclesInformation);
+      
+      // Questionaire Form 8
+      setRequireStakeoutService(caseDetails?.OfferedServices.requireStakeOutService);
+      setSpecifyDatesForStakeOutService(caseDetails?.OfferedServices.specifyDatesForStakeOutService);
+      setRequireRushService(caseDetails?.OfferedServices.requireRushService);
+      setListDateWhenServiceAttemptsClosed(caseDetails?.OfferedServices.listDateWhenServiceAttemptsClosed);
+      setRequireFirst24HourService(caseDetails?.OfferedServices.requireFirst24HourService);
+      setRequireSkipTracingService(caseDetails?.OfferedServices.requireSkipTracingService);
+      setRequireBodyCamFootage(caseDetails?.OfferedServices.requireBodyCamFootage);
+      setObtainNewDeliveryLocation(caseDetails?.OfferedServices.obtainNewDeliveryLocation);
+      setPOBoxAllowedToServe(caseDetails?.OfferedServices.poBoxAllowedToServe);
+      setRequireServiceByMail(caseDetails?.OfferedServices.requireServiceByMail);
+      setRequireByEmail(caseDetails?.OfferedServices.requireByEmail);
+      setSpecificCourtInstruction(caseDetails?.OfferedServices.specificCourtInstruction);
+      setRequireZipFileService(caseDetails?.OfferedServices.requireZipFileService);
+      setIfYesListAddress(caseDetails?.OfferedServices.ifYesListAddress);
+    }
+  }, [caseDetails, isFetchingCaseDetails]);
+
+  useEffect(() => {
+    if(numberOfAttorneyPlaintiff!=="" && parseInt(numberOfAttorneyPlaintiff)!==Object.keys(plaintiffsDetail).length) {
+      const prevLength = Object.keys(plaintiffsDetail).length;
+      if(parseInt(numberOfAttorneyPlaintiff)>prevLength) {
+        let newPlaintiffsDetail = plaintiffsDetail;
+        for(let index=0; index < (parseInt(numberOfAttorneyPlaintiff)-prevLength); index++) {
+          newPlaintiffsDetail[Object.keys(newPlaintiffsDetail).length] = {
+            fullName: {firstName: "", middleName: "", lastName: ""},
+            address: {street: "", city: "", state: "", zipCode: "", country: ""}
+          };
+        }
+        setPlaintiffsDetail(newPlaintiffsDetail);
+        setDate(new Date());
       } else {
-        setSSN(user.SSN);
-        setSSNState(user.SSNState);
+        let newPlaintiffsDetail = plaintiffsDetail;
+        for(let index=Object.keys(plaintiffsDetail).length; parseInt(numberOfAttorneyPlaintiff)!==Object.keys(newPlaintiffsDetail).length; index--) {
+          delete newPlaintiffsDetail[Object.keys(newPlaintiffsDetail).length-1];
+        }
+        setPlaintiffsDetail(newPlaintiffsDetail);
+        setDate(new Date());
       }
     }
-  }, [props.user]);
+  }, [numberOfAttorneyPlaintiff]);
 
-  const handleOnChangePhoneNumber = (newPhoneNumber) => {
-    if (/^\s*\d{3}\s*$/.test(newPhoneNumber) && newPhoneNumber.length > phoneNumber.length) {
-      setPhoneNumber(`(${newPhoneNumber}) `);
-    } else if (/^\s*\(\d{3}\)\s*\d{3}$/.test(newPhoneNumber) && newPhoneNumber.length > phoneNumber.length) {
-      setPhoneNumber(`${newPhoneNumber}-`);
-    } else if (newPhoneNumber.length >= 7 && !newPhoneNumber.includes("(") && !newPhoneNumber.includes(")") && !newPhoneNumber.includes(" ") && !newPhoneNumber.includes("-")) {
-      setPhoneNumber(`(${newPhoneNumber.slice(0, 3)}) ${newPhoneNumber.slice(3, 6)}-${newPhoneNumber.slice(6)}`)
-    } else {
-      setPhoneNumber(newPhoneNumber);
+  useEffect(() => {
+    if(numberOfAttorneysRepresentingPlaintiff!=="" && parseInt(numberOfAttorneysRepresentingPlaintiff)!==Object.keys(plaintiffAttorneysDetail).length) {
+      const prevLength = Object.keys(plaintiffAttorneysDetail).length;
+      if(parseInt(numberOfAttorneysRepresentingPlaintiff)>prevLength) {
+        let newAttorneysDetail = plaintiffAttorneysDetail;
+        for(let index=0; index < (parseInt(numberOfAttorneysRepresentingPlaintiff)-prevLength); index++) {
+          newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
+            fullName: {firstName: "", middleName: "", lastName: ""}, barNumber: "",
+            phoneNumbers: {0: {phoneNumber: "", type: ""}}, faxNumber: "", email: "",
+            address: {street: "", city: "", state: "", zipCode: "", country: ""}
+          };
+        }
+        setPlaintiffAttorneysDetail(newAttorneysDetail);
+        setDate(new Date());
+      } else {
+        let newAttorneysDetail = plaintiffAttorneysDetail;
+        for(let index=Object.keys(plaintiffAttorneysDetail).length; parseInt(numberOfAttorneysRepresentingPlaintiff)!==Object.keys(newAttorneysDetail).length; index--) {
+          delete newAttorneysDetail[Object.keys(newAttorneysDetail).length-1];
+        }
+        setPlaintiffAttorneysDetail(newAttorneysDetail);
+        setDate(new Date());
+      }
     }
-  }
+  }, [numberOfAttorneysRepresentingPlaintiff]);
 
-  const resetForm = () => {
-    props.setModalShow(false);
-    setEmail("");
-    setSSN("");
-    setSSNState("");
-    setFirstName("");
-    setMiddleName("");
-    setLastName("");
-    setPhoneNumber("");
-    setFaxNumber("");
-    setAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
-    setProfilePicture(null);
-    setUserType("attorney");
-    setAttorneyType("attorney");
-    setAttSpecialty("");
-    setAttBarNo("");
-    setAttFirmName("");
-    setAttFirmAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
-    setAttFirmRole("");
-    setBusSpecialty("");
-    setBusFirmName("");
-    setBusFirmAddress({ street: "", city: "", state: "", zipCode: "", country: "" });
-    setBusJobTitle("");
-  }
+  useEffect(() => {
+    if(numberOfAttorneyDefendant!=="" && parseInt(numberOfAttorneyDefendant)!==Object.keys(defendantsDetail).length) {
+      const prevLength = Object.keys(defendantsDetail).length;
+      if(parseInt(numberOfAttorneyDefendant)>prevLength) {
+        let newDefendantsDetail = defendantsDetail;
+        for(let index=0; index < (parseInt(numberOfAttorneyDefendant)-prevLength); index++) {
+          newDefendantsDetail[Object.keys(newDefendantsDetail).length] = {
+            fullName: {firstName: "", middleName: "", lastName: ""},
+            address: {street: "", city: "", state: "", zipCode: "", country: ""}
+          };
+        }
+        setDefendantsDetail(newDefendantsDetail);
+        setDate(new Date());
+      } else {
+        let newDefendantsDetail = defendantsDetail;
+        for(let index=Object.keys(defendantsDetail).length; parseInt(numberOfAttorneyDefendant)!==Object.keys(newDefendantsDetail).length; index--) {
+          delete newDefendantsDetail[Object.keys(newDefendantsDetail).length-1];
+        }
+        setDefendantsDetail(newDefendantsDetail);
+        setDate(new Date());
+      }
+    }
+  }, [numberOfAttorneyDefendant]);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const user = props.user;
-    if (!firstName.length) {
-      showToast("Please type-in the first name!", "warning");
-    } else if (!lastName.length) {
-      showToast("Please type-in the last name!", "warning");
-    } else if (!address.street.length || !address.city.length || !address.state.length || !address.zipCode.length || !address.country.length) {
-      showToast("Please type-in the full address!", "warning");
-    } else if (!phoneNumber.length) {
-      showToast("Please type-in the phone number!", "warning");
-    } else if (!validatePhoneNumber(phoneNumber)) {
-      showToast("Invalid phone number, please type-in correct phone number!", "warning");
-    } else if ((userType === "personal" || userType === "business" || (userType === "attorney" && attorneyType !== "attorney")) && !SSN.length) {
-      showToast("Please fill-in the government issued ID number!", "warning");
-    } else if ((userType === "personal" || userType === "business" || (userType === "attorney" && attorneyType !== "attorney")) && !SSNState.length) {
-      showToast("Please fill-in the state of issued ID!", "warning");
-    } else if (!validateEmail(email.toLocaleLowerCase())) {
-      showToast("Invalid email address!", "warning");
-    } else if (userType === "attorney" && attorneyType === "attorney" && !attBarNo.length) {
-      showToast("Please fill-in the bar number!", "warning");
-    } else if (userType === "attorney" && !attSpecialty.length) {
-      showToast("Please fill-in the legal specialty!", "warning");
-    } else if (userType === "attorney" && !attFirmName.length) {
-      showToast("Please fill-in the full firm name!", "warning");
-    } else if (userType === "attorney" && (!attFirmAddress.street.length || !attFirmAddress.city.length || !attFirmAddress.state.length || !attFirmAddress.zipCode.length || !attFirmAddress.country.length)) {
-      showToast("Please fill-in the full firm address!", "warning");
-    } else if (userType === "attorney" && attorneyType === "attorney" && !attFirmRole.length) {
-      showToast("Please fill-in the firm role!", "warning");
-    } else if (userType === "business" && !busFirmName.length) {
-      showToast("Please fill-in the full business name!", "warning");
-    } else if (userType === "business" && (!busFirmAddress.street.length || !busFirmAddress.city.length || !busFirmAddress.state.length || !busFirmAddress.zipCode.length || !busFirmAddress.country.length)) {
-      showToast("Please fill-in the full business address!", "warning");
-    } else if (userType === "business" && !busSpecialty.length) {
-      showToast("Please fill-in the business specialty!", "warning");
-    } else if (userType === "business" && !busJobTitle.length) {
-      showToast("Please fill-in the business role!", "warning");
-    } else if (!isUpdatingUser) {
+  useEffect(() => {
+    if(numberOfAttorneysRepresentingDefendant!=="" && parseInt(numberOfAttorneysRepresentingDefendant)!==Object.keys(defendantAttorneysDetail).length) {
+      const prevLength = Object.keys(defendantAttorneysDetail).length;
+      if(parseInt(numberOfAttorneysRepresentingDefendant)>prevLength) {
+        let newAttorneysDetail = defendantAttorneysDetail;
+        for(let index=0; index < (parseInt(numberOfAttorneysRepresentingDefendant)-prevLength); index++) {
+          newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
+            fullName: {firstName: "", middleName: "", lastName: ""}, barNumber: "",
+            phoneNumbers: {0: {phoneNumber: "", type: ""}}, faxNumber: "", email: "",
+            address: {street: "", city: "", state: "", zipCode: "", country: ""}
+          };
+        }
+        setDefendantAttorneysDetail(newAttorneysDetail);
+        setDate(new Date());
+      } else {
+        let newAttorneysDetail = defendantAttorneysDetail;
+        for(let index=Object.keys(defendantAttorneysDetail).length; parseInt(numberOfAttorneysRepresentingDefendant)!==Object.keys(newAttorneysDetail).length; index--) {
+          delete newAttorneysDetail[Object.keys(newAttorneysDetail).length-1];
+        }
+        setDefendantAttorneysDetail(newAttorneysDetail);
+        setDate(new Date());
+      }
+    }
+  }, [numberOfAttorneysRepresentingDefendant]);
+
+  useEffect(() => {
+    if(howManyIndividualsServed!=="" && parseInt(howManyIndividualsServed)!==Object.keys(serveesDetail).length) {
+      const prevLength = Object.keys(serveesDetail).length;
+      if(parseInt(howManyIndividualsServed)>prevLength) {
+        let newServeesDetail = serveesDetail;
+        for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
+          newServeesDetail[Object.keys(newServeesDetail).length] = {
+            fullName: "", dob: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
+            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: ""
+          }
+        }
+        setServeesDetail(newServeesDetail);
+        setDate(new Date());
+      } else {
+        let newServeesDetail = serveesDetail;
+        for(let index=Object.keys(serveesDetail).length; parseInt(howManyIndividualsServed)!==Object.keys(newServeesDetail).length; index--) {
+          delete newServeesDetail[Object.keys(newServeesDetail).length-1];
+        }
+        setServeesDetail(newServeesDetail);
+        setDate(new Date());
+      }
+    }
+  }, [howManyIndividualsServed]);
+
+  useEffect(() => {
+    if(isOrRepresentingPlaintiff) {
+      setIsOrRepresentingDefendant(false);
+    }
+  }, [isOrRepresentingPlaintiff]);
+
+  useEffect(() => {
+    if(isOrRepresentingDefendant) {
+      setIsOrRepresentingPlaintiff(false);
+    }
+  }, [isOrRepresentingDefendant]);
+
+  const handleOnPressNext = () => {
+    if(activeStep === 1) {
+      if(!caseTitle.length) {
+        showToast("Please enter case title!", "warning");
+      } else if(!caseNumber.length) {
+        showToast("Please enter case number!", "warning");
+      } else if(!courtDate.length) {
+        showToast("Please enter court date!", "warning");
+      } else if(!courtType.length) {
+        showToast("Please select the applicable court!", "warning");
+      } else if(!courtState.length) {
+        showToast("Please enter the court state!", "warning");
+      } else if(!branchName.length) {
+        showToast("Please enter branch name!", "warning");
+      } else if(!courthouseAddress.street.length) {
+        showToast("Please enter courthouse street!", "warning");
+      } else if(!courthouseAddress.city.length) {
+        showToast("Please enter courthouse city!", "warning");
+      } else if(!courthouseAddress.state.length) {
+        showToast("Please enter courthouse state!", "warning");
+      } else if(!courthouseAddress.zipCode.length) {
+        showToast("Please enter courthouse zip code!", "warning");
+      } else if(!courthouseAddress.country.length) {
+        showToast("Please enter courthouse country!", "warning");
+      } else if(!courthouseMailingAddress.street.length) {
+        showToast("Please enter courthouse mailing street!", "warning");
+      } else if(!courthouseMailingAddress.city.length) {
+        showToast("Please enter courthouse mailing city!", "warning");
+      } else if(!courthouseMailingAddress.state.length) {
+        showToast("Please enter courthouse mailing state!", "warning");
+      } else if(!courthouseMailingAddress.zipCode.length) {
+        showToast("Please enter courthouse mailing zip code!", "warning");
+      } else if(!courthouseMailingAddress.country.length) {
+        showToast("Please enter courthouse mailing country!", "warning");
+      } else if(!countyOf.length) {
+        showToast("Please enter county of!", "warning");
+      } else {
+        let data = {
+          caseTitle,
+          caseNumber,
+          courtDate,
+          courtType,
+          courtState,
+          countyOf,
+          courthouseAddress,
+          courthouseMailingAddress,
+          branchName
+        }
+        localStorage.setItem('Questionaire1', JSON.stringify(data));
+        setActiveStep(2);
+      }
+    } else if(activeStep === 2) {
+      if(!shouldPGFillPlaintiffInfo && typeof(isOrRepresentingPlaintiff)!=="boolean") {
+        showToast("Please select if you are representing the Plaintiff, or are yourself the Plaintiff", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && !numberOfAttorneyPlaintiff.length) {
+        showToast("Please select number of plaintiff(s) listed!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length)) {
+        showToast("Please enter plaintiff's first name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length)) {
+        showToast("Please enter plaintiff's last name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length)) {
+        showToast("Please enter plaintiff's street address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length)) {
+        showToast("Please enter plaintiff's city address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length)) {
+        showToast("Please enter plaintiff's state address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length)) {
+        showToast("Please enter plaintiff's address's zip code!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && (Object.values(plaintiffsDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length)) {
+        showToast("Please enter plaintiff's address's country!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && !numberOfAttorneysRepresentingPlaintiff.length) {
+        showToast("Please select number of attorney's representing plaintiff!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter plaintiff's attorney's first name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter plaintiff's attorney's last name!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.barNumber)).filter((barNumber)=>!barNumber.length).length) {
+        showToast("Please enter plaintiff's attorney bar number!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && [].concat.apply([], Object.values(plaintiffAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && [].concat.apply([], Object.values(plaintiffAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the appropriate phone number types for all the Attorneys numbers!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+        showToast("Please enter plaintiff's attorney email!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.email)).filter((email)=>!validateEmail(email)).length) {
+        showToast("Invalid plaintiff's attorney email address!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length) {
+        showToast("Please enter plaintiff's attorney firm street!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length) {
+        showToast("Please enter plaintiff's attorney firm city!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length) {
+        showToast("Please enter plaintiff's attorney firm state!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter plaintiff's attorney firm zip code!", "warning");
+      } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
+        showToast("Please enter plaintiff's attorney firm country!", "warning");
+      } else {
+        let data = {
+          plaintiffsDetail,
+          numberOfAttorneyPlaintiff,
+          isOrRepresentingPlaintiff,
+          shouldPGFillPlaintiffInfo,
+          numberOfAttorneysRepresentingPlaintiff,
+          plaintiffAttorneysDetail
+        };
+        localStorage.setItem('Questionaire2', JSON.stringify(data));
+        setActiveStep(3);
+      }
+    } else if(activeStep === 3) {
+      if(!shouldPGFillDefendantInfo && typeof(isOrRepresentingDefendant)!=="boolean") {
+        showToast("Please select if you are representing the Defendant, or are yourself the Defendant", "warning");
+      } else if(!shouldPGFillDefendantInfo && !numberOfAttorneyDefendant.length) {
+        showToast("Please select number of defendant(s) listed!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length)) {
+        showToast("Please enter defendant's first name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length)) {
+        showToast("Please enter defendant's last name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length)) {
+        showToast("Please enter defendant's street address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length)) {
+        showToast("Please enter defendant's city address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length)) {
+        showToast("Please enter defendant's state!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length)) {
+        showToast("Please enter defendant's zip code!", "warning");
+      } else if(!shouldPGFillDefendantInfo && (Object.values(defendantsDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length)) {
+        showToast("Please enter defendant's country!", "warning");
+      } else if(!shouldPGFillDefendantInfo && !numberOfAttorneysRepresentingDefendant.length) {
+        showToast("Please select number of attorney's representing defendant!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter defendant's attorney's first name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter defendant's attorney's last name!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.barNumber)).filter((barNumber)=>!barNumber.length).length) {
+        showToast("Please enter defendant's attorney's bar number!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && [].concat.apply([], Object.values(defendantAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && [].concat.apply([], Object.values(defendantAttorneysDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the appropriate phone number types for all the Attorneys numbers!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.email)).filter((email)=>!email.length).length) {
+        showToast("Please enter defendant's attorney's email!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.email)).filter((email)=>!validateEmail(email)).length) {
+        showToast("Invalid defendant's attorney's email address!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.street.length).length) {
+        showToast("Please enter defendant's attorney's firm street!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.city.length).length) {
+        showToast("Please enter defendant's attorney's firm city!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.state.length).length) {
+        showToast("Please enter defendant's attorney's firm state!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter defendant's attorney's firm zip code!", "warning");
+      } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
+        showToast("Please enter defendant's attorney's firm country!", "warning");
+      } else {
+        let data = {
+          defendantsDetail,
+          numberOfAttorneyDefendant,
+          isOrRepresentingDefendant,
+          shouldPGFillDefendantInfo,
+          numberOfAttorneysRepresentingDefendant,
+          defendantAttorneysDetail
+        };
+        localStorage.setItem('Questionaire3', JSON.stringify(data));
+        setActiveStep(4);
+      }
+    } else if(activeStep === 4) {
+      if(!numberOfCaseFilesBeingServed.length) {
+        showToast("Please select how many case files being served!", "warning");
+      } else if(!howManyIndividualsServed.length) {
+        showToast("Please select how many individuals being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.length).length) {
+        showToast("Please enter the full names of all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.dob)).filter((dob)=>!dob.length).length) {
+        showToast("Please enter the date of births for all the servees that are being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !validatePhoneNumber(p.phoneNumber))).length) {
+        showToast("Invalid phone number, please type-in correct phone number!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.phoneNumbers)).map((o)=>(Object.values(o)))).filter((p)=>(p.phoneNumber.length && !p.type.length)).length) {
+        showToast("Please select the phone number types for all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.email)).filter((email)=>(email.length && !validateEmail(email))).length) {
+        showToast("One or more invalid email addresses encountered!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(o.coResidents)).map((o)=>(Object.values(o)))).filter((p)=>(p.name.length && !p.relation.length)).length) {
+        showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
+      } else if(Object.values(serveesDetail).map((o)=>(o.isEmployed)).filter((isEmployed)=>!isEmployed.length).length) {
+        showToast("Please select the employment option for all the servees that are being served!", "warning");
+      } else if(!locationForBeingServed.length) {
+        showToast("Please select the kind of location being served!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.street.length).length) {
+        showToast("Please enter street address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.city.length).length) {
+        showToast("Please enter city address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.state.length).length) {
+        showToast("Please enter state address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.zipCode.length).length) {
+        showToast("Please enter zip code address for all service addresses!", "warning");
+      } else if(Object.values(mainAddressesForService).filter((address)=>!address.country.length).length) {
+        showToast("Please enter country address for all service addresses!", "warning");
+      } else if(typeof(agentOfService)!=="boolean") {
+        showToast("Please select if there is an agent of service!", "warning");
+      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
+        showToast("Please enter first names of all the agents of service!", "warning");
+      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
+        showToast("Please enter last names of all the agents of service!", "warning");
+      } else {
+        let data = {
+          numberOfCaseFilesBeingServed,
+          howManyIndividualsServed,
+          serveesDetail,
+          locationForBeingServed,
+          mainAddressesForService,
+          agentOfService,          
+          agentsFullNames
+        };
+        localStorage.setItem('Questionaire4', JSON.stringify(data));
+        setActiveStep(5);
+      }
+    } else if(activeStep === 5) {
+      if(typeOfServe==="") {
+        showToast("Please select an option for type of serve!", "warning");
+      } if(typeof(serveIndividualAtEmployment)!=="boolean") {
+        showToast("Please select should the servee be served at the place of employment!", "warning");
+      } else if(typeof(processServerLeaveDoorTag)!=="boolean") {
+        showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
+      } else if(typeOfServe==="normal" && typeof(subserveAfterThreeAttempts)!=="boolean") {
+        showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
+      } else if(typeof(requireServerNotifyPersonOfInterest)!=="boolean") {
+        showToast("Please select should process server verbally notify the Servee", "warning");
+      } else if(typeof(serverContactServeeByPhone)!=="boolean") {
+        showToast("Please select should process server Contact the Servee by Phone", "warning");
+      } else if(typeof(serverPostDocumentsWithRubberBand)!=="boolean") {
+        showToast("Please select may process server post documents with a rubber band", "warning");
+      } else if(typeof(dropServeForceServe)!=="boolean") {
+        showToast("Please select if “Drop Serve / Force Serve” Allowed", "warning");
+      } else if(typeof(paralegalAttorneyClientContactServee)!=="boolean") {
+        showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
+      } else {
+        let data = {
+          typeOfServe,
+          serveIndividualAtEmployment,
+          processServerLeaveDoorTag,
+          subserveAfterThreeAttempts,          
+          requireServerNotifyPersonOfInterest,
+          serverContactServeeByPhone,
+          serverPostDocumentsWithRubberBand,
+          dropServeForceServe,          
+          paralegalAttorneyClientContactServee
+        };
+        localStorage.setItem('Questionaire5', JSON.stringify(data));
+        setActiveStep(6);
+      }
+    } else if(activeStep===6) {
       let data = {
-        uid: props.user.uid,
-        docId: props.user.docId,
-        user: {
-          userType,
-          profilePicturePath: user.profilePicturePath
-        }
+        serveesPhysicalDescription
       };
-      if(user.firstName !== firstName) data.user["firstName"] = firstName;
-      if(user.middleName !== middleName) data.user["middleName"] = middleName;
-      if(user.lastName !== lastName) data.user["lastName"] = lastName;
-      if(user.email !== email) data.user["email"] = email;
-      if(user.role !== role) data.user["role"] = role;
-      if(user.status !== status) data.user["status"] = status;
-      if(!objectsEqual(user.address, address)) data.user["address"] = address;
-      if(user.phoneNumber !== phoneNumber) data.user["phoneNumber"] = phoneNumber;
-      if(user.faxNumber !== faxNumber) data.user["faxNumber"] = faxNumber;
-      if(user.userType !== userType) data.user["userType"] = userType;
-      if(profilePicture) data.user["profilePicture"] = profilePicture;
-      if(userType === "attorney") {
-        if(user.firmName !== attFirmName) data.user["firmName"] = attFirmName;
-        if(!objectsEqual(user.firmAddress, attFirmAddress)) data.user["firmAddress"] = attFirmAddress;
-        if(user.specialty !== attSpecialty) data.user["specialty"] = attSpecialty;
-        if (attorneyType === "attorney") {
-          if(user.barNumber !== attBarNo) data.user["barNumber"] = attBarNo;
-          if(user.firmRole !== attFirmRole) data.user["firmRole"] = attFirmRole;
-        } else {
-          if(user.SSN !== SSN) data.user["SSN"] = SSN;
-          if(user.SSNState !== SSNState) data.user["SSNState"] = SSNState;
-          data.user["userType"] = "paralegal";
-        }
-      } else if (userType === "business") {
-        if(user.firmName !== busFirmName) data.user["firmName"] = busFirmName;
-        if(!objectsEqual(user.firmAddress, busFirmAddress)) data.user["firmAddress"] = busFirmAddress;
-        if(user.jobTitle !== busJobTitle) data.user["jobTitle"] = busJobTitle;
-        if(user.specialty !== busSpecialty) data.user["specialty"] = busSpecialty;
-        if(user.SSN !== SSN) data.user["SSN"] = SSN;
-        if(user.SSNState !== SSNState) data.user["SSNState"] = SSNState;
+      localStorage.setItem('Questionaire6', JSON.stringify(data));
+      setActiveStep(7);
+    } else if(activeStep===7) {
+      let data = {
+        vehiclesInformation
+      };
+      localStorage.setItem('Questionaire7', JSON.stringify(data));
+      setActiveStep(8);
+    } else if(activeStep===8) {
+      if(typeof(requireStakeOutService)!=="boolean") {
+        showToast("Please select an option for stake out service!", "warning");
+      } else if(typeof(requireRushService)!=="boolean") {
+        showToast("Please select if your require a rush out service!", "warning");
+      } else if(typeof(requireFirst24HourService)!=="boolean") {
+        showToast("Please select if service should be attempted within 24 hours of submission!", "warning");
+      } else if(typeof(requireSkipTracingService)!=="boolean") {
+        showToast("Please select if you require skip tracing service!", "warning");
+      } else if(typeof(requireBodyCamFootage)!=="boolean") {
+        showToast("Please select if you require body cam footage of service!", "warning");
+      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
+        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
+      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
+        showToast("Please select if P.O. box is allowed to be served!", "warning");
+      } else if(typeof(requireByEmail)!=="boolean") {
+        showToast("Please select if you require a service by E-mail!", "warning");
+      } else if(typeof(requireServiceByMail)!=="boolean") {
+        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
+      } else if(typeof(requireZipFileService)!=="boolean") {
+        showToast("Please select if you require a zip file service at a court house!", "warning");
+      } else if(requireZipFileService && !ifYesListAddress.length) {
+        showToast("Please enter address for zip filing!", "warning");
       } else {
-        if(user.SSN !== SSN) data.user["SSN"] = SSN;
-        if(user.SSNState !== SSNState) data.user["SSNState"] = SSNState;
+        let data = {
+          requireStakeOutService,
+          specifyDatesForStakeOutService,
+          requireRushService,          
+          listDateWhenServiceAttemptsClosed,
+          requireFirst24HourService,
+          requireSkipTracingService,
+          requireBodyCamFootage,
+          obtainNewDeliveryLocation,
+          poBoxAllowedToServe,
+          requireServiceByMail,
+          requireByEmail,
+          specificCourtInstruction,
+          requireZipFileService,
+          ifYesListAddress
+        };
+        localStorage.setItem('Questionaire8', JSON.stringify(data));
+        setActiveStep(9);
       }
-      dispatch(updateUser(data, resetForm));
     }
+  }
+
+  const getButtonTitle = () => {
+    if(activeStep===1) {
+      return "Proceed to Plaintiff Section";
+    } else if(activeStep===2) {
+      return "Proceed to the Defendant Section";
+    } else if(activeStep===3) {
+      return "Proceed to the Servee Documented Data Section";
+    } else if(activeStep===4) {
+      return "Proceed to the Clearance of Action Section";
+    } else if(activeStep===5) {
+      return "Proceed to the Servee Physical Description Section";
+    } else if(activeStep===6) {
+      return "Proceed to the Vehicle Information Section";
+    } else if(activeStep===7) {
+      return "Proceed to the Offered Services Section";
+    } else if(activeStep===8) {
+      return "Proceed to Document Upload";
+    }
+  }
+
+  const handleResetForms = () => {
+    // Reset Form 1
+    setCaseTitle("");
+    setCaseNumber("");
+    setCourtDate("");
+    setCourtType("");
+    setCourtState("");
+    setCountyOf("");
+    setCourthouseAddress({street: "", city: "", state: "", zipCode: "", country: ""});
+    setCourthouseMailingAddress({street: "", city: "", state: "", zipCode: "", country: ""});
+    setBranchName("");
+    // Reset Form 2
+    setPlaintiffsDetail({});
+    setShouldPGFillPlaintiffInfo(false);
+    setIsOrRepresentingPlaintiff("");
+    setNumberOfAttorneyPlaintiff("");
+    setPlaintiffAttorneysDetail({});
+    setNumberOfAttorneysRepresentingPlaintiff("");
+    // Reset Form 3
+    setDefendantsDetail({});
+    setShouldPGFillDefendantInfo(false);
+    setIsOrRepresentingDefendant("");
+    setNumberOfAttorneyDefendant("");
+    setNumberOfAttorneysRepresentingDefendant("");
+    setDefendantAttorneysDetail({});
+    // Reset Form 4
+    setNumberOfCaseFilesBeingServed("");
+    setHowManyIndividualsServed("");
+    setServeesDetail({});
+    setLocationForBeingServed("");
+    setMainAddressesForService({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
+    setAgentOfService("");
+    setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
+    // Reset Form 5
+    setTypeOfServe("");
+    setServeIndividualAtEmployment("");
+    setProcessServerLeaveDoorTag("");
+    setSubserveAfterThreeAttempts("");
+    setRequireServerNotifyPersonOfInterest("");
+    setServerContactServeeByPhone("");
+    setServerPostDocumentsWithRubberBand("");
+    setDropServeForceServe("");
+    setParalegalAttorneyClientContactServee("");
+    // Reset Form 6
+    setServeesPhysicalDescription({0: {
+      fullName: {firstName: "", middleName: "", lastName: ""},
+      gender: "", ethnicity: "", height: "", weight: "",
+      hairColor: "", eyeColor: "", physicalOutline: "", image: null
+    }});
+    // Reset Form 7
+    setVehiclesInformation({0: {
+      insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
+      yearOfMake: "", color: "", modelType: ""
+    }});
+    // Reset Form 8
+    setRequireStakeoutService("");
+    setSpecifyDatesForStakeOutService("");
+    setRequireRushService("");
+    setListDateWhenServiceAttemptsClosed("");
+    setRequireFirst24HourService("");
+    setRequireSkipTracingService("");
+    setRequireBodyCamFootage("");
+    setObtainNewDeliveryLocation("");
+    setPOBoxAllowedToServe("");
+    setRequireServiceByMail("");
+    setRequireByEmail("");
+    setSpecificCourtInstruction("");
+    setRequireZipFileService("");
+    setIfYesListAddress("");
+    setActiveStep(1);
+    setShowResetModal(false);
   }
 
   return (
-    <Modal
-      show={props.modalShow}
-      onHide={() => props.setModalShow(false)}
-      size="xl"
-      aria-labelledby="example-custom-modal-styling-title"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="example-custom-modal-styling-title">
-          Update User
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <form className="mb-4 justify-content-center" onSubmit={handleFormSubmit}>
-          <MDBRow md="12" id="user-type-form-toggle">
-            <MDBCol md="12">
-              <h4>User Type</h4>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  checked={userType === "attorney" ? true : false}
-                  onChange={() => setUserType("attorney")}
-                  name="userRadioDefault"
-                  id="userRadioDefault1"
-                />
-                <label class="form-check-label" for="userRadioDefault1"> Attorney / Paralegal </label>
-              </div>
-
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  checked={userType === "business" ? true : false}
-                  onChange={() => setUserType("business")}
-                  name="userRadioDefault"
-                  id="userRadioDefault2"
-                />
-                <label class="form-check-label" for="userRadioDefault2"> Business / Company </label>
-              </div>
-              <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  checked={userType === "personal" ? true : false}
-                  onChange={() => setUserType("personal")}
-                  name="userRadioDefault"
-                  id="userRadioDefault3"
-                />
-                <label class="form-check-label" for="userRadioDefault3"> Personal </label>
-              </div>
-              <br></br>
-            </MDBCol>
-          </MDBRow>
-          <MDBRow>
-            <MDBRow style={{ marginLeft: 0, width: "100%" }}>
-              <MDBCol>
-                <Form.Group id="full-name">
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </Form.Group>
-              </MDBCol>
-              <MDBCol>
-                <Form.Group id="full-name">
-                  <Form.Label>Middle Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={middleName}
-                    onChange={(e) => setMiddleName(e.target.value)}
-                  />
-                </Form.Group>
-              </MDBCol>
-              <MDBCol>
-                <Form.Group id="full-name">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Form.Group>
-              </MDBCol>
-            </MDBRow>
-            <MDBCol md="12">
-              <MDBRow>
-                <MDBCol>
-                  <Form.Group id="street-address">
-                    <Form.Label>Applicant Full Address</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={address.street}
-                      placeholder="Street"
-                      onChange={(e) => setAddress({ ...address, street: e.target.value })}
-                    />
-                  </Form.Group>
-                </MDBCol>
-                <MDBCol bottom>
-                  <Form.Group id="city-address">
-                    <Form.Control
-                      type="text"
-                      placeholder="City"
-                      value={address.city}
-                      onChange={(e) => setAddress({ ...address, city: e.target.value })}
-                    />
-                  </Form.Group>
-                </MDBCol>
-              </MDBRow>
-              <MDBRow>
-                <MDBCol>
-                  <Form.Group id="state-address">
-                    <Form.Control
-                      type="text"
-                      placeholder="State"
-                      value={address.state}
-                      onChange={(e) => setAddress({ ...address, state: e.target.value })}
-                    />
-                  </Form.Group>
-                </MDBCol>
-                <MDBCol>
-                  <Form.Group id="zipCode-address">
-                    <Form.Control
-                      type="text"
-                      placeholder="Zip Code"
-                      value={address.zipCode}
-                      onChange={(e) => setAddress({ ...address, zipCode: e.target.value })}
-                    />
-                  </Form.Group>
-                </MDBCol>
-                <MDBCol>
-                  <Form.Group id="country-address">
-                    <Form.Control
-                      type="text"
-                      placeholder="Country"
-                      value={address.country}
-                      onChange={(e) => setAddress({ ...address, country: e.target.value })}
-                    />
-                  </Form.Group>
-                </MDBCol>
-              </MDBRow>
-            </MDBCol>
-            <MDBCol md="12">
-              <MDBRow>
-                <MDBCol>
-                  <Form.Group id="phone-number">
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="(###) ###-####"
-                      value={phoneNumber}
-                      onChange={(e) => handleOnChangePhoneNumber(e.target.value)}
-                    />
-                  </Form.Group>
-                </MDBCol>
-                <MDBCol>
-                  <Form.Group id="fax-number">
-                    <Form.Label>Fax Number(**Optional)</Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={faxNumber}
-                      onChange={(e) => setFaxNumber(e.target.value)}
-                    />
-                  </Form.Group>
-                </MDBCol>
-              </MDBRow>
-            </MDBCol>
-            {
-              (attorneyType === "paralegal" || userType === "business" || userType === "personal")
-              &&
-              <MDBCol md="12">
-                <MDBRow>
-                  <MDBCol>
-                    <Form.Group id="ssn">
-                      <Form.Label>Government Issued ID Number (provided on Identification Card or Drivers License) *NO PASSPORTS*</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={SSN}
-                        onChange={(e) => setSSN(e.target.value)}
-                      />
-                    </Form.Group>
-                  </MDBCol>
-                  <MDBCol bottom>
-                    <Form.Group id="ssn-state">
-                      <Form.Label>State of issued ID</Form.Label>
-                      <Form.Control
-                        type="text"
-                        value={SSNState}
-                        onChange={(e) => setSSNState(e.target.value)}
-                      />
-                    </Form.Group>
-                  </MDBCol>
-                </MDBRow>
-              </MDBCol>
-            }
-            <MDBCol md="12">
-              <Form.Group id="text">
-                <label>Email</label>
-                <Form.Control
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-            </MDBCol>
-            <MDBCol md="12">
-              <MDBRow>
-                <MDBCol md="6">
-                  <Form.Group id="role">
-                    <Form.Label>Role</Form.Label>
-                    <Form.Control
-                      as="select"
-                      value={role}
-                      onChange={(e) => setRole(e.target.value)}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                      <option value="superadmin">Super Admin</option>
-                    </Form.Control>
-                  </Form.Group>
-                </MDBCol>
-                <MDBCol md="6">
-                  <Form.Group id="password-confirm">
-                    <Form.Label>Status</Form.Label>
-                    <Form.Control
-                      as="select"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <option value="active">Active</option>
-                      <option value="disabled">Disabled</option>
-                    </Form.Control>
-                  </Form.Group>
-                </MDBCol>
-              </MDBRow>
-            </MDBCol>
-            <MDBCol md="12">
-              <Form.Group id="image">
-                <Form.Label>Account Image</Form.Label>
-                <input
-                  type='file'
-                  onChange={(e) => { setProfilePicture(e.target.files[0]) }}
-                  accept=".jpg,.png"
-                  label='Upload'
-                />
-              </Form.Group>
-            </MDBCol>
-          </MDBRow>
+    <>
+      <Modal
+        show={props.modalShow}
+        onHide={() => props.setModalShow(false)}
+        size="xl"
+        aria-labelled-by="example-custom-modal-styling-title"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-custom-modal-styling-title">
+            Update Case
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           {
-            userType === "attorney"
-            &&
-            <MDBRow>
-              <MDBCol md="12">
-                <MDBRow>
-                  <MDBCol md="12 w-100" >
-                    <h4>User Role</h4>
-                    <MDBRow md="8" id="attorney-form-toggle">
-                      <MDBCol md="12">
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            checked={attorneyType === "attorney" ? true : false}
-                            onChange={() => setAttorneyType("attorney")}
-                            name="flexRadioDefault"
-                            id="flexRadioDefault2"
-                          />
-                          <label class="form-check-label" for="flexRadioDefault2"> Attorney </label>
-                        </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            checked={attorneyType === "paralegal" ? true : false}
-                            onChange={() => setAttorneyType("paralegal")}
-                            name="flexRadioDefault"
-                            id="flexRadioDefault1"
-                          />
-                          <label class="form-check-label" for="flexRadioDefault1"> Paralegal </label>
-                        </div>
-                        <br></br>
-                      </MDBCol>
-                      <MDBCol>
-                        <MDBRow>
-                          {
-                            attorneyType === "attorney"
-                            &&
-                            <MDBCol>
-                              <Form.Group id="attorney-barnumber">
-                                <Form.Label>Bar Number</Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  value={attBarNo}
-                                  onChange={(e) => setAttBarNo(e.target.value)}
-                                />
-                              </Form.Group>
-                            </MDBCol>
-                          }
-                          <MDBCol>
-                            <Form.Group id="attorney-specialty">
-                              <Form.Label>Legal Specialty (ie. Defence, Business, Financial, etc.)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                value={attSpecialty}
-                                onChange={(e) => setAttSpecialty(e.target.value)}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <Form.Group id="attorney-firm-name">
-                          <Form.Label>Full Firm Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            value={attFirmName}
-                            onChange={(e) => setAttFirmName(e.target.value)}
-                          />
-                        </Form.Group>
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBRow>
-                          <MDBCol>
-                            <Form.Group id="attorney-full-firm-address">
-                              <Form.Label>Full Firm Address</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Street"
-                                value={attFirmAddress.street}
-                                onChange={(e) => setAttFirmAddress({ ...attFirmAddress, street: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol bottom>
-                            <Form.Group id="attorney-full-firm-address">
-                              <Form.Control
-                                type="text"
-                                placeholder="City"
-                                value={attFirmAddress.city}
-                                onChange={(e) => setAttFirmAddress({ ...attFirmAddress, city: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                        <MDBRow>
-                          <MDBCol>
-                            <Form.Group id="attorney-full-firm-address">
-                              <Form.Control
-                                type="text"
-                                placeholder="State"
-                                value={attFirmAddress.state}
-                                onChange={(e) => setAttFirmAddress({ ...attFirmAddress, state: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol>
-                            <Form.Group id="attorney-full-firm-address">
-                              <Form.Control
-                                type="text"
-                                placeholder="Zip Code"
-                                value={attFirmAddress.zipCode}
-                                onChange={(e) => setAttFirmAddress({ ...attFirmAddress, zipCode: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol>
-                            <Form.Group id="attorney-full-firm-address">
-                              <Form.Control
-                                type="text"
-                                placeholder="Country"
-                                value={attFirmAddress.country}
-                                onChange={(e) => setAttFirmAddress({ ...attFirmAddress, country: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                      </MDBCol>
-                      {
-                        attorneyType === "attorney"
-                        &&
-                        <MDBCol md="12">
-                          <Form.Group id="firm-role">
-                            <Form.Label>Firm Role (current position ie Owner, Partner, Staff Member, etc.)</Form.Label>
-                            <Form.Control
-                              type="text"
-                              value={attFirmRole}
-                              onChange={(e) => setAttFirmRole(e.target.value)}
-                            />
-                          </Form.Group>
-                        </MDBCol>
-                      }
-                    </MDBRow>
-                  </MDBCol>
-                  <br></br>
-                  <br></br>
-                </MDBRow>
-              </MDBCol>
-            </MDBRow>
-          }
-          {
-            userType === "business"
-            &&
-            <MDBRow>
-              <MDBCol md="12">
-                <MDBRow>
-                  <h2 className="justify-content-center">Business / Company Section</h2>
-                  <MDBCol md="12 w-100">
-                    <br></br>
-                    <MDBRow md="10" id="business-form-toggle" >
-                      <MDBCol md="12">
-                        <Form.Group id="company-name">
-                          <Form.Label>Business Full Name</Form.Label>
-                          <Form.Control
-                            type="text"
-                            value={busFirmName}
-                            onChange={(e) => setBusFirmName(e.target.value)}
-                          />
-                        </Form.Group>
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBRow>
-                          <MDBCol>
-                            <Form.Group id="company-street">
-                              <Form.Label>Business Address</Form.Label>
-                              <Form.Control
-                                type="text"
-                                placeholder="Street"
-                                value={busFirmAddress.street}
-                                onChange={(e) => setBusFirmAddress({ ...busFirmAddress, street: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol bottom>
-                            <Form.Group id="company-city">
-                              <Form.Control
-                                type="text"
-                                placeholder="City"
-                                value={busFirmAddress.city}
-                                onChange={(e) => setBusFirmAddress({ ...busFirmAddress, city: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                        <MDBRow>
-                          <MDBCol>
-                            <Form.Group id="company-state">
-                              <Form.Control
-                                type="text"
-                                placeholder="State"
-                                value={busFirmAddress.state}
-                                onChange={(e) => setBusFirmAddress({ ...busFirmAddress, state: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol>
-                            <Form.Group id="company-zip">
-                              <Form.Control
-                                type="text"
-                                placeholder="Zip Code"
-                                value={busFirmAddress.zipCode}
-                                onChange={(e) => setBusFirmAddress({ ...busFirmAddress, zipCode: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol>
-                            <Form.Group id="company-country">
-                              <Form.Control
-                                type="text"
-                                placeholder="Country"
-                                value={busFirmAddress.country}
-                                onChange={(e) => setBusFirmAddress({ ...busFirmAddress, country: e.target.value })}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                      </MDBCol>
-                      <MDBCol md="12">
-                        <MDBRow>
-                          <MDBCol>
-                            <Form.Group id="company-specialty">
-                              <Form.Label>Business Specialty (What is the nature of your business?)</Form.Label>
-                              <Form.Control
-                                type="text"
-                                value={busSpecialty}
-                                onChange={(e) => setBusSpecialty(e.target.value)}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                          <MDBCol>
-                            <Form.Group id="company-job-title">
-                              <Form.Label>Business Role (your current position ie. Owner, Partner, Staff Member, etc.) </Form.Label>
-                              <Form.Control
-                                type="text"
-                                value={busJobTitle}
-                                onChange={(e) => setBusJobTitle(e.target.value)}
-                              />
-                            </Form.Group>
-                          </MDBCol>
-                        </MDBRow>
-                      </MDBCol>
-                    </MDBRow>
-                  </MDBCol>
-                  <br></br>
-                  <br></br>
-                </MDBRow>
-              </MDBCol>
-            </MDBRow>
-          }
-          <Button
-            className="w-100 mt-4"
-            disabled={isUpdatingUser}
-            color="default"
-            type="submit"
-          >
-            {
-              isUpdatingUser
-                ?
-                <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
-                  <div style={{ height: 18, width: 18 }} className="spinner-border text-white" role="status">
-                    <span className="sr-only">Loading...</span>
+            isFetchingCaseDetails
+              ?
+                <div style={{boxSizing: "border-box", backgroundColor: "white", borderRadius: 6, padding: 20, width: "100%"}}>
+                  <div style={{height: "70vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
+                      <div style={{height: 25, width: 25}} className="spinner-border" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>  
+                    </div>
                   </div>
                 </div>
-                :
-                <span className="text-white">Update</span>
-            }
-          </Button>
-          <br></br>
-        </form>
-      </Modal.Body>
-    </Modal>
+              :
+                <>
+                  <Element name="stepper" className="element">
+                    <Stepper
+                      steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
+                      activeStep={activeStep-1}
+                    />
+                  </Element>
+                  <br></br>
+                  <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+                    <button onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
+                  </div>
+                  <div style={{display: "flex", width: "100%", justifyContent: "space-between"}}>
+                    {
+                      activeStep>1
+                        &&
+                          <button onClick={()=>setActiveStep(activeStep-1)} className="btn btn-primary">Previous Step</button>
+                    }
+                  </div>
+                  
+                  {
+                    activeStep === 1
+                      &&
+                        <Questionaire1
+                          caseTitle={caseTitle}
+                          setCaseTitle={setCaseTitle}
+                          caseNumber={caseNumber}
+                          setCaseNumber={setCaseNumber}
+                          courtDate={courtDate}
+                          setCourtDate={setCourtDate}
+                          courtType={courtType}
+                          setCourtType={setCourtType}
+                          courtState={courtState}
+                          setCourtState={setCourtState}
+                          countyOf={countyOf}
+                          setCountyOf={setCountyOf}
+                          branchName={branchName}
+                          setBranchName={setBranchName}
+                          courthouseAddress={courthouseAddress}
+                          setCourthouseAddress={setCourthouseAddress}
+                          courthouseMailingAddress={courthouseMailingAddress}
+                          setCourthouseMailingAddress={setCourthouseMailingAddress}
+                        />
+                  }
+                  {
+                    activeStep === 2
+                      &&
+                        <Questionaire2
+                          isOrRepresentingPlaintiff={isOrRepresentingPlaintiff}
+                          setIsOrRepresentingPlaintiff={setIsOrRepresentingPlaintiff}
+                          shouldPGFillPlaintiffInfo={shouldPGFillPlaintiffInfo}
+                          setShouldPGFillPlaintiffInfo={setShouldPGFillPlaintiffInfo}
+                          plaintiffsDetail={plaintiffsDetail}
+                          setPlaintiffsDetail={setPlaintiffsDetail}
+                          numberOfAttorneyPlaintiff={numberOfAttorneyPlaintiff}
+                          setNumberOfAttorneyPlaintiff={setNumberOfAttorneyPlaintiff}
+                          plaintiffAttorneysDetail={plaintiffAttorneysDetail}
+                          setPlaintiffAttorneysDetail={setPlaintiffAttorneysDetail}
+                          numberOfAttorneysRepresentingPlaintiff={numberOfAttorneysRepresentingPlaintiff}
+                          setNumberOfAttorneysRepresentingPlaintiff={setNumberOfAttorneysRepresentingPlaintiff}
+                        />
+                  }
+                  {
+                    activeStep === 3
+                      &&
+                        <Questionaire3
+                          isOrRepresentingDefendant={isOrRepresentingDefendant}
+                          setIsOrRepresentingDefendant={setIsOrRepresentingDefendant}
+                          shouldPGFillDefendantInfo={shouldPGFillDefendantInfo}
+                          setShouldPGFillDefendantInfo={setShouldPGFillDefendantInfo}
+                          numberOfAttorneyDefendant={numberOfAttorneyDefendant}
+                          setNumberOfAttorneyDefendant={setNumberOfAttorneyDefendant}
+                          defendantsDetail={defendantsDetail}
+                          setDefendantsDetail={setDefendantsDetail}
+                          numberOfAttorneysRepresentingDefendant={numberOfAttorneysRepresentingDefendant}
+                          setNumberOfAttorneysRepresentingDefendant={setNumberOfAttorneysRepresentingDefendant}
+                          defendantAttorneysDetail={defendantAttorneysDetail}
+                          setDefendantAttorneysDetail={setDefendantAttorneysDetail}
+                        />
+                  }
+                  {
+                    activeStep === 4
+                      &&
+                        <Questionaire4
+                          numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
+                          setNumberOfCaseFilesBeingServed={setNumberOfCaseFilesBeingServed}
+                          howManyIndividualsServed={howManyIndividualsServed}
+                          setHowManyIndividualsServed={setHowManyIndividualsServed}
+                          serveesDetail={serveesDetail}
+                          setServeesDetail={setServeesDetail}
+                          locationForBeingServed={locationForBeingServed}
+                          setLocationForBeingServed={setLocationForBeingServed}
+                          mainAddressesForService={mainAddressesForService}
+                          setMainAddressesForService={setMainAddressesForService}
+                          agentOfService={agentOfService}
+                          setAgentOfService={setAgentOfService}
+                          agentsFullNames={agentsFullNames}
+                          setAgentsFullNames={setAgentsFullNames}
+                        />
+                  }
+                  {
+                    activeStep === 5
+                      &&
+                        <Questionaire5
+                          typeOfServe={typeOfServe}
+                          setTypeOfServe={setTypeOfServe}
+                          serveIndividualAtEmployment={serveIndividualAtEmployment}
+                          setServeIndividualAtEmployment={setServeIndividualAtEmployment}
+                          processServerLeaveDoorTag={processServerLeaveDoorTag}
+                          setProcessServerLeaveDoorTag={setProcessServerLeaveDoorTag}
+                          subserveAfterThreeAttempts={subserveAfterThreeAttempts}  
+                          setSubserveAfterThreeAttempts={setSubserveAfterThreeAttempts}        
+                          requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
+                          setRequireServerNotifyPersonOfInterest={setRequireServerNotifyPersonOfInterest}
+                          serverContactServeeByPhone={serverContactServeeByPhone}
+                          setServerContactServeeByPhone={setServerContactServeeByPhone}
+                          serverPostDocumentsWithRubberBand={serverPostDocumentsWithRubberBand}
+                          setServerPostDocumentsWithRubberBand={setServerPostDocumentsWithRubberBand}
+                          dropServeForceServe={dropServeForceServe}
+                          setDropServeForceServe={setDropServeForceServe}   
+                          paralegalAttorneyClientContactServee={paralegalAttorneyClientContactServee}
+                          setParalegalAttorneyClientContactServee={setParalegalAttorneyClientContactServee}
+                        />
+                  }
+                  {
+                    activeStep === 6
+                      &&
+                        <Questionaire6
+                          serveesPhysicalDescription={serveesPhysicalDescription}
+                          setServeesPhysicalDescription={setServeesPhysicalDescription}
+                        />
+                  }
+                  {
+                    activeStep===7
+                      &&
+                        <Questionaire7
+                          vehiclesInformation={vehiclesInformation}
+                          setVehiclesInformation={setVehiclesInformation}
+                        />
+                  }
+                  {
+                    activeStep===8
+                      &&
+                        <Questionaire8
+                          requireStakeOutService={requireStakeOutService}
+                          setRequireStakeoutService={setRequireStakeoutService}
+                          specifyDatesForStakeOutService={specifyDatesForStakeOutService}
+                          setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
+                          requireRushService={requireRushService}
+                          setRequireRushService={setRequireRushService}
+                          listDateWhenServiceAttemptsClosed={listDateWhenServiceAttemptsClosed}
+                          setListDateWhenServiceAttemptsClosed={setListDateWhenServiceAttemptsClosed}
+                          requireFirst24HourService={requireFirst24HourService}
+                          setRequireFirst24HourService={setRequireFirst24HourService}
+                          requireSkipTracingService={requireSkipTracingService}
+                          setRequireSkipTracingService={setRequireSkipTracingService}
+                          requireBodyCamFootage={requireBodyCamFootage}
+                          setRequireBodyCamFootage={setRequireBodyCamFootage}
+                          obtainNewDeliveryLocation={obtainNewDeliveryLocation}
+                          setObtainNewDeliveryLocation={setObtainNewDeliveryLocation}
+                          poBoxAllowedToServe={poBoxAllowedToServe}
+                          setPOBoxAllowedToServe={setPOBoxAllowedToServe}
+                          requireServiceByMail={requireServiceByMail}
+                          setRequireServiceByMail={setRequireServiceByMail}
+                          requireByEmail={requireByEmail}
+                          setRequireByEmail={setRequireByEmail}
+                          specificCourtInstruction={specificCourtInstruction}
+                          setSpecificCourtInstruction={setSpecificCourtInstruction}
+                          requireZipFileService={requireZipFileService}
+                          setRequireZipFileService={setRequireZipFileService}
+                          ifYesListAddress={ifYesListAddress}
+                          setIfYesListAddress={setIfYesListAddress}
+                        />
+                  }
+                  {
+                    activeStep===9
+                      &&
+                        <FileSubmission
+                          isFormUpdating={true}
+                          documentURI={caseDetails.FileSubmission.documentURI}
+                          fileData={caseDetails.FileSubmission.fileData}
+                        />
+                  }
+                  {
+                    activeStep!==9
+                      &&
+                        <Element name="next-btn" className="element">
+                          <div className="d-flex justify-content-end">
+                            <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={250} duration={500} delay={300}>
+                              <button
+                                className="btn btn-primary mt-1 mb-1"
+                                onClick={handleOnPressNext}
+                              >
+                                {getButtonTitle()}
+                              </button>
+                            </RSLink>
+                          </div>
+                        </Element>
+                  }
+                  <br/>
+                  <ResetQuestionairesConfirmation
+                    showModal={showResetModal}
+                    handleModalClose={()=>setShowResetModal(false)}
+                    handleOnClickConfirm={handleResetForms}
+                  />
+                </>
+          }
+        </Modal.Body>
+      </Modal>
+    </>
   );
 }
 

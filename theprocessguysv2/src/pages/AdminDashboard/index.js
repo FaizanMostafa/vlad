@@ -1,4 +1,4 @@
-import { Link, Switch, Route, useRouteMatch, useLocation } from 'react-router-dom';
+import { Link, Switch, Route, Redirect, useRouteMatch, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Members from "./Members";
@@ -53,6 +53,7 @@ const AdminDashboard = (props) => {
       </div>
       <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, marginBottom: 35, zIndex: 0}}>
         <Switch>
+          <Redirect exact from={`${path}/`} to={`${path}/members`} />
           <Route exact path={`${path}/members`} component={Members} />
           <Route exact path={`${path}/members/:userId`} component={MemberDetails} />
           <Route exact path={`${path}/cases`} component={Cases} />
