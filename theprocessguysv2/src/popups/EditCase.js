@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
 import { Stepper } from 'react-form-stepper';
-import { Modal, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { Modal } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
-import { createCase } from '../redux/actions/admin';
 import {
   ResetQuestionairesConfirmation
 } from "../popups";
@@ -354,18 +353,17 @@ const EditCase = (props) => {
       } else if(!countyOf.length) {
         showToast("Please enter county of!", "warning");
       } else {
-        let data = {
-          caseTitle,
-          caseNumber,
-          courtDate,
-          courtType,
-          courtState,
-          countyOf,
-          courthouseAddress,
-          courthouseMailingAddress,
-          branchName
-        }
-        localStorage.setItem('Questionaire1', JSON.stringify(data));
+        let data = {};
+        if(caseTitle!==caseDetails.CaseInformation.caseTitle) data.caseTitle=caseTitle;
+        if(caseNumber!==caseDetails.CaseInformation.caseNumber) data.caseNumber=caseNumber;
+        if(courtDate!==caseDetails.CaseInformation.courtDate) data.courtDate=courtDate;
+        if(courtType!==caseDetails.CaseInformation.courtType) data.courtType=courtType;
+        if(courtState!==caseDetails.CaseInformation.courtState) data.courtState=courtState;
+        if(countyOf!==caseDetails.CaseInformation.countyOf) data.countyOf=countyOf;
+        if(!objectsEqual(courthouseAddress, caseDetails.CaseInformation.courthouseAddress)) data.courthouseAddress=courthouseAddress;
+        if(!objectsEqual(courthouseMailingAddress, caseDetails.CaseInformation.courthouseMailingAddress)) data.courthouseMailingAddress=courthouseMailingAddress;
+        if(branchName!==caseDetails.CaseInformation.branchName) data.branchName=branchName;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire1', JSON.stringify({docId: caseDetails.CaseInformation.docId, ...data}));
         setActiveStep(2);
       }
     } else if(activeStep === 2) {
@@ -414,15 +412,14 @@ const EditCase = (props) => {
       } else if(!shouldPGFillPlaintiffInfo && numberOfAttorneysRepresentingPlaintiff!=="0" && isOrRepresentingPlaintiff === true && Object.values(plaintiffAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
         showToast("Please enter plaintiff's attorney firm country!", "warning");
       } else {
-        let data = {
-          plaintiffsDetail,
-          numberOfAttorneyPlaintiff,
-          isOrRepresentingPlaintiff,
-          shouldPGFillPlaintiffInfo,
-          numberOfAttorneysRepresentingPlaintiff,
-          plaintiffAttorneysDetail
-        };
-        localStorage.setItem('Questionaire2', JSON.stringify(data));
+        let data = {};
+        if(!objectsEqual(plaintiffsDetail, caseDetails.PlaintiffInformation.plaintiffsDetail)) data.plaintiffsDetail=plaintiffsDetail;
+        if(numberOfAttorneyPlaintiff!==caseDetails.PlaintiffInformation.numberOfAttorneyPlaintiff) data.numberOfAttorneyPlaintiff=numberOfAttorneyPlaintiff;
+        if(isOrRepresentingPlaintiff!==caseDetails.PlaintiffInformation.isOrRepresentingPlaintiff) data.isOrRepresentingPlaintiff=isOrRepresentingPlaintiff;
+        if(shouldPGFillPlaintiffInfo!==caseDetails.PlaintiffInformation.shouldPGFillPlaintiffInfo) data.shouldPGFillPlaintiffInfo=shouldPGFillPlaintiffInfo;
+        if(numberOfAttorneysRepresentingPlaintiff!==caseDetails.PlaintiffInformation.numberOfAttorneysRepresentingPlaintiff) data.numberOfAttorneysRepresentingPlaintiff=numberOfAttorneysRepresentingPlaintiff;
+        if(!objectsEqual(plaintiffAttorneysDetail, caseDetails.PlaintiffInformation.plaintiffAttorneysDetail)) data.plaintiffAttorneysDetail=plaintiffAttorneysDetail;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire2', JSON.stringify({docId: caseDetails.PlaintiffInformation.docId, ...data}));
         setActiveStep(3);
       }
     } else if(activeStep === 3) {
@@ -471,15 +468,16 @@ const EditCase = (props) => {
       } else if(!shouldPGFillDefendantInfo && numberOfAttorneysRepresentingDefendant!=="0" && isOrRepresentingDefendant===true && Object.values(defendantAttorneysDetail).map((o)=>(o.address)).filter((address)=>!address.country.length).length) {
         showToast("Please enter defendant's attorney's firm country!", "warning");
       } else {
-        let data = {
-          defendantsDetail,
-          numberOfAttorneyDefendant,
-          isOrRepresentingDefendant,
-          shouldPGFillDefendantInfo,
-          numberOfAttorneysRepresentingDefendant,
-          defendantAttorneysDetail
-        };
-        localStorage.setItem('Questionaire3', JSON.stringify(data));
+        let data = {};
+        if(!objectsEqual(defendantsDetail, caseDetails.DefendantInformation.defendantsDetail)) data.defendantsDetail=defendantsDetail;
+        if(numberOfAttorneyDefendant!==caseDetails.DefendantInformation.numberOfAttorneyDefendant) data.numberOfAttorneyDefendant=numberOfAttorneyDefendant;
+        if(isOrRepresentingDefendant!==caseDetails.DefendantInformation.isOrRepresentingDefendant) data.isOrRepresentingDefendant=setIsOrRepresentingDefendant;
+        if(shouldPGFillDefendantInfo!==caseDetails.DefendantInformation.shouldPGFillDefendantInfo) data.shouldPGFillDefendantInfo=shouldPGFillDefendantInfo;
+        if(numberOfAttorneysRepresentingDefendant!==caseDetails.DefendantInformation.numberOfAttorneysRepresentingDefendant) data.numberOfAttorneysRepresentingDefendant=numberOfAttorneysRepresentingDefendant;
+        console.log(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail)
+        console.log(objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail))
+        if(Object.values(defendantAttorneysDetail).length && Object.values(caseDetails.DefendantInformation.defendantAttorneysDetail).length && !objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail)) data.defendantAttorneysDetail=defendantAttorneysDetail;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire3', JSON.stringify({docId: caseDetails.DefendantInformation.docId, ...data}));
         setActiveStep(4);
       }
     } else if(activeStep === 4) {
@@ -520,16 +518,15 @@ const EditCase = (props) => {
       } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
         showToast("Please enter last names of all the agents of service!", "warning");
       } else {
-        let data = {
-          numberOfCaseFilesBeingServed,
-          howManyIndividualsServed,
-          serveesDetail,
-          locationForBeingServed,
-          mainAddressesForService,
-          agentOfService,          
-          agentsFullNames
-        };
-        localStorage.setItem('Questionaire4', JSON.stringify(data));
+        let data = {};
+        if(numberOfCaseFilesBeingServed!==caseDetails.ServeeDocumentedData.numberOfCaseFilesBeingServed) data.numberOfCaseFilesBeingServed=numberOfCaseFilesBeingServed;
+        if(howManyIndividualsServed!==caseDetails.ServeeDocumentedData.howManyIndividualsServed) data.howManyIndividualsServed=howManyIndividualsServed;
+        if(!objectsEqual(serveesDetail, caseDetails.ServeeDocumentedData.serveesDetail)) data.serveesDetail=serveesDetail;
+        if(locationForBeingServed!==caseDetails.ServeeDocumentedData.locationForBeingServed) data.locationForBeingServed=locationForBeingServed;
+        if(!objectsEqual(mainAddressesForService, caseDetails.ServeeDocumentedData.mainAddressesForService)) data.mainAddressesForService=mainAddressesForService;
+        if(agentOfService!==caseDetails.ServeeDocumentedData.agentOfService) data.agentOfService=agentOfService;
+        if(!objectsEqual(agentsFullNames, caseDetails.ServeeDocumentedData.agentsFullNames)) data.agentsFullNames=agentsFullNames;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire4', JSON.stringify({docId: caseDetails.ServeeDocumentedData.docId, ...data}));
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
@@ -552,31 +549,53 @@ const EditCase = (props) => {
       } else if(typeof(paralegalAttorneyClientContactServee)!=="boolean") {
         showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
       } else {
-        let data = {
-          typeOfServe,
-          serveIndividualAtEmployment,
-          processServerLeaveDoorTag,
-          subserveAfterThreeAttempts,          
-          requireServerNotifyPersonOfInterest,
-          serverContactServeeByPhone,
-          serverPostDocumentsWithRubberBand,
-          dropServeForceServe,          
-          paralegalAttorneyClientContactServee
-        };
-        localStorage.setItem('Questionaire5', JSON.stringify(data));
+        let data = {};
+        if(typeOfServe!==caseDetails.ClearanceOfAction.typeOfServe) data.typeOfServe=typeOfServe;
+        if(serveIndividualAtEmployment!==caseDetails.ClearanceOfAction.serveIndividualAtEmployment) data.serveIndividualAtEmployment=serveIndividualAtEmployment;
+        if(processServerLeaveDoorTag!==caseDetails.ClearanceOfAction.processServerLeaveDoorTag) data.processServerLeaveDoorTag=processServerLeaveDoorTag;
+        if(subserveAfterThreeAttempts!==caseDetails.ClearanceOfAction.subserveAfterThreeAttempts) data.subserveAfterThreeAttempts=subserveAfterThreeAttempts;
+        if(requireServerNotifyPersonOfInterest!==caseDetails.ClearanceOfAction.requireServerNotifyPersonOfInterest) data.requireServerNotifyPersonOfInterest=requireServerNotifyPersonOfInterest;
+        if(serverContactServeeByPhone!==caseDetails.ClearanceOfAction.serverContactServeeByPhone) data.serverContactServeeByPhone=serverContactServeeByPhone;
+        if(serverPostDocumentsWithRubberBand!==caseDetails.ClearanceOfAction.serverPostDocumentsWithRubberBand) data.serverPostDocumentsWithRubberBand=serverPostDocumentsWithRubberBand;
+        if(dropServeForceServe!==caseDetails.ClearanceOfAction.dropServeForceServe) data.dropServeForceServe=dropServeForceServe;
+        if(paralegalAttorneyClientContactServee!==caseDetails.ClearanceOfAction.paralegalAttorneyClientContactServee) data.paralegalAttorneyClientContactServee=paralegalAttorneyClientContactServee;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire5', JSON.stringify({docId: caseDetails.ClearanceOfAction.docId, ...data}));
         setActiveStep(6);
       }
     } else if(activeStep===6) {
-      let data = {
-        serveesPhysicalDescription
+      let data = {};
+      const emptyObj = {
+        fullName: {firstName: "", middleName: "", lastName: ""},
+        gender: "", ethnicity: "", height: "", weight: "",
+        hairColor: "", eyeColor: "", physicalOutline: "", image: null
       };
-      localStorage.setItem('Questionaire6', JSON.stringify(data));
+      if(Object.values(serveesPhysicalDescription).filter(o=>!objectsEqual(o, emptyObj)).length) {
+        let serveesFinalPhysicalDescription = {};
+        const serveesOldPhysicalDescription = JSON.parse(JSON.stringify(caseDetails.ServeePhysicalDescription.serveesPhysicalDescription));
+        const serveesNewPhysicalDescription = JSON.parse(JSON.stringify(serveesPhysicalDescription));
+        for (let index = 0; index < (Object.keys(serveesOldPhysicalDescription).length > Object.keys(serveesNewPhysicalDescription).length ? Object.keys(serveesOldPhysicalDescription).length : Object.keys(serveesNewPhysicalDescription).length); index++) {
+          delete serveesNewPhysicalDescription[index].image;
+          if(serveesOldPhysicalDescription[index].hasOwnProperty("image")) {
+            delete serveesOldPhysicalDescription[index].image;
+          } else {
+            delete serveesOldPhysicalDescription[index].imageURI;
+            delete serveesOldPhysicalDescription[index].imagePath;
+          }
+          if(!objectsEqual(serveesOldPhysicalDescription[index], serveesNewPhysicalDescription[index])){
+            serveesFinalPhysicalDescription[index] = serveesPhysicalDescription[index];
+          } else if(serveesPhysicalDescription[index].image!==null) {
+            serveesFinalPhysicalDescription[index] = {image: serveesPhysicalDescription[index].image};
+            if(caseDetails.ServeePhysicalDescription.serveesPhysicalDescription[index]?.imagePath) serveesFinalPhysicalDescription[index] = {...serveesFinalPhysicalDescription[index], oldImagePath: caseDetails.ServeePhysicalDescription.serveesPhysicalDescription[index].imagePath};
+          }
+        }
+        data.serveesPhysicalDescription = serveesFinalPhysicalDescription;
+      }
+      if(Object.keys(data).length) localStorage.setItem('Questionaire6', JSON.stringify({docId: caseDetails.ServeePhysicalDescription.docId, ...data}));
       setActiveStep(7);
     } else if(activeStep===7) {
-      let data = {
-        vehiclesInformation
-      };
-      localStorage.setItem('Questionaire7', JSON.stringify(data));
+      let data = {};
+      if(!objectsEqual(vehiclesInformation, caseDetails.VehicleInformation.vehiclesInformation)) data.vehiclesInformation=vehiclesInformation;
+      if(Object.keys(data).length) localStorage.setItem('Questionaire7', JSON.stringify({docId: caseDetails.VehicleInformation.docId, ...data}));
       setActiveStep(8);
     } else if(activeStep===8) {
       if(typeof(requireStakeOutService)!=="boolean") {
@@ -602,23 +621,22 @@ const EditCase = (props) => {
       } else if(requireZipFileService && !ifYesListAddress.length) {
         showToast("Please enter address for zip filing!", "warning");
       } else {
-        let data = {
-          requireStakeOutService,
-          specifyDatesForStakeOutService,
-          requireRushService,          
-          listDateWhenServiceAttemptsClosed,
-          requireFirst24HourService,
-          requireSkipTracingService,
-          requireBodyCamFootage,
-          obtainNewDeliveryLocation,
-          poBoxAllowedToServe,
-          requireServiceByMail,
-          requireByEmail,
-          specificCourtInstruction,
-          requireZipFileService,
-          ifYesListAddress
-        };
-        localStorage.setItem('Questionaire8', JSON.stringify(data));
+        let data = {};
+        if(requireStakeOutService!==caseDetails.OfferedServices.requireStakeOutService) data.requireStakeOutService=requireStakeOutService;
+        if(specifyDatesForStakeOutService!==caseDetails.OfferedServices.specifyDatesForStakeOutService) data.specifyDatesForStakeOutService=specifyDatesForStakeOutService;
+        if(requireRushService!==caseDetails.OfferedServices.requireRushService) data.requireRushService=requireRushService;
+        if(listDateWhenServiceAttemptsClosed!==caseDetails.OfferedServices.listDateWhenServiceAttemptsClosed) data.listDateWhenServiceAttemptsClosed=listDateWhenServiceAttemptsClosed;
+        if(requireFirst24HourService!==caseDetails.OfferedServices.requireFirst24HourService) data.requireFirst24HourService=requireFirst24HourService;
+        if(requireSkipTracingService!==caseDetails.OfferedServices.requireSkipTracingService) data.requireSkipTracingService=requireSkipTracingService;
+        if(requireBodyCamFootage!==caseDetails.OfferedServices.requireBodyCamFootage) data.requireBodyCamFootage=requireBodyCamFootage;
+        if(obtainNewDeliveryLocation!==caseDetails.OfferedServices.obtainNewDeliveryLocation) data.obtainNewDeliveryLocation=obtainNewDeliveryLocation;
+        if(poBoxAllowedToServe!==caseDetails.OfferedServices.poBoxAllowedToServe) data.poBoxAllowedToServe=poBoxAllowedToServe;
+        if(requireServiceByMail!==caseDetails.OfferedServices.requireServiceByMail) data.requireServiceByMail=requireServiceByMail;
+        if(requireByEmail!==caseDetails.OfferedServices.requireByEmail) data.requireByEmail=requireByEmail;
+        if(specificCourtInstruction!==caseDetails.OfferedServices.specificCourtInstruction) data.specificCourtInstruction=specificCourtInstruction;
+        if(requireZipFileService!==caseDetails.OfferedServices.requireZipFileService) data.requireZipFileService=requireZipFileService;
+        if(ifYesListAddress!==caseDetails.OfferedServices.ifYesListAddress) data.ifYesListAddress=ifYesListAddress;
+        if(Object.keys(data).length) localStorage.setItem('Questionaire8', JSON.stringify({docId: caseDetails.OfferedServices.docId, ...data}));
         setActiveStep(9);
       }
     }
@@ -922,6 +940,8 @@ const EditCase = (props) => {
                       &&
                         <FileSubmission
                           isFormUpdating={true}
+                          docId={caseDetails.FileSubmission.docId}
+                          documentPath={caseDetails.FileSubmission.documentPath}
                           documentURI={caseDetails.FileSubmission.documentURI}
                           fileData={caseDetails.FileSubmission.fileData}
                         />

@@ -113,79 +113,79 @@ const CreateNewCase = (props) => {
     const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
     if(QuestionaireForm1) {
       setActiveStep(2);
-      setCaseTitle(QuestionaireForm1.caseTitle);
-      setCaseNumber(QuestionaireForm1.caseNumber);
-      setCourtDate(QuestionaireForm1.courtDate);
-      setCourtType(QuestionaireForm1.courtType);
-      setCourtState(QuestionaireForm1.courtState);
-      setCountyOf(QuestionaireForm1.countyOf);
-      setCourthouseAddress(QuestionaireForm1.courthouseAddress);
-      setCourthouseMailingAddress(QuestionaireForm1.courthouseMailingAddress);
-      setBranchName(QuestionaireForm1.branchName);
+      if(QuestionaireForm1?.caseTitle) setCaseTitle(QuestionaireForm1.caseTitle);
+      if(QuestionaireForm1?.caseNumber) setCaseNumber(QuestionaireForm1.caseNumber);
+      if(QuestionaireForm1?.courtDate) setCourtDate(QuestionaireForm1.courtDate);
+      if(QuestionaireForm1?.courtType) setCourtType(QuestionaireForm1.courtType);
+      if(QuestionaireForm1?.courtState) setCourtState(QuestionaireForm1.courtState);
+      if(QuestionaireForm1?.countyOf) setCountyOf(QuestionaireForm1.countyOf);
+      if(QuestionaireForm1?.courthouseAddress) setCourthouseAddress(QuestionaireForm1.courthouseAddress);
+      if(QuestionaireForm1?.courthouseMailingAddress) setCourthouseMailingAddress(QuestionaireForm1.courthouseMailingAddress);
+      if(QuestionaireForm1?.branchName) setBranchName(QuestionaireForm1.branchName);
     }
     if(QuestionaireForm2) {
       setActiveStep(3);
-      setIsOrRepresentingPlaintiff(QuestionaireForm2.isOrRepresentingPlaintiff);
-      setPlaintiffsDetail(QuestionaireForm2.plaintiffsDetail);
-      setShouldPGFillPlaintiffInfo(QuestionaireForm2.shouldPGFillPlaintiffInfo);
-      setNumberOfAttorneyPlaintiff(QuestionaireForm2.numberOfAttorneyPlaintiff);
-      setNumberOfAttorneysRepresentingPlaintiff(QuestionaireForm2.numberOfAttorneysRepresentingPlaintiff) 
-      setPlaintiffAttorneysDetail(QuestionaireForm2.plaintiffAttorneysDetail);
+      if(QuestionaireForm2?.isOrRepresentingPlaintiff) setIsOrRepresentingPlaintiff(QuestionaireForm2.isOrRepresentingPlaintiff);
+      if(QuestionaireForm2?.plaintiffsDetail) setPlaintiffsDetail(QuestionaireForm2.plaintiffsDetail);
+      if(QuestionaireForm2?.shouldPGFillPlaintiffInfo) setShouldPGFillPlaintiffInfo(QuestionaireForm2.shouldPGFillPlaintiffInfo);
+      if(QuestionaireForm2?.numberOfAttorneyPlaintiff) setNumberOfAttorneyPlaintiff(QuestionaireForm2.numberOfAttorneyPlaintiff);
+      if(QuestionaireForm2?.numberOfAttorneysRepresentingPlaintiff) setNumberOfAttorneysRepresentingPlaintiff(QuestionaireForm2.numberOfAttorneysRepresentingPlaintiff);
+      if(QuestionaireForm2?.plaintiffAttorneysDetail) setPlaintiffAttorneysDetail(QuestionaireForm2.plaintiffAttorneysDetail);
     }
     if(QuestionaireForm3) {
       setActiveStep(4);
-      setIsOrRepresentingDefendant(QuestionaireForm3.isOrRepresentingDefendant);
-      setDefendantsDetail(QuestionaireForm3.defendantsDetail);
-      setShouldPGFillDefendantInfo(QuestionaireForm3.shouldPGFillDefendantInfo);
-      setNumberOfAttorneyDefendant(QuestionaireForm3.numberOfAttorneyDefendant);
-      setNumberOfAttorneysRepresentingDefendant(QuestionaireForm3.numberOfAttorneysRepresentingDefendant);
+      if(QuestionaireForm3?.isOrRepresentingDefendant) setIsOrRepresentingDefendant(QuestionaireForm3.isOrRepresentingDefendant);
+      if(QuestionaireForm3?.defendantsDetail) setDefendantsDetail(QuestionaireForm3.defendantsDetail);
+      if(QuestionaireForm3?.shouldPGFillDefendantInfo) setShouldPGFillDefendantInfo(QuestionaireForm3.shouldPGFillDefendantInfo);
+      if(QuestionaireForm3?.numberOfAttorneyDefendant) setNumberOfAttorneyDefendant(QuestionaireForm3.numberOfAttorneyDefendant);
+      if(QuestionaireForm3?.numberOfAttorneysRepresentingDefendant) setNumberOfAttorneysRepresentingDefendant(QuestionaireForm3.numberOfAttorneysRepresentingDefendant);
     }
     if(QuestionaireForm4) {
       setActiveStep(5);
-      setNumberOfCaseFilesBeingServed(QuestionaireForm4.numberOfCaseFilesBeingServed);
-      setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
-      setServeesDetail(QuestionaireForm4.serveesDetail);
-      setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
-      setMainAddressesForService(QuestionaireForm4.mainAddressesForService);
-      setAgentOfService(QuestionaireForm4.agentOfService);
-      setAgentsFullNames(QuestionaireForm4.agentsFullNames);
+      if(QuestionaireForm4?.numberOfCaseFilesBeingServed) setNumberOfCaseFilesBeingServed(QuestionaireForm4.numberOfCaseFilesBeingServed);
+      if(QuestionaireForm4?.howManyIndividualsServed) setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
+      if(QuestionaireForm4?.serveesDetail) setServeesDetail(QuestionaireForm4.serveesDetail);
+      if(QuestionaireForm4?.locationForBeingServed) setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
+      if(QuestionaireForm4?.mainAddressesForService) setMainAddressesForService(QuestionaireForm4.mainAddressesForService);
+      if(QuestionaireForm4?.agentOfService) setAgentOfService(QuestionaireForm4.agentOfService);
+      if(QuestionaireForm4?.agentsFullNames) setAgentsFullNames(QuestionaireForm4.agentsFullNames);
     }
     if(QuestionaireForm5) {
       setActiveStep(6);
-      setTypeOfServe(QuestionaireForm5.typeOfServe);
-      setServeIndividualAtEmployment(QuestionaireForm5.serveIndividualAtEmployment);
-      setProcessServerLeaveDoorTag(QuestionaireForm5.processServerLeaveDoorTag);
-      setSubserveAfterThreeAttempts(QuestionaireForm5.subserveAfterThreeAttempts);
-      setRequireServerNotifyPersonOfInterest(QuestionaireForm5.requireServerNotifyPersonOfInterest);
-      setServerContactServeeByPhone(QuestionaireForm5.serverContactServeeByPhone);
-      setServerPostDocumentsWithRubberBand(QuestionaireForm5.serverPostDocumentsWithRubberBand);
-      setDropServeForceServe(QuestionaireForm5.dropServeForceServe);
-      setParalegalAttorneyClientContactServee(QuestionaireForm5.paralegalAttorneyClientContactServee);
+      if(QuestionaireForm5?.typeOfServe) setTypeOfServe(QuestionaireForm5.typeOfServe);
+      if(QuestionaireForm5?.serveIndividualAtEmployment) setServeIndividualAtEmployment(QuestionaireForm5.serveIndividualAtEmployment);
+      if(QuestionaireForm5?.processServerLeaveDoorTag) setProcessServerLeaveDoorTag(QuestionaireForm5.processServerLeaveDoorTag);
+      if(QuestionaireForm5?.subserveAfterThreeAttempts) setSubserveAfterThreeAttempts(QuestionaireForm5.subserveAfterThreeAttempts);
+      if(QuestionaireForm5?.requireServerNotifyPersonOfInterest) setRequireServerNotifyPersonOfInterest(QuestionaireForm5.requireServerNotifyPersonOfInterest);
+      if(QuestionaireForm5?.serverContactServeeByPhone) setServerContactServeeByPhone(QuestionaireForm5.serverContactServeeByPhone);
+      if(QuestionaireForm5?.serverPostDocumentsWithRubberBand) setServerPostDocumentsWithRubberBand(QuestionaireForm5.serverPostDocumentsWithRubberBand);
+      if(QuestionaireForm5?.dropServeForceServe) setDropServeForceServe(QuestionaireForm5.dropServeForceServe);
+      if(QuestionaireForm5?.paralegalAttorneyClientContactServee) setParalegalAttorneyClientContactServee(QuestionaireForm5.paralegalAttorneyClientContactServee);
     }
     if(QuestionaireForm6) {
       setActiveStep(7);
-      setServeesPhysicalDescription(QuestionaireForm6.serveesPhysicalDescription);
+      if(QuestionaireForm6?.serveesPhysicalDescription) setServeesPhysicalDescription(QuestionaireForm6.serveesPhysicalDescription);
     }
     if(QuestionaireForm7) {
       setActiveStep(8);
-      setVehiclesInformation(QuestionaireForm7.vehiclesInformation);
+      if(QuestionaireForm7?.vehiclesInformation) setVehiclesInformation(QuestionaireForm7.vehiclesInformation);
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
-      setRequireStakeoutService(QuestionaireForm8.requireStakeOutService);
-      setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
-      setRequireRushService(QuestionaireForm8.requireRushService);
-      setListDateWhenServiceAttemptsClosed(QuestionaireForm8.listDateWhenServiceAttemptsClosed);
-      setRequireFirst24HourService(QuestionaireForm8.requireFirst24HourService);
-      setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
-      setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
-      setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
-      setPOBoxAllowedToServe(QuestionaireForm8.poBoxAllowedToServe);
-      setRequireServiceByMail(QuestionaireForm8.requireServiceByMail);
-      setRequireByEmail(QuestionaireForm8.requireByEmail);
-      setSpecificCourtInstruction(QuestionaireForm8.specificCourtInstruction);
-      setRequireZipFileService(QuestionaireForm8.requireZipFileService);
-      setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
+      if(QuestionaireForm8?.requireStakeOutService) setRequireStakeoutService(QuestionaireForm8.requireStakeOutService);
+      if(QuestionaireForm8?.specifyDatesForStakeOutService) setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
+      if(QuestionaireForm8?.requireRushService) setRequireRushService(QuestionaireForm8.requireRushService);
+      if(QuestionaireForm8?.listDateWhenServiceAttemptsClosed) setListDateWhenServiceAttemptsClosed(QuestionaireForm8.listDateWhenServiceAttemptsClosed);
+      if(QuestionaireForm8?.requireFirst24HourService) setRequireFirst24HourService(QuestionaireForm8.requireFirst24HourService);
+      if(QuestionaireForm8?.requireSkipTracingService) setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
+      if(QuestionaireForm8?.requireBodyCamFootage) setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
+      if(QuestionaireForm8?.obtainNewDeliveryLocation) setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
+      if(QuestionaireForm8?.poBoxAllowedToServe) setPOBoxAllowedToServe(QuestionaireForm8.poBoxAllowedToServe);
+      if(QuestionaireForm8?.requireServiceByMail) setRequireServiceByMail(QuestionaireForm8.requireServiceByMail);
+      if(QuestionaireForm8?.requireByEmail) setRequireByEmail(QuestionaireForm8.requireByEmail);
+      if(QuestionaireForm8?.specificCourtInstruction) setSpecificCourtInstruction(QuestionaireForm8.specificCourtInstruction);
+      if(QuestionaireForm8?.requireZipFileService) setRequireZipFileService(QuestionaireForm8.requireZipFileService);
+      if(QuestionaireForm8?.ifYesListAddress) setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
     }
   }, []);
 

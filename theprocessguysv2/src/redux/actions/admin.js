@@ -339,23 +339,23 @@ const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let caseData = {};
       let subQuerySnapshot = {};
       subQuerySnapshot = await db.collection("CaseInformation-1").doc(data.CaseInformationId).get();
-      caseData["CaseInformation"] = subQuerySnapshot.data();
+      caseData["CaseInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("PlaintiffInformation-2").doc(data.PlaintiffInformationId).get();
-      caseData["PlaintiffInformation"] = subQuerySnapshot.data();
+      caseData["PlaintiffInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("DefendantInformation-3").doc(data.DefendantInformationId).get();
-      caseData["DefendantInformation"] = subQuerySnapshot.data();
+      caseData["DefendantInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("ServeeDocumentedData-4").doc(data.ServeeDocumentedDataId).get();
-      caseData["ServeeDocumentedData"] = subQuerySnapshot.data();
+      caseData["ServeeDocumentedData"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("ClearanceOfAction-5").doc(data.ClearanceOfActionId).get();
-      caseData["ClearanceOfAction"] = subQuerySnapshot.data();
+      caseData["ClearanceOfAction"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("ServeePhysicalDescription-6").doc(data.ServeePhysicalDescriptionId).get();
-      caseData["ServeePhysicalDescription"] = subQuerySnapshot.data();
+      caseData["ServeePhysicalDescription"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("VehicleInformation-7").doc(data.VehicleInformationId).get();
-      caseData["VehicleInformation"] = subQuerySnapshot.data();
+      caseData["VehicleInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("OfferedServices-8").doc(data.OfferedServicesId).get();
-      caseData["OfferedServices"] = subQuerySnapshot.data();
+      caseData["OfferedServices"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("FileSubmission-9").doc(data.FileSubmissionId).get();
-      caseData["FileSubmission"] = subQuerySnapshot.data();
+      caseData["FileSubmission"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       dispatch({
         type: FETCH_CASE_DETAILS,
         payload: {
@@ -367,6 +367,80 @@ const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
     } catch(error) {
       onError();
       dispatch(setIsFetchingCaseDetails(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async (dispatch) => {
+    try {
+      dispatch(setIsUpdatingCase(true));
+      if(data.hasOwnProperty("CaseInformation-1")) {
+        await db.collection("CaseInformation-1").doc(data["CaseInformation-1"].docId).update({...data["CaseInformation-1"]});
+        if(data["CaseInformation-1"]?.caseTitle) {
+          await db.collection("cases").doc(data.caseId).update({caseTitle: data["CaseInformation-1"].caseTitle});
+        }
+      }
+      if(data.hasOwnProperty("PlaintiffInformation-2")) {
+        await db.collection("PlaintiffInformation-2").doc(data["PlaintiffInformation-2"].docId).update({...data["PlaintiffInformation-2"]});
+      }
+      if(data.hasOwnProperty("DefendantInformation-3")) {
+        await db.collection("DefendantInformation-3").doc(data["DefendantInformation-3"].docId).update({...data["DefendantInformation-3"]});
+      }
+      if(data.hasOwnProperty("ServeeDocumentedData-4")) {
+        await db.collection("ServeeDocumentedData-4").doc(data["ServeeDocumentedData-4"].docId).update({...data["ServeeDocumentedData-4"]});
+      }
+      if(data.hasOwnProperty("ClearanceOfAction-5")) {
+        await db.collection("ClearanceOfAction-5").doc(data["ClearanceOfAction-5"].docId).update({...data["ClearanceOfAction-5"]});
+      }
+      if(data.hasOwnProperty("ServeePhysicalDescription-6")) {
+        for (const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
+          if(data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].hasOwnProperty("oldImagePath")) {
+            await deleteMedia(data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].oldImagePath);
+          }
+          const image = data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key]?.image;
+          if(image) {
+            const timestamp = new Date().getMilliseconds();
+            const imagePath = `servees_pictures/${data.uid}/${timestamp}${image.name}`;
+            const imageURI = await uploadBase64Media(image, `servees_pictures/${data.uid}/`, timestamp);
+            delete data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
+            data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].imageURI = imageURI;
+            data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].imagePath = imagePath;
+          }
+        }
+        await db.collection("ServeePhysicalDescription-6").doc(data["ServeePhysicalDescription-6"].docId).update({...data["ServeePhysicalDescription-6"]});
+      }
+      if(data.hasOwnProperty("VehicleInformation-7")) {
+        await db.collection("VehicleInformation-7").doc(data["VehicleInformation-7"].docId).update({...data["VehicleInformation-7"]});
+      }
+      if(data.hasOwnProperty("OfferedServices-8")) {
+        await db.collection("OfferedServices-8").doc(data["OfferedServices-8"].docId).update({...data["OfferedServices-8"]});
+      }
+      let documentURI;
+      let documentPath;
+      if(data.hasOwnProperty("FileSubmission-9")) {
+        if(data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) await deleteMedia(data["FileSubmission-9"].oldDocumentPath);
+        for(const document of data["FileSubmission-9"].documents) {
+          if(document?.file) {
+            const timestamp = new Date().getMilliseconds();
+            const fileName = document.file.name.trim().replaceAll(" ", "");
+            documentPath = `file_submissions/${data.uid}/${timestamp}${fileName}`;
+            documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
+            await db.collection("FileSubmission-9").doc(data["FileSubmission-9"].docId).update({documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, updatedAt: new Date()});
+          } else {
+            await db.collection("FileSubmission-9").doc(data["FileSubmission-9"].docId).update({fileData: {0: {documentName: document.documentName, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, updatedAt: new Date()});
+          }
+          // await db.collection("cases").doc(data.caseId).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+        }
+      }
+      showToast("Case updated successfully!", "success");
+      dispatch(setIsUpdatingCase(false));
+      onSuccess();
+    } catch(error) {
+      onError();
+      console.error(error.message);
+      dispatch(setIsUpdatingCase(false));
       showToast(error.message, "error");
     }
   }
@@ -428,6 +502,7 @@ export {
   deleteUser,
   fetchUsers,
   fetchCases,
+  updateCase,
   deleteCase,
   createCase,
   getMetadataInfo,
