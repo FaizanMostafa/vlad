@@ -254,12 +254,12 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const defendantInformationDocRef = await db.collection("DefendantInformation-3").add({uid: data.uid, ...data["DefendantInformation-3"]});
       const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
       delete data["ServeeDocumentedData-4"].serveesDetail;
-      for (const servee of serveesDetail) {
-        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], serveesDetail: {0: servee}});
+      for(const servee of serveesDetail) {
+        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
         serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
       }
       const clearanceOfActionDocRef = await db.collection("ClearanceOfAction-5").add({uid: data.uid, ...data["ClearanceOfAction-5"]});
-      for (const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
+      for(const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
         const image = data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].image;
         if(image) {
           const timestamp = new Date().toISOString();
@@ -376,6 +376,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
     try {
       dispatch(setIsUpdatingCase(true));
+      const serveesDocumentedDataDocRefs = [];
       if(data.hasOwnProperty("CaseInformation-1")) {
         await db.collection("CaseInformation-1").doc(data["CaseInformation-1"].docId).update({...data["CaseInformation-1"]});
         if(data["CaseInformation-1"]?.caseTitle) {
@@ -389,13 +390,23 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         await db.collection("DefendantInformation-3").doc(data["DefendantInformation-3"].docId).update({...data["DefendantInformation-3"]});
       }
       if(data.hasOwnProperty("ServeeDocumentedData-4")) {
-        await db.collection("ServeeDocumentedData-4").doc(data["ServeeDocumentedData-4"].docId).update({...data["ServeeDocumentedData-4"]});
+        const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
+        delete data["ServeeDocumentedData-4"].serveesDetail;
+        for(const servee of serveesDetail) {
+          if(servee?.isNew) {
+            delete servee.isNew;
+            const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
+            serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
+          } else {
+            await db.collection("ServeeDocumentedData-4").doc(data["ServeeDocumentedData-4"].docId).update({...data["ServeeDocumentedData-4"], serveesDetail: {0: servee}});
+          }
+        }
       }
       if(data.hasOwnProperty("ClearanceOfAction-5")) {
         await db.collection("ClearanceOfAction-5").doc(data["ClearanceOfAction-5"].docId).update({...data["ClearanceOfAction-5"]});
       }
       if(data.hasOwnProperty("ServeePhysicalDescription-6")) {
-        for (const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
+        for(const key of Object.keys(data["ServeePhysicalDescription-6"].serveesPhysicalDescription)) {
           if(data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].hasOwnProperty("oldImagePath")) {
             await deleteMedia(data["ServeePhysicalDescription-6"].serveesPhysicalDescription[key].oldImagePath);
           }
@@ -419,7 +430,68 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       }
       let documentURI;
       let documentPath;
-      if(data.hasOwnProperty("FileSubmission-9")) {
+      let docsUpdated = false;
+      if(data.hasOwnProperty("ServeeDocumentedData-4") && data["ServeeDocumentedData-4"].hasOwnProperty("numberOfCaseFilesBeingServed") && data.hasOwnProperty("FileSubmission-9")) {
+        if(data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) await deleteMedia(data["FileSubmission-9"].oldDocumentPath);
+        for(const document of data["FileSubmission-9"].documents) {
+          if(!docsUpdated) docsUpdated = true;
+          if(document?.isNew) {
+            delete document.isNew;
+            const timestamp = new Date().getMilliseconds();
+            const fileName = document.file.name.trim().replaceAll(" ", "");
+            documentPath = `file_submissions/${data.uid}/${timestamp}${fileName}`;
+            documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
+            const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
+            const oldCaseData = await db.collection("cases").doc(data.caseId).get();
+            await db.collection("cases").add({
+              uid: data.uid, filedAt: new Date(),
+              caseTitle: oldCaseData.caseTitle,
+              CaseInformationId: oldCaseData.CaseInformationId,
+              PlaintiffInformationId: oldCaseData.PlaintiffInformationId,
+              DefendantInformationId: oldCaseData.DefendantInformationId,
+              ServeeDocumentedDataId: oldCaseData.ServeeDocumentedDataId,
+              ClearanceOfActionId: oldCaseData.ClearanceOfActionId,
+              ServeePhysicalDescriptionId: oldCaseData.ServeePhysicalDescriptionId,
+              VehicleInformationId: oldCaseData.VehicleInformationId,
+              OfferedServicesId: oldCaseData.OfferedServicesId,
+              FileSubmissionId: fileSubmissionDocRef.id,
+              searchString: oldCaseData.searchString,
+              status: "pending"
+            });
+          } else {
+            if(document?.file) {
+              const timestamp = new Date().getMilliseconds();
+              const fileName = document.file.name.trim().replaceAll(" ", "");
+              documentPath = `file_submissions/${data.uid}/${timestamp}${fileName}`;
+              documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
+              await db.collection("FileSubmission-9").doc(data["FileSubmission-9"].docId).update({documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, updatedAt: new Date()});
+            } else {
+              await db.collection("FileSubmission-9").doc(data["FileSubmission-9"].docId).update({fileData: {0: {documentName: document.documentName, caseType: document.caseType, fileType: document.fileType, description: document.description, fileContents: document.fileContents}}, updatedAt: new Date()});
+            }
+            // await db.collection("cases").doc(data.caseId).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+          }
+        }
+      } else if(serveesDocumentedDataDocRefs.length>0) {
+        for(const sDDDR of serveesDocumentedDataDocRefs) {
+          const oldCaseData = await db.collection("cases").doc(data.caseId).get();
+          await db.collection("cases").add({
+            uid: data.uid, filedAt: new Date(),
+            caseTitle: oldCaseData.caseTitle,
+            CaseInformationId: oldCaseData.CaseInformationId,
+            PlaintiffInformationId: oldCaseData.PlaintiffInformationId,
+            DefendantInformationId: oldCaseData.DefendantInformationId,
+            ServeeDocumentedDataId: sDDDR.id,
+            ClearanceOfActionId: oldCaseData.ClearanceOfActionId,
+            ServeePhysicalDescriptionId: oldCaseData.ServeePhysicalDescriptionId,
+            VehicleInformationId: oldCaseData.VehicleInformationId,
+            OfferedServicesId: oldCaseData.OfferedServicesId,
+            FileSubmissionId: oldCaseData.FileSubmissionId,
+            searchString: oldCaseData.searchString,
+            status: "pending"
+          });
+        }
+      }
+      if(data.hasOwnProperty("FileSubmission-9") && !docsUpdated) {
         if(data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) await deleteMedia(data["FileSubmission-9"].oldDocumentPath);
         for(const document of data["FileSubmission-9"].documents) {
           if(document?.file) {
@@ -463,7 +535,7 @@ const deleteCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const serveePD = await db.collection("cases").where("ServeePhysicalDescriptionId", "==", data.ServeePhysicalDescriptionId).get();
       if(serveePD.docs.length === 1) {
         let serveesPDDoc = await db.collection("ServeePhysicalDescription-6").doc(data.ServeePhysicalDescriptionId).get();
-        for (const servee of Object.values(serveesPDDoc.data().serveesPhysicalDescription)) {
+        for(const servee of Object.values(serveesPDDoc.data().serveesPhysicalDescription)) {
           if(servee.hasOwnProperty("imagePath")) {
             await deleteMedia(servee.imagePath);
           }

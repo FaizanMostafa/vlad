@@ -288,7 +288,7 @@ const EditCase = (props) => {
         for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
           newServeesDetail[Object.keys(newServeesDetail).length] = {
             fullName: "", dob: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
-            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: ""
+            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: "", isNew: true
           }
         }
         setServeesDetail(newServeesDetail);
@@ -943,6 +943,7 @@ const EditCase = (props) => {
                           docId={caseDetails.FileSubmission.docId}
                           documentPath={caseDetails.FileSubmission.documentPath}
                           documentURI={caseDetails.FileSubmission.documentURI}
+                          numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           fileData={caseDetails.FileSubmission.fileData}
                         />
                   }

@@ -15,14 +15,18 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
   const history = useHistory();
   const user = useSelector(state => state.auth.user);
   const isPosting = useSelector(state => state.admin.isUpdatingCase);
-  const caseId = useSelector(state => state.admin.caseDetails.caseId);
+  const caseId = useSelector(state => state.admin.caseDetails?.caseId);
   const [isFileVisible, setIsFileVisible] = useState(false);
   const [fileData, setFileData] = useState({});
   const [fileSubmissionType, setFileSubmissionType] = useState("");
 
   useEffect(() => {
-    if(props.fileData) {
-      setFileData(props.fileData);
+    if(props.fileData && props.numberOfCaseFilesBeingServed) {
+      let caseFileData = {...props.fileData};
+      for (let index = Object.keys(caseFileData).length; index < parseInt(props.numberOfCaseFilesBeingServed); index++) {
+        caseFileData[index] = {file: null, isNew: true, caseType: "", description: "", fileContents: {coverSheet: false, civilCoverSheet: false, summons: false, complaint: false, contract: false, alternativeDisputeResolution: false, exhibit: false, dissolutionOfMarriage: false, temporaryRestrainingOrder: false, restrainingOrder: false, petition: false, statementOfLocation: false, declarationOfVenue: false, declarationOfReducedFilingFee: false}};
+      }
+      setFileData(caseFileData);
       setFileSubmissionType(props.fileData["0"].fileType);
     } else {
       const numberOfCaseFilesBeingServed = JSON.parse(localStorage.getItem("Questionaire4")).numberOfCaseFilesBeingServed;

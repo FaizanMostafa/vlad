@@ -40,7 +40,7 @@ const submitCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
       delete data["ServeeDocumentedData-4"].serveesDetail;
       for (const servee of serveesDetail) {
-        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], serveesDetail: {0: servee}});
+        const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
         serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
       }
       const clearanceOfActionDocRef = await db.collection("ClearanceOfAction-5").add({uid: data.uid, ...data["ClearanceOfAction-5"]});
