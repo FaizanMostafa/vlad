@@ -5,16 +5,17 @@ import { useHistory } from 'react-router-dom';
 import { MDBCol } from 'mdbreact';
 import { objectsEqual, showToast } from "../../utils";
 import {
-  updateCase
+  updateCase,
+  createCase
 } from "../../redux/actions/admin";
-import CaseDetails from '../../pages/AdminDashboard/CaseDetails';
 
 const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector(state => state.auth.user);
-  const isPosting = useSelector(state => state.admin.isUpdatingCase);
+  const isUpdating = useSelector(state => state.admin.isUpdatingCase);
+  const isCreating = useSelector(state => state.admin.isCreatingCase);
   const caseId = useSelector(state => state.admin.caseDetails?.caseId);
   const [isFileVisible, setIsFileVisible] = useState(false);
   const [fileData, setFileData] = useState({});
@@ -38,15 +39,15 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
     }
   }, []);
 
-  const handleCaseUpdate = () => {
+  const handleOnClickSubmit = () => {
     if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
       showToast("Please enter the case type in every relevant input field!", "warning");
     } else if(Object.values(fileData).filter((o)=>!o.description.length && !Object.values(o.fileContents).includes(true)).length) {
       showToast("Please either select the file contents or type-in description for every relevant file!", "warning");
     } else if(Object.values(fileData).filter((o)=>o.file===null).length) {
       showToast("Please upload the files in every relevant input field!", "warning");
-    } else if(!isPosting) {
-      let data = {uid: user.uid, caseId};
+    } else if(!isUpdating && !isCreating) {
+      let data = {uid: user.uid};
       const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
       const QuestionaireForm2 = JSON.parse(localStorage.getItem("Questionaire2"));
       const QuestionaireForm3 = JSON.parse(localStorage.getItem("Questionaire3"));
@@ -56,7 +57,11 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
       const QuestionaireForm7 = JSON.parse(localStorage.getItem("Questionaire7"));
       const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
       if(QuestionaireForm1 && Object.values(QuestionaireForm1).length) {
-        data["CaseInformation-1"] = {docId: QuestionaireForm1.docId};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["CaseInformation-1"] = {docId: QuestionaireForm1.docId};
+        } else {
+          data["CaseInformation-1"] = {};
+        }
         if(QuestionaireForm1.hasOwnProperty("caseTitle")) data["CaseInformation-1"].caseTitle=QuestionaireForm1.caseTitle;
         if(QuestionaireForm1.hasOwnProperty("caseNumber")) data["CaseInformation-1"].caseNumber=QuestionaireForm1.caseNumber;
         if(QuestionaireForm1.hasOwnProperty("courtDate")) data["CaseInformation-1"].courtDate=QuestionaireForm1.courtDate;
@@ -68,7 +73,11 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         if(QuestionaireForm1.hasOwnProperty("branchName")) data["CaseInformation-1"].branchName=QuestionaireForm1.branchName;
       }
       if(QuestionaireForm2 && Object.values(QuestionaireForm2).length) {
-        data["PlaintiffInformation-2"] = {docId: QuestionaireForm2.docId};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["PlaintiffInformation-2"] = {docId: QuestionaireForm2.docId};
+        } else {
+          data["PlaintiffInformation-2"] = {};
+        }
         if(QuestionaireForm2.hasOwnProperty("plaintiffsDetail")) data["PlaintiffInformation-2"].plaintiffsDetail=QuestionaireForm2.plaintiffsDetail;
         if(QuestionaireForm2.hasOwnProperty("numberOfAttorneyPlaintiff")) data["PlaintiffInformation-2"].numberOfAttorneyPlaintiff=QuestionaireForm2.numberOfAttorneyPlaintiff;
         if(QuestionaireForm2.hasOwnProperty("isOrRepresentingPlaintiff")) data["PlaintiffInformation-2"].isOrRepresentingPlaintiff=QuestionaireForm2.isOrRepresentingPlaintiff;
@@ -77,7 +86,11 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         if(QuestionaireForm2.hasOwnProperty("plaintiffAttorneysDetail")) data["PlaintiffInformation-2"].plaintiffAttorneysDetail=QuestionaireForm2.plaintiffAttorneysDetail;
       }
       if(QuestionaireForm3 && Object.values(QuestionaireForm3).length) {
-        data["DefendantInformation-3"] = {docId: QuestionaireForm3.docId};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["DefendantInformation-3"] = {docId: QuestionaireForm3.docId};
+        } else {
+          data["DefendantInformation-3"] = {};
+        }
         if(QuestionaireForm3.hasOwnProperty("defendantsDetail")) data["DefendantInformation-3"].defendantsDetail=QuestionaireForm3.defendantsDetail;
         if(QuestionaireForm3.hasOwnProperty("numberOfAttorneyDefendant")) data["DefendantInformation-3"].numberOfAttorneyDefendant=QuestionaireForm3.numberOfAttorneyDefendant;
         if(QuestionaireForm3.hasOwnProperty("isOrRepresentingDefendant")) data["DefendantInformation-3"].isOrRepresentingDefendant=QuestionaireForm3.isOrRepresentingDefendant;
@@ -86,40 +99,51 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         if(QuestionaireForm3.hasOwnProperty("defendantAttorneysDetail")) data["DefendantInformation-3"].defendantAttorneysDetail=QuestionaireForm3.defendantAttorneysDetail;
       }
       if(QuestionaireForm4 && Object.values(QuestionaireForm4).length) {
-        data["ServeeDocumentedData-4"] = {docId: QuestionaireForm4.docId};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["ServeeDocumentedData-4"] = {docId: QuestionaireForm4.docId};
+        } else {
+          data["ServeeDocumentedData-4"] = {};
+        }
+        if(QuestionaireForm4.hasOwnProperty("serviceDetails")) data["ServeeDocumentedData-4"].serviceDetails=QuestionaireForm4.serviceDetails;
         if(QuestionaireForm4.hasOwnProperty("numberOfCaseFilesBeingServed")) data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed=QuestionaireForm4.numberOfCaseFilesBeingServed;
         if(QuestionaireForm4.hasOwnProperty("howManyIndividualsServed")) data["ServeeDocumentedData-4"].howManyIndividualsServed=QuestionaireForm4.howManyIndividualsServed;
         if(QuestionaireForm4.hasOwnProperty("serveesDetail")) data["ServeeDocumentedData-4"].serveesDetail=QuestionaireForm4.serveesDetail;
         if(QuestionaireForm4.hasOwnProperty("locationForBeingServed")) data["ServeeDocumentedData-4"].locationForBeingServed=QuestionaireForm4.locationForBeingServed;
-        if(QuestionaireForm4.hasOwnProperty("mainAddressesForService")) data["ServeeDocumentedData-4"].mainAddressesForService=QuestionaireForm4.mainAddressesForService;
         if(QuestionaireForm4.hasOwnProperty("agentOfService")) data["ServeeDocumentedData-4"].agentOfService=QuestionaireForm4.agentOfService;
         if(QuestionaireForm4.hasOwnProperty("agentsFullNames")) data["ServeeDocumentedData-4"].agentsFullNames=QuestionaireForm4.agentsFullNames;
       }
       if(QuestionaireForm5 && Object.values(QuestionaireForm5).length) {
-        data["ClearanceOfAction-5"] = {docId: QuestionaireForm5.docId};
-        if(QuestionaireForm5.hasOwnProperty("typeOfServe")) data["ClearanceOfAction-5"].typeOfServe=QuestionaireForm5.typeOfServe;
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["ClearanceOfAction-5"] = {docId: QuestionaireForm5.docId};
+        } else {
+          data["ClearanceOfAction-5"] = {};
+        }
         if(QuestionaireForm5.hasOwnProperty("serveIndividualAtEmployment")) data["ClearanceOfAction-5"].serveIndividualAtEmployment=QuestionaireForm5.serveIndividualAtEmployment;
-        if(QuestionaireForm5.hasOwnProperty("processServerLeaveDoorTag")) data["ClearanceOfAction-5"].processServerLeaveDoorTag=QuestionaireForm5.processServerLeaveDoorTag;
-        if(QuestionaireForm5.hasOwnProperty("subserveAfterThreeAttempts")) data["ClearanceOfAction-5"].subserveAfterThreeAttempts=QuestionaireForm5.subserveAfterThreeAttempts;
         if(QuestionaireForm5.hasOwnProperty("requireServerNotifyPersonOfInterest")) data["ClearanceOfAction-5"].requireServerNotifyPersonOfInterest=QuestionaireForm5.requireServerNotifyPersonOfInterest;
         if(QuestionaireForm5.hasOwnProperty("serverContactServeeByPhone")) data["ClearanceOfAction-5"].serverContactServeeByPhone=QuestionaireForm5.serverContactServeeByPhone;
-        if(QuestionaireForm5.hasOwnProperty("serverPostDocumentsWithRubberBand")) data["ClearanceOfAction-5"].serverPostDocumentsWithRubberBand=QuestionaireForm5.serverPostDocumentsWithRubberBand;
-        if(QuestionaireForm5.hasOwnProperty("dropServeForceServe")) data["ClearanceOfAction-5"].dropServeForceServe=QuestionaireForm5.dropServeForceServe;
         if(QuestionaireForm5.hasOwnProperty("paralegalAttorneyClientContactServee")) data["ClearanceOfAction-5"].paralegalAttorneyClientContactServee=QuestionaireForm5.paralegalAttorneyClientContactServee;
       }
       if(QuestionaireForm6 && Object.values(QuestionaireForm6).length) {
-        if(QuestionaireForm6.hasOwnProperty("serveesPhysicalDescription")) data["ServeePhysicalDescription-6"]={docId: QuestionaireForm6.docId, serveesPhysicalDescription: QuestionaireForm6.serveesPhysicalDescription};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          if(QuestionaireForm6.hasOwnProperty("serveesPhysicalDescription")) data["ServeePhysicalDescription-6"]={docId: QuestionaireForm6.docId, serveesPhysicalDescription: QuestionaireForm6.serveesPhysicalDescription};
+        } else {
+          if(QuestionaireForm6.hasOwnProperty("serveesPhysicalDescription")) data["ServeePhysicalDescription-6"]={serveesPhysicalDescription: QuestionaireForm6.serveesPhysicalDescription};
+        }
       }
       if(QuestionaireForm7 && Object.values(QuestionaireForm7).length) {
-        if(QuestionaireForm7.hasOwnProperty("vehiclesInformation")) data["VehicleInformation-7"]={docId: QuestionaireForm7.docId, vehiclesInformation: QuestionaireForm7.vehiclesInformation};
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          if(QuestionaireForm7.hasOwnProperty("vehiclesInformation")) data["VehicleInformation-7"]={docId: QuestionaireForm7.docId, vehiclesInformation: QuestionaireForm7.vehiclesInformation};
+        } else {
+          if(QuestionaireForm7.hasOwnProperty("vehiclesInformation")) data["VehicleInformation-7"]={vehiclesInformation: QuestionaireForm7.vehiclesInformation};
+        }
       }
       if(QuestionaireForm8 && Object.values(QuestionaireForm8).length) {
-        data["OfferedServices-8"] = {docId: QuestionaireForm8.docId};
-        if(QuestionaireForm8.hasOwnProperty("requireStakeOutService")) data["OfferedServices-8"].requireStakeOutService=QuestionaireForm8.requireStakeOutService;
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data["OfferedServices-8"] = {docId: QuestionaireForm8.docId};
+        } else {
+          data["OfferedServices-8"] = {};
+        }
         if(QuestionaireForm8.hasOwnProperty("specifyDatesForStakeOutService")) data["OfferedServices-8"].specifyDatesForStakeOutService=QuestionaireForm8.specifyDatesForStakeOutService;
-        if(QuestionaireForm8.hasOwnProperty("requireRushService")) data["OfferedServices-8"].requireRushService=QuestionaireForm8.requireRushService;
-        if(QuestionaireForm8.hasOwnProperty("listDateWhenServiceAttemptsClosed")) data["OfferedServices-8"].listDateWhenServiceAttemptsClosed=QuestionaireForm8.listDateWhenServiceAttemptsClosed;
-        if(QuestionaireForm8.hasOwnProperty("requireFirst24HourService")) data["OfferedServices-8"].requireFirst24HourService=QuestionaireForm8.requireFirst24HourService;
         if(QuestionaireForm8.hasOwnProperty("requireSkipTracingService")) data["OfferedServices-8"].requireSkipTracingService=QuestionaireForm8.requireSkipTracingService;
         if(QuestionaireForm8.hasOwnProperty("requireBodyCamFootage")) data["OfferedServices-8"].requireBodyCamFootage=QuestionaireForm8.requireBodyCamFootage;
         if(QuestionaireForm8.hasOwnProperty("obtainNewDeliveryLocation")) data["OfferedServices-8"].obtainNewDeliveryLocation=QuestionaireForm8.obtainNewDeliveryLocation;
@@ -131,7 +155,11 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         if(QuestionaireForm8.hasOwnProperty("ifYesListAddress")) data["OfferedServices-8"].ifYesListAddress=QuestionaireForm8.ifYesListAddress;
       }
       if(Object.values(fileData).filter((fileObj)=>(fileObj.hasOwnProperty("file") || !objectsEqual(fileObj, props.fileData[0]))).length) {
-        data["FileSubmission-9"] = {docId: props.docId};
+        if(props.docId) {
+          data["FileSubmission-9"] = {docId: props.docId};
+        } else {
+          data["FileSubmission-9"] = {};
+        }
         Object.values(fileData).forEach((fileObj)=>{
           if(fileObj.hasOwnProperty("file")) {
             if(!data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) data["FileSubmission-9"].oldDocumentPath = props.documentPath;
@@ -146,16 +174,33 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         })
       }
       if(Object.keys(data).length) {
-        dispatch(updateCase(data, ()=>{
-          localStorage.removeItem("Questionaire1");
-          localStorage.removeItem("Questionaire2");
-          localStorage.removeItem("Questionaire3");
-          localStorage.removeItem("Questionaire4");
-          localStorage.removeItem("Questionaire5");
-          localStorage.removeItem("Questionaire6");
-          localStorage.removeItem("Questionaire7");
-          localStorage.removeItem("Questionaire8");
-        }));
+        if(props.fileData && props.numberOfCaseFilesBeingServed) {
+          data.caseId = caseId;
+          console.log("Updating...")
+          dispatch(updateCase(data, ()=>{
+            // localStorage.removeItem("Questionaire1");
+            // localStorage.removeItem("Questionaire2");
+            // localStorage.removeItem("Questionaire3");
+            // localStorage.removeItem("Questionaire4");
+            // localStorage.removeItem("Questionaire5");
+            // localStorage.removeItem("Questionaire6");
+            // localStorage.removeItem("Questionaire7");
+            // localStorage.removeItem("Questionaire8");
+          }));
+        } else {
+          console.log("Creating...")
+          console.log({data})
+          dispatch(createCase(data, ()=>{
+            // localStorage.removeItem("Questionaire1");
+            // localStorage.removeItem("Questionaire2");
+            // localStorage.removeItem("Questionaire3");
+            // localStorage.removeItem("Questionaire4");
+            // localStorage.removeItem("Questionaire5");
+            // localStorage.removeItem("Questionaire6");
+            // localStorage.removeItem("Questionaire7");
+            // localStorage.removeItem("Questionaire8");
+          }));
+        }
       }
     }
   }
@@ -450,9 +495,9 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
               !isFormDisabled
                 &&
                   <div style={{display: "flex", justifyContent: "flex-end"}}>
-                    <Button onClick={handleCaseUpdate}>
+                    <Button onClick={handleOnClickSubmit}>
                       {
-                        isPosting
+                        (isUpdating || isCreating)
                           ?
                             <div style={{display: "flex", flex: 1, alignItems: "center", justifyContent: "center"}}>
                               <div style={{height: 18, width: 18}} className="spinner-border text-white" role="status">
@@ -460,7 +505,7 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
                               </div>  
                             </div>
                           :
-                            <span className="text-white">Update Case</span>
+                            <span className="text-white">{(props.fileData && props.numberOfCaseFilesBeingServed) ? "Update" : "Create"} Case</span>
                       }
                     </Button>
                   </div>

@@ -126,17 +126,33 @@ const Questionaire4 = (props) => {
                 />
               </div>
             </MDBCol>
-            <MDBCol md="12" id="dob-of-individuals">
-              <div id="dob-of-individuals">
-                <label>Date of Birth of Servee (Write N/A if unavailable)*</label>
-                <MDBInput
-                  type="text"
-                  className="text-white"
-                  value={servee.dob}
-                  onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], dob: e.target.value}})}
-                  required
-                />
-              </div>
+            <MDBCol md="12" >
+              <MDBRow md="12" >
+                <MDBCol md="6" id="dob-of-individuals">
+                  <div id="dob-of-individuals">
+                    <label>Date of Birth of Servee (Write N/A if unavailable)*</label>
+                    <MDBInput
+                      type="text"
+                      className="text-white"
+                      value={servee.dob}
+                      onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], dob: e.target.value}})}
+                      required
+                    />
+                  </div>
+                </MDBCol>
+                <MDBCol md="6" id="age-of-individuals">
+                  <div id="age-of-individuals">
+                    <label>Approximate age of servee, if DOB is unknown</label>
+                    <MDBInput
+                      type="text"
+                      className="text-white"
+                      value={servee.age}
+                      onChange={(e)=>setServeesDetail({...serveesDetail, [key]: {...serveesDetail[key], age: e.target.value}})}
+                      required
+                    />
+                  </div>
+                </MDBCol>
+              </MDBRow>
             </MDBCol>
             <MDBCol md="12" id="phone-numbers-of-individuals">
               <label>Phone Number(s) Pertaining to Servee</label>

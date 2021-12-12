@@ -254,7 +254,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const defendantInformationDocRef = await db.collection("DefendantInformation-3").add({uid: data.uid, ...data["DefendantInformation-3"]});
       const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
       delete data["ServeeDocumentedData-4"].serveesDetail;
-      for(const servee of serveesDetail) {
+      for(const servee of Object.values(serveesDetail)) {
         const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
         serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
       }
@@ -276,7 +276,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let documentURI;
       let documentPath;
       if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
-        for(const document of data["documents"]) {
+        for(const document of data["FileSubmission-9"].documents) {
           const timestamp = new Date().toISOString();
           documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
           documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
@@ -298,7 +298,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
           await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
         }
       } else {
-        const document = data.documents[0];
+        const document = data["FileSubmission-9"].documents[0];
         const timestamp = new Date().toISOString();
         documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
         documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
@@ -326,6 +326,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       onSuccess();
     } catch(error) {
       onError();
+      console.error(error)
       dispatch(setIsCreatingCase(false));
       showToast(error.message, "error");
     }

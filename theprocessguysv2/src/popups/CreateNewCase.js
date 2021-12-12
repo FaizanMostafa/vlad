@@ -58,19 +58,14 @@ const CreateNewCase = (props) => {
   const [serveesDetail, setServeesDetail] = useState({});
   const [date, setDate] = useState(new Date());
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
-  const [mainAddressesForService, setMainAddressesForService] = useState({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
-  const [agentOfService, setAgentOfService] = useState("");
-  const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
+  // const [serviceDetails, setServiceDetails] = useState({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
+  // const [agentOfService, setAgentOfService] = useState("");
+  // const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
 
   // Questionaire Form 5
-  const [typeOfServe, setTypeOfServe] = useState("");
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
-  const [processServerLeaveDoorTag,setProcessServerLeaveDoorTag] = useState("");
-  const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
   const [requireServerNotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
   const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
-  const [serverPostDocumentsWithRubberBand,setServerPostDocumentsWithRubberBand] = useState("");
-  const [dropServeForceServe, setDropServeForceServe] = useState("");
   const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
 
   //  Questionaire Form 6
@@ -87,11 +82,7 @@ const CreateNewCase = (props) => {
   }});
 
   // Questionaire Form 8
-  const [requireStakeOutService, setRequireStakeoutService] = useState("");
   const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
-  const [requireRushService, setRequireRushService] = useState("");
-  const [listDateWhenServiceAttemptsClosed, setListDateWhenServiceAttemptsClosed] = useState("");
-  const [requireFirst24HourService,setRequireFirst24HourService] = useState("");
   const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
   const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
   const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
@@ -146,20 +137,15 @@ const CreateNewCase = (props) => {
       if(QuestionaireForm4?.howManyIndividualsServed) setHowManyIndividualsServed(QuestionaireForm4.howManyIndividualsServed);
       if(QuestionaireForm4?.serveesDetail) setServeesDetail(QuestionaireForm4.serveesDetail);
       if(QuestionaireForm4?.locationForBeingServed) setLocationForBeingServed(QuestionaireForm4.locationForBeingServed);
-      if(QuestionaireForm4?.mainAddressesForService) setMainAddressesForService(QuestionaireForm4.mainAddressesForService);
-      if(QuestionaireForm4?.agentOfService) setAgentOfService(QuestionaireForm4.agentOfService);
-      if(QuestionaireForm4?.agentsFullNames) setAgentsFullNames(QuestionaireForm4.agentsFullNames);
+      // if(QuestionaireForm4?.serviceDetails) setServiceDetails(QuestionaireForm4.serviceDetails);
+      // if(QuestionaireForm4?.agentOfService) setAgentOfService(QuestionaireForm4.agentOfService);
+      // if(QuestionaireForm4?.agentsFullNames) setAgentsFullNames(QuestionaireForm4.agentsFullNames);
     }
     if(QuestionaireForm5) {
       setActiveStep(6);
-      if(QuestionaireForm5?.typeOfServe) setTypeOfServe(QuestionaireForm5.typeOfServe);
       if(QuestionaireForm5?.serveIndividualAtEmployment) setServeIndividualAtEmployment(QuestionaireForm5.serveIndividualAtEmployment);
-      if(QuestionaireForm5?.processServerLeaveDoorTag) setProcessServerLeaveDoorTag(QuestionaireForm5.processServerLeaveDoorTag);
-      if(QuestionaireForm5?.subserveAfterThreeAttempts) setSubserveAfterThreeAttempts(QuestionaireForm5.subserveAfterThreeAttempts);
       if(QuestionaireForm5?.requireServerNotifyPersonOfInterest) setRequireServerNotifyPersonOfInterest(QuestionaireForm5.requireServerNotifyPersonOfInterest);
       if(QuestionaireForm5?.serverContactServeeByPhone) setServerContactServeeByPhone(QuestionaireForm5.serverContactServeeByPhone);
-      if(QuestionaireForm5?.serverPostDocumentsWithRubberBand) setServerPostDocumentsWithRubberBand(QuestionaireForm5.serverPostDocumentsWithRubberBand);
-      if(QuestionaireForm5?.dropServeForceServe) setDropServeForceServe(QuestionaireForm5.dropServeForceServe);
       if(QuestionaireForm5?.paralegalAttorneyClientContactServee) setParalegalAttorneyClientContactServee(QuestionaireForm5.paralegalAttorneyClientContactServee);
     }
     if(QuestionaireForm6) {
@@ -172,11 +158,7 @@ const CreateNewCase = (props) => {
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
-      if(QuestionaireForm8?.requireStakeOutService) setRequireStakeoutService(QuestionaireForm8.requireStakeOutService);
       if(QuestionaireForm8?.specifyDatesForStakeOutService) setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
-      if(QuestionaireForm8?.requireRushService) setRequireRushService(QuestionaireForm8.requireRushService);
-      if(QuestionaireForm8?.listDateWhenServiceAttemptsClosed) setListDateWhenServiceAttemptsClosed(QuestionaireForm8.listDateWhenServiceAttemptsClosed);
-      if(QuestionaireForm8?.requireFirst24HourService) setRequireFirst24HourService(QuestionaireForm8.requireFirst24HourService);
       if(QuestionaireForm8?.requireSkipTracingService) setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
       if(QuestionaireForm8?.requireBodyCamFootage) setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
       if(QuestionaireForm8?.obtainNewDeliveryLocation) setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
@@ -294,8 +276,9 @@ const CreateNewCase = (props) => {
         let newServeesDetail = serveesDetail;
         for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
           newServeesDetail[Object.keys(newServeesDetail).length] = {
-            fullName: "", dob: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
-            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: ""
+            fullName: "", dob: "", age: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
+            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: "",
+            serviceDetails: {0: {locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}}}
           }
         }
         setServeesDetail(newServeesDetail);
@@ -509,64 +492,67 @@ const CreateNewCase = (props) => {
         showToast("Please select the employment option for all the servees that are being served!", "warning");
       } else if(!locationForBeingServed.length) {
         showToast("Please select the kind of location being served!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.street.length).length) {
-        showToast("Please enter street address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.city.length).length) {
-        showToast("Please enter city address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.state.length).length) {
-        showToast("Please enter state address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.zipCode.length).length) {
-        showToast("Please enter zip code address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.country.length).length) {
-        showToast("Please enter country address for all service addresses!", "warning");
-      } else if(typeof(agentOfService)!=="boolean") {
-        showToast("Please select if there is an agent of service!", "warning");
-      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
-        showToast("Please enter first names of all the agents of service!", "warning");
-      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
-        showToast("Please enter last names of all the agents of service!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.street.length).length) {
+      //   showToast("Please enter street address for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.city.length).length) {
+      //   showToast("Please enter city address for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.state.length).length) {
+      //   showToast("Please enter state address for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.zipCode.length).length) {
+      //   showToast("Please enter zip code address for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.country.length).length) {
+      //   showToast("Please enter country address for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.typeOfServe.length).length) {
+      //   showToast("Please select the type of serve for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireFirst24HourService)!=="boolean").length) {
+      //   showToast("Please select if a service attempt should be made within the first 24 hours for all service addresses!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireRushService)!=="boolean").length) {
+      //   showToast("For every service address, please select if you require a rush service!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireStakeOutService)!=="boolean").length) {
+      //   showToast("For every service address, please select if you require a stake out service!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.ceaseDate.length).length) {
+      //   showToast("For every service address, please provide a date when service attempts should cease!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldSubServeToCompanian)!=="boolean").length) {
+      //   showToast("For every service address, please select if subservice is allowed!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldDropServe)!=="boolean").length) {
+      //   showToast("For every service address, please select if drop/force serve is allowed!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldLeaveDoorTag)!=="boolean").length) {
+      //   showToast("For every service address, please select if process server should leave a door tag!", "warning");
+      // } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldPostDocsWithBand)!=="boolean").length) {
+      //   showToast("For every service address, please select if process server should post documents with a rubber band!", "warning");
+      // } else if(typeof(agentOfService)!=="boolean") {
+      //   showToast("Please select if there is an agent of service!", "warning");
+      // } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
+      //   showToast("Please enter first names of all the agents of service!", "warning");
+      // } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
+      //   showToast("Please enter last names of all the agents of service!", "warning");
       } else {
         let data = {
           numberOfCaseFilesBeingServed,
           howManyIndividualsServed,
           serveesDetail,
           locationForBeingServed,
-          mainAddressesForService,
-          agentOfService,          
-          agentsFullNames
+          // serviceDetails,
+          // agentOfService,
+          // agentsFullNames
         };
         localStorage.setItem('Questionaire4', JSON.stringify(data));
         setActiveStep(5);
       }
     } else if(activeStep === 5) {
-      if(typeOfServe==="") {
-        showToast("Please select an option for type of serve!", "warning");
-      } if(typeof(serveIndividualAtEmployment)!=="boolean") {
+      if(typeof(serveIndividualAtEmployment)!=="boolean") {
         showToast("Please select should the servee be served at the place of employment!", "warning");
-      } else if(typeof(processServerLeaveDoorTag)!=="boolean") {
-        showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
-      } else if(typeOfServe==="normal" && typeof(subserveAfterThreeAttempts)!=="boolean") {
-        showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
       } else if(typeof(requireServerNotifyPersonOfInterest)!=="boolean") {
         showToast("Please select should process server verbally notify the Servee", "warning");
       } else if(typeof(serverContactServeeByPhone)!=="boolean") {
         showToast("Please select should process server Contact the Servee by Phone", "warning");
-      } else if(typeof(serverPostDocumentsWithRubberBand)!=="boolean") {
-        showToast("Please select may process server post documents with a rubber band", "warning");
-      } else if(typeof(dropServeForceServe)!=="boolean") {
-        showToast("Please select if “Drop Serve / Force Serve” Allowed", "warning");
       } else if(typeof(paralegalAttorneyClientContactServee)!=="boolean") {
         showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
       } else {
         let data = {
-          typeOfServe,
           serveIndividualAtEmployment,
-          processServerLeaveDoorTag,
-          subserveAfterThreeAttempts,          
           requireServerNotifyPersonOfInterest,
           serverContactServeeByPhone,
-          serverPostDocumentsWithRubberBand,
-          dropServeForceServe,          
           paralegalAttorneyClientContactServee
         };
         localStorage.setItem('Questionaire5', JSON.stringify(data));
@@ -585,35 +571,25 @@ const CreateNewCase = (props) => {
       localStorage.setItem('Questionaire7', JSON.stringify(data));
       setActiveStep(8);
     } else if(activeStep===8) {
-      if(typeof(requireStakeOutService)!=="boolean") {
-        showToast("Please select an option for stake out service!", "warning");
-      } else if(typeof(requireRushService)!=="boolean") {
-        showToast("Please select if your require a rush out service!", "warning");
-      } else if(typeof(requireFirst24HourService)!=="boolean") {
-        showToast("Please select if service should be attempted within 24 hours of submission!", "warning");
-      } else if(typeof(requireSkipTracingService)!=="boolean") {
-        showToast("Please select if you require skip tracing service!", "warning");
-      } else if(typeof(requireBodyCamFootage)!=="boolean") {
-        showToast("Please select if you require body cam footage of service!", "warning");
-      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
-        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
-      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
-        showToast("Please select if P.O. box is allowed to be served!", "warning");
-      } else if(typeof(requireByEmail)!=="boolean") {
-        showToast("Please select if you require a service by E-mail!", "warning");
-      } else if(typeof(requireServiceByMail)!=="boolean") {
-        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
-      } else if(typeof(requireZipFileService)!=="boolean") {
+      if(typeof(requireZipFileService)!=="boolean") {
         showToast("Please select if you require a zip file service at a court house!", "warning");
       } else if(requireZipFileService && !ifYesListAddress.length) {
         showToast("Please enter address for zip filing!", "warning");
+      } else if(typeof(requireBodyCamFootage)!=="boolean") {
+        showToast("Please select if you require body cam footage of service!", "warning");
+      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
+        showToast("Please select if P.O. box is allowed to be served!", "warning");
+      } else if(typeof(requireSkipTracingService)!=="boolean") {
+        showToast("Please select if you require skip tracing service!", "warning");
+      } else if(typeof(requireServiceByMail)!=="boolean") {
+        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
+      } else if(typeof(requireByEmail)!=="boolean") {
+        showToast("Please select if you require a service by E-mail!", "warning");
+      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
+        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
       } else {
         let data = {
-          requireStakeOutService,
           specifyDatesForStakeOutService,
-          requireRushService,          
-          listDateWhenServiceAttemptsClosed,
-          requireFirst24HourService,
           requireSkipTracingService,
           requireBodyCamFootage,
           obtainNewDeliveryLocation,
@@ -680,18 +656,13 @@ const CreateNewCase = (props) => {
     setHowManyIndividualsServed("");
     setServeesDetail({});
     setLocationForBeingServed("");
-    setMainAddressesForService({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
-    setAgentOfService("");
-    setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
+    // setServiceDetails({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
+    // setAgentOfService("");
+    // setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
     // Reset Form 5
-    setTypeOfServe("");
     setServeIndividualAtEmployment("");
-    setProcessServerLeaveDoorTag("");
-    setSubserveAfterThreeAttempts("");
     setRequireServerNotifyPersonOfInterest("");
     setServerContactServeeByPhone("");
-    setServerPostDocumentsWithRubberBand("");
-    setDropServeForceServe("");
     setParalegalAttorneyClientContactServee("");
     // Reset Form 6
     setServeesPhysicalDescription({0: {
@@ -705,11 +676,7 @@ const CreateNewCase = (props) => {
       yearOfMake: "", color: "", modelType: ""
     }});
     // Reset Form 8
-    setRequireStakeoutService("");
     setSpecifyDatesForStakeOutService("");
-    setRequireRushService("");
-    setListDateWhenServiceAttemptsClosed("");
-    setRequireFirst24HourService("");
     setRequireSkipTracingService("");
     setRequireBodyCamFootage("");
     setObtainNewDeliveryLocation("");
@@ -838,34 +805,24 @@ const CreateNewCase = (props) => {
                   setServeesDetail={setServeesDetail}
                   locationForBeingServed={locationForBeingServed}
                   setLocationForBeingServed={setLocationForBeingServed}
-                  mainAddressesForService={mainAddressesForService}
-                  setMainAddressesForService={setMainAddressesForService}
-                  agentOfService={agentOfService}
-                  setAgentOfService={setAgentOfService}
-                  agentsFullNames={agentsFullNames}
-                  setAgentsFullNames={setAgentsFullNames}
+                  // serviceDetails={serviceDetails}
+                  // setServiceDetails={setServiceDetails}
+                  // agentOfService={agentOfService}
+                  // setAgentOfService={setAgentOfService}
+                  // agentsFullNames={agentsFullNames}
+                  // setAgentsFullNames={setAgentsFullNames}
                 />
           }
           {
             activeStep === 5
               &&
                 <Questionaire5
-                  typeOfServe={typeOfServe}
-                  setTypeOfServe={setTypeOfServe}
                   serveIndividualAtEmployment={serveIndividualAtEmployment}
                   setServeIndividualAtEmployment={setServeIndividualAtEmployment}
-                  processServerLeaveDoorTag={processServerLeaveDoorTag}
-                  setProcessServerLeaveDoorTag={setProcessServerLeaveDoorTag}
-                  subserveAfterThreeAttempts={subserveAfterThreeAttempts}  
-                  setSubserveAfterThreeAttempts={setSubserveAfterThreeAttempts}        
                   requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
                   setRequireServerNotifyPersonOfInterest={setRequireServerNotifyPersonOfInterest}
                   serverContactServeeByPhone={serverContactServeeByPhone}
                   setServerContactServeeByPhone={setServerContactServeeByPhone}
-                  serverPostDocumentsWithRubberBand={serverPostDocumentsWithRubberBand}
-                  setServerPostDocumentsWithRubberBand={setServerPostDocumentsWithRubberBand}
-                  dropServeForceServe={dropServeForceServe}
-                  setDropServeForceServe={setDropServeForceServe}   
                   paralegalAttorneyClientContactServee={paralegalAttorneyClientContactServee}
                   setParalegalAttorneyClientContactServee={setParalegalAttorneyClientContactServee}
                 />
@@ -890,16 +847,8 @@ const CreateNewCase = (props) => {
             activeStep===8
               &&
                 <Questionaire8
-                  requireStakeOutService={requireStakeOutService}
-                  setRequireStakeoutService={setRequireStakeoutService}
                   specifyDatesForStakeOutService={specifyDatesForStakeOutService}
                   setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
-                  requireRushService={requireRushService}
-                  setRequireRushService={setRequireRushService}
-                  listDateWhenServiceAttemptsClosed={listDateWhenServiceAttemptsClosed}
-                  setListDateWhenServiceAttemptsClosed={setListDateWhenServiceAttemptsClosed}
-                  requireFirst24HourService={requireFirst24HourService}
-                  setRequireFirst24HourService={setRequireFirst24HourService}
                   requireSkipTracingService={requireSkipTracingService}
                   setRequireSkipTracingService={setRequireSkipTracingService}
                   requireBodyCamFootage={requireBodyCamFootage}

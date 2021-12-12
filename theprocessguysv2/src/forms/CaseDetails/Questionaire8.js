@@ -4,16 +4,8 @@ import { Form } from 'react-bootstrap';
 const Questionaire8 = (props) => {
   const {
     isFormDisabled,
-    requireStakeOutService,
-    setRequireStakeoutService,
     specifyDatesForStakeOutService,
     setSpecifyDatesForStakeOutService,
-    requireRushService,
-    setRequireRushService,
-    listDateWhenServiceAttemptsClosed,
-    setListDateWhenServiceAttemptsClosed,
-    requireFirst24HourService,
-    setRequireFirst24HourService,
     requireSkipTracingService,
     setRequireSkipTracingService,
     requireBodyCamFootage,
@@ -38,70 +30,6 @@ const Questionaire8 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-2">Offered Services</h2>
       <br></br>
-      <MDBCol md="12" id="require-first-24-hour-service">
-        <Form.Group id="require-first-24-hour-service">
-          <Form.Label>Do you require a Service attempt within the first 24 hours of submission?*<i>(Additional Fee)</i></Form.Label><br />
-          <div style={{display: "flex"}}>
-            <Form.Check className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
-              onClick={()=>setRequireFirst24HourService(true)}id="requireFirst24HourServiceY"
-              name="requireFirst24HourService" checked={requireFirst24HourService===true}
-            />
-            <Form.Check className="ml-4" type="radio" label="No" disabled={isFormDisabled}
-              onClick={()=>setRequireFirst24HourService(false)} id="requireFirst24HourServiceN"
-              name="requireFirst24HourService" checked={requireFirst24HourService===false}
-            />
-          </div>
-        </Form.Group>
-      </MDBCol>
-      <br/>
-      <MDBCol md="12" id="require-rush-service">
-        <Form.Group id="require-rush-service">
-          <Form.Label>Do You Require a Rush Service?* This is regarding service that needs to be served with 13 days or less <i>(Additional Fee)</i></Form.Label><br />
-          <div style={{display: "flex"}}>
-            <Form.Check
-              className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
-              onClick={()=>setRequireRushService(true)} id="requireRushServiceY"
-              name="requireRushService" checked={requireRushService===true}
-            />
-            <Form.Check
-              className="ml-4" type="radio" label="No" disabled={isFormDisabled}
-              onClick={()=>setRequireRushService(false)} id="requireRushServiceN"
-              name="requireRushService" checked={requireRushService===false}
-            />
-          </div>
-        </Form.Group>
-      </MDBCol>
-      <br/>
-      <MDBCol md="12" id="list-date-when-service-attempts-closed">
-        <Form.Group id="list-date-when-service-attempts-closed">
-          <Form.Label>List date when service attempts need to be closed out by.</Form.Label>
-          <Form.Control
-            type="textarea"
-            disabled={isFormDisabled}
-            value={listDateWhenServiceAttemptsClosed}
-            onChange={(e) => setListDateWhenServiceAttemptsClosed(e.target.value)}
-          />
-        </Form.Group>
-      </MDBCol>
-      <br/>
-      <MDBCol md="12" id="require-stake-out-service">
-        <Form.Group id="require-stake-out-service">
-          <Form.Label>Do You Require a Stake Out Service? <i>(Additional Fee)</i>*</Form.Label><br />
-          <div style={{display: "flex"}}>
-            <Form.Check
-              className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
-              onClick={()=>setRequireStakeoutService(true)} id="requireStakeOutServiceY"
-              name="requireStakeOutService" checked={requireStakeOutService===true}
-            />
-            <Form.Check
-              className="ml-4" type="radio" label="No" disabled={isFormDisabled}
-              onClick={()=>setRequireStakeoutService(false)} id="requireStakeOutServiceN"
-              name="requireStakeOutService" checked={requireStakeOutService===false}
-            />
-          </div>
-        </Form.Group>
-      </MDBCol>
-      <br/>
       <MDBCol md="12" id="specify-dates-for-stake-out-service">
         <Form.Group id="specify-dates-for-stake-out-service">
           <Form.Label>What hours of the day would you want a stake out? And how many hours?</Form.Label>

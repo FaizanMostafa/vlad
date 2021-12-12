@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
-import { Stepper } from 'react-form-stepper';
+import { Stepper, Step } from 'react-form-stepper';
 import { Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
@@ -59,19 +59,14 @@ const EditCase = (props) => {
   const [serveesDetail, setServeesDetail] = useState({});
   const [date, setDate] = useState(new Date());
   const [locationForBeingServed, setLocationForBeingServed] = useState("");
-  const [mainAddressesForService, setMainAddressesForService] = useState({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
+  const [serviceDetails, setServiceDetails] = useState({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
   const [agentOfService, setAgentOfService] = useState("");
   const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
 
   // Questionaire Form 5
-  const [typeOfServe, setTypeOfServe] = useState("");
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
-  const [processServerLeaveDoorTag,setProcessServerLeaveDoorTag] = useState("");
-  const [subserveAfterThreeAttempts, setSubserveAfterThreeAttempts] = useState("");
   const [requireServerNotifyPersonOfInterest, setRequireServerNotifyPersonOfInterest] = useState("");
   const [serverContactServeeByPhone, setServerContactServeeByPhone] = useState("");
-  const [serverPostDocumentsWithRubberBand,setServerPostDocumentsWithRubberBand] = useState("");
-  const [dropServeForceServe, setDropServeForceServe] = useState("");
   const [paralegalAttorneyClientContactServee, setParalegalAttorneyClientContactServee] = useState("");
 
   //  Questionaire Form 6
@@ -88,11 +83,7 @@ const EditCase = (props) => {
   }});
 
   // Questionaire Form 8
-  const [requireStakeOutService, setRequireStakeoutService] = useState("");
   const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
-  const [requireRushService, setRequireRushService] = useState("");
-  const [listDateWhenServiceAttemptsClosed, setListDateWhenServiceAttemptsClosed] = useState("");
-  const [requireFirst24HourService,setRequireFirst24HourService] = useState("");
   const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
   const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
   const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
@@ -143,19 +134,14 @@ const EditCase = (props) => {
       setHowManyIndividualsServed(caseDetails?.ServeeDocumentedData.howManyIndividualsServed);
       setServeesDetail(caseDetails?.ServeeDocumentedData.serveesDetail);
       setLocationForBeingServed(caseDetails?.ServeeDocumentedData.locationForBeingServed);
-      setMainAddressesForService(caseDetails?.ServeeDocumentedData.mainAddressesForService);
+      setServiceDetails(caseDetails?.ServeeDocumentedData.serviceDetails);
       setAgentOfService(caseDetails?.ServeeDocumentedData.agentOfService);
       setAgentsFullNames(caseDetails?.ServeeDocumentedData.agentsFullNames);
       
       // Questionaire Form 5
-      setTypeOfServe(caseDetails?.ClearanceOfAction.typeOfServe);
       setServeIndividualAtEmployment(caseDetails?.ClearanceOfAction.serveIndividualAtEmployment);
-      setProcessServerLeaveDoorTag(caseDetails?.ClearanceOfAction.processServerLeaveDoorTag);
-      setSubserveAfterThreeAttempts(caseDetails?.ClearanceOfAction.subserveAfterThreeAttempts);
       setRequireServerNotifyPersonOfInterest(caseDetails?.ClearanceOfAction.requireServerNotifyPersonOfInterest);
       setServerContactServeeByPhone(caseDetails?.ClearanceOfAction.serverContactServeeByPhone);
-      setServerPostDocumentsWithRubberBand(caseDetails?.ClearanceOfAction.serverPostDocumentsWithRubberBand);
-      setDropServeForceServe(caseDetails?.ClearanceOfAction.dropServeForceServe);
       setParalegalAttorneyClientContactServee(caseDetails?.ClearanceOfAction.paralegalAttorneyClientContactServee);
       
       // Questionaire Form 6
@@ -165,11 +151,7 @@ const EditCase = (props) => {
       setVehiclesInformation(caseDetails?.VehicleInformation.vehiclesInformation);
       
       // Questionaire Form 8
-      setRequireStakeoutService(caseDetails?.OfferedServices.requireStakeOutService);
       setSpecifyDatesForStakeOutService(caseDetails?.OfferedServices.specifyDatesForStakeOutService);
-      setRequireRushService(caseDetails?.OfferedServices.requireRushService);
-      setListDateWhenServiceAttemptsClosed(caseDetails?.OfferedServices.listDateWhenServiceAttemptsClosed);
-      setRequireFirst24HourService(caseDetails?.OfferedServices.requireFirst24HourService);
       setRequireSkipTracingService(caseDetails?.OfferedServices.requireSkipTracingService);
       setRequireBodyCamFootage(caseDetails?.OfferedServices.requireBodyCamFootage);
       setObtainNewDeliveryLocation(caseDetails?.OfferedServices.obtainNewDeliveryLocation);
@@ -287,7 +269,7 @@ const EditCase = (props) => {
         let newServeesDetail = serveesDetail;
         for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
           newServeesDetail[Object.keys(newServeesDetail).length] = {
-            fullName: "", dob: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
+            fullName: "", dob: "", age: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
             email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: "", isNew: true
           }
         }
@@ -316,7 +298,7 @@ const EditCase = (props) => {
     }
   }, [isOrRepresentingDefendant]);
 
-  const handleOnPressNext = () => {
+  const handleOnPressNext = (nextStep) => {
     if(activeStep === 1) {
       if(!caseTitle.length) {
         showToast("Please enter case title!", "warning");
@@ -364,7 +346,7 @@ const EditCase = (props) => {
         if(!objectsEqual(courthouseMailingAddress, caseDetails.CaseInformation.courthouseMailingAddress)) data.courthouseMailingAddress=courthouseMailingAddress;
         if(branchName!==caseDetails.CaseInformation.branchName) data.branchName=branchName;
         if(Object.keys(data).length) localStorage.setItem('Questionaire1', JSON.stringify({docId: caseDetails.CaseInformation.docId, ...data}));
-        setActiveStep(2);
+        setActiveStep(nextStep);
       }
     } else if(activeStep === 2) {
       if(!shouldPGFillPlaintiffInfo && typeof(isOrRepresentingPlaintiff)!=="boolean") {
@@ -420,7 +402,7 @@ const EditCase = (props) => {
         if(numberOfAttorneysRepresentingPlaintiff!==caseDetails.PlaintiffInformation.numberOfAttorneysRepresentingPlaintiff) data.numberOfAttorneysRepresentingPlaintiff=numberOfAttorneysRepresentingPlaintiff;
         if(!objectsEqual(plaintiffAttorneysDetail, caseDetails.PlaintiffInformation.plaintiffAttorneysDetail)) data.plaintiffAttorneysDetail=plaintiffAttorneysDetail;
         if(Object.keys(data).length) localStorage.setItem('Questionaire2', JSON.stringify({docId: caseDetails.PlaintiffInformation.docId, ...data}));
-        setActiveStep(3);
+        setActiveStep(nextStep);
       }
     } else if(activeStep === 3) {
       if(!shouldPGFillDefendantInfo && typeof(isOrRepresentingDefendant)!=="boolean") {
@@ -478,7 +460,7 @@ const EditCase = (props) => {
         console.log(objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail))
         if(Object.values(defendantAttorneysDetail).length && Object.values(caseDetails.DefendantInformation.defendantAttorneysDetail).length && !objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail)) data.defendantAttorneysDetail=defendantAttorneysDetail;
         if(Object.keys(data).length) localStorage.setItem('Questionaire3', JSON.stringify({docId: caseDetails.DefendantInformation.docId, ...data}));
-        setActiveStep(4);
+        setActiveStep(nextStep);
       }
     } else if(activeStep === 4) {
       if(!numberOfCaseFilesBeingServed.length) {
@@ -501,16 +483,34 @@ const EditCase = (props) => {
         showToast("Please select the employment option for all the servees that are being served!", "warning");
       } else if(!locationForBeingServed.length) {
         showToast("Please select the kind of location being served!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.street.length).length) {
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.street.length).length) {
         showToast("Please enter street address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.city.length).length) {
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.city.length).length) {
         showToast("Please enter city address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.state.length).length) {
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.state.length).length) {
         showToast("Please enter state address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.zipCode.length).length) {
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.zipCode.length).length) {
         showToast("Please enter zip code address for all service addresses!", "warning");
-      } else if(Object.values(mainAddressesForService).filter((address)=>!address.country.length).length) {
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.country.length).length) {
         showToast("Please enter country address for all service addresses!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.typeOfServe.length).length) {
+        showToast("Please select the type of serve for all service addresses!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireFirst24HourService)!=="boolean").length) {
+        showToast("Please select if a service attempt should be made within the first 24 hours for all service addresses!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireRushService)!=="boolean").length) {
+        showToast("For every service address, please select if you require a rush service!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireStakeOutService)!=="boolean").length) {
+        showToast("For every service address, please select if you require a stake out service!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.ceaseDate.length).length) {
+        showToast("For every service address, please provide a date when service attempts should cease!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldSubServeToCompanian)!=="boolean").length) {
+        showToast("For every service address, please select if subservice is allowed!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldDropServe)!=="boolean").length) {
+        showToast("For every service address, please select if drop/force serve is allowed!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldLeaveDoorTag)!=="boolean").length) {
+        showToast("For every service address, please select if process server should leave a door tag!", "warning");
+      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldPostDocsWithBand)!=="boolean").length) {
+        showToast("For every service address, please select if process server should post documents with a rubber band!", "warning");
       } else if(typeof(agentOfService)!=="boolean") {
         showToast("Please select if there is an agent of service!", "warning");
       } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
@@ -523,44 +523,29 @@ const EditCase = (props) => {
         if(howManyIndividualsServed!==caseDetails.ServeeDocumentedData.howManyIndividualsServed) data.howManyIndividualsServed=howManyIndividualsServed;
         if(!objectsEqual(serveesDetail, caseDetails.ServeeDocumentedData.serveesDetail)) data.serveesDetail=serveesDetail;
         if(locationForBeingServed!==caseDetails.ServeeDocumentedData.locationForBeingServed) data.locationForBeingServed=locationForBeingServed;
-        if(!objectsEqual(mainAddressesForService, caseDetails.ServeeDocumentedData.mainAddressesForService)) data.mainAddressesForService=mainAddressesForService;
+        if(!objectsEqual(serviceDetails, caseDetails.ServeeDocumentedData.serviceDetails)) data.serviceDetails=serviceDetails;
         if(agentOfService!==caseDetails.ServeeDocumentedData.agentOfService) data.agentOfService=agentOfService;
         if(!objectsEqual(agentsFullNames, caseDetails.ServeeDocumentedData.agentsFullNames)) data.agentsFullNames=agentsFullNames;
         if(Object.keys(data).length) localStorage.setItem('Questionaire4', JSON.stringify({docId: caseDetails.ServeeDocumentedData.docId, ...data}));
-        setActiveStep(5);
+        setActiveStep(nextStep);
       }
     } else if(activeStep === 5) {
-      if(typeOfServe==="") {
-        showToast("Please select an option for type of serve!", "warning");
-      } if(typeof(serveIndividualAtEmployment)!=="boolean") {
+      if(typeof(serveIndividualAtEmployment)!=="boolean") {
         showToast("Please select should the servee be served at the place of employment!", "warning");
-      } else if(typeof(processServerLeaveDoorTag)!=="boolean") {
-        showToast("Please select should process server leave a door tag on the handle, or business card!", "warning");
-      } else if(typeOfServe==="normal" && typeof(subserveAfterThreeAttempts)!=="boolean") {
-        showToast("Please select should we “Subserve” to a Co-Resident/Co-Worker After 4 Attempts", "warning");
       } else if(typeof(requireServerNotifyPersonOfInterest)!=="boolean") {
         showToast("Please select should process server verbally notify the Servee", "warning");
       } else if(typeof(serverContactServeeByPhone)!=="boolean") {
         showToast("Please select should process server Contact the Servee by Phone", "warning");
-      } else if(typeof(serverPostDocumentsWithRubberBand)!=="boolean") {
-        showToast("Please select may process server post documents with a rubber band", "warning");
-      } else if(typeof(dropServeForceServe)!=="boolean") {
-        showToast("Please select if “Drop Serve / Force Serve” Allowed", "warning");
       } else if(typeof(paralegalAttorneyClientContactServee)!=="boolean") {
         showToast("Please select whether paralegal/attorney, or your client contacted the Individual regarding service on this case", "warning");
       } else {
         let data = {};
-        if(typeOfServe!==caseDetails.ClearanceOfAction.typeOfServe) data.typeOfServe=typeOfServe;
         if(serveIndividualAtEmployment!==caseDetails.ClearanceOfAction.serveIndividualAtEmployment) data.serveIndividualAtEmployment=serveIndividualAtEmployment;
-        if(processServerLeaveDoorTag!==caseDetails.ClearanceOfAction.processServerLeaveDoorTag) data.processServerLeaveDoorTag=processServerLeaveDoorTag;
-        if(subserveAfterThreeAttempts!==caseDetails.ClearanceOfAction.subserveAfterThreeAttempts) data.subserveAfterThreeAttempts=subserveAfterThreeAttempts;
         if(requireServerNotifyPersonOfInterest!==caseDetails.ClearanceOfAction.requireServerNotifyPersonOfInterest) data.requireServerNotifyPersonOfInterest=requireServerNotifyPersonOfInterest;
         if(serverContactServeeByPhone!==caseDetails.ClearanceOfAction.serverContactServeeByPhone) data.serverContactServeeByPhone=serverContactServeeByPhone;
-        if(serverPostDocumentsWithRubberBand!==caseDetails.ClearanceOfAction.serverPostDocumentsWithRubberBand) data.serverPostDocumentsWithRubberBand=serverPostDocumentsWithRubberBand;
-        if(dropServeForceServe!==caseDetails.ClearanceOfAction.dropServeForceServe) data.dropServeForceServe=dropServeForceServe;
         if(paralegalAttorneyClientContactServee!==caseDetails.ClearanceOfAction.paralegalAttorneyClientContactServee) data.paralegalAttorneyClientContactServee=paralegalAttorneyClientContactServee;
         if(Object.keys(data).length) localStorage.setItem('Questionaire5', JSON.stringify({docId: caseDetails.ClearanceOfAction.docId, ...data}));
-        setActiveStep(6);
+        setActiveStep(nextStep);
       }
     } else if(activeStep===6) {
       let data = {};
@@ -591,42 +576,32 @@ const EditCase = (props) => {
         data.serveesPhysicalDescription = serveesFinalPhysicalDescription;
       }
       if(Object.keys(data).length) localStorage.setItem('Questionaire6', JSON.stringify({docId: caseDetails.ServeePhysicalDescription.docId, ...data}));
-      setActiveStep(7);
+      setActiveStep(nextStep);
     } else if(activeStep===7) {
       let data = {};
       if(!objectsEqual(vehiclesInformation, caseDetails.VehicleInformation.vehiclesInformation)) data.vehiclesInformation=vehiclesInformation;
       if(Object.keys(data).length) localStorage.setItem('Questionaire7', JSON.stringify({docId: caseDetails.VehicleInformation.docId, ...data}));
-      setActiveStep(8);
+      setActiveStep(nextStep);
     } else if(activeStep===8) {
-      if(typeof(requireStakeOutService)!=="boolean") {
-        showToast("Please select an option for stake out service!", "warning");
-      } else if(typeof(requireRushService)!=="boolean") {
-        showToast("Please select if your require a rush out service!", "warning");
-      } else if(typeof(requireFirst24HourService)!=="boolean") {
-        showToast("Please select if service should be attempted within 24 hours of submission!", "warning");
-      } else if(typeof(requireSkipTracingService)!=="boolean") {
-        showToast("Please select if you require skip tracing service!", "warning");
-      } else if(typeof(requireBodyCamFootage)!=="boolean") {
-        showToast("Please select if you require body cam footage of service!", "warning");
-      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
-        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
-      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
-        showToast("Please select if P.O. box is allowed to be served!", "warning");
-      } else if(typeof(requireByEmail)!=="boolean") {
-        showToast("Please select if you require a service by E-mail!", "warning");
-      } else if(typeof(requireServiceByMail)!=="boolean") {
-        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
-      } else if(typeof(requireZipFileService)!=="boolean") {
+      if(typeof(requireZipFileService)!=="boolean") {
         showToast("Please select if you require a zip file service at a court house!", "warning");
       } else if(requireZipFileService && !ifYesListAddress.length) {
         showToast("Please enter address for zip filing!", "warning");
+      } else if(typeof(requireBodyCamFootage)!=="boolean") {
+        showToast("Please select if you require body cam footage of service!", "warning");
+      } else if(typeof(poBoxAllowedToServe)!=="boolean") {
+        showToast("Please select if P.O. box is allowed to be served!", "warning");
+      } else if(typeof(requireSkipTracingService)!=="boolean") {
+        showToast("Please select if you require skip tracing service!", "warning");
+      } else if(typeof(requireServiceByMail)!=="boolean") {
+        showToast("Please select if you require a service by secured postal mail with signature!", "warning");
+      } else if(typeof(requireByEmail)!=="boolean") {
+        showToast("Please select if you require a service by E-mail!", "warning");
+      } else if(typeof(obtainNewDeliveryLocation)!=="boolean") {
+        showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
       } else {
         let data = {};
-        if(requireStakeOutService!==caseDetails.OfferedServices.requireStakeOutService) data.requireStakeOutService=requireStakeOutService;
         if(specifyDatesForStakeOutService!==caseDetails.OfferedServices.specifyDatesForStakeOutService) data.specifyDatesForStakeOutService=specifyDatesForStakeOutService;
-        if(requireRushService!==caseDetails.OfferedServices.requireRushService) data.requireRushService=requireRushService;
-        if(listDateWhenServiceAttemptsClosed!==caseDetails.OfferedServices.listDateWhenServiceAttemptsClosed) data.listDateWhenServiceAttemptsClosed=listDateWhenServiceAttemptsClosed;
-        if(requireFirst24HourService!==caseDetails.OfferedServices.requireFirst24HourService) data.requireFirst24HourService=requireFirst24HourService;
         if(requireSkipTracingService!==caseDetails.OfferedServices.requireSkipTracingService) data.requireSkipTracingService=requireSkipTracingService;
         if(requireBodyCamFootage!==caseDetails.OfferedServices.requireBodyCamFootage) data.requireBodyCamFootage=requireBodyCamFootage;
         if(obtainNewDeliveryLocation!==caseDetails.OfferedServices.obtainNewDeliveryLocation) data.obtainNewDeliveryLocation=obtainNewDeliveryLocation;
@@ -637,7 +612,7 @@ const EditCase = (props) => {
         if(requireZipFileService!==caseDetails.OfferedServices.requireZipFileService) data.requireZipFileService=requireZipFileService;
         if(ifYesListAddress!==caseDetails.OfferedServices.ifYesListAddress) data.ifYesListAddress=ifYesListAddress;
         if(Object.keys(data).length) localStorage.setItem('Questionaire8', JSON.stringify({docId: caseDetails.OfferedServices.docId, ...data}));
-        setActiveStep(9);
+        setActiveStep(nextStep);
       }
     }
   }
@@ -692,18 +667,13 @@ const EditCase = (props) => {
     setHowManyIndividualsServed("");
     setServeesDetail({});
     setLocationForBeingServed("");
-    setMainAddressesForService({0: {street: "", city: "", state: "", zipCode: "", country: ""}});
+    setServiceDetails({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
     setAgentOfService("");
     setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
     // Reset Form 5
-    setTypeOfServe("");
     setServeIndividualAtEmployment("");
-    setProcessServerLeaveDoorTag("");
-    setSubserveAfterThreeAttempts("");
     setRequireServerNotifyPersonOfInterest("");
     setServerContactServeeByPhone("");
-    setServerPostDocumentsWithRubberBand("");
-    setDropServeForceServe("");
     setParalegalAttorneyClientContactServee("");
     // Reset Form 6
     setServeesPhysicalDescription({0: {
@@ -717,11 +687,7 @@ const EditCase = (props) => {
       yearOfMake: "", color: "", modelType: ""
     }});
     // Reset Form 8
-    setRequireStakeoutService("");
     setSpecifyDatesForStakeOutService("");
-    setRequireRushService("");
-    setListDateWhenServiceAttemptsClosed("");
-    setRequireFirst24HourService("");
     setRequireSkipTracingService("");
     setRequireBodyCamFootage("");
     setObtainNewDeliveryLocation("");
@@ -764,10 +730,17 @@ const EditCase = (props) => {
               :
                 <>
                   <Element name="stepper" className="element">
-                    <Stepper
-                      steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
-                      activeStep={activeStep-1}
-                    />
+                    <Stepper styleConfig={{activeBgColor: "#a0a0a0"}} activeStep={activeStep-1}>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(1)} label='Step 1'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(2)} label='Step 2'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(3)} label='Step 3'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(4)} label='Step 4'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(5)} label='Step 5'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(6)} label='Step 6'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(7)} label='Step 7'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(8)} label='Step 8'/>
+                      <Step disabled={false} onClick={()=>handleOnPressNext(9)} label='Step 9'/>
+                    </Stepper>
                   </Element>
                   <br></br>
                   <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
@@ -853,8 +826,8 @@ const EditCase = (props) => {
                           setServeesDetail={setServeesDetail}
                           locationForBeingServed={locationForBeingServed}
                           setLocationForBeingServed={setLocationForBeingServed}
-                          mainAddressesForService={mainAddressesForService}
-                          setMainAddressesForService={setMainAddressesForService}
+                          serviceDetails={serviceDetails}
+                          setServiceDetails={setServiceDetails}
                           agentOfService={agentOfService}
                           setAgentOfService={setAgentOfService}
                           agentsFullNames={agentsFullNames}
@@ -865,22 +838,12 @@ const EditCase = (props) => {
                     activeStep === 5
                       &&
                         <Questionaire5
-                          typeOfServe={typeOfServe}
-                          setTypeOfServe={setTypeOfServe}
                           serveIndividualAtEmployment={serveIndividualAtEmployment}
                           setServeIndividualAtEmployment={setServeIndividualAtEmployment}
-                          processServerLeaveDoorTag={processServerLeaveDoorTag}
-                          setProcessServerLeaveDoorTag={setProcessServerLeaveDoorTag}
-                          subserveAfterThreeAttempts={subserveAfterThreeAttempts}  
-                          setSubserveAfterThreeAttempts={setSubserveAfterThreeAttempts}        
                           requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
                           setRequireServerNotifyPersonOfInterest={setRequireServerNotifyPersonOfInterest}
                           serverContactServeeByPhone={serverContactServeeByPhone}
                           setServerContactServeeByPhone={setServerContactServeeByPhone}
-                          serverPostDocumentsWithRubberBand={serverPostDocumentsWithRubberBand}
-                          setServerPostDocumentsWithRubberBand={setServerPostDocumentsWithRubberBand}
-                          dropServeForceServe={dropServeForceServe}
-                          setDropServeForceServe={setDropServeForceServe}   
                           paralegalAttorneyClientContactServee={paralegalAttorneyClientContactServee}
                           setParalegalAttorneyClientContactServee={setParalegalAttorneyClientContactServee}
                         />
@@ -905,16 +868,8 @@ const EditCase = (props) => {
                     activeStep===8
                       &&
                         <Questionaire8
-                          requireStakeOutService={requireStakeOutService}
-                          setRequireStakeoutService={setRequireStakeoutService}
                           specifyDatesForStakeOutService={specifyDatesForStakeOutService}
                           setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
-                          requireRushService={requireRushService}
-                          setRequireRushService={setRequireRushService}
-                          listDateWhenServiceAttemptsClosed={listDateWhenServiceAttemptsClosed}
-                          setListDateWhenServiceAttemptsClosed={setListDateWhenServiceAttemptsClosed}
-                          requireFirst24HourService={requireFirst24HourService}
-                          setRequireFirst24HourService={setRequireFirst24HourService}
                           requireSkipTracingService={requireSkipTracingService}
                           setRequireSkipTracingService={setRequireSkipTracingService}
                           requireBodyCamFootage={requireBodyCamFootage}
@@ -955,7 +910,7 @@ const EditCase = (props) => {
                             <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={250} duration={500} delay={300}>
                               <button
                                 className="btn btn-primary mt-1 mb-1"
-                                onClick={handleOnPressNext}
+                                onClick={()=>handleOnPressNext(activeStep+1)}
                               >
                                 {getButtonTitle()}
                               </button>

@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import { showToast } from "../utils";
 
-function QuestionaireAgentOfServiceTemplate({agentsFullNames, setAgentsFullNames}) {
+function QuestionaireAgentOfServiceTemplate({setAgentFullName}) {
   const [showModal, setShow] = useState(false);
   const [fullName, setFullName] = useState({firstName: "", middleName: "", lastName: ""});
 
@@ -14,7 +14,7 @@ function QuestionaireAgentOfServiceTemplate({agentsFullNames, setAgentsFullNames
     } else if(!fullName.lastName.length) {
       showToast("Please enter last name!", "warning");
     } else {
-      setAgentsFullNames({...agentsFullNames, [Object.keys(agentsFullNames).length]: fullName});
+      setAgentFullName(fullName);
       setFullName({firstName: "", middleName: "", lastName: ""});
       setShow(false);
     }
@@ -39,9 +39,9 @@ function QuestionaireAgentOfServiceTemplate({agentsFullNames, setAgentsFullNames
         <Modal.Body>
           <MDBCol md="12" id="if-yes-list-full-name">
             <div id="if-yes-list-full-name">
-              <label>Adding Name of Agent Of Service</label>
+              <label>Adding Full Name of Agent Of Service</label>
               <MDBInput
-                type="text" 
+                type="text"
                 hint="First Name"
                 value={fullName.firstName}
                 onChange={(e) => setFullName({...fullName, firstName: e.target.value})}
