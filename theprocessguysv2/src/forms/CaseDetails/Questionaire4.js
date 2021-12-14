@@ -11,15 +11,7 @@ const Questionaire4 = (props) => {
     howManyIndividualsServed,
     setHowManyIndividualsServed,
     serveesDetail,
-    setServeesDetail,
-    locationForBeingServed,
-    setLocationForBeingServed,
-    // serviceDetails,
-    // setServiceDetails,
-    // agentOfService,
-    // setAgentOfService,
-    // agentsFullNames,
-    // setAgentsFullNames
+    setServeesDetail
   } = props;
 
   const handleNoOfServeesChanged = (e) => {
@@ -138,6 +130,7 @@ const Questionaire4 = (props) => {
       {
         Object.entries(serveesDetail).map(([serveeKey, servee])=>(
           <>
+            <Form.Label style={{fontWeight: "bold", fontSize: 22}}>Servee {Object.entries(serveesDetail).length>1 && Number(serveeKey)+1} Details</Form.Label>
             <MDBRow md="12">
               <MDBCol md="12">
                 <Form.Group id="name-of-individuals">
@@ -356,7 +349,7 @@ const Questionaire4 = (props) => {
               Object.entries(servee.serviceDetails).map(([serviceDetailKey, serviceDetail])=>(
                 <>
                   <MDBCol md="12" id="location-being-served">
-                    <Form.Label style={{fontWeight: "bold"}}>Main Address for Service</Form.Label>
+                    <Form.Label style={{fontWeight: "bold"}}>{Number(serviceDetailKey)===0 && "Main "}Address {(Number(serviceDetailKey)!==0 && Object.keys(servee.serviceDetails).length>1) && Number(serviceDetailKey)+1} for Service</Form.Label>
                     <Form.Group id="location-being-served">
                       <Form.Label style={{paddingLeft: 16}}>What kind of location is being served?*</Form.Label>
                       <Form.Control
@@ -520,13 +513,13 @@ const Questionaire4 = (props) => {
                         <div style={{display: "flex"}}>
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
-                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanian: true}}}})}
-                            id={`shouldSubServeY${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanian===true}
+                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: true}}}})}
+                            id={`shouldSubServeY${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
-                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanian: false}}}})}
-                            id={`shouldSubServeN${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanian===false}
+                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: false}}}})}
+                            id={`shouldSubServeN${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===false}
                           />
                         </div>
                       </Form.Group>
@@ -582,6 +575,95 @@ const Questionaire4 = (props) => {
                         </div>
                       </Form.Group>
                     </MDBCol>
+                    <MDBCol md="12" id="agent-of-service">
+                      <Form.Group id="agent-of-service">
+                        <Form.Label>Is There an Agent of Service?*</Form.Label><br />
+                        <div style={{display: "flex"}}>
+                          <Form.Check
+                            disabled={isFormDisabled} className="ml-2"
+                            type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: true}}}})}
+                            id={`agentOfServiceY${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
+                            checked={serviceDetail.isThereAnAgentOfService===true} label="Yes"
+                          />
+                          <Form.Check
+                            disabled={isFormDisabled} className="ml-4"
+                            type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: false}}}})}
+                            id={`agentOfServiceN${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
+                            checked={serviceDetail.isThereAnAgentOfService===false} label="No"
+                          />
+                        </div>
+                        <br/>
+                      </Form.Group>
+                    </MDBCol>
+                    {
+                      serviceDetail.isThereAnAgentOfService
+                        &&
+                          <>
+                            <MDBCol md="12" id="if-yes-list-full-name">
+                              <Form.Label>Full Name to Agent of Service</Form.Label><br/>
+                              {
+                                Object.entries(serviceDetail.agentsOfService).map(([agentKey, agent])=>(
+                                  <>
+                                    {
+                                      Object.keys(serviceDetail.agentsOfService).length>1
+                                        &&
+                                          <label>Agent of Service {parseInt(agentKey)+1}</label>
+                                    }
+                                    <MDBRow md="12">
+                                      <MDBCol md="4">
+                                        <Form.Group>
+                                          <Form.Label>First Name</Form.Label>
+                                          <Form.Control
+                                            type="text"
+                                            disabled={isFormDisabled}
+                                            value={agent.firstName}
+                                            onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, firstName: e.target.value}}}}}})}
+                                          />
+                                        </Form.Group>
+                                      </MDBCol>
+                                      <MDBCol md="4">
+                                        <Form.Group>
+                                          <Form.Label>Middle Name</Form.Label>
+                                          <Form.Control
+                                            type="text"
+                                            disabled={isFormDisabled}
+                                            value={agent.middleName}
+                                            onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, middleName: e.target.value}}}}}})}
+                                          />
+                                        </Form.Group>
+                                      </MDBCol>
+                                      <MDBCol md="4">
+                                        <Form.Group>
+                                          <Form.Label>Last Name</Form.Label>
+                                          <Form.Control
+                                            type="text"
+                                            disabled={isFormDisabled}
+                                            value={agent.lastName}
+                                            onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, lastName: e.target.value}}}}}})}
+                                          />
+                                        </Form.Group>
+                                      </MDBCol>
+                                    </MDBRow>
+                                  </>
+                                ))
+                              }
+                            </MDBCol>
+                            <br></br>
+                            {
+                              !isFormDisabled
+                                &&
+                                  <MDBCol>
+                                    <QuestionaireAgentOfService
+                                      setAgentFullName={(fullName)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [Object.keys(serviceDetail.agentsOfService).length]: fullName}}}}})}
+                                    />
+                                  </MDBCol>
+                            }
+                            <br></br>
+                          </>
+                    }
+                    {
+                      (Object.keys(servee.serviceDetails).length>1 && (Number(serviceDetailKey)!==Object.keys(servee.serviceDetails).length-1)) && <hr/>
+                    }
                   </MDBCol>
                   {
                     (!isFormDisabled && Number(serviceDetailKey)===(Object.keys(servee.serviceDetails).length-1))
@@ -592,95 +674,12 @@ const Questionaire4 = (props) => {
                           />
                         </MDBCol>
                   }
-                  <br></br>
-                  <MDBCol md="12" id="agent-of-service">
-                    <Form.Group id="agent-of-service">
-                      <Form.Label>Is There an Agent of Service?*</Form.Label><br />
-                      <div style={{display: "flex"}}>
-                        <Form.Check
-                          disabled={isFormDisabled} className="ml-2"
-                          type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: true}}}})}
-                          id={`agentOfServiceY${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
-                          checked={serviceDetail.isThereAnAgentOfService===true} label="Yes"
-                        />
-                        <Form.Check
-                          disabled={isFormDisabled} className="ml-4"
-                          type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: false}}}})}
-                          id={`agentOfServiceN${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
-                          checked={serviceDetail.isThereAnAgentOfService===false} label="No"
-                        />
-                      </div>
-                      <br/>
-                    </Form.Group>
-                  </MDBCol>
-                  {
-                    serviceDetail.isThereAnAgentOfService
-                      &&
-                        <>
-                          <MDBCol md="12" id="if-yes-list-full-name">
-                            <Form.Label>Full Name to Agent of Service</Form.Label><br/>
-                            {
-                              Object.entries(serviceDetail.agentsOfService).map(([agentKey, agent])=>(
-                                <>
-                                  {
-                                    Object.keys(serviceDetail.agentsOfService).length>1
-                                      &&
-                                        <label>Agent of Service {parseInt(agentKey)+1}</label>
-                                  }
-                                  <MDBRow md="12">
-                                    <MDBCol md="4">
-                                      <Form.Group>
-                                        <Form.Label>First Name</Form.Label>
-                                        <Form.Control
-                                          type="text"
-                                          disabled={isFormDisabled}
-                                          value={agent.firstName}
-                                          onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, firstName: e.target.value}}}}}})}
-                                        />
-                                      </Form.Group>
-                                    </MDBCol>
-                                    <MDBCol md="4">
-                                      <Form.Group>
-                                        <Form.Label>Middle Name</Form.Label>
-                                        <Form.Control
-                                          type="text"
-                                          disabled={isFormDisabled}
-                                          value={agent.middleName}
-                                          onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, middleName: e.target.value}}}}}})}
-                                        />
-                                      </Form.Group>
-                                    </MDBCol>
-                                    <MDBCol md="4">
-                                      <Form.Group>
-                                        <Form.Label>Last Name</Form.Label>
-                                        <Form.Control
-                                          type="text"
-                                          disabled={isFormDisabled}
-                                          value={agent.lastName}
-                                          onChange={(e)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [agentKey]: {...agent, lastName: e.target.value}}}}}})}
-                                        />
-                                      </Form.Group>
-                                    </MDBCol>
-                                  </MDBRow>
-                                </>
-                              ))
-                            }
-                          </MDBCol>
-                          <br></br>
-                          {
-                            !isFormDisabled
-                              &&
-                                <MDBCol>
-                                  <QuestionaireAgentOfService
-                                    setAgentFullName={(fullName)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [Object.keys(serviceDetail.agentsOfService).length]: fullName}}}}})}
-                                  />
-                                </MDBCol>
-                          }
-                          <br></br>
-                        </>
-                  }
+                  <br/>
                 </>
               ))
+            }
+            {
+              (Object.keys(serveesDetail).length>1 && (Number(serveeKey)!==Object.keys(serveesDetail).length-1)) && <hr/>
             }
           </>
         ))

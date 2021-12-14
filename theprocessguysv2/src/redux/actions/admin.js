@@ -255,6 +255,11 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
       delete data["ServeeDocumentedData-4"].serveesDetail;
       for(const servee of Object.values(serveesDetail)) {
+        // Experimental(Under development)
+        // for(const serviceDetail of Object.values(servee.serviceDetails)) {
+        //   const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: {...servee, serviceDetails: {0: serviceDetail}}}});
+        //   serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
+        // }
         const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
         serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
       }
@@ -281,21 +286,24 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
           documentPath = `file_submissions/${data.uid}/${timestamp}${document.file.name}`;
           documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
           const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
-          const caseDocRef = await db.collection("cases").add({
-            uid: data.uid, filedAt: new Date(),
-            caseTitle: data["CaseInformation-1"].caseTitle,
-            CaseInformationId: caseInformationDocRef.id,
-            PlaintiffInformationId: plaintiffInformationDocRef.id,
-            DefendantInformationId: defendantInformationDocRef.id,
-            ServeeDocumentedDataId: serveesDocumentedDataDocRefs[0].id,
-            ClearanceOfActionId: clearanceOfActionDocRef.id,
-            ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
-            VehicleInformationId: vehicleInformationDocRef.id,
-            OfferedServicesId: offeredServicesDocRef.id,
-            FileSubmissionId: fileSubmissionDocRef.id,
-            status: "pending"
-          });
-          await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+          // Experimental(Under development)
+          // for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
+            const caseDocRef = await db.collection("cases").add({
+              uid: data.uid, filedAt: new Date(),
+              caseTitle: data["CaseInformation-1"].caseTitle,
+              CaseInformationId: caseInformationDocRef.id,
+              PlaintiffInformationId: plaintiffInformationDocRef.id,
+              DefendantInformationId: defendantInformationDocRef.id,
+              ServeeDocumentedDataId: serveesDocumentedDataDocRefs[0].id,
+              ClearanceOfActionId: clearanceOfActionDocRef.id,
+              ServeePhysicalDescriptionId: serveePhysicalDescriptionDocRef.id,
+              VehicleInformationId: vehicleInformationDocRef.id,
+              OfferedServicesId: offeredServicesDocRef.id,
+              FileSubmissionId: fileSubmissionDocRef.id,
+              status: "pending"
+            });
+            await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
+          // }
         }
       } else {
         const document = data["FileSubmission-9"].documents[0];

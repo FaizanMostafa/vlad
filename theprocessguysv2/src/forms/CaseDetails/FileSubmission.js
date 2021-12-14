@@ -104,13 +104,9 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         } else {
           data["ServeeDocumentedData-4"] = {};
         }
-        if(QuestionaireForm4.hasOwnProperty("serviceDetails")) data["ServeeDocumentedData-4"].serviceDetails=QuestionaireForm4.serviceDetails;
         if(QuestionaireForm4.hasOwnProperty("numberOfCaseFilesBeingServed")) data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed=QuestionaireForm4.numberOfCaseFilesBeingServed;
         if(QuestionaireForm4.hasOwnProperty("howManyIndividualsServed")) data["ServeeDocumentedData-4"].howManyIndividualsServed=QuestionaireForm4.howManyIndividualsServed;
         if(QuestionaireForm4.hasOwnProperty("serveesDetail")) data["ServeeDocumentedData-4"].serveesDetail=QuestionaireForm4.serveesDetail;
-        if(QuestionaireForm4.hasOwnProperty("locationForBeingServed")) data["ServeeDocumentedData-4"].locationForBeingServed=QuestionaireForm4.locationForBeingServed;
-        if(QuestionaireForm4.hasOwnProperty("agentOfService")) data["ServeeDocumentedData-4"].agentOfService=QuestionaireForm4.agentOfService;
-        if(QuestionaireForm4.hasOwnProperty("agentsFullNames")) data["ServeeDocumentedData-4"].agentsFullNames=QuestionaireForm4.agentsFullNames;
       }
       if(QuestionaireForm5 && Object.values(QuestionaireForm5).length) {
         if(props.fileData && props.numberOfCaseFilesBeingServed) {

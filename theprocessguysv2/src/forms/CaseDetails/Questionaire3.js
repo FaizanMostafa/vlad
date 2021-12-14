@@ -40,14 +40,14 @@ const Questionaire3 = (props) => {
           <Form.Label>Are you representing the Defendant, or are yourself the Defendant?*</Form.Label><br />
           <div style={{display: "flex"}}>
             <Form.Check
-              disabled={isFormDisabled} className="ml-2" label="Yes"
-              type="radio" onClick={()=>setIsOrRepresentingDefendant(true)}
+              type="radio"
+              disabled={true} className="ml-2" label="Yes"
               id="isDefendantY" name="isOrRepresentingDefendant"
               checked={isOrRepresentingDefendant===true}
             />
             <Form.Check
-              disabled={isFormDisabled} className="ml-4" label="No"
-              type="radio" onClick={()=>setIsOrRepresentingDefendant(false)}
+              type="radio"
+              disabled={true} className="ml-4" label="No"
               id="isDefendantN" name="isOrRepresentingDefendant"
               checked={isOrRepresentingDefendant===false}
             />
