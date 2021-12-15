@@ -436,12 +436,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Personal" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, typeOfServe: "personal"}}}})}
-                            id={`typeOfServeP${serviceDetailKey}`} name={`typeOfServe${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="personal"}
+                            id={`typeOfServeP${serveeKey}${serviceDetailKey}`} name={`typeOfServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="personal"}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="Normal" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, typeOfServe: "normal"}}}})}
-                            id={`typeOfServeN${serviceDetailKey}`} name={`typeOfServe${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="normal"}
+                            id={`typeOfServeN${serveeKey}${serviceDetailKey}`} name={`typeOfServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="normal"}
                           />
                         </div>
                       </Form.Group>
@@ -452,11 +452,11 @@ const Questionaire4 = (props) => {
                         <div style={{display: "flex"}}>
                           <Form.Check className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireFirst24HourService: true}}}})}
-                            id={`requireFirst24HourServiceY${serviceDetailKey}`} name={`requireFirst24HourService${serviceDetailKey}`} checked={serviceDetail.requireFirst24HourService===true}
+                            id={`requireFirst24HourServiceY${serveeKey}${serviceDetailKey}`} name={`requireFirst24HourService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireFirst24HourService===true}
                           />
                           <Form.Check className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireFirst24HourService: false}}}})}
-                            id={`requireFirst24HourServiceN${serviceDetailKey}`} name={`requireFirst24HourService${serviceDetailKey}`} checked={serviceDetail.requireFirst24HourService===false}
+                            id={`requireFirst24HourServiceN${serveeKey}${serviceDetailKey}`} name={`requireFirst24HourService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireFirst24HourService===false}
                           />
                         </div>
                       </Form.Group>
@@ -468,12 +468,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireRushService: true}}}})}
-                            id={`requireRushServiceY${serviceDetailKey}`} name={`requireRushService${serviceDetailKey}`} checked={serviceDetail.requireRushService===true}
+                            id={`requireRushServiceY${serveeKey}${serviceDetailKey}`} name={`requireRushService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireRushService===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireRushService: false}}}})}
-                            id={`requireRushServiceN${serviceDetailKey}`} name={`requireRushService${serviceDetailKey}`} checked={serviceDetail.requireRushService===false}
+                            id={`requireRushServiceN${serveeKey}${serviceDetailKey}`} name={`requireRushService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireRushService===false}
                           />
                         </div>
                       </Form.Group>
@@ -485,12 +485,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireStakeOutService: true}}}})}
-                            id={`requireStakeOutServiceY${serviceDetailKey}`} name={`requireStakeOutService${serviceDetailKey}`} checked={serviceDetail.requireStakeOutService===true}
+                            id={`requireStakeOutServiceY${serveeKey}${serviceDetailKey}`} name={`requireStakeOutService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireStakeOutService===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, requireStakeOutService: false}}}})}
-                            id={`requireStakeOutServiceN${serviceDetailKey}`} name={`requireStakeOutService${serviceDetailKey}`} checked={serviceDetail.requireStakeOutService===false}
+                            id={`requireStakeOutServiceN${serveeKey}${serviceDetailKey}`} name={`requireStakeOutService${serveeKey}${serviceDetailKey}`} checked={serviceDetail.requireStakeOutService===false}
                           />
                         </div>
                       </Form.Group>
@@ -514,12 +514,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: true}}}})}
-                            id={`shouldSubServeY${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===true}
+                            id={`shouldSubServeY${serveeKey}${serviceDetailKey}`} name={`shouldSubServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: false}}}})}
-                            id={`shouldSubServeN${serviceDetailKey}`} name={`shouldSubServe${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===false}
+                            id={`shouldSubServeN${serveeKey}${serviceDetailKey}`} name={`shouldSubServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===false}
                           />
                         </div>
                       </Form.Group>
@@ -531,12 +531,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldDropServe: true}}}})}
-                            id={`shouldDropServeY${serviceDetailKey}`} name={`shouldDropServe${serviceDetailKey}`} checked={serviceDetail.shouldDropServe===true}
+                            id={`shouldDropServeY${serveeKey}${serviceDetailKey}`} name={`shouldDropServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldDropServe===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldDropServe: false}}}})}
-                            id={`shouldDropServeN${serviceDetailKey}`} name={`shouldDropServe${serviceDetailKey}`} checked={serviceDetail.shouldDropServe===false}
+                            id={`shouldDropServeN${serveeKey}${serviceDetailKey}`} name={`shouldDropServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldDropServe===false}
                           />
                         </div>
                       </Form.Group>
@@ -548,12 +548,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldLeaveDoorTag: true}}}})}
-                            id={`shouldLeaveDoorTagY${serviceDetailKey}`} name={`shouldLeaveDoorTag${serviceDetailKey}`} checked={serviceDetail.shouldLeaveDoorTag===true}
+                            id={`shouldLeaveDoorTagY${serveeKey}${serviceDetailKey}`} name={`shouldLeaveDoorTag${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldLeaveDoorTag===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldLeaveDoorTag: false}}}})}
-                            id={`shouldLeaveDoorTagN${serviceDetailKey}`} name={`shouldLeaveDoorTag${serviceDetailKey}`} checked={serviceDetail.shouldLeaveDoorTag===false}
+                            id={`shouldLeaveDoorTagN${serveeKey}${serviceDetailKey}`} name={`shouldLeaveDoorTag${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldLeaveDoorTag===false}
                           />
                         </div>
                       </Form.Group>
@@ -565,12 +565,12 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldPostDocsWithBand: true}}}})}
-                            id={`shouldPostDocsWithBandY${serviceDetailKey}`} name={`shouldPostDocsWithBand${serviceDetailKey}`} checked={serviceDetail.shouldPostDocsWithBand===true}
+                            id={`shouldPostDocsWithBandY${serveeKey}${serviceDetailKey}`} name={`shouldPostDocsWithBand${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldPostDocsWithBand===true}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="No" disabled={isFormDisabled}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldPostDocsWithBand: false}}}})}
-                            id={`shouldPostDocsWithBandN${serviceDetailKey}`} name={`shouldPostDocsWithBand${serviceDetailKey}`} checked={serviceDetail.shouldPostDocsWithBand===false}
+                            id={`shouldPostDocsWithBandN${serveeKey}${serviceDetailKey}`} name={`shouldPostDocsWithBand${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldPostDocsWithBand===false}
                           />
                         </div>
                       </Form.Group>
@@ -582,13 +582,13 @@ const Questionaire4 = (props) => {
                           <Form.Check
                             disabled={isFormDisabled} className="ml-2"
                             type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: true}}}})}
-                            id={`agentOfServiceY${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
+                            id={`agentOfServiceY${serveeKey}${serviceDetailKey}`} name={`agentOfService${serveeKey}${serviceDetailKey}`}
                             checked={serviceDetail.isThereAnAgentOfService===true} label="Yes"
                           />
                           <Form.Check
                             disabled={isFormDisabled} className="ml-4"
                             type="radio" onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, isThereAnAgentOfService: false}}}})}
-                            id={`agentOfServiceN${serviceDetailKey}`} name={`agentOfService${serviceDetailKey}`}
+                            id={`agentOfServiceN${serveeKey}${serviceDetailKey}`} name={`agentOfService${serveeKey}${serviceDetailKey}`}
                             checked={serviceDetail.isThereAnAgentOfService===false} label="No"
                           />
                         </div>

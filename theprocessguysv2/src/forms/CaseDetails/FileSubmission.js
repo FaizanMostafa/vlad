@@ -160,41 +160,40 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
           if(fileObj.hasOwnProperty("file")) {
             if(!data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) data["FileSubmission-9"].oldDocumentPath = props.documentPath;
             if(data["FileSubmission-9"].hasOwnProperty("documents")) {
-              data["FileSubmission-9"].documents.push(fileObj);
+              data["FileSubmission-9"].documents.push({...fileObj, fileType: fileSubmissionType});
             } else {
-              data["FileSubmission-9"].documents = [fileObj];
+              data["FileSubmission-9"].documents = [{...fileObj, fileType: fileSubmissionType}];
             }
           } else {
-            data["FileSubmission-9"].documents = Object.values(fileData);
+            data["FileSubmission-9"].documents = Object.values(fileData).map((fd)=>({...fd, fileType: fileSubmissionType}));
           }
         })
       }
       if(Object.keys(data).length) {
         if(props.fileData && props.numberOfCaseFilesBeingServed) {
           data.caseId = caseId;
-          console.log("Updating...")
           dispatch(updateCase(data, ()=>{
-            // localStorage.removeItem("Questionaire1");
-            // localStorage.removeItem("Questionaire2");
-            // localStorage.removeItem("Questionaire3");
-            // localStorage.removeItem("Questionaire4");
-            // localStorage.removeItem("Questionaire5");
-            // localStorage.removeItem("Questionaire6");
-            // localStorage.removeItem("Questionaire7");
-            // localStorage.removeItem("Questionaire8");
+            props.onSuccess();
+            localStorage.removeItem("Questionaire1");
+            localStorage.removeItem("Questionaire2");
+            localStorage.removeItem("Questionaire3");
+            localStorage.removeItem("Questionaire4");
+            localStorage.removeItem("Questionaire5");
+            localStorage.removeItem("Questionaire6");
+            localStorage.removeItem("Questionaire7");
+            localStorage.removeItem("Questionaire8");
           }));
         } else {
-          console.log("Creating...")
-          console.log({data})
           dispatch(createCase(data, ()=>{
-            // localStorage.removeItem("Questionaire1");
-            // localStorage.removeItem("Questionaire2");
-            // localStorage.removeItem("Questionaire3");
-            // localStorage.removeItem("Questionaire4");
-            // localStorage.removeItem("Questionaire5");
-            // localStorage.removeItem("Questionaire6");
-            // localStorage.removeItem("Questionaire7");
-            // localStorage.removeItem("Questionaire8");
+            props.onSuccess();
+            localStorage.removeItem("Questionaire1");
+            localStorage.removeItem("Questionaire2");
+            localStorage.removeItem("Questionaire3");
+            localStorage.removeItem("Questionaire4");
+            localStorage.removeItem("Questionaire5");
+            localStorage.removeItem("Questionaire6");
+            localStorage.removeItem("Questionaire7");
+            localStorage.removeItem("Questionaire8");
           }));
         }
       }
@@ -437,29 +436,31 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
                     </Form.Group>
                     <div>
                       {
-                        value.fileType==="single"
-                          ?
-                            <>
-                              <span
-                                onClick={()=>handleOnClickViewFile(value.documentName)}
-                                style={{cursor: "pointer", fontWeight: "bold"}}
-                              >{isFileVisible===value.documentName ? "Hide" : "View"} File</span>
-                              <span
-                                onClick={()=>downloadResource(props.documentURI, props.documentURI.slice(props.documentURI.lastIndexOf('%2F')+3, props.documentURI.lastIndexOf('?')))}
-                                style={{cursor: "pointer", fontWeight: "bold", marginLeft: 20}}
-                              >Download File</span>
-                              {
-                                isFileVisible===value.documentName
-                                  &&
-                                    <iframe src={props.documentURI} width="100%"  height="750px" frameborder="0"/>
-                              }
-                            </>
-                          :
-                            <a
-                              href={props.documentURI}
-                              target="_blank"
-                              style={{cursor: "pointer", float: "none", fontWeight: "bold"}}
-                            >Download File</a>
+                        value.hasOwnProperty("fileType")
+                          &&
+                            value.fileType.toLowerCase()==="single"
+                              ?
+                                <>
+                                  <span
+                                    onClick={()=>handleOnClickViewFile(value.documentName)}
+                                    style={{cursor: "pointer", fontWeight: "bold"}}
+                                  >{isFileVisible===value.documentName ? "Hide" : "View"} File</span>
+                                  <span
+                                    onClick={()=>downloadResource(props.documentURI, props.documentURI.slice(props.documentURI.lastIndexOf('%2F')+3, props.documentURI.lastIndexOf('?')))}
+                                    style={{cursor: "pointer", fontWeight: "bold", marginLeft: 20}}
+                                  >Download File</span>
+                                  {
+                                    isFileVisible===value.documentName
+                                      &&
+                                        <iframe src={props.documentURI} width="100%"  height="750px" frameborder="0"/>
+                                  }
+                                </>
+                              :
+                                <a
+                                  href={props.documentURI}
+                                  target="_blank"
+                                  style={{cursor: "pointer", float: "none", fontWeight: "bold"}}
+                                >Download File</a>
                       }
                     </div>
                     <Form.Group id="mS-file-upload">

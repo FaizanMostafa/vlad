@@ -850,7 +850,7 @@ const CreateNewCase = (props) => {
           {
             activeStep===9
               &&
-                <FileSubmission />
+                <FileSubmission onSuccess={()=>setShow(false)} />
           }
           {
             activeStep!==9
