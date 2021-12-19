@@ -39,6 +39,17 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
     }
   }, []);
 
+  const clearLocalStorage = () => {
+    localStorage.removeItem("Questionaire1");
+    localStorage.removeItem("Questionaire2");
+    localStorage.removeItem("Questionaire3");
+    localStorage.removeItem("Questionaire4");
+    localStorage.removeItem("Questionaire5");
+    localStorage.removeItem("Questionaire6");
+    localStorage.removeItem("Questionaire7");
+    localStorage.removeItem("Questionaire8");
+  }
+
   const handleOnClickSubmit = () => {
     if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
       showToast("Please enter the case type in every relevant input field!", "warning");
@@ -47,7 +58,7 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
     } else if(Object.values(fileData).filter((o)=>o.file===null).length) {
       showToast("Please upload the files in every relevant input field!", "warning");
     } else if(!isUpdating && !isCreating) {
-      let data = {uid: user.uid};
+      let data = {};
       const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
       const QuestionaireForm2 = JSON.parse(localStorage.getItem("Questionaire2"));
       const QuestionaireForm3 = JSON.parse(localStorage.getItem("Questionaire3"));
@@ -169,33 +180,23 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
           }
         })
       }
+      console.log({data});
       if(Object.keys(data).length) {
+        data["uid"] = user.uid;
         if(props.fileData && props.numberOfCaseFilesBeingServed) {
           data.caseId = caseId;
           dispatch(updateCase(data, ()=>{
             props.onSuccess();
-            localStorage.removeItem("Questionaire1");
-            localStorage.removeItem("Questionaire2");
-            localStorage.removeItem("Questionaire3");
-            localStorage.removeItem("Questionaire4");
-            localStorage.removeItem("Questionaire5");
-            localStorage.removeItem("Questionaire6");
-            localStorage.removeItem("Questionaire7");
-            localStorage.removeItem("Questionaire8");
+            clearLocalStorage();
           }));
         } else {
           dispatch(createCase(data, ()=>{
             props.onSuccess();
-            localStorage.removeItem("Questionaire1");
-            localStorage.removeItem("Questionaire2");
-            localStorage.removeItem("Questionaire3");
-            localStorage.removeItem("Questionaire4");
-            localStorage.removeItem("Questionaire5");
-            localStorage.removeItem("Questionaire6");
-            localStorage.removeItem("Questionaire7");
-            localStorage.removeItem("Questionaire8");
+            clearLocalStorage();
           }));
         }
+      } else {
+        showToast("No data has been modified!", "warning");
       }
     }
   }

@@ -18,7 +18,6 @@ import {
   Questionaire8,
   FileSubmission
 } from "../forms/CaseDetails";
-import CaseDetails from '../pages/AdminDashboard/CaseDetails';
 
 const EditCase = (props) => {
   const [activeStep, setActiveStep] = useState(1);
@@ -58,10 +57,6 @@ const EditCase = (props) => {
   const [howManyIndividualsServed, setHowManyIndividualsServed] = useState("");
   const [serveesDetail, setServeesDetail] = useState({});
   const [date, setDate] = useState(new Date());
-  const [locationForBeingServed, setLocationForBeingServed] = useState("");
-  const [serviceDetails, setServiceDetails] = useState({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
-  const [agentOfService, setAgentOfService] = useState("");
-  const [agentsFullNames, setAgentsFullNames] = useState({0: {firstName: "", middleName: "", lastName: ""}});
 
   // Questionaire Form 5
   const [serveIndividualAtEmployment, setServeIndividualAtEmployment] = useState("");
@@ -133,10 +128,6 @@ const EditCase = (props) => {
       setNumberOfCaseFilesBeingServed(caseDetails?.ServeeDocumentedData.numberOfCaseFilesBeingServed);
       setHowManyIndividualsServed(caseDetails?.ServeeDocumentedData.howManyIndividualsServed);
       setServeesDetail(caseDetails?.ServeeDocumentedData.serveesDetail);
-      setLocationForBeingServed(caseDetails?.ServeeDocumentedData.locationForBeingServed);
-      setServiceDetails(caseDetails?.ServeeDocumentedData.serviceDetails);
-      setAgentOfService(caseDetails?.ServeeDocumentedData.agentOfService);
-      setAgentsFullNames(caseDetails?.ServeeDocumentedData.agentsFullNames);
       
       // Questionaire Form 5
       setServeIndividualAtEmployment(caseDetails?.ClearanceOfAction.serveIndividualAtEmployment);
@@ -270,7 +261,8 @@ const EditCase = (props) => {
         for(let index=0; index < (parseInt(howManyIndividualsServed)-prevLength); index++) {
           newServeesDetail[Object.keys(newServeesDetail).length] = {
             fullName: "", dob: "", age: "", phoneNumbers: {0: {phoneNumber: "", type: ""}},
-            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: "", isNew: true
+            email: "", coResidents: {0: {name: "", relation: ""}}, isEmployed: "", isNew: true,
+            serviceDetails: {0: {locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanion: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}}}
           }
         }
         setServeesDetail(newServeesDetail);
@@ -463,9 +455,9 @@ const EditCase = (props) => {
         setActiveStep(nextStep);
       }
     } else if(activeStep === 4) {
-      if(!numberOfCaseFilesBeingServed.length) {
+      if(typeof numberOfCaseFilesBeingServed!=="number" && !numberOfCaseFilesBeingServed.length) {
         showToast("Please select how many case files being served!", "warning");
-      } else if(!howManyIndividualsServed.length) {
+      } else if(typeof howManyIndividualsServed!=="number" && !howManyIndividualsServed.length) {
         showToast("Please select how many individuals being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.fullName)).filter((fullName)=>!fullName.length).length) {
         showToast("Please enter the full names of all the servees that are being served!", "warning");
@@ -481,51 +473,47 @@ const EditCase = (props) => {
         showToast("Please select the relation of co-residents to the servee for all the servees that are being served!", "warning");
       } else if(Object.values(serveesDetail).map((o)=>(o.isEmployed)).filter((isEmployed)=>!isEmployed.length).length) {
         showToast("Please select the employment option for all the servees that are being served!", "warning");
-      } else if(!locationForBeingServed.length) {
-        showToast("Please select the kind of location being served!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.street.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.locationType.length)))).length) {
+        showToast("For all service addresses, please select the kind of location being served!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.address.street.length)))).length) {
         showToast("Please enter street address for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.city.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.address.city.length)))).length) {
         showToast("Please enter city address for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.state.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.address.state.length)))).length) {
         showToast("Please enter state address for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.zipCode.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.address.zipCode.length)))).length) {
         showToast("Please enter zip code address for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.address.country.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.address.country.length)))).length) {
         showToast("Please enter country address for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.typeOfServe.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.typeOfServe.length)))).length) {
         showToast("Please select the type of serve for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireFirst24HourService)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.requireFirst24HourService)!=="boolean")))).length) {
         showToast("Please select if a service attempt should be made within the first 24 hours for all service addresses!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireRushService)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.requireRushService)!=="boolean")))).length) {
         showToast("For every service address, please select if you require a rush service!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.requireStakeOutService)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.requireStakeOutService)!=="boolean")))).length) {
         showToast("For every service address, please select if you require a stake out service!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>!serviceDetail.ceaseDate.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>!o.ceaseDate.length)))).length) {
         showToast("For every service address, please provide a date when service attempts should cease!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldSubServeToCompanian)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.shouldSubServeToCompanion)!=="boolean")))).length) {
         showToast("For every service address, please select if subservice is allowed!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldDropServe)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.shouldDropServe)!=="boolean")))).length) {
         showToast("For every service address, please select if drop/force serve is allowed!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldLeaveDoorTag)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.shouldLeaveDoorTag)!=="boolean")))).length) {
         showToast("For every service address, please select if process server should leave a door tag!", "warning");
-      } else if(Object.values(serviceDetails).filter((serviceDetail)=>typeof(serviceDetail.shouldPostDocsWithBand)!=="boolean").length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.shouldPostDocsWithBand)!=="boolean")))).length) {
         showToast("For every service address, please select if process server should post documents with a rubber band!", "warning");
-      } else if(typeof(agentOfService)!=="boolean") {
-        showToast("Please select if there is an agent of service!", "warning");
-      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.firstName.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>typeof(o.isThereAnAgentOfService)!=="boolean")))).length) {
+        showToast("For every service address, please select if there is an agent of service!", "warning");
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>(o.isThereAnAgentOfService && Object.values(o.agentsOfService).filter(o=>!o.firstName.length).length))))).length) {
         showToast("Please enter first names of all the agents of service!", "warning");
-      } else if(agentOfService && Object.values(agentsFullNames).filter((fullName)=>!fullName.lastName.length).length) {
+      } else if([].concat.apply([], Object.values(serveesDetail).map((o)=>(Object.values(o.serviceDetails).filter((o)=>(o.isThereAnAgentOfService && Object.values(o.agentsOfService).filter(o=>!o.lastName.length).length))))).length) {
         showToast("Please enter last names of all the agents of service!", "warning");
       } else {
         let data = {};
         if(numberOfCaseFilesBeingServed!==caseDetails.ServeeDocumentedData.numberOfCaseFilesBeingServed) data.numberOfCaseFilesBeingServed=numberOfCaseFilesBeingServed;
         if(howManyIndividualsServed!==caseDetails.ServeeDocumentedData.howManyIndividualsServed) data.howManyIndividualsServed=howManyIndividualsServed;
         if(!objectsEqual(serveesDetail, caseDetails.ServeeDocumentedData.serveesDetail)) data.serveesDetail=serveesDetail;
-        if(locationForBeingServed!==caseDetails.ServeeDocumentedData.locationForBeingServed) data.locationForBeingServed=locationForBeingServed;
-        if(!objectsEqual(serviceDetails, caseDetails.ServeeDocumentedData.serviceDetails)) data.serviceDetails=serviceDetails;
-        if(agentOfService!==caseDetails.ServeeDocumentedData.agentOfService) data.agentOfService=agentOfService;
-        if(!objectsEqual(agentsFullNames, caseDetails.ServeeDocumentedData.agentsFullNames)) data.agentsFullNames=agentsFullNames;
         if(Object.keys(data).length) localStorage.setItem('Questionaire4', JSON.stringify({docId: caseDetails.ServeeDocumentedData.docId, ...data}));
         setActiveStep(nextStep);
       }
@@ -637,6 +625,17 @@ const EditCase = (props) => {
     }
   }
 
+  const clearLocalStorage = () => {
+    localStorage.removeItem("Questionaire1");
+    localStorage.removeItem("Questionaire2");
+    localStorage.removeItem("Questionaire3");
+    localStorage.removeItem("Questionaire4");
+    localStorage.removeItem("Questionaire5");
+    localStorage.removeItem("Questionaire6");
+    localStorage.removeItem("Questionaire7");
+    localStorage.removeItem("Questionaire8");
+  }
+
   const handleResetForms = () => {
     // Reset Form 1
     setCaseTitle("");
@@ -666,10 +665,6 @@ const EditCase = (props) => {
     setNumberOfCaseFilesBeingServed("");
     setHowManyIndividualsServed("");
     setServeesDetail({});
-    setLocationForBeingServed("");
-    setServiceDetails({0: {address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: ""}});
-    setAgentOfService("");
-    setAgentsFullNames({0: {firstName: "", middleName: "", lastName: ""}});
     // Reset Form 5
     setServeIndividualAtEmployment("");
     setRequireServerNotifyPersonOfInterest("");
@@ -699,6 +694,7 @@ const EditCase = (props) => {
     setIfYesListAddress("");
     setActiveStep(1);
     setShowResetModal(false);
+    clearLocalStorage();
   }
 
   return (
@@ -731,15 +727,15 @@ const EditCase = (props) => {
                 <>
                   <Element name="stepper" className="element">
                     <Stepper styleConfig={{activeBgColor: "#a0a0a0"}} activeStep={activeStep-1}>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(1)} label='Step 1'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(2)} label='Step 2'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(3)} label='Step 3'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(4)} label='Step 4'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(5)} label='Step 5'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(6)} label='Step 6'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(7)} label='Step 7'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(8)} label='Step 8'/>
-                      <Step disabled={false} onClick={()=>handleOnPressNext(9)} label='Step 9'/>
+                      <Step style={activeStep===1 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(1)} label='Step 1'/>
+                      <Step style={activeStep===2 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(2)} label='Step 2'/>
+                      <Step style={activeStep===3 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(3)} label='Step 3'/>
+                      <Step style={activeStep===4 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(4)} label='Step 4'/>
+                      <Step style={activeStep===5 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(5)} label='Step 5'/>
+                      <Step style={activeStep===6 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(6)} label='Step 6'/>
+                      <Step style={activeStep===7 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(7)} label='Step 7'/>
+                      <Step style={activeStep===8 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(8)} label='Step 8'/>
+                      <Step style={activeStep===9 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(9)} label='Step 9'/>
                     </Stepper>
                   </Element>
                   <br></br>
@@ -824,14 +820,6 @@ const EditCase = (props) => {
                           setHowManyIndividualsServed={setHowManyIndividualsServed}
                           serveesDetail={serveesDetail}
                           setServeesDetail={setServeesDetail}
-                          locationForBeingServed={locationForBeingServed}
-                          setLocationForBeingServed={setLocationForBeingServed}
-                          serviceDetails={serviceDetails}
-                          setServiceDetails={setServiceDetails}
-                          agentOfService={agentOfService}
-                          setAgentOfService={setAgentOfService}
-                          agentsFullNames={agentsFullNames}
-                          setAgentsFullNames={setAgentsFullNames}
                         />
                   }
                   {

@@ -64,23 +64,26 @@ const Questionaire3 = (props) => {
       </MDBCol>
       <center>
         {
-          shouldPGFillDefendantInfo
-            ?
-              <Button variant="secondary" onClick={()=>setShouldPGFillDefendantInfo(!shouldPGFillDefendantInfo)} className="d-flex align-items-center">
-                <span style={{ color: "white" }} className="mb-0 mt-0">
-                  Fill the form yourself
-                </span>
-              </Button>
-            :
-              <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 10}}>
-                <RSLink activeClass="active" to="next-btn" spy={true} smooth={true} offset={0} duration={500} delay={300}>
-                  <Button onClick={()=>setShouldPGFillDefendantInfo(!shouldPGFillDefendantInfo)} >
+          !isFormDisabled
+            && (
+              shouldPGFillDefendantInfo
+                ?
+                  <Button variant="secondary" onClick={()=>setShouldPGFillDefendantInfo(!shouldPGFillDefendantInfo)} className="d-flex align-items-center">
                     <span style={{ color: "white" }} className="mb-0 mt-0">
-                      Request form fill and skip
+                      Fill the form yourself
                     </span>
                   </Button>
-                </RSLink>
-              </div>
+                :
+                  <div style={{display: "flex", justifyContent: "center", alignItems: "center", marginBottom: 10}}>
+                    <RSLink activeClass="active" to="next-btn" spy={true} smooth={true} offset={0} duration={500} delay={300}>
+                      <Button onClick={()=>setShouldPGFillDefendantInfo(!shouldPGFillDefendantInfo)} >
+                        <span style={{ color: "white" }} className="mb-0 mt-0">
+                          Request form fill and skip
+                        </span>
+                      </Button>
+                    </RSLink>
+                  </div>
+            )
         }
       </center>
       <p className="text-center">

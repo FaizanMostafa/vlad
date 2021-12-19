@@ -26,13 +26,14 @@ const FileSubmission = ({...props}) => {
     setFileData(caseFileData);
   }, []);
 
-  useEffect(() => {
+  const handleOnChangeFileType = (fileType) => {
+    setFileSubmissionType(fileType);
     let caseFileData = {};
     for(let index = 0; index < Object.keys(fileData).length; index++) {
-      caseFileData[index] = {...fileData[index], fileType: fileSubmissionType};
+      caseFileData[index] = {...fileData[index], fileType};
     }
     setFileData(caseFileData);
-  }, [fileSubmissionType]);
+  }
 
   const handleCaseSubmit = () => {
     if(Object.values(fileData).filter((o)=>!o.caseType.length).length) {
@@ -88,23 +89,14 @@ const FileSubmission = ({...props}) => {
         data["ServeeDocumentedData-4"] = {
           numberOfCaseFilesBeingServed: QuestionaireForm4.numberOfCaseFilesBeingServed,
           howManyIndividualsServed: QuestionaireForm4.howManyIndividualsServed,
-          serveesDetail: Object.values(QuestionaireForm4.serveesDetail),
-          locationForBeingServed: QuestionaireForm4.locationForBeingServed,
-          mainAddressesForService: QuestionaireForm4.mainAddressesForService,
-          agentOfService: QuestionaireForm4.agentOfService,
-          agentsFullNames: QuestionaireForm4.agentsFullNames
+          serveesDetail: Object.values(QuestionaireForm4.serveesDetail)
         };
       }
       if(QuestionaireForm5) {
         data["ClearanceOfAction-5"] = {
-          typeOfServe: QuestionaireForm5.typeOfServe,
           serveIndividualAtEmployment: QuestionaireForm5.serveIndividualAtEmployment,
-          processServerLeaveDoorTag: QuestionaireForm5.processServerLeaveDoorTag,
-          subserveAfterThreeAttempts: QuestionaireForm5.subserveAfterThreeAttempts,
           requireServerNotifyPersonOfInterest: QuestionaireForm5.requireServerNotifyPersonOfInterest,
           serverContactServeeByPhone: QuestionaireForm5.serverContactServeeByPhone,
-          serverPostDocumentsWithRubberBand: QuestionaireForm5.serverPostDocumentsWithRubberBand,
-          dropServeForceServe: QuestionaireForm5.dropServeForceServe,
           paralegalAttorneyClientContactServee: QuestionaireForm5.paralegalAttorneyClientContactServee
         };
       }
@@ -120,11 +112,7 @@ const FileSubmission = ({...props}) => {
       }
       if(QuestionaireForm8) {
         data["OfferedServices-8"] = {
-          requireStakeOutService: QuestionaireForm8.requireStakeOutService,
           specifyDatesForStakeOutService: QuestionaireForm8.specifyDatesForStakeOutService,
-          requireRushService: QuestionaireForm8.requireRushService,
-          listDateWhenServiceAttemptsClosed: QuestionaireForm8.listDateWhenServiceAttemptsClosed,
-          requireFirst24HourService: QuestionaireForm8.requireFirst24HourService,
           requireSkipTracingService: QuestionaireForm8.requireSkipTracingService,
           requireBodyCamFootage: QuestionaireForm8.requireBodyCamFootage,
           obtainNewDeliveryLocation: QuestionaireForm8.obtainNewDeliveryLocation,
@@ -548,10 +536,10 @@ const FileSubmission = ({...props}) => {
                       <br/><br/><br/><br/><br/>
                       <MDBCol md="12">
                         <center>
-                          <Button onClick={()=>setFileSubmissionType("single")} className="w-75">
+                          <Button onClick={()=>handleOnChangeFileType("single")} className="w-75">
                             <span className="text-white">Single Case File(s) Submission</span>
                           </Button><br/><br/>
-                          <Button onClick={()=>setFileSubmissionType("multiple")} className="w-75">
+                          <Button onClick={()=>handleOnChangeFileType("multiple")} className="w-75">
                             <span className="text-white">Multiple Case File(s) Submission</span>
                           </Button>
                         </center>

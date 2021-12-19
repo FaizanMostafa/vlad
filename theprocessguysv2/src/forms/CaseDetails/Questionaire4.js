@@ -430,7 +430,7 @@ const Questionaire4 = (props) => {
                       </MDBRow>
                     </MDBCol>
                     <MDBCol md="12">
-                      <Form.Group id="require-first-24-hour-service">
+                      <Form.Group id="require-normal-personal-service">
                         <Form.Label>Is this a "normal serve" or a "personal serve"?*</Form.Label>
                         <div style={{display: "flex"}}>
                           <Form.Check

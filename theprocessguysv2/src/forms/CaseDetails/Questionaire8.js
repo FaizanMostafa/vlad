@@ -190,8 +190,7 @@ const Questionaire8 = (props) => {
           </div>
         </Form.Group>
       </MDBCol>
-      <br/>
-      <br/>
+      <br/><br/>
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RSLink, Element } from 'react-scroll';
-import { Stepper } from 'react-form-stepper';
+import { Stepper, Step } from 'react-form-stepper';
 import { fetchCaseDetails } from "../../redux/actions/admin";
 import {
   Questionaire1,
@@ -14,10 +14,6 @@ import {
   Questionaire8,
   FileSubmission
 } from "../../forms/CaseDetails";
-import {
-  ResetQuestionairesConfirmation
-} from "../../popups";
-import { showToast, validateEmail, validatePhoneNumber } from "../../utils";
 
 const CaseDetails = (props) => {
   const userCase = props.location.state.userCase;
@@ -72,10 +68,17 @@ const CaseDetails = (props) => {
   return (
     <div style={{boxSizing: "border-box", backgroundColor: "white", borderRadius: 6, padding: 20, width: "100%"}}>
       <Element name="stepper" className="element">
-        <Stepper
-          steps={[{ label: 'Step 1' }, { label: 'Step 2' }, { label: 'Step 3' }, { label: 'Step 4' }, { label: 'Step 5' }, { label: 'Step 6' }, { label: 'Step 7' }, { label: 'Step 8' }, { label: 'Step 9' }]}
-          activeStep={activeStep-1}
-        />
+        <Stepper styleConfig={{activeBgColor: "#a0a0a0"}} activeStep={activeStep-1}>
+          <Step style={activeStep===1 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(1)} label='Step 1'/>
+          <Step style={activeStep===2 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(2)} label='Step 2'/>
+          <Step style={activeStep===3 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(3)} label='Step 3'/>
+          <Step style={activeStep===4 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(4)} label='Step 4'/>
+          <Step style={activeStep===5 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(5)} label='Step 5'/>
+          <Step style={activeStep===6 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(6)} label='Step 6'/>
+          <Step style={activeStep===7 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(7)} label='Step 7'/>
+          <Step style={activeStep===8 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(8)} label='Step 8'/>
+          <Step style={activeStep===9 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>setActiveStep(9)} label='Step 9'/>
+        </Stepper>
       </Element>
       <div style={{display: "flex", width: "100%", justifyContent: "space-between"}}>
         {
@@ -199,8 +202,9 @@ const CaseDetails = (props) => {
           &&
             <FileSubmission
               isFormDisabled={true}
-              documentURI={caseDetails.FileSubmission.documentURI}
               fileData={caseDetails.FileSubmission.fileData}
+              documentURI={caseDetails.FileSubmission.documentURI}
+              numberOfCaseFilesBeingServed={caseDetails.ServeeDocumentedData.numberOfCaseFilesBeingServed}
             />
       }
       {
@@ -220,11 +224,6 @@ const CaseDetails = (props) => {
             </Element>
       }
       <br/>
-      {/* <ResetQuestionairesConfirmation
-        showModal={showResetModal}
-        handleModalClose={()=>setShowResetModal(false)}
-        handleOnClickConfirm={handleResetForms}
-      /> */}
     </div>
   );
 }

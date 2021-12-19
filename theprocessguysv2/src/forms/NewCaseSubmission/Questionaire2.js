@@ -111,7 +111,7 @@ const Questionaire2 = (props) => {
           <>
             <MDBCol md="12" id="plaintiff-full-name">
               <div id="plaintiff-full-name">
-                <label>Plaintiff's Full Name*</label>
+                <label style={{fontWeight: "bold"}}>Plaintiff {Object.keys(plaintiffsDetail).length>1 && Number(key)+1} Full Name*</label>
                 <MDBInput
                   type="text"
                   hint="First Name"
@@ -142,7 +142,7 @@ const Questionaire2 = (props) => {
             </MDBCol>
             <MDBCol md="12" id="plaintiff-address">
               <div id="plaintiff-address">
-                <label>Plaintiff's Address*</label>
+                <label style={{fontWeight: "bold"}}>Plaintiff {Object.keys(plaintiffsDetail).length>1 && Number(key)+1} Address*</label>
                 <MDBInput
                   type="text"
                   hint="Street"
@@ -189,6 +189,7 @@ const Questionaire2 = (props) => {
                   required
                 />
               </div>
+              {(Object.keys(plaintiffsDetail).length>1 && Number(key)!==Object.keys(plaintiffsDetail).length-1) && <hr/>}
             </MDBCol>
           </>
         ))
@@ -222,7 +223,7 @@ const Questionaire2 = (props) => {
           <>
             <MDBCol md="12" id="plaintiff-attorney-name">
               <div id="plaintiff-attorney-name">
-                <label>Enter Attorney Full Name{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
+                <label style={{fontWeight: "bold"}}>Attorney {Object.keys(plaintiffAttorneysDetail).length>1 && Number(key)+1} Full Name{numberOfAttorneysRepresentingPlaintiff!=="0"&&"*"}</label>
                 <MDBInput
                   type="text"
                   hint="First Name"
@@ -383,6 +384,7 @@ const Questionaire2 = (props) => {
                 />
               </div>
             </MDBCol>
+            {(Object.keys(plaintiffAttorneysDetail).length>1 && Number(key)!==Object.keys(plaintiffAttorneysDetail).length-1) && <hr/>}
           </>
         ))
       }

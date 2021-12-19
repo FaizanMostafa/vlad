@@ -37,8 +37,8 @@ const Questionaire3 = (props) => {
       <MDBCol md="12" id="is-or-representing-defendant-col">
         <div id="is-or-representing-defendant-cont">
           <label>Are you representing the Defendant, or are yourself the Defendant?*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setIsOrRepresentingDefendant(true)} id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setIsOrRepresentingDefendant(false)} id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
+          <input disabled={true} className="ml-2" type="radio" id="isDefendantY" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===true} /><label className="ml-2" for="isDefendantY">Yes</label>
+          <input disabled={true} className="ml-4" type="radio" id="isDefendantN" name="isOrRepresentingDefendant" checked={isOrRepresentingDefendant===false} /><label className="ml-2" for="isDefendantN">No</label>
           <br/>
           {
             isOrRepresentingDefendant
@@ -109,7 +109,7 @@ const Questionaire3 = (props) => {
           <>
             <MDBCol md="12" id="defendant-full-name">
               <div id="defendant-full-name">
-                <label>Defendant's Full Name*</label>
+                <label style={{fontWeight: "bold"}}>Defendant {Object.keys(defendantsDetail).length>1 && Number(key)+1} Full Name*</label>
                 <MDBInput
                   type="text"
                   hint="First Name"
@@ -140,7 +140,7 @@ const Questionaire3 = (props) => {
             </MDBCol>
             <MDBCol md="12" id="defendant-address">
               <div id="defendant-address">
-                <label>Defendant's Address</label>
+                <label style={{fontWeight: "bold"}}>Defendant {Object.keys(defendantsDetail).length>1 && Number(key)+1} Address</label>
                 <MDBInput
                   type="text"
                   hint="Street"
@@ -187,6 +187,7 @@ const Questionaire3 = (props) => {
                   required
                 />
               </div>
+              {(Object.keys(defendantsDetail).length>1 && Number(key)!==Object.keys(defendantsDetail).length-1) && <hr/>}
             </MDBCol>
           </>
         ))
@@ -220,7 +221,7 @@ const Questionaire3 = (props) => {
           <>
             <MDBCol md="12" id="defendant-attorney-name">
               <div id="defendant-attorney-name">
-                <label>Enter Attorney Full Name{numberOfAttorneysRepresentingDefendant!=="0"&&"*"}</label>
+                <label style={{fontWeight: "bold"}}>Attorney {Object.keys(defendantAttorneysDetail).length>1 && Number(key)+1} Full Name{numberOfAttorneysRepresentingDefendant!=="0"&&"*"}</label>
                 <MDBInput
                   type="text"
                   hint="First Name"
@@ -382,6 +383,7 @@ const Questionaire3 = (props) => {
                   required
                 />
               </div>
+              {(Object.keys(defendantAttorneysDetail).length>1 && Number(key)!==Object.keys(defendantAttorneysDetail).length-1) && <hr/>}
             </MDBCol>
           </>
         ))

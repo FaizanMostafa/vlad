@@ -397,13 +397,15 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       if(data.hasOwnProperty("ServeeDocumentedData-4")) {
         const serveesDetail = data["ServeeDocumentedData-4"].serveesDetail;
         delete data["ServeeDocumentedData-4"].serveesDetail;
-        for(const servee of serveesDetail) {
-          if(servee?.isNew) {
-            delete servee.isNew;
-            const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: servee}});
-            serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
-          } else {
-            await db.collection("ServeeDocumentedData-4").doc(data["ServeeDocumentedData-4"].docId).update({...data["ServeeDocumentedData-4"], serveesDetail: {0: servee}});
+        for(const servee of Object.values(serveesDetail)) {
+          for(const serviceDetail of Object.values(servee.serviceDetails)) {
+            if(servee?.isNew) {
+              delete servee.isNew;
+              const serveeDocumentedDataDocRef = await db.collection("ServeeDocumentedData-4").add({uid: data.uid, ...data["ServeeDocumentedData-4"], numberOfCaseFilesBeingServed: 1, howManyIndividualsServed: 1, serveesDetail: {0: {...servee, serviceDetails: {0: serviceDetail}}}});
+              serveesDocumentedDataDocRefs.push(serveeDocumentedDataDocRef);
+            } else {
+              await db.collection("ServeeDocumentedData-4").doc(data["ServeeDocumentedData-4"].docId).update({...data["ServeeDocumentedData-4"], serveesDetail: {0: {...servee, serviceDetails: {0: serviceDetail}}}});
+            }
           }
         }
       }

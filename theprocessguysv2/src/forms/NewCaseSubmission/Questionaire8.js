@@ -2,16 +2,8 @@ import { MDBCol, MDBInput } from 'mdbreact';
 
 const Questionaire8 = (props) => {
   const {
-    requireStakeOutService,
-    setRequireStakeoutService,
     specifyDatesForStakeOutService,
     setSpecifyDatesForStakeOutService,
-    requireRushService,
-    setRequireRushService,
-    listDateWhenServiceAttemptsClosed,
-    setListDateWhenServiceAttemptsClosed,
-    requireFirst24HourService,
-    setRequireFirst24HourService,
     requireSkipTracingService,
     setRequireSkipTracingService,
     requireBodyCamFootage,
@@ -36,41 +28,6 @@ const Questionaire8 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-2">Offered Services</h2>
       <br></br>
-      <MDBCol md="12" id="require-first-24-hour-service">
-        <div id="require-first-24-hour-service">
-          <label>Do you require a Service attempt within the first 24 hours of submission?*<i>(Additional Fee)</i></label><br />
-          <input className="ml-2" type="radio" onClick={()=>setRequireFirst24HourService(true)} id="requireFirst24HourServiceY" name="requireFirst24HourService" checked={requireFirst24HourService===true} /><label className="ml-2" for="requireFirst24HourServiceY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setRequireFirst24HourService(false)} id="requireFirst24HourServiceN" name="requireFirst24HourService" checked={requireFirst24HourService===false} /><label className="ml-2" for="requireFirst24HourServiceN">No</label>
-          <br/>
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="require-rush-service">
-        <div id="require-rush-service">
-          <label>Do You Require a Rush Service?* This is regarding service that needs to be served with 13 days or less <i>(Additional Fee)</i></label><br />
-          <input className="ml-2" type="radio" onClick={()=>setRequireRushService(true)} id="requireRushServiceY" name="requireRushService" checked={requireRushService===true} /><label className="ml-2" for="requireRushServiceY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setRequireRushService(false)} id="requireRushServiceN" name="requireRushService" checked={requireRushService===false} /><label className="ml-2" for="requireRushServiceN">No</label>
-          <br/>
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="list-date-when-service-attempts-closed">
-        <div id="list-date-when-service-attempts-closed">
-          <label>List date when service attempts need to be closed out by.</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={listDateWhenServiceAttemptsClosed}
-            onChange={(e) => setListDateWhenServiceAttemptsClosed(e.target.value)}
-          />
-        </div>
-      </MDBCol>
-      <MDBCol md="12" id="require-stake-out-service">
-        <div id="require-stake-out-service">
-          <label>Do You Require a Stake Out Service? <i>(Additional Fee)</i>*</label><br />
-          <input className="ml-2" type="radio" onClick={()=>setRequireStakeoutService(true)} id="requireStakeOutServiceY" name="requireStakeOutService" checked={requireStakeOutService===true} /><label className="ml-2" for="requireStakeOutServiceY">Yes</label>
-          <input className="ml-4" type="radio" onClick={()=>setRequireStakeoutService(false)} id="requireStakeOutServiceN" name="requireStakeOutService" checked={requireStakeOutService===false} /><label className="ml-2" for="requireStakeOutServiceN">No</label>
-          <br/>
-        </div>
-      </MDBCol>
       <MDBCol md="12" id="specify-dates-for-stake-out-service">
         <div id="specify-dates-for-stake-out-service">
           <label>What hours of the day would you want a stake out? And how many hours?</label>
