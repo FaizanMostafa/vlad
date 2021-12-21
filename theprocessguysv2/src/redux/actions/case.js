@@ -126,6 +126,7 @@ const getUserCases = (data, onSuccess=()=>{}, onError=()=>{}) => (
     try {
       dispatch(setIsFetchingCases(true));
       db.collection("cases").where("uid", "==", data.uid)
+        .orderBy("filedAt", "desc")
         .onSnapshot(async (querySnapshot) => {
           let cases = [];
           let docData = {};
@@ -181,6 +182,7 @@ const getUserCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
       caseData["OfferedServices"] = subQuerySnapshot.data();
       subQuerySnapshot = await db.collection("FileSubmission-9").doc(docData.FileSubmissionId).get();
       caseData["FileSubmission"] = subQuerySnapshot.data();
+      console.log({caseData})
       dispatch({
         type: SET_USER_CASE_DETAILS,
         payload: {

@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
 import { Stepper } from 'react-form-stepper';
 import { Modal, Button } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
-import { createCase } from '../redux/actions/admin';
+import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 import {
   ResetQuestionairesConfirmation
 } from "../popups";
@@ -78,7 +76,6 @@ const CreateNewCase = (props) => {
   }});
 
   // Questionaire Form 8
-  const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
   const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
   const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
   const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
@@ -150,7 +147,6 @@ const CreateNewCase = (props) => {
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
-      if(QuestionaireForm8?.specifyDatesForStakeOutService) setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
       if(QuestionaireForm8?.requireSkipTracingService) setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
       if(QuestionaireForm8?.requireBodyCamFootage) setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
       if(QuestionaireForm8?.obtainNewDeliveryLocation) setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
@@ -287,15 +283,17 @@ const CreateNewCase = (props) => {
   }, [howManyIndividualsServed]);
 
   useEffect(() => {
-    if(isOrRepresentingPlaintiff) {
-      setIsOrRepresentingDefendant(false);
-    } else if(!isOrRepresentingPlaintiff) {
-      setIsOrRepresentingDefendant(true);
+    if(typeof(isOrRepresentingPlaintiff)==="boolean") {
+      if(isOrRepresentingPlaintiff) {
+        setIsOrRepresentingDefendant(false);
+      } else if(!isOrRepresentingPlaintiff) {
+        setIsOrRepresentingDefendant(true);
+      }
     }
   }, [isOrRepresentingPlaintiff]);
 
   useEffect(() => {
-    if(isOrRepresentingDefendant) {
+    if(typeof(isOrRepresentingDefendant)==="boolean" && isOrRepresentingDefendant) {
       setIsOrRepresentingPlaintiff(false);
     }
   }, [isOrRepresentingDefendant]);
@@ -579,7 +577,6 @@ const CreateNewCase = (props) => {
         showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
       } else {
         let data = {
-          specifyDatesForStakeOutService,
           requireSkipTracingService,
           requireBodyCamFootage,
           obtainNewDeliveryLocation,
@@ -662,7 +659,6 @@ const CreateNewCase = (props) => {
       yearOfMake: "", color: "", modelType: ""
     }});
     // Reset Form 8
-    setSpecifyDatesForStakeOutService("");
     setRequireSkipTracingService("");
     setRequireBodyCamFootage("");
     setObtainNewDeliveryLocation("");
@@ -825,8 +821,6 @@ const CreateNewCase = (props) => {
             activeStep===8
               &&
                 <Questionaire8
-                  specifyDatesForStakeOutService={specifyDatesForStakeOutService}
-                  setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
                   requireSkipTracingService={requireSkipTracingService}
                   setRequireSkipTracingService={setRequireSkipTracingService}
                   requireBodyCamFootage={requireBodyCamFootage}

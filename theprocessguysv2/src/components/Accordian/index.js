@@ -75,23 +75,23 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Plaintiff Name: {caseData.details.PlaintiffInformation.plaintiffFullName.firstName} {caseData.details.PlaintiffInformation.plaintiffFullName.middleName} {caseData.details.PlaintiffInformation.plaintiffFullName.lastName}
+                                                        Plaintiff Name: {Object.values(caseData.details.PlaintiffInformation?.plaintiffsDetail).map((pd)=>`${pd.fullName.firstName} ${pd.fullName.middleName} ${pd.fullName.lastName}`).join(" ")}
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Defendant Name: {caseData.details.DefendantInformation.defendantFullName.firstName} {caseData.details.DefendantInformation.defendantFullName.middleName} {caseData.details.DefendantInformation.defendantFullName.lastName}
+                                                        Defendant Name: {Object.values(caseData.details.DefendantInformation?.defendantsDetail).map((dd)=>`${dd.fullName.firstName} ${dd.fullName.middleName} ${dd.fullName.lastName}`)}
                                                     </div>
                                                     <br></br>
                                                     <div>
-                                                        Attorney Name: {caseData.details.PlaintiffInformation.plaintiffAttorneyName.firstName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.middleName} {caseData.details.PlaintiffInformation.plaintiffAttorneyName.lastName}
+                                                        Attorney Name: {Object.values(caseData.details.PlaintiffInformation?.plaintiffAttorneysDetail).map((ad)=>`${ad.fullName.firstName} ${ad.fullName.middleName} ${ad.fullName.lastName}`)}
                                                     </div>
                                                     <br></br>
                                                     <div className="">
-                                                        Case Status: {caseData.status}
+                                                        Case Status: {caseData?.status}
                                                     </div>           
                                                     <br></br>
                                                     <div>
-                                                        Address of Servee: {caseData.details.ServeeDocumentedData.mainAddressForService.street} {caseData.details.ServeeDocumentedData.mainAddressForService.city} {caseData.details.ServeeDocumentedData.mainAddressForService.state} {caseData.details.ServeeDocumentedData.mainAddressForService.country}
+                                                        Address of Servee: {[].concat.apply([], Object.values(caseData.details.ServeeDocumentedData?.serveesDetail).map((sd)=>Object.values(sd.serviceDetails).map((sd)=>`${sd.address.street} ${sd.address.city} ${sd.address.state} ${sd.address.zipCode} ${sd.address.country}`))).join(" ")}
                                                     </div>
                                                     <br></br>
                                                     {/* <div>
@@ -99,19 +99,19 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                     </div>
                                                     <br></br> */}
                                                     <div>
-                                                        Phone Number: {caseData.details.PlaintiffInformation.plaintiffAttorneyPhoneNumberForCalls}
+                                                        Phone Number: {caseData.details.PlaintiffInformation?.plaintiffAttorneyPhoneNumberForCalls}
                                                     </div>
                                                     <br></br>
                                                     <div style={{display: "flex", justifyContent: "flex-end"}}>
                                                         <Link to={{pathname: "/case-questionare", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Open Case Questionare</Link>
                                                         <Link to={{pathname: "/attempt-logs", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Attempt Logs</Link>
                                                         {
-                                                            (caseData.status!=="pending" && caseData?.payment?.status!=="done")
+                                                            (caseData.status.toLowerCase()!=="pending" && caseData?.payment?.status?.toLowerCase()!=="done")
                                                                 &&
                                                                     <Link to={{pathname: "/client-payment-options", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Make Payment</Link>
                                                         }
                                                         {
-                                                            caseData.status!=="pending"
+                                                            caseData.status.toLowerCase()!=="pending"
                                                                 &&
                                                                     <Link to={{pathname: "/view-invoice", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>View Invoice</Link>
                                                         }

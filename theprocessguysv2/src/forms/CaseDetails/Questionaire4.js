@@ -56,6 +56,14 @@ const Questionaire4 = (props) => {
     setServeesDetail({...serveesDetail, [targetServeeKey]: {...serveesDetail[targetServeeKey], coResidents: updatedResidents}});
   }
 
+  const handleOnClickTypeOfService = (serveeKey, servee, serviceDetailKey, serviceDetail, serviceType) => {
+    if(serviceType==="personal") {
+      setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: false, typeOfServe: serviceType}}}});
+    } else {
+      setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: "", typeOfServe: serviceType}}}});
+    }
+  }
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">Servee Documented Data</h2>
@@ -435,12 +443,12 @@ const Questionaire4 = (props) => {
                         <div style={{display: "flex"}}>
                           <Form.Check
                             className="ml-2" type="radio" label="Personal" disabled={isFormDisabled}
-                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, typeOfServe: "personal"}}}})}
+                            onClick={()=>handleOnClickTypeOfService(serveeKey, servee, serviceDetailKey, serviceDetail, "personal")}
                             id={`typeOfServeP${serveeKey}${serviceDetailKey}`} name={`typeOfServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="personal"}
                           />
                           <Form.Check
                             className="ml-4" type="radio" label="Normal" disabled={isFormDisabled}
-                            onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, typeOfServe: "normal"}}}})}
+                            onClick={()=>handleOnClickTypeOfService(serveeKey, servee, serviceDetailKey, serviceDetail, "normal")}
                             id={`typeOfServeN${serveeKey}${serviceDetailKey}`} name={`typeOfServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.typeOfServe==="normal"}
                           />
                         </div>
@@ -512,12 +520,12 @@ const Questionaire4 = (props) => {
                         <Form.Label>Is a "Subservice" to a Co-Resident/Co-Worker after due diligence allowed? ("Small claims court" on first attempt depending on window of service and county. "Regular Service" after 4 attempts, [after 3 attempts in California])*</Form.Label><br />
                         <div style={{display: "flex"}}>
                           <Form.Check
-                            className="ml-2" type="radio" label="Yes" disabled={isFormDisabled}
+                            className="ml-2" type="radio" label="Yes" disabled={isFormDisabled || serviceDetail.typeOfServe==="personal"}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: true}}}})}
                             id={`shouldSubServeY${serveeKey}${serviceDetailKey}`} name={`shouldSubServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===true}
                           />
                           <Form.Check
-                            className="ml-4" type="radio" label="No" disabled={isFormDisabled}
+                            className="ml-4" type="radio" label="No" disabled={isFormDisabled || serviceDetail.typeOfServe==="personal"}
                             onClick={()=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, shouldSubServeToCompanion: false}}}})}
                             id={`shouldSubServeN${serveeKey}${serviceDetailKey}`} name={`shouldSubServe${serveeKey}${serviceDetailKey}`} checked={serviceDetail.shouldSubServeToCompanion===false}
                           />

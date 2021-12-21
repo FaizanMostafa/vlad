@@ -5,7 +5,7 @@ import { showToast } from "../utils";
 
 function QuestionaireAddressTemplate({setServiceDetails}) {
   const [showModal, setShow] = useState(false);
-  const [localServiceDetails, setLocalServiceDetails] = useState({locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}});
+  const [localServiceDetails, setLocalServiceDetails] = useState({locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanion: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}});
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,7 +31,7 @@ function QuestionaireAddressTemplate({setServiceDetails}) {
       showToast("For the service address, please select if you require a stake out service!", "warning");
     } else if(!localServiceDetails.ceaseDate.length) {
       showToast("For the service address, please provide a date when service attempts should cease!", "warning");
-    } else if(typeof(localServiceDetails.shouldSubServeToCompanian)!=="boolean") {
+    } else if(typeof(localServiceDetails.shouldSubServeToCompanion)!=="boolean") {
       showToast("For the service address, please select if subservice is allowed!", "warning");
     } else if(typeof(localServiceDetails.shouldDropServe)!=="boolean") {
       showToast("For the service address, please select if drop/force serve is allowed!", "warning");
@@ -47,8 +47,16 @@ function QuestionaireAddressTemplate({setServiceDetails}) {
       showToast("Please enter the last name of agent of service!", "warning");
     } else {
       setServiceDetails(localServiceDetails);
-      setLocalServiceDetails({locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanian: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}});
+      setLocalServiceDetails({locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanion: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}});
       setShow(false);
+    }
+  }
+
+  const handleOnClickTypeOfService = (serviceType) => {
+    if(serviceType==="personal") {
+      setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanion: false, typeOfServe: serviceType});
+    } else {
+      setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanion: "", typeOfServe: serviceType});
     }
   }
 
@@ -131,12 +139,12 @@ function QuestionaireAddressTemplate({setServiceDetails}) {
               <div style={{display: "flex"}}>
                 <Form.Check
                   className="ml-2" type="radio" label="Personal"
-                  onClick={()=>setLocalServiceDetails({...localServiceDetails, typeOfServe: "personal"})} id="typeOfServeMP"
+                  onClick={()=>handleOnClickTypeOfService("personal")} id="typeOfServeMP"
                   name="typeOfServeM" checked={localServiceDetails.typeOfServe==="personal"}
                 />
                 <Form.Check
                   className="ml-4" type="radio" label="Normal"
-                  onClick={()=>setLocalServiceDetails({...localServiceDetails, typeOfServe: "normal"})} id="typeOfServeMN"
+                  onClick={()=>handleOnClickTypeOfService("normal")} id="typeOfServeMN"
                   name="typeOfServeM" checked={localServiceDetails.typeOfServe==="normal"}
                 />
               </div>
@@ -207,14 +215,14 @@ function QuestionaireAddressTemplate({setServiceDetails}) {
               <Form.Label>Is a "Subservice" to a Co-Resident/Co-Worker after due diligence allowed? ("Small claims court" on first attempt depending on window of service and county. "Regular Service" after 4 attempts, [after 3 attempts in California])*</Form.Label><br />
               <div style={{display: "flex"}}>
                 <Form.Check
-                  className="ml-2" type="radio" label="Yes"
-                  onClick={()=>setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanian: true})} id="shouldSubServeMY"
-                  name="shouldSubServeM" checked={localServiceDetails.shouldSubServeToCompanian===true}
+                  className="ml-2" type="radio" label="Yes" disabled={localServiceDetails.typeOfServe==="personal"}
+                  onClick={()=>setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanion: true})} id="shouldSubServeMY"
+                  name="shouldSubServeM" checked={localServiceDetails.shouldSubServeToCompanion===true}
                 />
                 <Form.Check
-                  className="ml-4" type="radio" label="No"
-                  onClick={()=>setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanian: false})} id="shouldSubServeMN"
-                  name="shouldSubServeM" checked={localServiceDetails.shouldSubServeToCompanian===false}
+                  className="ml-4" type="radio" label="No" disabled={localServiceDetails.typeOfServe==="personal"}
+                  onClick={()=>setLocalServiceDetails({...localServiceDetails, shouldSubServeToCompanion: false})} id="shouldSubServeMN"
+                  name="shouldSubServeM" checked={localServiceDetails.shouldSubServeToCompanion===false}
                 />
               </div>
             </Form.Group>

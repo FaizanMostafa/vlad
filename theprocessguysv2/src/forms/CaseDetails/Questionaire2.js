@@ -105,7 +105,7 @@ const Questionaire2 = (props) => {
           <Form.Control className="w-50 m-4 text-center p-2"
             as="select"
             value={numberOfAttorneyPlaintiff}
-            disabled={isFormDisabled}
+            disabled={isFormDisabled || shouldPGFillPlaintiffInfo}
             onChange={(e) => setNumberOfAttorneyPlaintiff(e.target.value)}
           >
             <option value="">Please Select</option>
@@ -234,7 +234,7 @@ const Questionaire2 = (props) => {
           <Form.Control className="w-50 m-4 text-center p-2"
             as="select"
             value={numberOfAttorneysRepresentingPlaintiff}
-            disabled={isFormDisabled}
+            disabled={isFormDisabled || shouldPGFillPlaintiffInfo}
             onChange={(e) => setNumberOfAttorneysRepresentingPlaintiff(e.target.value)}
           >
             <option value="">Please Select</option>

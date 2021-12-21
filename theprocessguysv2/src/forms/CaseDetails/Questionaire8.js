@@ -4,8 +4,6 @@ import { Form } from 'react-bootstrap';
 const Questionaire8 = (props) => {
   const {
     isFormDisabled,
-    specifyDatesForStakeOutService,
-    setSpecifyDatesForStakeOutService,
     requireSkipTracingService,
     setRequireSkipTracingService,
     requireBodyCamFootage,
@@ -29,18 +27,6 @@ const Questionaire8 = (props) => {
   return (
     <>
       <h2 className="text-center mb-4 mt-2">Offered Services</h2>
-      <br></br>
-      <MDBCol md="12" id="specify-dates-for-stake-out-service">
-        <Form.Group id="specify-dates-for-stake-out-service">
-          <Form.Label>What hours of the day would you want a stake out? And how many hours?</Form.Label>
-          <Form.Control
-            type="textarea"
-            disabled={isFormDisabled}
-            value={specifyDatesForStakeOutService}
-            onChange={(e) => setSpecifyDatesForStakeOutService(e.target.value)}
-          />
-        </Form.Group>
-      </MDBCol>
       <br/>
       <MDBCol md="12" id="specific-court-instruction">
         <Form.Group id="specific-court-instruction">

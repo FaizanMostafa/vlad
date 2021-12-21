@@ -75,7 +75,6 @@ function Questionaire() {
   }});
 
   // Questionaire Form 8
-  const [specifyDatesForStakeOutService, setSpecifyDatesForStakeOutService] = useState("");
   const [requireSkipTracingService, setRequireSkipTracingService] = useState("");
   const [requireBodyCamFootage, setRequireBodyCamFootage] = useState("");
   const [obtainNewDeliveryLocation, setObtainNewDeliveryLocation] = useState("");
@@ -147,7 +146,6 @@ function Questionaire() {
     }
     if(QuestionaireForm8) {
       setActiveStep(9);
-      setSpecifyDatesForStakeOutService(QuestionaireForm8.specifyDatesForStakeOutService);
       setRequireSkipTracingService(QuestionaireForm8.requireSkipTracingService);
       setRequireBodyCamFootage(QuestionaireForm8.requireBodyCamFootage);
       setObtainNewDeliveryLocation(QuestionaireForm8.obtainNewDeliveryLocation);
@@ -284,15 +282,17 @@ function Questionaire() {
   }, [howManyIndividualsServed]);
 
   useEffect(() => {
-    if(isOrRepresentingPlaintiff) {
-      setIsOrRepresentingDefendant(false);
-    } else if(!isOrRepresentingPlaintiff) {
-      setIsOrRepresentingDefendant(true);
+    if(typeof(isOrRepresentingPlaintiff)==="boolean") {
+      if(isOrRepresentingPlaintiff) {
+        setIsOrRepresentingDefendant(false);
+      } else if(!isOrRepresentingPlaintiff) {
+        setIsOrRepresentingDefendant(true);
+      }
     }
   }, [isOrRepresentingPlaintiff]);
 
   useEffect(() => {
-    if(isOrRepresentingDefendant) {
+    if(typeof(isOrRepresentingDefendant)==="boolean" && isOrRepresentingDefendant) {
       setIsOrRepresentingPlaintiff(false);
     }
   }, [isOrRepresentingDefendant]);
@@ -576,7 +576,6 @@ function Questionaire() {
         showToast("Please select if process server obtains a new delivery location from the servee!", "warning");
       } else {
         let data = {
-          specifyDatesForStakeOutService,
           requireSkipTracingService,
           requireBodyCamFootage,
           obtainNewDeliveryLocation,
@@ -659,7 +658,6 @@ function Questionaire() {
       yearOfMake: "", color: "", modelType: ""
     }});
     // Reset Form 8
-    setSpecifyDatesForStakeOutService("");
     setRequireSkipTracingService("");
     setRequireBodyCamFootage("");
     setObtainNewDeliveryLocation("");
@@ -812,8 +810,6 @@ function Questionaire() {
         activeStep===8
           &&
             <Questionaire8
-              specifyDatesForStakeOutService={specifyDatesForStakeOutService}
-              setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
               requireSkipTracingService={requireSkipTracingService}
               setRequireSkipTracingService={setRequireSkipTracingService}
               requireBodyCamFootage={requireBodyCamFootage}

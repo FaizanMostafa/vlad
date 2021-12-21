@@ -43,7 +43,7 @@ function CaseDocumentArchive() {
                 !isFetching && cases.length
                     ?
 
-                        cases.filter((caseDoc)=>(caseDoc.searchString.includes(searchTerm))).map((caseData, index)=>(
+                        cases.filter((caseDoc)=>(caseDoc?.searchString?.includes(searchTerm))).map((caseData, index)=>(
                             <Accordian index={index} caseData={caseData}/>
                         ))
                     :

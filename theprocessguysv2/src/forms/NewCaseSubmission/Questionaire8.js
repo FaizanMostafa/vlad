@@ -2,8 +2,6 @@ import { MDBCol, MDBInput } from 'mdbreact';
 
 const Questionaire8 = (props) => {
   const {
-    specifyDatesForStakeOutService,
-    setSpecifyDatesForStakeOutService,
     requireSkipTracingService,
     setRequireSkipTracingService,
     requireBodyCamFootage,
@@ -28,17 +26,6 @@ const Questionaire8 = (props) => {
     <>
       <h2 className="text-center mb-4 mt-2">Offered Services</h2>
       <br></br>
-      <MDBCol md="12" id="specify-dates-for-stake-out-service">
-        <div id="specify-dates-for-stake-out-service">
-          <label>What hours of the day would you want a stake out? And how many hours?</label>
-          <MDBInput
-            type="textarea"
-            className="text-white"
-            value={specifyDatesForStakeOutService}
-            onChange={(e) => setSpecifyDatesForStakeOutService(e.target.value)}
-          />
-        </div>
-      </MDBCol>
       <MDBCol md="12" id="specific-court-instruction">
         <div id="specific-court-instruction">
           <label>Any Specific Case Information or Court Instructions you’d like to Provide? <i>(Example: Previous service attempts/experiences made, any noteable threats/altercations with listed Servees or other contacts, Court Requirements, Hours permitted for service by the court)</i> We generally operate between 8 AM and 10 PM</label>

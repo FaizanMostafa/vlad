@@ -112,7 +112,6 @@ const FileSubmission = ({...props}) => {
       }
       if(QuestionaireForm8) {
         data["OfferedServices-8"] = {
-          specifyDatesForStakeOutService: QuestionaireForm8.specifyDatesForStakeOutService,
           requireSkipTracingService: QuestionaireForm8.requireSkipTracingService,
           requireBodyCamFootage: QuestionaireForm8.requireBodyCamFootage,
           obtainNewDeliveryLocation: QuestionaireForm8.obtainNewDeliveryLocation,
