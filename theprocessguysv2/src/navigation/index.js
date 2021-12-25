@@ -8,6 +8,7 @@ import LoadingPage from "../pages/Loading";
 import NotFound404 from "../pages/NotFound404";
 import { fetchUser, logout } from "../redux/actions/auth";
 import routes from "./routes";
+import TOSAgreement from '../pages/TOSAgreement';
 
 
 const Navigation = (props) => {
@@ -41,9 +42,7 @@ const Navigation = (props) => {
       } else {
         return <Redirect to="/tos-agreement" />;
       }
-    } else if(!isProtected && user && isAuthenticated && path === "/") {
-      return <Redirect to={redirect} />;
-    } else if(redirect) {
+    } else if((!isProtected && user && isAuthenticated && path === "/") || redirect) {
       return <Redirect to={redirect} />;
     } else {
       return <Route exact={exact} path={path} component={component} />;
@@ -58,18 +57,19 @@ const Navigation = (props) => {
           {
             user
               ?
-                routes[user.role].map((route)=>(
-                  <CustomRoute {...route} />
-                ))
+                <>
+                  {
+                    routes[user.role].map((route, index)=>(
+                      <CustomRoute key={`ni${index}`} {...route} />
+                    ))
+                  }
+                  <Route exact={true} path="/tos-agreement" component={TOSAgreement} />
+                </>
               :
-                routes["default"].map((route)=>(
-                  <CustomRoute {...route} />
+                routes["default"].map((route, index)=>(
+                  <CustomRoute key={`ni${index}`} {...route} />
                 ))
           }
-          {/* <CustomRoute exact path='/admin-dashboard' component={AdminDashboard} isProtected redirect="/login" />
-          <CustomRoute exact path='/client-payment-paypal' component={ClientPaymentsPayPal} isProtected redirect="/login" />
-          <CustomRoute path='/admin-view-all-cases' component={AdminViewAllCases} />
-          <CustomRoute path='/terms-of-service-upload' component={NewTermsOfService} /> */}
           <Route path='*' component={NotFound404} />
         </Switch>
       </Router>

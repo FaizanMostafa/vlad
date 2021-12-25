@@ -12,6 +12,12 @@ import {
   SET_IS_FETCHING_USERS,
   SET_IS_FETCHING_CASES,
   SET_IS_DELETING_CASE,
+  FETCH_TOS_DOCS,
+  ADD_TOS_DOC,
+  DELETE_TOS_DOC,
+  SET_IS_DELETING_TOS_DOC,
+  SET_IS_ADDING_TOS_DOC,
+  SET_IS_FETCHING_TOS_DOCS,
   SET_IS_FETCHING_METADATA,
   DELETE_USER,
   DELETE_CASE,
@@ -90,6 +96,27 @@ const setIsFetchingMetadata = (status) => {
   };
 }
 
+const setIsAddingTOSDoc = (status) => {
+  return {
+    type: SET_IS_ADDING_TOS_DOC,
+    payload: status
+  };
+}
+
+const setIsFetchingTOSDocs = (status) => {
+  return {
+    type: SET_IS_FETCHING_TOS_DOCS,
+    payload: status
+  };
+}
+
+const setIsDeletingTOSDoc = (status) => {
+  return {
+    type: SET_IS_DELETING_TOS_DOC,
+    payload: status
+  };
+}
+
 const getMetadataInfo = () => (
   (dispatch) => {
     try {
@@ -100,6 +127,7 @@ const getMetadataInfo = () => (
           querySnapshot.forEach((doc) => {
             metadata[doc.id] = doc.data().count;
           });
+          console.log({metadata})
           dispatch({
             type: FETCH_METADATA,
             payload: {metadata}
@@ -575,6 +603,98 @@ const deleteCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const fetchTOSDocs = (data) => (
+  (dispatch) => {
+    try {
+      dispatch(setIsFetchingTOSDocs(true));
+      let query = db.collection("TOSAgreements").orderBy("createdAt", "desc")
+      if(data.lastVisible) query = query.startAfter(data.lastVisible)
+        query
+        .limit(data.limit).get()
+        .then((querySnapshot) => {
+          let tosDocs = [];
+          let lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+          for(const doc of querySnapshot.docs) {
+            tosDocs.push({docId: doc.id, ...doc.data()});
+          }
+          dispatch({
+            type: FETCH_TOS_DOCS,
+            payload: {tosDocs, lastVisible}
+          });
+        });
+    } catch (error) {
+      dispatch(setIsFetchingTOSDocs(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const addNewTOSDocument = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsAddingTOSDoc(true));
+      const timestamp = new Date().toISOString();
+      const documentPath = `tos_agreements/${data.uid}/${timestamp}${data.tosDocument.name}`;
+      const documentURI = await uploadMedia(data.tosDocument, `tos_agreements/${data.uid}/`, timestamp);
+      delete data.tosDocument;
+      const querySnapshot = await db.collection("TOSAgreements").orderBy("createdAt", "desc").limit(1).get();
+      querySnapshot.forEach(async(doc)=>{
+        await db.collection("TOSAgreements").doc(doc.id).update({status: "inactive"});
+      })
+      const tosDocRef = await db.collection("TOSAgreements").add({...data, documentPath, documentURI, status: "active", createdAt: new Date()});
+      const usersBatch = db.batch();
+      const users = await db.collection("users").get();
+      users.forEach((doc)=>{
+        if(doc.data().role.toLowerCase()==="user") usersBatch.update(doc.ref, {hasAgreedToTOS: false});
+      });
+      usersBatch.commit();
+      const tosDoc = await db.collection("TOSAgreements").doc(tosDocRef.id).get();
+      dispatch({
+        type: ADD_TOS_DOC,
+        payload: {docId: tosDocRef.id, ...tosDoc.data()}
+      });
+      onSuccess();
+      showToast("Terms of service document added successfully", "success");
+    } catch (error) {
+      onError();
+      dispatch(setIsAddingTOSDoc(false));
+      showToast(error.message, "error");
+      console.error(error)
+    }
+  }
+)
+
+const deleteTOSDocument = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsDeletingTOSDoc(true));
+      await deleteMedia(data.documentPath);
+      await db.collection("TOSAgreements").doc(data.docId).delete();
+      const querySnapshot = await db.collection("TOSAgreements").orderBy("createdAt", "desc").limit(1).get();
+      querySnapshot.forEach(async(doc)=>{
+        await db.collection("TOSAgreements").doc(doc.id).update({status: "active"});
+      });
+      const usersBatch = db.batch();
+      const users = await db.collection("users").get();
+      users.forEach((doc)=>{
+        if(doc.data().role.toLowerCase()==="user") usersBatch.update(doc.ref, {hasAgreedToTOS: false});
+      })
+      usersBatch.commit();
+      dispatch({
+        type: DELETE_TOS_DOC,
+        payload: {docId: data.docId}
+      });
+      onSuccess();
+      showToast("Terms of service document deleted successfully", "success");
+    } catch (error) {
+      onError();
+      dispatch(setIsDeletingTOSDoc(false));
+      showToast(error.message, "error");
+      console.error(error)
+    }
+  }
+)
+
 export {
   updateUser,
   createUser,
@@ -584,6 +704,9 @@ export {
   updateCase,
   deleteCase,
   createCase,
+  fetchTOSDocs,
   getMetadataInfo,
   fetchCaseDetails,
+  deleteTOSDocument,
+  addNewTOSDocument,
 };

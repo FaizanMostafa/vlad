@@ -9,7 +9,7 @@ import NotFound404 from "../NotFound404";
 import Notifications from "./Notifications";
 import BulletinUpdate from "./BulletinUpdate";
 import { logout } from '../../redux/actions/auth';
-import TOSAgreement from './TOSAgreement';
+import TOSAgreements from './TOSAgreements';
 import UpdateProfile from './UpdateProfile';
 
 const AdminDashboard = (props) => {
@@ -60,7 +60,7 @@ const AdminDashboard = (props) => {
           <Route exact path={`${path}/cases/:caseId`} component={CaseDetails} />
           <Route path={`${path}/notifications`} component={Notifications} />
           <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />
-          <Route path={`${path}/terms-of-service`} component={TOSAgreement} />
+          <Route path={`${path}/terms-of-service`} component={TOSAgreements} />
           <Route path={`${path}/update-profile`} component={UpdateProfile} />
           <Route path='*' component={NotFound404} />
         </Switch>

@@ -39,8 +39,6 @@ function Register(props) {
     const [busFirmAddress, setBusFirmAddress] = useState({street: "", city: "", state: "", zipCode: "", country: ""});
     const [busJobTitle, setBusJobTitle] = useState("");
 
-    const [hasAgreedToTOS, setHasAgreedToTOS] = useState(false);
-
     const handleOnChangePhoneNumber = (newPhoneNumber) => {
         if(/^\s*\d{3}\s*$/.test(newPhoneNumber) && newPhoneNumber.length>phoneNumber.length) {
             setPhoneNumber(`(${newPhoneNumber}) `);
@@ -95,8 +93,6 @@ function Register(props) {
             showToast("Please fill-in the business specialty!", "warning");
         } else if(userType==="business" && !busJobTitle.length) {
             showToast("Please fill-in the business role!", "warning");
-        } else if(!hasAgreedToTOS) {
-            showToast("You must agree to our terms of service in order to proceed!", "warning");
         } else {
             let data = {
                 firstName,
@@ -108,7 +104,6 @@ function Register(props) {
                 address,
                 phoneNumber,
                 faxNumber,
-                hasAgreedToTOS,
                 profilePicture,
                 userType
             };
@@ -381,10 +376,6 @@ function Register(props) {
                                     />
                                 </MDBRow>
                     }
-                    <div style={{margin: "10px 0px"}}>
-                        <input name="tos" type="checkbox" checked={hasAgreedToTOS} onChange={()=>setHasAgreedToTOS(!hasAgreedToTOS)} />
-                        <label style={{marginLeft: 10, fontWeight: "bold"}} for="tos">I agree to terms of service</label>
-                    </div>
                     <Button 
                         className="w-100 mt-4" 
                         color="default" 

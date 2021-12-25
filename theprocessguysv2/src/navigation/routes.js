@@ -22,7 +22,6 @@ import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
 import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
 import ClientPaymentACH from '../pages/clientPaymentACH';
 import NewTermsOfService from '../pages/newTermsOfService';
-import AdminViewAllCases from '../pages/adminDashboardViewAllCases';
 import HomePage from '../pages/homePage';
 
 const routes = {
@@ -38,7 +37,6 @@ const routes = {
     {exact: true, path: '/', redirect: "/member-dashboard"},
     {exact: true, path: '/contact-us', component: ContactUs, isProtected: false},
     {exact: true, path: '/view-cases', component: ViewCases, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/tos-agreement', component: TOSAgreement, isProtected: true},
     {exact: true, path: '/member-dashboard', component: MemberDashboard, isProtected: true, redirect: "/login"},
     {exact: true, path: '/update-profile', component: UpdateProfilePage, isProtected: true, redirect: "/login"},
     {exact: true, path: '/questionaire', component: QuestionaireMain, isProtected: true, redirect: "/login"},

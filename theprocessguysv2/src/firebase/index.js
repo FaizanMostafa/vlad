@@ -13,7 +13,7 @@ firebase.initializeApp({
 });
 
 const uploadMedia = async(file, baseFolder, timestamp=new Date().toISOString()) => {
-  const fileName = file.name.trim().replaceAll(" ", "");
+  const fileName = file.name;
   const contentType = getMediaType(fileName);
   var storageRef = firebase.storage().ref();
   var fileRef = storageRef.child(`${baseFolder}${timestamp}${fileName}`);
@@ -22,7 +22,7 @@ const uploadMedia = async(file, baseFolder, timestamp=new Date().toISOString()) 
 }
 
 const uploadBase64Media = async(file, baseFolder, timestamp=new Date().toISOString()) => {
-  const fileName = file.name.trim().replaceAll(" ", "");
+  const fileName = file.name;
   var storageRef = firebase.storage().ref();
   var fileRef = storageRef.child(`${baseFolder}${timestamp}${fileName}`);
   await fileRef.putString(file.base64, 'data_url');

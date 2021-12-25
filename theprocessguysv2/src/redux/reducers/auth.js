@@ -12,15 +12,19 @@ import {
   UPDATE_USER_EMAIL,
   SET_IS_SIGNING_IN,
   SET_IS_SIGNING_UP,
+  FETCH_TOS_DOC,
+  AGREE_TO_TOS,
   FETCH_USER,
   LOGOUT
 } from "../constants";
 
 const initState = {
   user: null,
+  tosDoc: null,
   isAuthenticated: false,
   isPosting: false,
   isFetching: false,
+  isFetchingTOSDoc: true,
   isResetting: false,
   isFetchingUser: true,
   isUpdatingEmail: false,
@@ -123,6 +127,21 @@ const authReducer = (state = initState, action) => {
       return {
         ...state,
         user: { ...state.user, ...payload }
+      }
+    }
+
+    case FETCH_TOS_DOC: {
+      return {
+        ...state,
+        isFetchingTOSDoc: false,
+        tosDoc: payload.tosDoc
+      }
+    }
+
+    case AGREE_TO_TOS: {
+      return {
+        ...state,
+        user: {...state.user, hasAgreedToTOS: true}
       }
     }
 

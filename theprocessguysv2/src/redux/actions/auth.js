@@ -14,6 +14,8 @@ import {
   UPDATE_USER_EMAIL,
   SET_IS_SIGNING_IN,
   SET_IS_SIGNING_UP,
+  FETCH_TOS_DOC,
+  AGREE_TO_TOS,
   FETCH_USER,
   LOGOUT
 } from "../constants";
@@ -319,6 +321,39 @@ const updateProfilePicture = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const fetchTOSDocument = () => (
+  async (dispatch) => {
+    try {
+      const tosDocSnapshot = await db.collection("TOSAgreements").orderBy("createdAt", "desc").limit(1).get();
+      let tosDoc;
+      tosDocSnapshot.forEach((doc)=>{
+        tosDoc = doc.data();
+      });
+      dispatch({
+        type: FETCH_TOS_DOC,
+        payload: {tosDoc}
+      });
+    } catch (error) {
+      showToast(error.message, "error");
+      dispatch(setIsUpdatingImage(false));
+    }
+  }
+)
+
+const agreeToTOS = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async (dispatch) => {
+    try {
+      await db.collection("users").doc(data.uid).update({hasAgreedToTOS: true, tosAgreementTimestamp: new Date()});
+      dispatch({type: AGREE_TO_TOS});
+      onSuccess();
+    } catch (error) {
+      showToast(error.message, "error");
+      dispatch(setIsUpdatingImage(false));
+      onError();
+    }
+  }
+)
+
 const logout = (onSuccess=()=>{}) => (
   async (dispatch) => {
     await firebase.auth().signOut();
@@ -331,10 +366,12 @@ export {
   logout,
   register,
   fetchUser,
+  agreeToTOS,
   updateEmail,
   resetPassword,
   updateAddress,
   updatePassword,
+  fetchTOSDocument,
   updatePhoneNumber,
   updateProfilePicture
 };

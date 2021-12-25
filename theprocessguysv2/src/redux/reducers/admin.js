@@ -3,11 +3,17 @@ import {
   SET_IS_CREATING_CASE,
   SET_IS_UPDATING_CASE,
   SET_IS_FETCHING_METADATA,
+  SET_IS_ADDING_TOS_DOC,
   SET_IS_FETCHING_USERS,
   SET_IS_FETCHING_CASES,
   SET_IS_CREATING_USER,
   SET_IS_DELETING_USER,
   SET_IS_DELETING_CASE,
+  SET_IS_DELETING_TOS_DOC,
+  SET_IS_FETCHING_TOS_DOCS,
+  ADD_TOS_DOC,
+  DELETE_TOS_DOC,
+  FETCH_TOS_DOCS,
   FETCH_CASE_DETAILS,
   FETCH_METADATA,
   DELETE_USER,
@@ -22,12 +28,16 @@ import {
 const initState = {
   users: [],
   cases: [],
+  tosDocs: [],
   caseDetails: null,
   metadata: null,
   isFetchingCaseDetails: true,
   lastUserVisible: null,
   lastCaseVisible: null,
   isCreatingUser: false,
+  isFetchingTOSDocs: false,
+  isDeletingTOSDoc: false,
+  isAddingTOSDoc: false,
   isUpdatingUser: false,
   isDeletingUser: false,
   isCreatingCase: false,
@@ -38,7 +48,7 @@ const initState = {
   isFetchingCases: true,
 };
 
-export default (state=initState, {type, payload}) => {
+const adminReducer = (state=initState, {type, payload}) => {
   switch (type) {
     case SET_IS_FETCHING_USERS: {
       return {
@@ -93,6 +103,27 @@ export default (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingCaseDetails: payload
+      };
+    }
+
+    case SET_IS_FETCHING_TOS_DOCS: {
+      return {
+        ...state,
+        isFetchingTOSDocs: payload
+      };
+    }
+
+    case SET_IS_ADDING_TOS_DOC: {
+      return {
+        ...state,
+        isAddingTOSDoc: payload
+      };
+    }
+
+    case SET_IS_DELETING_TOS_DOC: {
+      return {
+        ...state,
+        isDeletingTOSDoc: payload
       };
     }
 
@@ -168,6 +199,33 @@ export default (state=initState, {type, payload}) => {
       }
     }
 
+    case FETCH_TOS_DOCS: {
+      return {
+        ...state,
+        isFetchingTOSDocs: false,
+        tosDocs: [...state.tosDocs, ...payload.tosDocs],
+        lastCaseVisible: payload.lastVisible
+      };
+    }
+
+    case ADD_TOS_DOC: {
+      const updatedTosDocs = [payload, {...state.tosDocs[0], status: "inactive"}, ...state.tosDocs.slice(1, state.tosDocs.length)];
+      return {
+        ...state,
+        isAddingTOSDoc: false,
+        tosDocs: updatedTosDocs
+      };
+    }
+
+    case DELETE_TOS_DOC: {
+      const updatedTosDocs = state.tosDocs.filter((doc)=>doc.docId!==payload.docId);
+      return {
+        ...state,
+        tosDocs: [{...updatedTosDocs[0], status: "active"}, ...updatedTosDocs.slice(1, updatedTosDocs.length)],
+        isDeletingTOSDoc: false
+      };
+    }
+
     case FETCH_METADATA: {
       return {
         ...state,
@@ -185,3 +243,6 @@ export default (state=initState, {type, payload}) => {
     }
   }
 }
+
+
+export default adminReducer;
