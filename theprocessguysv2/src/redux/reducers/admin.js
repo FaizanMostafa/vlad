@@ -19,21 +19,30 @@ import {
   DELETE_USER,
   FETCH_USERS,
   FETCH_CASES,
+  FETCH_NOTIFICATIONS,
   DELETE_CASE,
   UPDATE_USER,
   LOGOUT,
-  SET_IS_FETCHING_CASE_DETAILS
+  DELETE_NOTIFICATION,
+  SET_IS_FETCHING_CASE_DETAILS,
+  SET_IS_FETCHING_NOTIFICATIONS,
+  SET_IS_DELETING_NOTIFICATION
 } from "../constants";
 
 const initState = {
   users: [],
   cases: [],
   tosDocs: [],
+  notifications: [],
   caseDetails: null,
   metadata: null,
   isFetchingCaseDetails: true,
+  isFetchingNotifications: false,
+  isDeletingNotification: false,
   lastUserVisible: null,
   lastCaseVisible: null,
+  lastTOSDocVisible: null,
+  lastNotificationVisible: null,
   isCreatingUser: false,
   isFetchingTOSDocs: false,
   isDeletingTOSDoc: false,
@@ -127,6 +136,20 @@ const adminReducer = (state=initState, {type, payload}) => {
       };
     }
 
+    case SET_IS_FETCHING_NOTIFICATIONS: {
+      return {
+        ...state,
+        isFetchingNotifications: payload
+      };
+    }
+
+    case SET_IS_DELETING_NOTIFICATION: {
+      return {
+        ...state,
+        isDeletingNotification: payload
+      };
+    }
+
     case FETCH_USERS: {
       return {
         ...state,
@@ -199,12 +222,29 @@ const adminReducer = (state=initState, {type, payload}) => {
       }
     }
 
+    case FETCH_NOTIFICATIONS: {
+      return {
+        ...state,
+        isFetchingNotifications: false,
+        notifications: [...state.notifications, ...payload.notifications],
+        lastNotificationVisible: payload.lastVisible
+      };
+    }
+
+    case DELETE_NOTIFICATION: {
+      return {
+        ...state,
+        notifications: state.notifications.filter((doc)=>doc.docId!==payload.docId),
+        isDeletingNotification: false
+      };
+    }
+
     case FETCH_TOS_DOCS: {
       return {
         ...state,
         isFetchingTOSDocs: false,
         tosDocs: [...state.tosDocs, ...payload.tosDocs],
-        lastCaseVisible: payload.lastVisible
+        lastTOSDocVisible: payload.lastVisible
       };
     }
 

@@ -59,7 +59,8 @@ const objectsEqual = (o1, o2) => {
 }
 
 const capitalizeString = (phrase) => {
-    return phrase.replace(/\b\w/g, c => c.toUpperCase());
+    if(phrase) return phrase.replace("_", " ").replace(/\b\w/g, c => c.toUpperCase());
+    return "";
 }
 
 export {

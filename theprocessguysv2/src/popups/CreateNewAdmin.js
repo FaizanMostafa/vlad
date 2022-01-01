@@ -81,6 +81,7 @@ const CreateNewAdmin = (props) => {
         lastName,
         email: email.toLocaleLowerCase(),
         role: "admin",
+        status: "active",
         password,
         address,
         phoneNumber,

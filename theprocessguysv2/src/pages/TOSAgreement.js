@@ -18,40 +18,48 @@ const TOSAgreement = (props) => {
   }, []);
 
   const handleOnClickAgreeToTOS = () => {
-    if(!hasAgreedToTOS) {
-      showToast("Please check the checkbox to confirm that you agree to our Terms Of Service!", "warning");
-    } else if(!loading) {
-      setLoading(true);
-      dispatch(agreeToTOS({ uid: user.uid }, () => props.history.push("/member-dashboard")));
+    if(!user.hasAgreedToTOS) {
+      if(!hasAgreedToTOS) {
+        showToast("Please check the checkbox to confirm that you agree to our Terms Of Service!", "warning");
+      } else if(!loading) {
+        setLoading(true);
+        dispatch(agreeToTOS({ uid: user.uid }, () => props.history.push("/member-dashboard")));
+      }
     }
   }
 
   if (isFetchingTOSDoc) return (<Loading />);
 
   return (
-    <div style={{width: "80%", margin: "auto", paddingBottom: 70}}>
+    <div style={{width: "80%", margin: "auto", paddingTop: 30, paddingBottom: 70}}>
       <iframe src={tosDoc.documentURI} width="100%" height="2500px" frameborder="0" />
-      <div style={{ margin: "10px 0px" }}>
-        <input name="tos" type="checkbox" checked={hasAgreedToTOS} onChange={() => setHasAgreedToTOS(!hasAgreedToTOS)} />
-        <label style={{ marginLeft: 10, fontWeight: "bold" }} for="tos">I agree to terms of service</label>
-      </div>
-      <Button
-        className="w-100 mt-4"
-        color="default"
-        onClick={handleOnClickAgreeToTOS}
-      >
-        {
-          loading
-            ?
-            <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
-              <div style={{ height: 18, width: 18 }} className="spinner-border text-white" role="status">
-                <span className="sr-only">Loading...</span>
+      {
+        !user.hasAgreedToTOS
+          &&
+            <>
+              <div style={{ margin: "10px 0px" }}>
+                <input id="tos-checkbox" name="tos-checkbox" type="checkbox" checked={hasAgreedToTOS} onChange={() => setHasAgreedToTOS(!hasAgreedToTOS)} />
+                <label style={{ marginLeft: 10, fontWeight: "bold" }} for="tos-checkbox">I agree to terms of service</label>
               </div>
-            </div>
-            :
-            <span>Confirm</span>
-        }
-      </Button>
+              <Button
+                className="w-100 mt-4"
+                color="default"
+                onClick={handleOnClickAgreeToTOS}
+              >
+                {
+                  loading
+                    ?
+                    <div style={{ display: "flex", flex: 1, alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ height: 18, width: 18 }} className="spinner-border text-white" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                    :
+                    <span>Confirm</span>
+                }
+              </Button>
+            </>
+      }
     </div>
   );
 }

@@ -22,6 +22,10 @@ import {
   DELETE_USER,
   DELETE_CASE,
   SET_IS_FETCHING_CASE_DETAILS,
+  SET_IS_FETCHING_NOTIFICATIONS,
+  SET_IS_DELETING_NOTIFICATION,
+  DELETE_NOTIFICATION,
+  FETCH_NOTIFICATIONS,
   SET_IS_CREATING_CASE,
   SET_IS_UPDATING_CASE
 } from "../constants";
@@ -110,9 +114,23 @@ const setIsFetchingTOSDocs = (status) => {
   };
 }
 
+const setIsFetchingNotifications = (status) => {
+  return {
+    type: SET_IS_FETCHING_NOTIFICATIONS,
+    payload: status
+  };
+}
+
 const setIsDeletingTOSDoc = (status) => {
   return {
     type: SET_IS_DELETING_TOS_DOC,
+    payload: status
+  };
+}
+
+const setIsDeletingNotification = (status) => {
+  return {
+    type: SET_IS_DELETING_NOTIFICATION,
     payload: status
   };
 }
@@ -127,7 +145,6 @@ const getMetadataInfo = () => (
           querySnapshot.forEach((doc) => {
             metadata[doc.id] = doc.data().count;
           });
-          console.log({metadata})
           dispatch({
             type: FETCH_METADATA,
             payload: {metadata}
@@ -176,12 +193,15 @@ const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
         firebase.auth().currentUser.sendEmailVerification()
           .then(async() => {
             var user = userCredential.user;
+            const batch = db.batch();
             delete data["password"];
             const timestamp = new Date().toISOString();
             const profilePicturePath = `profile_pictures/${user.uid}/${timestamp}${data["profilePicture"].name}`;
             const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
             delete data["profilePicture"];
-            await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            batch.set(db.collection("users").doc(user.uid), {uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            await batch.commit();
             showToast("User created successfully!", "success");
             onSuccess();
             dispatch(setIsCreatingUser(false));
@@ -189,6 +209,7 @@ const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
       })
       .catch((error) => {
         onError();
+        console.error(error);
         showToast(error.message, "error");
         dispatch(setIsCreatingUser(false));
       });
@@ -305,6 +326,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const offeredServicesDocRef = await db.collection("OfferedServices-8").add({uid: data.uid, ...data["OfferedServices-8"]});
       let documentURI;
       let documentPath;
+      const notificationsBatch = db.batch();
       if(parseInt(data["ServeeDocumentedData-4"].numberOfCaseFilesBeingServed)>1) {
         for(const document of data["FileSubmission-9"].documents) {
           const timestamp = new Date().toISOString();
@@ -326,6 +348,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               FileSubmissionId: fileSubmissionDocRef.id,
               status: "pending"
             });
+            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
             await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
           }
         }
@@ -350,9 +373,11 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             FileSubmissionId: fileSubmissionDocRef.id,
             status: "pending"
           });
+          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
           await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
         }
       }
+      await notificationsBatch.commit();
       showToast("Case submitted successfully!", "success");
       dispatch(setIsCreatingCase(false));
       onSuccess();
@@ -466,6 +491,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let documentURI;
       let documentPath;
       let docsUpdated = false;
+      const notificationsBatch = db.batch();
       if(data.hasOwnProperty("ServeeDocumentedData-4") && data["ServeeDocumentedData-4"].hasOwnProperty("numberOfCaseFilesBeingServed") && data.hasOwnProperty("FileSubmission-9")) {
         if(data["FileSubmission-9"].hasOwnProperty("oldDocumentPath")) await deleteMedia(data["FileSubmission-9"].oldDocumentPath);
         for(const document of data["FileSubmission-9"].documents) {
@@ -493,6 +519,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               searchString: oldCaseData.searchString,
               status: "pending"
             });
+            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
           } else {
             if(document?.file) {
               const timestamp = new Date().getMilliseconds();
@@ -524,6 +551,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             searchString: oldCaseData.searchString,
             status: "pending"
           });
+          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
         }
       }
       if(data.hasOwnProperty("FileSubmission-9") && !docsUpdated) {
@@ -597,6 +625,53 @@ const deleteCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
     } catch (error) {
       onError();
       dispatch(setIsDeletingCase(false));
+      showToast(error.message, "error");
+      console.error(error)
+    }
+  }
+)
+
+const fetchNotifications = (data) => (
+  (dispatch) => {
+    try {
+      dispatch(setIsFetchingNotifications(true));
+      let query = db.collection("Notifications").orderBy("generatedAt", "desc")
+      if(data.lastVisible) query = query.startAfter(data.lastVisible)
+        query
+        .limit(data.limit).get()
+        .then((querySnapshot) => {
+          let notifications = [];
+          let lastVisible = querySnapshot.docs[querySnapshot.docs.length-1];
+          for(const doc of querySnapshot.docs) {
+            notifications.push({docId: doc.id, ...doc.data()});
+          }
+          console.log({notifications});
+          dispatch({
+            type: FETCH_NOTIFICATIONS,
+            payload: {notifications, lastVisible}
+          });
+        });
+    } catch (error) {
+      dispatch(setIsFetchingNotifications(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const deleteNotification = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsDeletingNotification(true));
+      await db.collection("Notifications").doc(data.docId).delete();
+      dispatch({
+        type: DELETE_NOTIFICATION,
+        payload: {docId: data.docId}
+      });
+      onSuccess();
+      showToast("Notification deleted successfully", "success");
+    } catch (error) {
+      onError();
+      dispatch(setIsDeletingNotification(false));
       showToast(error.message, "error");
       console.error(error)
     }
@@ -709,4 +784,6 @@ export {
   fetchCaseDetails,
   deleteTOSDocument,
   addNewTOSDocument,
+  fetchNotifications,
+  deleteNotification,
 };

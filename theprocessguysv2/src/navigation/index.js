@@ -63,7 +63,7 @@ const Navigation = (props) => {
                       <CustomRoute key={`ni${index}`} {...route} />
                     ))
                   }
-                  <Route exact={true} path="/tos-agreement" component={TOSAgreement} />
+                  <Route key={`ni${routes[user.role].length}`} exact={true} path="/tos-agreement" component={TOSAgreement} />
                 </>
               :
                 routes["default"].map((route, index)=>(

@@ -1,7 +1,7 @@
 import TOSAgreement from "../pages/TOSAgreement";
 import QuestionaireMain from "../pages/questionaireMain";
 import Login from "../pages/Login";
-import Register from "../pages/register";
+import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import MemberDashboard from "../pages/Dashboard";
 import UpdateProfilePage from "../pages/UpdateProfile";
@@ -16,7 +16,7 @@ import ClientPaymentOptions from '../pages/clientPaymentOptions';
 import PaymentSuccessful from '../pages/paymentSucessful';
 import PaymentFailure from '../pages/paymentFailure';
 import AfterUploadMessage from '../pages/afterUploadMessage';
-import ContactUs from '../pages/contactus2';
+import ContactUs from '../pages/ContactUs';
 import ClientPaymentDebit from '../pages/clientPaymentsDebit';
 import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
 import ClientPaymentsChecks from '../pages/clientPaymentsChecks';

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon, MDBInput } from "mdbreact";
+import React, { useEffect, useState } from 'react';
+import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBIcon, MDBInput } from 'mdbreact';
 import emailjs from 'emailjs-com';
+import { useSelector } from 'react-redux';
+import { db } from "../firebase";
 import { showToast } from "../utils";
 
 const ContactPage = (props) => {
@@ -9,7 +11,16 @@ const ContactPage = (props) => {
   const [customerPhoneNumber, setCustomerPhoneNumber] = useState("");
   const [customerMessage, setCustomerMessage] = useState("");
   const [customerName, setCustomerName] = useState("");
+  const user = useSelector(state=>state.auth.user);
   const [isPosting, setIsPosting] = useState(false);
+
+  useEffect(()=>{
+    if(user) {
+      setCustomerEmail(user?.email);
+      setCustomerPhoneNumber(user?.phoneNumber);
+      setCustomerName(`${user?.firstName} ${user?.middleName} ${user?.lastName}`);
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,16 +28,20 @@ const ContactPage = (props) => {
       setIsPosting(true);
       emailjs.sendForm("gmail", "template_jfbrizk", e.target, 'user_v5poyBuxjFwarjqQ9FrBR', {})
         .then((result) => {
-          console.log({result});
           setIsPosting(false);
-          showToast("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬", "success");
-          setCustomerEmail("");
-          setCustomerPhoneNumber("");
-          setCustomerName("");
-          setCustomerMessage("");
+          if(result.status === 200) {
+            db.collection("Notifications").doc().set({category: "contact_us", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            showToast("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬", "success");
+            setCustomerEmail("");
+            setCustomerPhoneNumber("");
+            setCustomerName("");
+            setCustomerMessage("");
+          } else {
+            showToast(result.text, "error");
+          }
         }, (error) => {
-          console.log(error.text);
-          showToast(error.text, "error")
+          console.error(error);
+          showToast(error.text, "error");
           setIsPosting(false);
         });
     }
@@ -55,7 +70,7 @@ const ContactPage = (props) => {
               <p className="dark-grey-text">
                 We'll write rarely, but only the best content.
               </p>
-              <form onSubmit={handleSubmit} method="POST"  style={{ marginRight: "25px", flex: "1 0px", msFlex: "1" }}>
+              <form onSubmit={handleSubmit} method="POST" style={{ marginRight: "25px", flex: "1 0px", msFlex: "1" }}>
                 <div className="md-form text-left">
                   <MDBInput
                     icon="user"

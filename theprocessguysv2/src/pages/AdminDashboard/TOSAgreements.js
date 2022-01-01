@@ -22,7 +22,7 @@ const TOSAgreement = () => {
   const [editModalShow, setEditModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const tosDocs = useSelector(state => state.admin.tosDocs);
-  const lastVisible = useSelector(state => state.admin.lastUserVisible);
+  const lastVisible = useSelector(state => state.admin.lastTOSDocVisible);
   const isFetchingTOSDocs = useSelector(state => state.admin.isFetchingTOSDocs);
   const metadata = useSelector(state => state.admin.metadata);
   const isFetchingMetadata = useSelector(state => state.admin.isFetchingMetadata);
@@ -126,7 +126,7 @@ const TOSAgreement = () => {
                       />
                       <a
                         href={tosDoc.documentURI} target="_blank"
-                        referrerpolicy="no-referrer" rel="noreferrer"
+                        referrerPolicy="no-referrer" rel="noreferrer"
                         style={{float: "none"}}
                       >
                         <MDBIcon
@@ -148,7 +148,7 @@ const TOSAgreement = () => {
               setNoOfRowsPerPage={handleNoOfRowsPerPageChanged}
               activePageNo={activePageNo}
               setActivePageNo={handleActivePageNoChanged}
-              totalCount={metadata.users}
+              totalCount={metadata.TOSAgreements}
             />
       }
       <DeleteTOSDoc

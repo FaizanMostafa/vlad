@@ -66,11 +66,11 @@ const NavBar = ({...props}) => {
           },
         },
         {
-          title: "Services",
+          title: "Terms Of Service",
           icon: faTools,
           isAuth: user && isAuthenticated && user.hasAgreedToTOS,
           onClick: () => {
-            history.push("/services");
+            history.push("/tos-agreement");
           }
         },
         {

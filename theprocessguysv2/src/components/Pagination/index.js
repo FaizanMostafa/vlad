@@ -9,6 +9,7 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
     for(let index = activePageNo; (index<=Math.abs(lastPageNo-3) && index <= activePageNo+2); index++) {
       paginationItems[index] = (
         <Pagination.Item
+          key={`pi-${index}`}
           onClick={()=>setActivePageNo(index)}
           active={activePageNo===index ? true : false}
         >{index}</Pagination.Item>
@@ -22,6 +23,7 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
       for(let index = lastPageNo-5; index<=lastPageNo-2; index++) {
         paginationItems[index] = (
           <Pagination.Item
+            key={`pi-${index}`}
             onClick={()=>setActivePageNo(index)}
             active={activePageNo===index ? true : false}
           >{index}</Pagination.Item>
@@ -32,6 +34,7 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
       if(!Object.keys(paginationItems).includes(index)) {
         paginationItems[index] = (
           <Pagination.Item
+            key={`pi-${index}`}
             onClick={()=>setActivePageNo(index)}
             active={activePageNo===index ? true : false}
           >{index}</Pagination.Item>
@@ -60,10 +63,12 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
       </div>
       <Pagination>
         <Pagination.First
+          key={"pi-first"}
           disabled={activePageNo===1 ? true : false}
           onClick={()=>setActivePageNo(1)}
         />
         <Pagination.Prev
+          key={"pi-prev"}
           disabled={activePageNo===1 ? true : false}
           onClick={()=>setActivePageNo(activePageNo-1)}
         />
@@ -71,10 +76,12 @@ const CustomPagination = ({activePageNo, setActivePageNo, noOfRowsPerPage, setNo
           generatePaginationItems()
         }
         <Pagination.Next
+          key={"pi-next"}
           disabled={activePageNo===lastPageNo ? true : false}
           onClick={()=>setActivePageNo(activePageNo+1)}
         />
         <Pagination.Last
+          key={"pi-last"}
           disabled={activePageNo===lastPageNo ? true : false}
           onClick={()=>setActivePageNo(lastPageNo)}
         />

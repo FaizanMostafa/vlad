@@ -1,3 +1,4 @@
+import { batch } from "react-redux";
 import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
@@ -177,13 +178,16 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
       .then((userCredential) => {
         firebase.auth().currentUser.sendEmailVerification({url: "https://www.theprocessguys.com"})
           .then(async() => {
+            const batch = db.batch();
             var user = userCredential.user;
             delete data["password"];
             const timestamp = new Date().toISOString();
             const profilePicturePath = `profile_pictures/${user.uid}/${timestamp}${data["profilePicture"].name}`;
             const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
             delete data["profilePicture"];
-            await db.collection("users").doc(user.uid).set({uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            batch.set(db.collection("users").doc(user.uid), {uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
+            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            await batch.commit();
             showToast("User registered successfully!", "success");
             onSuccess();
             dispatch(setIsSigningUp(false));
