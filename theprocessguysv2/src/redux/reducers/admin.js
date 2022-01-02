@@ -11,6 +11,7 @@ import {
   SET_IS_DELETING_CASE,
   SET_IS_DELETING_TOS_DOC,
   SET_IS_FETCHING_TOS_DOCS,
+  MARK_NOTIFICATION_AS_READ,
   ADD_TOS_DOC,
   DELETE_TOS_DOC,
   FETCH_TOS_DOCS,
@@ -228,6 +229,21 @@ const adminReducer = (state=initState, {type, payload}) => {
         isFetchingNotifications: false,
         notifications: [...state.notifications, ...payload.notifications],
         lastNotificationVisible: payload.lastVisible
+      };
+    }
+
+    case MARK_NOTIFICATION_AS_READ: {
+      const updatedNotifications = [];
+      state.notifications.forEach((notification)=>{
+        if(notification.docId===payload.docId) {
+          updatedNotifications.push({...notification, read: true});
+        } else {
+          updatedNotifications.push(notification);
+        }
+      })
+      return {
+        ...state,
+        notifications: updatedNotifications
       };
     }
 

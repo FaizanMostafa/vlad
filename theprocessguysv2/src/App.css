@@ -9,9 +9,9 @@
 
 }
 .footer {
-  position: fixed;   /*Set the navbar to fixed position*/
-  bottom: 0; /* Position the navbar at the top of the page */
-  left:0;
+  /* position: fixed;
+  bottom: 0;
+  left:0; */
   width: 100%; /* Full width */
   z-index: 10;
   background-color: #252D42;

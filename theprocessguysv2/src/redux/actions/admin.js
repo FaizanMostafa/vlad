@@ -24,6 +24,7 @@ import {
   SET_IS_FETCHING_CASE_DETAILS,
   SET_IS_FETCHING_NOTIFICATIONS,
   SET_IS_DELETING_NOTIFICATION,
+  MARK_NOTIFICATION_AS_READ,
   DELETE_NOTIFICATION,
   FETCH_NOTIFICATIONS,
   SET_IS_CREATING_CASE,
@@ -645,7 +646,6 @@ const fetchNotifications = (data) => (
           for(const doc of querySnapshot.docs) {
             notifications.push({docId: doc.id, ...doc.data()});
           }
-          console.log({notifications});
           dispatch({
             type: FETCH_NOTIFICATIONS,
             payload: {notifications, lastVisible}
@@ -654,6 +654,23 @@ const fetchNotifications = (data) => (
     } catch (error) {
       dispatch(setIsFetchingNotifications(false));
       showToast(error.message, "error");
+    }
+  }
+)
+
+const markNotificationAsRead = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      await db.collection("Notifications").doc(data.docId).update({read: true});
+      dispatch({
+        type: MARK_NOTIFICATION_AS_READ,
+        payload: {docId: data.docId}
+      });
+      onSuccess();
+    } catch (error) {
+      onError();
+      showToast(error.message, "error");
+      console.error(error)
     }
   }
 )
@@ -786,4 +803,5 @@ export {
   addNewTOSDocument,
   fetchNotifications,
   deleteNotification,
+  markNotificationAsRead
 };

@@ -34,10 +34,10 @@ const AdminDashboard = (props) => {
           <img style={{width: 100, objectFit: "contain"}} alt="tpg logo" src={TPGLogo} />
           <h3>The Process Guys Admin Panel</h3>
         </div>
-        <div style={{display: "flex", flexWrap: "wrap", zIndex: 100000, alignItems: "center", justifyContent: "space-between"}}>
-          <div style={{marginRight: 40}}>
-            <span style={{fontSize: 20, overflowWrap: "break-word"}}>{user.firstName} {user.lastName}</span><br/>
-            <span style={{fontSize: 16, overflowWrap: "break-word"}}>{user.email}</span>
+        <div style={{display: "flex", zIndex: 100000, alignItems: "center", justifyContent: "space-between"}}>
+          <div style={{marginRight: 25, display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
+            <span style={{fontSize: 20}}>{user.firstName} {user.lastName}</span>
+            <span style={{fontSize: 16}}>{user.email}</span>
           </div>
           <DropdownMenu
             trigger={<img style={{width: 60, height: 60, cursor: 'pointer', borderRadius: 30}} src={user.profilePictureURI} />}
@@ -50,14 +50,14 @@ const AdminDashboard = (props) => {
         </div>
       </div>
       <div style={{display: "flex"}}>
-        <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
+        <div style={{minHeight: "87vh", width: "20vw", backgroundColor: "#211545"}}>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("members") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/members`}>Members Archive</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("cases") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/cases`}>Case Archive</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("notifications") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/notifications`}>Notifications</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("bulletin-update") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/bulletin-update`}>Bulletin Update</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("terms-of-service") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/terms-of-service`}>Terms Of Service</Link>
         </div>
-        <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, marginBottom: 35, zIndex: 0}}>
+        <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, zIndex: 0}}>
           <Switch>
             <Redirect exact from={`${path}/`} to={`${path}/members`} />
             <Route exact path={`${path}/members`} component={Members} />

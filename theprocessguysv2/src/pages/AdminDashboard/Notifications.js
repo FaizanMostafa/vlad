@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import DeleteNotification from "../../popups/DeleteNotification";
 import {
+  markNotificationAsRead,
   fetchNotifications,
   getMetadataInfo
 } from "../../redux/actions/admin";
@@ -73,6 +74,9 @@ const Notifications = () => {
   }
 
   const handleOnClickView = (notification) => {
+    if(!notification.read) {
+      dispatch(markNotificationAsRead({docId: notification.docId}));
+    }
     setNotification(notification);
     setEditModalShow(true);
   }
