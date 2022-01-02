@@ -11,6 +11,7 @@ import BulletinUpdate from "./BulletinUpdate";
 import { logout } from '../../redux/actions/auth';
 import TOSAgreements from './TOSAgreements';
 import UpdateProfile from './UpdateProfile';
+import TPGLogo from "../../pictures/TPG_icon.webp";
 
 const AdminDashboard = (props) => {
   let { path, url } = useRouteMatch();
@@ -27,15 +28,19 @@ const AdminDashboard = (props) => {
   }
 
   return (
-    <div style={{minHeight: "100vh", minWidth: "100vw", boxSizing: "border-box", display: "flex"}}>
-      <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
-        <div style={{display: "flex", flexWrap: "wrap", zIndex: 100000, padding: "20px 17px", alignItems: "center", justifyContent: "space-between"}}>
-          <div style={{width: "20vw"}}>
-            <span style={{fontWeight: "bold", fontSize: 20, overflowWrap: "break-word"}}>{user.firstName} {user.lastName}</span><br/>
-            <span style={{fontWeight: "bold", fontSize: 14, overflowWrap: "break-word"}}>{user.email}</span>
+    <div style={{minHeight: "100vh", minWidth: "100vw", boxSizing: "border-box"}}>
+      <div style={{display: "flex", width: "100vw", paddingRight: 75, paddingLeft: 50, backgroundColor: "#211545", justifyContent: "space-between",alignItems: "center"}}>
+        <div style={{display: "flex", alignItems: "center"}}>
+          <img style={{width: 100, objectFit: "contain"}} alt="tpg logo" src={TPGLogo} />
+          <h3>The Process Guys Admin Panel</h3>
+        </div>
+        <div style={{display: "flex", flexWrap: "wrap", zIndex: 100000, alignItems: "center", justifyContent: "space-between"}}>
+          <div style={{marginRight: 40}}>
+            <span style={{fontSize: 20, overflowWrap: "break-word"}}>{user.firstName} {user.lastName}</span><br/>
+            <span style={{fontSize: 16, overflowWrap: "break-word"}}>{user.email}</span>
           </div>
           <DropdownMenu
-            trigger={<img style={{width: 40, height: 40, cursor: 'pointer', borderRadius: 20}} src={user.profilePictureURI} />}
+            trigger={<img style={{width: 60, height: 60, cursor: 'pointer', borderRadius: 30}} src={user.profilePictureURI} />}
           >
             <DropdownItemGroup>
               <DropdownItem style={{width: 100}} onMouseDown={handleOnClickUpdate}>Update</DropdownItem>
@@ -43,27 +48,29 @@ const AdminDashboard = (props) => {
             </DropdownItemGroup>
           </DropdownMenu>
         </div>
-        <div>
+      </div>
+      <div style={{display: "flex"}}>
+        <div style={{minHeight: "100vh", width: "20vw", backgroundColor: "#211545"}}>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("members") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/members`}>Members Archive</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("cases") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/cases`}>Case Archive</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("notifications") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/notifications`}>Notifications</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("bulletin-update") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/bulletin-update`}>Bulletin Update</Link>
           <Link className="text-white sub-menu" style={{margin: 0, backgroundColor: location.pathname.includes("terms-of-service") && "darkslateblue", padding: "8px 10px 8px 25px", width: "100%"}} to={`${url}/terms-of-service`}>Terms Of Service</Link>
         </div>
-      </div>
-      <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, marginBottom: 35, zIndex: 0}}>
-        <Switch>
-          <Redirect exact from={`${path}/`} to={`${path}/members`} />
-          <Route exact path={`${path}/members`} component={Members} />
-          <Route exact path={`${path}/members/:userId`} component={MemberDetails} />
-          <Route exact path={`${path}/cases`} component={Cases} />
-          <Route exact path={`${path}/cases/:caseId`} component={CaseDetails} />
-          <Route path={`${path}/notifications`} component={Notifications} />
-          <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />
-          <Route path={`${path}/terms-of-service`} component={TOSAgreements} />
-          <Route path={`${path}/update-profile`} component={UpdateProfile} />
-          <Route path='*' component={NotFound404} />
-        </Switch>
+        <div style={{boxSizing: "border-box", width: "100%", height: "100%", padding: 20, marginBottom: 35, zIndex: 0}}>
+          <Switch>
+            <Redirect exact from={`${path}/`} to={`${path}/members`} />
+            <Route exact path={`${path}/members`} component={Members} />
+            <Route exact path={`${path}/members/:userId`} component={MemberDetails} />
+            <Route exact path={`${path}/cases`} component={Cases} />
+            <Route exact path={`${path}/cases/:caseId`} component={CaseDetails} />
+            <Route path={`${path}/notifications`} component={Notifications} />
+            <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />
+            <Route path={`${path}/terms-of-service`} component={TOSAgreements} />
+            <Route path={`${path}/update-profile`} component={UpdateProfile} />
+            <Route path='*' component={NotFound404} />
+          </Switch>
+        </div>
       </div>
     </div>
   );
