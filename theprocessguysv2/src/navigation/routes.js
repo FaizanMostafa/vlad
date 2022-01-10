@@ -6,7 +6,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import MemberDashboard from "../pages/Dashboard";
 import UpdateProfilePage from "../pages/UpdateProfile";
 import ViewCases from '../pages/viewCases';
-import AdminDashboard from '../pages/AdminDashboard';
+import AdminDashboard from '../pages/dashboard';
 import ThankYouForRegistering from '../pages/ThankYouForRegistering';
 import TermsOfServiceTemplate from '../pages/termsOfServiceTemplate';
 import CaseDocumentArchive from '../pages/caseDocumentArchive';
