@@ -25,10 +25,12 @@ import {
   SET_IS_FETCHING_NOTIFICATIONS,
   SET_IS_DELETING_NOTIFICATION,
   MARK_NOTIFICATION_AS_READ,
+  MARK_NOTIFICATION_AS_ADDRESSED,
   DELETE_NOTIFICATION,
   FETCH_NOTIFICATIONS,
   SET_IS_CREATING_CASE,
-  SET_IS_UPDATING_CASE
+  SET_IS_UPDATING_CASE,
+  SET_IS_MARKING_NOTIFICATION_ADDRESSED
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -132,6 +134,13 @@ const setIsDeletingTOSDoc = (status) => {
 const setIsDeletingNotification = (status) => {
   return {
     type: SET_IS_DELETING_NOTIFICATION,
+    payload: status
+  };
+}
+
+const setIsMarkingNotificationAddressed = (status) => {
+  return {
+    type: SET_IS_MARKING_NOTIFICATION_ADDRESSED,
     payload: status
   };
 }
@@ -675,6 +684,25 @@ const markNotificationAsRead = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const markNotificationAsAddressed = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsMarkingNotificationAddressed(true));
+      await db.collection("Notifications").doc(data.docId).update({addressed: data.addressed});
+      dispatch({
+        type: MARK_NOTIFICATION_AS_ADDRESSED,
+        payload: {docId: data.docId, addressed: data.addressed}
+      });
+      onSuccess();
+    } catch (error) {
+      onError();
+      dispatch(setIsMarkingNotificationAddressed(false));
+      showToast(error.message, "error");
+      console.error(error)
+    }
+  }
+)
+
 const deleteNotification = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async(dispatch) => {
     try {
@@ -803,5 +831,6 @@ export {
   addNewTOSDocument,
   fetchNotifications,
   deleteNotification,
-  markNotificationAsRead
+  markNotificationAsRead,
+  markNotificationAsAddressed
 };

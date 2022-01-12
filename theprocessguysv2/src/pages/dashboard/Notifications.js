@@ -4,6 +4,7 @@ import { MDBIcon } from 'mdbreact';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import DeleteNotification from "../../popups/DeleteNotification";
+import ViewNotification from "../../popups/ViewNotification";
 import {
   markNotificationAsRead,
   fetchNotifications,
@@ -18,7 +19,7 @@ const Notifications = () => {
   const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
   const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
-  const [editModalShow, setEditModalShow] = useState(false);
+  const [viewModalShow, setViewModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const notifications = useSelector(state => state.admin.notifications);
   const lastVisible = useSelector(state => state.admin.lastNotificationVisible);
@@ -78,7 +79,7 @@ const Notifications = () => {
       dispatch(markNotificationAsRead({docId: notification.docId}));
     }
     setNotification(notification);
-    setEditModalShow(true);
+    setViewModalShow(true);
   }
 
   return (
@@ -87,7 +88,7 @@ const Notifications = () => {
         <thead>
           <tr>
             <th>#</th>
-            <th>Content</th>
+            <th>Title</th>
             <th>Viewed</th>
             <th>Addressed</th>
             <th>Category</th>
@@ -108,7 +109,7 @@ const Notifications = () => {
                 notifications.slice(startIndex, endIndex).map((notification, index)=>(
                   <tr style={{boxSizing: "border-box", backgroundColor: notification.read ? "#fff" : "#f0f0f0"}} key={notification.docId}>
                     <td>{startIndex+index+1}</td>
-                    <td>{notification.content.title}</td>
+                    <td>{notification.title}</td>
                     <td>{notification.read ? "Yes" : "No"}</td>
                     <td>{notification.addressed ? "Yes" : "No"}</td>
                     <td>{capitalizeString(notification.category)}</td>
@@ -148,6 +149,11 @@ const Notifications = () => {
       <DeleteNotification
         modalShow={deleteModalShow}
         setModalShow={setDeleteModalShow}
+        notification={notification}
+      />
+      <ViewNotification
+        modalShow={viewModalShow}
+        setModalShow={setViewModalShow}
         notification={notification}
       />
     </div>

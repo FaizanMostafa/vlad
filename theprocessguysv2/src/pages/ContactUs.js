@@ -30,7 +30,7 @@ const ContactPage = (props) => {
         .then((result) => {
           setIsPosting(false);
           if(result.status === 200) {
-            db.collection("Notifications").doc().set({category: "contact_us", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            db.collection("Notifications").doc().set({category: "contact_us", addressed: false, title: `${customerName} has sent a message through the contact us page`, read: false, content: {email: customerEmail, phoneNumber: customerPhoneNumber, name: customerName, message: customerMessage}, generatedAt: new Date()});
             showToast("👩🏻💬Your message has been sent. Please wait a few moments for a reply. Our team will contact you when they are available. Thank you!💬", "success");
             setCustomerEmail("");
             setCustomerPhoneNumber("");

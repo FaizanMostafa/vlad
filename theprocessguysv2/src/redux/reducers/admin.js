@@ -12,6 +12,8 @@ import {
   SET_IS_DELETING_TOS_DOC,
   SET_IS_FETCHING_TOS_DOCS,
   MARK_NOTIFICATION_AS_READ,
+  MARK_NOTIFICATION_AS_ADDRESSED,
+  SET_IS_MARKING_NOTIFICATION_ADDRESSED,
   ADD_TOS_DOC,
   DELETE_TOS_DOC,
   FETCH_TOS_DOCS,
@@ -40,6 +42,7 @@ const initState = {
   isFetchingCaseDetails: true,
   isFetchingNotifications: false,
   isDeletingNotification: false,
+  isMarkingNotificationAddressed: false,
   lastUserVisible: null,
   lastCaseVisible: null,
   lastTOSDocVisible: null,
@@ -151,6 +154,13 @@ const adminReducer = (state=initState, {type, payload}) => {
       };
     }
 
+    case SET_IS_MARKING_NOTIFICATION_ADDRESSED: {
+      return {
+        ...state,
+        isMarkingNotificationAddressed: payload
+      };
+    }
+
     case FETCH_USERS: {
       return {
         ...state,
@@ -229,6 +239,22 @@ const adminReducer = (state=initState, {type, payload}) => {
         isFetchingNotifications: false,
         notifications: [...state.notifications, ...payload.notifications],
         lastNotificationVisible: payload.lastVisible
+      };
+    }
+
+    case MARK_NOTIFICATION_AS_ADDRESSED: {
+      const updatedNotifications = [];
+      state.notifications.forEach((notification)=>{
+        if(notification.docId===payload.docId) {
+          updatedNotifications.push({...notification, addressed: payload.addressed});
+        } else {
+          updatedNotifications.push(notification);
+        }
+      })
+      return {
+        ...state,
+        isMarkingNotificationAddressed: false,
+        notifications: updatedNotifications
       };
     }
 
