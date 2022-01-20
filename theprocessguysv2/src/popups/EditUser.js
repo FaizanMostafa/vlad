@@ -425,6 +425,7 @@ const EditUser = (props) => {
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
                     >
+                      <option value="pending">Pending</option>
                       <option value="active">Active</option>
                       <option value="disabled">Disabled</option>
                     </Form.Control>

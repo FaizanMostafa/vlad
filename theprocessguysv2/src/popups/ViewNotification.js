@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { markNotificationAsAddressed } from "../redux/actions/admin";
+import { getDateTimeString } from '../utils';
 
 const ViewNotification = (props) => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const ViewNotification = (props) => {
     }
   }
 
+  console.log(notification?.addressed?.at?.toDate);
+
   return (
     <Modal
       size="lg"
@@ -36,6 +39,15 @@ const ViewNotification = (props) => {
       <Modal.Body>
         <h4>{notification?.title}</h4><br/>
         {
+          notification?.category==="signup"
+            &&
+              <>
+                <span style={{color: "black"}}><b>User Name:</b> {notification?.content.name}</span><br/>
+                <span style={{color: "black"}}><b>User Email:</b> {notification?.content.email}</span><br/>
+                <span onClick={()=>props.onClickViewAccountDetails(notification?.content.uid)} style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}><b>View Account Details</b></span><br/>
+              </>
+        }
+        {
           notification?.category==="contact_us"
             &&
               <>
@@ -50,7 +62,7 @@ const ViewNotification = (props) => {
             &&
               <>
                 <br/><span style={{color: "black"}}><b>Addressed By:</b> {notification?.addressed?.by.name}</span><br/>
-                <span style={{color: "black"}}><b>Addressed At:</b> {new Date(notification?.addressed?.at).toDateString()}</span><br/><br/>
+                <span style={{color: "black"}}><b>Addressed At:</b> {notification?.addressed?.at?.toDate ? getDateTimeString(new Date(notification?.addressed?.at.toDate())) : getDateTimeString(new Date(notification?.addressed?.at))}</span><br/><br/>
               </>
         }
       </Modal.Body>

@@ -186,7 +186,7 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
             const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
             delete data["profilePicture"];
             batch.set(db.collection("users").doc(user.uid), {uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
-            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, title: `New member sign up detected, please review ${data.firstName} ${data.middleName} ${data.lastName} for verification`, content: {name: `${data.firstName} ${data.middleName} ${data.lastName}`, email: data.email, uid: user.uid}, generatedAt: new Date()});
             await batch.commit();
             showToast("User registered successfully!", "success");
             onSuccess();

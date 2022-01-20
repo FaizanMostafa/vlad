@@ -20,7 +20,7 @@ const Navigation = (props) => {
 
   const handleOnIdle = (event) => {
     if(user && isAuthenticated) {
-      dispatch(logout());
+      dispatch(logout(()=>{window.location.replace("/login")}));
     }
   }
 

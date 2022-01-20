@@ -29,7 +29,9 @@ import {
   DELETE_NOTIFICATION,
   SET_IS_FETCHING_CASE_DETAILS,
   SET_IS_FETCHING_NOTIFICATIONS,
-  SET_IS_DELETING_NOTIFICATION
+  SET_IS_DELETING_NOTIFICATION,
+  FETCH_USER_ACCOUNT_DETAILS,
+  SET_IS_FETCHING_USER_ACCOUNT_DETAILS
 } from "../constants";
 
 const initState = {
@@ -38,8 +40,10 @@ const initState = {
   tosDocs: [],
   notifications: [],
   caseDetails: null,
+  userAccountDetails: null,
   metadata: null,
   isFetchingCaseDetails: true,
+  isFetchingUserAccountDetails: true,
   isFetchingNotifications: false,
   isDeletingNotification: false,
   isMarkingNotificationAddressed: false,
@@ -117,6 +121,13 @@ const adminReducer = (state=initState, {type, payload}) => {
         ...state,
         isFetchingCaseDetails: payload
       };
+    }
+
+    case SET_IS_FETCHING_USER_ACCOUNT_DETAILS: {
+      return {
+        ...state,
+        isFetchingUserAccountDetails: payload
+      }
     }
 
     case SET_IS_FETCHING_TOS_DOCS: {
@@ -209,6 +220,14 @@ const adminReducer = (state=initState, {type, payload}) => {
         isFetchingCaseDetails: false,
         caseDetails: payload
       };
+    }
+
+    case FETCH_USER_ACCOUNT_DETAILS: {
+      return {
+        ...state,
+        isFetchingUserAccountDetails: false,
+        userAccountDetails: payload
+      }
     }
 
     case SET_IS_DELETING_CASE: {

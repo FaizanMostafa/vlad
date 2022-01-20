@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import DeleteNotification from "../../popups/DeleteNotification";
 import ViewNotification from "../../popups/ViewNotification";
+import UpdateAccountStatus from "../../popups/UpdateAccountStatus";
 import {
+  fetchUserAccountDetails,
   markNotificationAsRead,
   fetchNotifications,
   getMetadataInfo
@@ -20,6 +22,7 @@ const Notifications = () => {
   const [activePageNo, setActivePageNo] = useState(1);
   const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
   const [viewModalShow, setViewModalShow] = useState(false);
+  const [accountStatusModalShow, setAccountStatusModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const notifications = useSelector(state => state.admin.notifications);
   const lastVisible = useSelector(state => state.admin.lastNotificationVisible);
@@ -80,6 +83,11 @@ const Notifications = () => {
     }
     setNotification(notification);
     setViewModalShow(true);
+  }
+
+  const handleOnClickViewAccountDetails = (uid) => {
+    dispatch(fetchUserAccountDetails({uid}));
+    setAccountStatusModalShow(true);
   }
 
   return (
@@ -154,7 +162,12 @@ const Notifications = () => {
       <ViewNotification
         modalShow={viewModalShow}
         setModalShow={setViewModalShow}
+        onClickViewAccountDetails={handleOnClickViewAccountDetails}
         notification={notification}
+      />
+      <UpdateAccountStatus
+        modalShow={accountStatusModalShow}
+        setModalShow={setAccountStatusModalShow}
       />
     </div>
   );

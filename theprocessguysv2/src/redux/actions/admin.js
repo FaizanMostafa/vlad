@@ -30,7 +30,9 @@ import {
   FETCH_NOTIFICATIONS,
   SET_IS_CREATING_CASE,
   SET_IS_UPDATING_CASE,
-  SET_IS_MARKING_NOTIFICATION_ADDRESSED
+  SET_IS_MARKING_NOTIFICATION_ADDRESSED,
+  FETCH_USER_ACCOUNT_DETAILS,
+  SET_IS_FETCHING_USER_ACCOUNT_DETAILS
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -145,6 +147,13 @@ const setIsMarkingNotificationAddressed = (status) => {
   };
 }
 
+const setIsFetchingUserAccountDetails = (status) => {
+  return {
+    type: SET_IS_FETCHING_USER_ACCOUNT_DETAILS,
+    payload: status
+  };
+}
+
 const getMetadataInfo = () => (
   (dispatch) => {
     try {
@@ -195,6 +204,26 @@ const fetchUsers = (data) => (
   }
 )
 
+const fetchUserAccountDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsFetchingUserAccountDetails(true));
+      const querySnapshot = await db.collection("users").doc(data.uid).get();
+      dispatch({
+        type: FETCH_USER_ACCOUNT_DETAILS,
+        payload: {
+          ...querySnapshot.data()
+        }
+      });
+      onSuccess();
+    } catch(error) {
+      onError();
+      dispatch(setIsFetchingUserAccountDetails(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
 const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     dispatch(setIsCreatingUser(true));
@@ -210,7 +239,7 @@ const createUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
             const profilePictureURI = await uploadMedia(data["profilePicture"], `profile_pictures/${user.uid}/`, timestamp);
             delete data["profilePicture"];
             batch.set(db.collection("users").doc(user.uid), {uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
-            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, title: `New member sign up detected, please review ${data.firstName} ${data.middleName} ${data.lastName} for verification`, content: {name: `${data.firstName} ${data.middleName} ${data.lastName}`, email: data.email, uid: user.uid}, generatedAt: new Date()});
             await batch.commit();
             showToast("User created successfully!", "success");
             onSuccess();
@@ -246,6 +275,28 @@ const updateUser = (data, onSuccess=()=>{}, onError=()=>{}) => (
             payload: {user: {uid: data.uid, ...data.user}}
           });
           showToast("User has been updated in the system successfully!", "success");
+        });
+    } catch (error) {
+      onError();
+      dispatch(setIsUpdatingUser(false));
+      showToast(error.message, "error");
+    }
+  }
+)
+
+const updateAccountStatus = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsUpdatingUser(true));
+      db.collection("users")
+        .doc(data.uid)
+        .update({status: data.status}).then(() => {
+          onSuccess();
+          dispatch({
+            type: UPDATE_USER,
+            payload: {user: {uid: data.uid, status: data.status}}
+          });
+          showToast("Account status has been updated in the system successfully!", "success");
         });
     } catch (error) {
       onError();
@@ -831,6 +882,8 @@ export {
   addNewTOSDocument,
   fetchNotifications,
   deleteNotification,
+  updateAccountStatus,
   markNotificationAsRead,
+  fetchUserAccountDetails,
   markNotificationAsAddressed
 };

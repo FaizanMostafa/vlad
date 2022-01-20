@@ -1,4 +1,5 @@
 import Toaster from 'toastr';
+import moment from 'moment';
 
 const options = {
     "closeButton": true,
@@ -63,11 +64,16 @@ const capitalizeString = (phrase) => {
     return "";
 }
 
+const getDateTimeString = (date) => {
+    return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+}
+
 export {
     showToast,
     objectsEqual,
     getMediaType,
     validateEmail,
     capitalizeString,
-    validatePhoneNumber
+    getDateTimeString,
+    validatePhoneNumber,
 };
