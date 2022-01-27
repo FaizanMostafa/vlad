@@ -106,7 +106,7 @@ function CustomToggle({ index, caseData, children, ...props }) {
                                                         <Link to={{pathname: "/case-questionare", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Open Case Questionare</Link>
                                                         <Link to={{pathname: "/attempt-logs", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Attempt Logs</Link>
                                                         {
-                                                            (caseData.status.toLowerCase()!=="pending" && caseData?.payment?.status?.toLowerCase()!=="done")
+                                                            (caseData.status.toLowerCase()!=="pending" && caseData?.payment?.status?.toLowerCase()!=="closed")
                                                                 &&
                                                                     <Link to={{pathname: "/client-payment-options", state: {caseId: caseData.id}}} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight:"20px"}}>Make Payment</Link>
                                                         }

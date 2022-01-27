@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { MDBCol } from 'mdbreact';
 import { objectsEqual, showToast } from "../../utils";
 import {
@@ -12,7 +11,6 @@ import {
 const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const user = useSelector(state => state.auth.user);
   const isUpdating = useSelector(state => state.admin.isUpdatingCase);
   const isCreating = useSelector(state => state.admin.isCreatingCase);
@@ -73,6 +71,7 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         } else {
           data["CaseInformation-1"] = {};
         }
+        if(QuestionaireForm1.hasOwnProperty("status")) data["CaseInformation-1"].status=QuestionaireForm1.status;
         if(QuestionaireForm1.hasOwnProperty("caseTitle")) data["CaseInformation-1"].caseTitle=QuestionaireForm1.caseTitle;
         if(QuestionaireForm1.hasOwnProperty("caseNumber")) data["CaseInformation-1"].caseNumber=QuestionaireForm1.caseNumber;
         if(QuestionaireForm1.hasOwnProperty("courtDate")) data["CaseInformation-1"].courtDate=QuestionaireForm1.courtDate;
@@ -490,10 +489,10 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
             </MDBCol>
             <br/><br/>
             {
-              !isFormDisabled
+              (!isFormDisabled || props.onPressCaseUpdate)
                 &&
                   <div style={{display: "flex", justifyContent: "flex-end"}}>
-                    <Button onClick={handleOnClickSubmit}>
+                    <Button onClick={props.onPressCaseUpdate ? props.onPressCaseUpdate : handleOnClickSubmit}>
                       {
                         (isUpdating || isCreating)
                           ?

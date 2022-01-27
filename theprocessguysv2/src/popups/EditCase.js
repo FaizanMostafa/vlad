@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link as RSLink, Element } from 'react-scroll';
 import { Stepper, Step } from 'react-form-stepper';
 import { Modal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
 import {
   ResetQuestionairesConfirmation
 } from "../popups";
+import {
+  updateCaseStatus
+} from "../redux/actions/admin";
 import {
   Questionaire1,
   Questionaire2,
@@ -19,13 +22,15 @@ import {
   FileSubmission
 } from "../forms/CaseDetails";
 
-const EditCase = (props) => {
+const EditCase = ({onlyCaseStatusEditable, ...props}) => {
+  const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(1);
   const [showResetModal, setShowResetModal] = useState(false);
   const caseDetails = useSelector(state => state.admin.caseDetails);
   const isFetchingCaseDetails = useSelector(state => state.admin.isFetchingCaseDetails);
   
   // Questionaire Form 1
+  const [status, setStatus] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
@@ -99,6 +104,7 @@ const EditCase = (props) => {
   useEffect(() => {
     if(caseDetails) {
       // Questionaire Form 1
+      setStatus(caseDetails?.CaseInformation.status);
       setCaseTitle(caseDetails?.CaseInformation.caseTitle);
       setCaseNumber(caseDetails?.CaseInformation.caseNumber);
       setCourtDate(caseDetails?.CaseInformation.courtDate);
@@ -292,7 +298,9 @@ const EditCase = (props) => {
 
   const handleOnPressNext = (nextStep) => {
     if(activeStep === 1) {
-      if(!caseTitle.length) {
+      if(!status.length) {
+        showToast("Please select case status!", "warning");
+      } else if(!caseTitle.length) {
         showToast("Please enter case title!", "warning");
       } else if(!caseNumber.length) {
         showToast("Please enter case number!", "warning");
@@ -328,6 +336,7 @@ const EditCase = (props) => {
         showToast("Please enter county of!", "warning");
       } else {
         let data = {};
+        if(status!==caseDetails.CaseInformation.status) data.status=status;
         if(caseTitle!==caseDetails.CaseInformation.caseTitle) data.caseTitle=caseTitle;
         if(caseNumber!==caseDetails.CaseInformation.caseNumber) data.caseNumber=caseNumber;
         if(courtDate!==caseDetails.CaseInformation.courtDate) data.courtDate=courtDate;
@@ -605,6 +614,16 @@ const EditCase = (props) => {
     }
   }
 
+  const handleOnPressCaseUpdate = () => {
+    if(!status.length) {
+      showToast("Please select case status!", "warning");
+    } else if(status === caseDetails.CaseInformation.status) {
+      showToast("Nothing to update as you have not changed the case status!", "warning");
+    } else {
+      dispatch(updateCaseStatus({caseId: caseDetails.caseId, status}, ()=>props.setModalShow(false)));
+    }
+  }
+
   const getButtonTitle = () => {
     if(activeStep===1) {
       return "Proceed to Plaintiff Section";
@@ -703,11 +722,11 @@ const EditCase = (props) => {
         show={props.modalShow}
         onHide={() => props.setModalShow(false)}
         size="xl"
-        aria-labelled-by="example-custom-modal-styling-title"
+        aria-labelledby={`Update Case ${onlyCaseStatusEditable && "Status"}`}
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            Update Case
+            Update Case {onlyCaseStatusEditable && "Status"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -738,10 +757,14 @@ const EditCase = (props) => {
                       <Step style={activeStep===9 ? {backgroundColor: "#A10308"} : {}} disabled={false} onClick={()=>handleOnPressNext(9)} label='Step 9'/>
                     </Stepper>
                   </Element>
-                  <br></br>
-                  <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
-                    <button onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
-                  </div>
+                  <br/>
+                  {
+                    !onlyCaseStatusEditable
+                      &&
+                        <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+                          <button onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
+                        </div>
+                  }
                   <div style={{display: "flex", width: "100%", justifyContent: "space-between"}}>
                     {
                       activeStep>1
@@ -749,11 +772,14 @@ const EditCase = (props) => {
                           <button onClick={()=>setActiveStep(activeStep-1)} className="btn btn-primary">Previous Step</button>
                     }
                   </div>
-                  
                   {
                     activeStep === 1
                       &&
                         <Questionaire1
+                          isFormDisabled={onlyCaseStatusEditable}
+                          onlyCaseStatusEditable={onlyCaseStatusEditable}
+                          caseStatus={status}
+                          setCaseStatus={setStatus}
                           caseTitle={caseTitle}
                           setCaseTitle={setCaseTitle}
                           caseNumber={caseNumber}
@@ -778,6 +804,7 @@ const EditCase = (props) => {
                     activeStep === 2
                       &&
                         <Questionaire2
+                          isFormDisabled={onlyCaseStatusEditable}
                           isOrRepresentingPlaintiff={isOrRepresentingPlaintiff}
                           setIsOrRepresentingPlaintiff={setIsOrRepresentingPlaintiff}
                           shouldPGFillPlaintiffInfo={shouldPGFillPlaintiffInfo}
@@ -796,6 +823,7 @@ const EditCase = (props) => {
                     activeStep === 3
                       &&
                         <Questionaire3
+                          isFormDisabled={onlyCaseStatusEditable}
                           isOrRepresentingDefendant={isOrRepresentingDefendant}
                           setIsOrRepresentingDefendant={setIsOrRepresentingDefendant}
                           shouldPGFillDefendantInfo={shouldPGFillDefendantInfo}
@@ -814,6 +842,7 @@ const EditCase = (props) => {
                     activeStep === 4
                       &&
                         <Questionaire4
+                          isFormDisabled={onlyCaseStatusEditable}
                           numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           setNumberOfCaseFilesBeingServed={setNumberOfCaseFilesBeingServed}
                           howManyIndividualsServed={howManyIndividualsServed}
@@ -826,6 +855,7 @@ const EditCase = (props) => {
                     activeStep === 5
                       &&
                         <Questionaire5
+                          isFormDisabled={onlyCaseStatusEditable}
                           serveIndividualAtEmployment={serveIndividualAtEmployment}
                           setServeIndividualAtEmployment={setServeIndividualAtEmployment}
                           requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
@@ -840,6 +870,7 @@ const EditCase = (props) => {
                     activeStep === 6
                       &&
                         <Questionaire6
+                          isFormDisabled={onlyCaseStatusEditable}
                           serveesPhysicalDescription={serveesPhysicalDescription}
                           setServeesPhysicalDescription={setServeesPhysicalDescription}
                         />
@@ -848,6 +879,7 @@ const EditCase = (props) => {
                     activeStep===7
                       &&
                         <Questionaire7
+                          isFormDisabled={onlyCaseStatusEditable}
                           vehiclesInformation={vehiclesInformation}
                           setVehiclesInformation={setVehiclesInformation}
                         />
@@ -856,6 +888,7 @@ const EditCase = (props) => {
                     activeStep===8
                       &&
                         <Questionaire8
+                          isFormDisabled={onlyCaseStatusEditable}
                           specifyDatesForStakeOutService={specifyDatesForStakeOutService}
                           setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
                           requireSkipTracingService={requireSkipTracingService}
@@ -882,12 +915,14 @@ const EditCase = (props) => {
                     activeStep===9
                       &&
                         <FileSubmission
-                          isFormUpdating={true}
+                          isFormUpdating={!onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable}
                           docId={caseDetails.FileSubmission.docId}
                           documentPath={caseDetails.FileSubmission.documentPath}
                           documentURI={caseDetails.FileSubmission.documentURI}
                           numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           fileData={caseDetails.FileSubmission.fileData}
+                          onPressCaseUpdate={handleOnPressCaseUpdate}
                         />
                   }
                   {

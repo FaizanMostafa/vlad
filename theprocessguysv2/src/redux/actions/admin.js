@@ -11,10 +11,13 @@ import {
   SET_IS_CREATING_USER,
   SET_IS_FETCHING_USERS,
   SET_IS_FETCHING_CASES,
+  SET_IS_FETCHING_CASE,
   SET_IS_DELETING_CASE,
+  UPDATE_CASE_STATUS,
   FETCH_TOS_DOCS,
   ADD_TOS_DOC,
   DELETE_TOS_DOC,
+  FETCH_CASE,
   SET_IS_DELETING_TOS_DOC,
   SET_IS_ADDING_TOS_DOC,
   SET_IS_FETCHING_TOS_DOCS,
@@ -52,6 +55,13 @@ const setIsFetchingUsers = (status) => {
 const setIsFetchingCases = (status) => {
   return {
     type: SET_IS_FETCHING_CASES,
+    payload: status
+  };
+}
+
+const setIsFetchingCase = (status) => {
+  return {
+    type: SET_IS_FETCHING_CASE,
     payload: status
   };
 }
@@ -354,6 +364,28 @@ const fetchCases = (data) => (
   }
 )
 
+const fetchCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  (dispatch) => {
+    try {
+      dispatch(setIsFetchingCase(true));
+      db.collection("cases").doc(data.caseId).get()
+        .then((querySnapshot) => {
+          const finalData = querySnapshot.data();
+          finalData.docId = querySnapshot.id;
+          dispatch({
+            type: FETCH_CASE,
+            payload: finalData
+          });
+          onSuccess(finalData);
+        });
+    } catch (error) {
+      dispatch(setIsFetchingCase(false));
+      showToast(error.message, "error");
+      onError();
+    }
+  }
+)
+
 const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
     try {
@@ -458,7 +490,7 @@ const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let caseData = {};
       let subQuerySnapshot = {};
       subQuerySnapshot = await db.collection("CaseInformation-1").doc(data.CaseInformationId).get();
-      caseData["CaseInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
+      caseData["CaseInformation"] = {docId: subQuerySnapshot.id, status: data.status, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("PlaintiffInformation-2").doc(data.PlaintiffInformationId).get();
       caseData["PlaintiffInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("DefendantInformation-3").doc(data.DefendantInformationId).get();
@@ -491,15 +523,42 @@ const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
   }
 )
 
+const updateCaseStatus = (data, onSuccess=()=>{}, onError=()=>{}) => (
+  async(dispatch) => {
+    try {
+      dispatch(setIsUpdatingCase(true));
+      await db.collection("cases").doc(data.caseId).update({status: data.status});
+      dispatch({
+        type: UPDATE_CASE_STATUS,
+        payload: data
+      });
+      showToast("Case status has been updated in the system successfully!", "success");
+      onSuccess();
+    } catch (error) {
+      dispatch(setIsUpdatingCase(false));
+      showToast(error.message, "error");
+      console.error(error);
+      onError();
+    }
+  }
+)
+
 const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
     try {
       dispatch(setIsUpdatingCase(true));
       const serveesDocumentedDataDocRefs = [];
       if(data.hasOwnProperty("CaseInformation-1")) {
-        await db.collection("CaseInformation-1").doc(data["CaseInformation-1"].docId).update({...data["CaseInformation-1"]});
+        if(data["CaseInformation-1"]?.status) {
+          await db.collections("cases").doc(data.caseId).update({status: data["CaseInformation-1"].status});
+          delete data["CaseInformation-1"].status;
+        }
         if(data["CaseInformation-1"]?.caseTitle) {
           await db.collection("cases").doc(data.caseId).update({caseTitle: data["CaseInformation-1"].caseTitle});
+          delete data["CaseInformation-1"].caseTitle;
+        }
+        if(Object.keys(data["CaseInformation-1"]).length) {
+          await db.collection("CaseInformation-1").doc(data["CaseInformation-1"].docId).update({...data["CaseInformation-1"]});
         }
       }
       if(data.hasOwnProperty("PlaintiffInformation-2")) {
@@ -867,6 +926,7 @@ const deleteTOSDocument = (data, onSuccess=()=>{}, onError=()=>{}) => (
 )
 
 export {
+  fetchCase,
   updateUser,
   createUser,
   deleteUser,
@@ -877,6 +937,7 @@ export {
   createCase,
   fetchTOSDocs,
   getMetadataInfo,
+  updateCaseStatus,
   fetchCaseDetails,
   deleteTOSDocument,
   addNewTOSDocument,

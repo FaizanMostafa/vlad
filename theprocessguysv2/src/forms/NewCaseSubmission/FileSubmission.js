@@ -124,7 +124,7 @@ const FileSubmission = ({...props}) => {
         };
       }
       data["documents"] = Object.values(fileData);
-      dispatch(submitCase({uid: user.uid, ...data}, ()=>{
+      dispatch(submitCase({uid: user.uid, userName: `${user.firstName} ${user.middleName} ${user.lastName}`, ...data}, ()=>{
         localStorage.removeItem("Questionaire1");
         localStorage.removeItem("Questionaire2");
         localStorage.removeItem("Questionaire3");

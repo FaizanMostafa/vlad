@@ -79,7 +79,7 @@ const Cases = () => {
   }
 
   const handleOnClickEdit = (userCase) => {
-    dispatch(fetchCaseDetails({...userCase}));
+    dispatch(fetchCaseDetails(userCase));
     setUserCase(userCase);
     setEditModalShow(true);
   }

@@ -1,4 +1,3 @@
-import { batch } from "react-redux";
 import firebase, {db, uploadMedia, deleteMedia} from "../../firebase";
 import {showToast} from "../../utils";
 import {
@@ -88,34 +87,56 @@ const fetchUser = () => (
   (dispatch) => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        const unsubscribeSetInterval = setInterval(() => {
-          firebase.auth().currentUser.reload();
-          const updatedUser = firebase.auth().currentUser;
-          if(updatedUser.emailVerified) {
-            clearInterval(unsubscribeSetInterval);
-            const uid = user.uid;
-            db.collection("users").doc(uid)
-              .get().then((doc) => {
-                const userData = doc.data();
-                dispatch({
-                  type: FETCH_USER,
-                  payload: {uid, ...userData}
-                });
-              }).catch((error) => {
-                console.log("Error getting user data:", error);
-              });
-          }
-        }, 5000);
+        // const unsubscribeSetInterval = setInterval(() => {
+        //   firebase.auth().currentUser.reload();
+        //   const updatedUser = firebase.auth().currentUser;
+        //   if(updatedUser.emailVerified) {
+        //     clearInterval(unsubscribeSetInterval);
+        //     const uid = user.uid;
+        //     db.collection("users").doc(uid)
+        //       .get().then((doc) => {
+        //         const userData = doc.data();
+        //         if(userData.status==="pending") {
+        //           dispatch(setIsFetchingUser(false));
+        //           showToast("Your account is currently under review. Please check back later, as your account information needs to be verified by our team members before we clear it for service!", "warning");
+        //         } else if(userData.status==="disabled") {
+        //           dispatch(setIsFetchingUser(false));
+        //           showToast("Your account is currently suspended or disabled, please reach out to TPG through the CONTACT US page for further assistance", "warning");
+        //         } else {
+        //           dispatch({
+        //             type: FETCH_USER,
+        //             payload: {uid, ...userData}
+        //           });
+        //         }
+        //       }).catch((error) => {
+        //         console.log("Error getting user data:", error);
+        //       });
+        //   }
+        // }, 5000);
         if(user.emailVerified) {
-          clearInterval(unsubscribeSetInterval);
+          // clearInterval(unsubscribeSetInterval);
           const uid = user.uid;
           db.collection("users").doc(uid)
             .get().then((doc) => {
               const userData = doc.data();
-              dispatch({
-                type: FETCH_USER,
-                payload: {uid, ...userData}
-              });
+              if(userData) {
+                if(userData.status==="pending") {
+                  dispatch(setIsFetchingUser(false));
+                  showToast("Your account is currently under review. Please check back later, as your account information needs to be verified by our team members before we clear it for service!", "warning");
+                } else if(userData.status==="disabled") {
+                  dispatch(setIsFetchingUser(false));
+                  showToast("Your account is currently suspended or disabled, please reach out to TPG through the CONTACT US page for further assistance!", "warning");
+                } else {
+                  dispatch({
+                    type: FETCH_USER,
+                    payload: {uid, ...userData}
+                  });
+                }
+              } else {
+                dispatch(setIsFetchingUser(false));
+                showToast("Your account does not seem to be registered with our system, please make sure you entered the correct username!", "warning");
+                dispatch(logout());
+              }
             }).catch((error) => {
               console.log("Error getting user data:", error);
             });
@@ -138,9 +159,9 @@ const login = (data, onSuccess=()=>{}, onError=()=>{}) => (
     firebase.auth().signInWithEmailAndPassword(data.email, data.password)
       .then((userCredential) => {
         if(userCredential.user.emailVerified) {
-          showToast("User logged in successfully!", "success");
-          dispatch(setIsSigningIn(false));
-          onSuccess();
+          // showToast("User logged in successfully!", "success");
+          // dispatch(setIsSigningIn(false));
+          // onSuccess();
         } else {
           dispatch(setIsSigningIn(false));
           showToast("Please verify your email first!", "warning");
@@ -188,7 +209,7 @@ const register = (data, onSuccess=()=>{}, onError=()=>{}) => (
             batch.set(db.collection("users").doc(user.uid), {uid: user.uid, ...data, profilePictureURI, profilePicturePath, registeredAt: new Date()});
             batch.set(db.collection("Notifications").doc(), {category: "signup", addressed: false, read: false, title: `New member sign up detected, please review ${data.firstName} ${data.middleName} ${data.lastName} for verification`, content: {name: `${data.firstName} ${data.middleName} ${data.lastName}`, email: data.email, uid: user.uid}, generatedAt: new Date()});
             await batch.commit();
-            showToast("User registered successfully!", "success");
+            showToast("Thank you for registering with the Process Guys! Please check back later, as your account information needs to be verified by our team members before we clear it for service!", "success");
             onSuccess();
             dispatch(setIsSigningUp(false));
           });
@@ -359,7 +380,7 @@ const agreeToTOS = (data, onSuccess=()=>{}, onError=()=>{}) => (
 )
 
 const logout = (onSuccess=()=>{}) => (
-  async (dispatch) => {
+  async () => {
     await firebase.auth().signOut();
     onSuccess();
   }

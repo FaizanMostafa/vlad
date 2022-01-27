@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 const Questionaire1 = (props) => {
   const {
     isFormDisabled,
+    caseStatus,
+    setCaseStatus,
     caseTitle,
     setCaseTitle,
     caseNumber,
@@ -29,6 +31,23 @@ const Questionaire1 = (props) => {
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
       <br/>
       <MDBRow md="12">
+        <MDBCol md="8" id="case-status">
+          <Form.Group id="case-status-g">
+            <Form.Label>Case Status</Form.Label>
+            <Form.Control
+              as="select"
+              value={caseStatus}
+              disabled={props.onlyCaseStatusEditable ? false : isFormDisabled}
+              onChange={(e)=>setCaseStatus(e.target.value)}
+            >
+              <option value="" >Please Select</option>
+              <option value="pending">Pending</option>
+              <option value="active">Active</option>
+              <option value="closed">Closed</option>
+              <option value="cancelled">Cancelled</option>
+            </Form.Control>
+          </Form.Group>
+        </MDBCol>
         <MDBCol md="6" id="case-title">
           <Form.Group id="case-title">
             <Form.Label>Case Title</Form.Label>

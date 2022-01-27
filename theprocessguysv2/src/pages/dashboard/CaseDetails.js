@@ -19,12 +19,11 @@ const CaseDetails = (props) => {
   const userCase = props.location.state.userCase;
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(1);
-  const [showResetModal, setShowResetModal] = useState(false);
   const caseDetails = useSelector(state => state.admin.caseDetails);
   const isFetchingCaseDetails = useSelector(state => state.admin.isFetchingCaseDetails);
 
   useEffect(()=>{
-    dispatch(fetchCaseDetails({...userCase}));
+    dispatch(fetchCaseDetails(userCase));
   }, [userCase]);
 
   const getButtonTitle = () => {

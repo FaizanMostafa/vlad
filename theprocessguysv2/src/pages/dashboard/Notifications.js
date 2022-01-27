@@ -6,11 +6,14 @@ import Pagination from "../../components/Pagination";
 import DeleteNotification from "../../popups/DeleteNotification";
 import ViewNotification from "../../popups/ViewNotification";
 import UpdateAccountStatus from "../../popups/UpdateAccountStatus";
+import EditCase from "../../popups/EditCase";
 import {
   fetchUserAccountDetails,
   markNotificationAsRead,
   fetchNotifications,
-  getMetadataInfo
+  fetchCaseDetails,
+  getMetadataInfo,
+  fetchCase
 } from "../../redux/actions/admin";
 import { capitalizeString } from '../../utils';
 
@@ -23,6 +26,7 @@ const Notifications = () => {
   const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
   const [viewModalShow, setViewModalShow] = useState(false);
   const [accountStatusModalShow, setAccountStatusModalShow] = useState(false);
+  const [editCaseModalShow, setEditCaseModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const notifications = useSelector(state => state.admin.notifications);
   const lastVisible = useSelector(state => state.admin.lastNotificationVisible);
@@ -88,6 +92,11 @@ const Notifications = () => {
   const handleOnClickViewAccountDetails = (uid) => {
     dispatch(fetchUserAccountDetails({uid}));
     setAccountStatusModalShow(true);
+  }
+
+  const handleOnClickViewCaseDetails = (caseId) => {
+    dispatch(fetchCase({caseId: notification?.content.caseId}, (userCase)=>dispatch(fetchCaseDetails(userCase))));
+    setEditCaseModalShow(true);
   }
 
   return (
@@ -163,11 +172,17 @@ const Notifications = () => {
         modalShow={viewModalShow}
         setModalShow={setViewModalShow}
         onClickViewAccountDetails={handleOnClickViewAccountDetails}
+        onClickViewCaseDetails={handleOnClickViewCaseDetails}
         notification={notification}
       />
       <UpdateAccountStatus
         modalShow={accountStatusModalShow}
         setModalShow={setAccountStatusModalShow}
+      />
+      <EditCase
+        onlyCaseStatusEditable={true}
+        modalShow={editCaseModalShow}
+        setModalShow={setEditCaseModalShow}
       />
     </div>
   );

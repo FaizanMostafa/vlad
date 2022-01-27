@@ -11,6 +11,8 @@ import {
   SET_IS_DELETING_CASE,
   SET_IS_DELETING_TOS_DOC,
   SET_IS_FETCHING_TOS_DOCS,
+  SET_IS_FETCHING_CASE,
+  UPDATE_CASE_STATUS,
   MARK_NOTIFICATION_AS_READ,
   MARK_NOTIFICATION_AS_ADDRESSED,
   SET_IS_MARKING_NOTIFICATION_ADDRESSED,
@@ -22,6 +24,7 @@ import {
   DELETE_USER,
   FETCH_USERS,
   FETCH_CASES,
+  FETCH_CASE,
   FETCH_NOTIFICATIONS,
   DELETE_CASE,
   UPDATE_USER,
@@ -39,6 +42,7 @@ const initState = {
   cases: [],
   tosDocs: [],
   notifications: [],
+  case: null,
   caseDetails: null,
   userAccountDetails: null,
   metadata: null,
@@ -63,6 +67,7 @@ const initState = {
   isFetchingMetadata: false,
   isFetchingUsers: true,
   isFetchingCases: true,
+  isFetchingCase: false,
 };
 
 const adminReducer = (state=initState, {type, payload}) => {
@@ -78,6 +83,13 @@ const adminReducer = (state=initState, {type, payload}) => {
       return {
         ...state,
         isFetchingCases: payload
+      };
+    }
+
+    case SET_IS_FETCHING_CASE: {
+      return {
+        ...state,
+        isFetchingCase: payload
       };
     }
 
@@ -211,6 +223,29 @@ const adminReducer = (state=initState, {type, payload}) => {
         isFetchingCases: false,
         cases: [...state.cases, ...payload.cases],
         lastCaseVisible: payload.lastVisible
+      };
+    }
+
+    case UPDATE_CASE_STATUS: {
+      let updatedCases = [];
+      state.cases.forEach((caseData)=>{
+        if(caseData.docId===payload.caseId) {
+          caseData.status = payload.status;
+        }
+        updatedCases.push(caseData);
+      });
+      return {
+        ...state,
+        isUpdatingCase: false,
+        cases: updatedCases
+      }
+    }
+
+    case FETCH_CASE: {
+      return {
+        ...state,
+        isFetchingCase: false,
+        case: payload
       };
     }
 
