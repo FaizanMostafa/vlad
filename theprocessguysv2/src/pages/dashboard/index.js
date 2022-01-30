@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Members from "./Members";
 import MemberDetails from "./MemberDetails";
-import CaseDetails from "./CaseDetails";
 import Cases from "./Cases";
 import NotFound404 from "../NotFound404";
 import Notifications from "./Notifications";
@@ -63,7 +62,6 @@ const AdminDashboard = (props) => {
             <Route exact path={`${path}/members`} component={Members} />
             <Route exact path={`${path}/members/:userId`} component={MemberDetails} />
             <Route exact path={`${path}/cases`} component={Cases} />
-            <Route exact path={`${path}/cases/:caseId`} component={CaseDetails} />
             <Route path={`${path}/notifications`} component={Notifications} />
             <Route path={`${path}/bulletin-update`} component={BulletinUpdate} />
             <Route path={`${path}/terms-of-service`} component={TOSAgreements} />

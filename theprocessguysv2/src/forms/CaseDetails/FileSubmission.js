@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBCol } from 'mdbreact';
 import { objectsEqual, showToast } from "../../utils";
+import CancelCaseConfirmation from "../../popups/CaseCancelConfirmation";
 import {
   updateCase,
   createCase
@@ -10,14 +11,17 @@ import {
 
 const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
+  let onSubmitFunction;
   const dispatch = useDispatch();
+  const [fileData, setFileData] = useState({});
+  const [isFileVisible, setIsFileVisible] = useState(false);
+  const [fileSubmissionType, setFileSubmissionType] = useState("");
+  const [showCancelCaseConfirmationModal, setShowCancelCaseConfirmationModal] = useState(false);
   const user = useSelector(state => state.auth.user);
   const isUpdating = useSelector(state => state.admin.isUpdatingCase);
   const isCreating = useSelector(state => state.admin.isCreatingCase);
+  const userCase = useSelector(state => state.admin.case);
   const caseId = useSelector(state => state.admin.caseDetails?.caseId);
-  const [isFileVisible, setIsFileVisible] = useState(false);
-  const [fileData, setFileData] = useState({});
-  const [fileSubmissionType, setFileSubmissionType] = useState("");
 
   useEffect(() => {
     if(props.fileData && props.numberOfCaseFilesBeingServed) {
@@ -179,15 +183,26 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
           }
         })
       }
-      console.log({data});
       if(Object.keys(data).length) {
         data["uid"] = user.uid;
+        data["userName"] = `${user.firstName} ${user.middleName} ${user.lastName}`;
         if(props.fileData && props.numberOfCaseFilesBeingServed) {
           data.caseId = caseId;
-          dispatch(updateCase(data, ()=>{
-            props.onSuccess();
-            clearLocalStorage();
-          }));
+          if(data.hasOwnProperty("CaseInformation-1") && data["CaseInformation-1"]?.status.toLowerCase() === "cancelled") {
+            data["adminName"] = `${user.firstName} ${user.middleName} ${user.lastName}`;
+            data["userName"] = userCase.userName;
+            data["caseTitle"] = userCase.caseTitle;
+            onSubmitFunction = ()=>dispatch(updateCase(data, ()=>{
+              props.onSuccess();
+              clearLocalStorage();
+            }));
+            setShowCancelCaseConfirmationModal(true);
+          } else {
+            dispatch(updateCase(data, ()=>{
+              props.onSuccess();
+              clearLocalStorage();
+            }));
+          }
         } else {
           dispatch(createCase(data, ()=>{
             props.onSuccess();
@@ -226,6 +241,14 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
       setIsFileVisible(false);
     } else {
       setIsFileVisible(fileName);
+    }
+  }
+
+  const handleUpdateCaseStatus = () => {
+    if(JSON.parse(localStorage.getItem("Questionaire1")).status.toLowerCase()==="cancelled") {
+      setShowCancelCaseConfirmationModal(true);
+    } else {
+      props.onPressCaseUpdate();
     }
   }
 
@@ -452,12 +475,13 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
                                   {
                                     isFileVisible===value.documentName
                                       &&
-                                        <iframe src={props.documentURI} width="100%"  height="750px" frameborder="0"/>
+                                        <iframe title={value.documentName} src={props.documentURI} width="100%"  height="750px" frameborder="0"/>
                                   }
                                 </>
                               :
                                 <a
                                   href={props.documentURI}
+                                  rel="noreferrer"
                                   target="_blank"
                                   style={{cursor: "pointer", float: "none", fontWeight: "bold"}}
                                 >Download File</a>
@@ -492,7 +516,7 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
               (!isFormDisabled || props.onPressCaseUpdate)
                 &&
                   <div style={{display: "flex", justifyContent: "flex-end"}}>
-                    <Button onClick={props.onPressCaseUpdate ? props.onPressCaseUpdate : handleOnClickSubmit}>
+                    <Button onClick={props.onPressCaseUpdate ? handleUpdateCaseStatus : handleOnClickSubmit}>
                       {
                         (isUpdating || isCreating)
                           ?
@@ -508,6 +532,12 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
                   </div>
             }
           </div>
+          <CancelCaseConfirmation
+            case={userCase}
+            modalShow={showCancelCaseConfirmationModal}
+            setModalShow={setShowCancelCaseConfirmationModal}
+            handleOnPressProceed={props.onPressCaseUpdate}
+          />
         </Fragment>
   )
 }

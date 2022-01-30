@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
 import {
   ResetQuestionairesConfirmation
-} from "../popups";
+} from ".";
 import {
   updateCaseStatus
 } from "../redux/actions/admin";
@@ -22,10 +22,12 @@ import {
   FileSubmission
 } from "../forms/CaseDetails";
 
-const EditCase = ({onlyCaseStatusEditable, ...props}) => {
+const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(1);
   const [showResetModal, setShowResetModal] = useState(false);
+  const user = useSelector(state => state.auth.user);
+  const userCase = useSelector(state => state.admin.case);
   const caseDetails = useSelector(state => state.admin.caseDetails);
   const isFetchingCaseDetails = useSelector(state => state.admin.isFetchingCaseDetails);
   
@@ -620,7 +622,13 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
     } else if(status === caseDetails.CaseInformation.status) {
       showToast("Nothing to update as you have not changed the case status!", "warning");
     } else {
-      dispatch(updateCaseStatus({caseId: caseDetails.caseId, status}, ()=>props.setModalShow(false)));
+      const data = {
+        caseId: caseDetails.caseId,
+        userName: userCase.userName,
+        status, caseTitle, aid: user.uid,
+        adminName: `${user.firstName} ${user.middleName} ${user.lastName}`
+      };
+      dispatch(updateCaseStatus(data, ()=>props.setModalShow(false)));
     }
   }
 
@@ -716,17 +724,22 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
     clearLocalStorage();
   }
 
+  const onModalHide = () => {
+    props.toggleOnlyCaseStatusEditable && props.toggleOnlyCaseStatusEditable(true);
+    props.setModalShow(false);
+  }
+
   return (
     <>
       <Modal
         show={props.modalShow}
-        onHide={() => props.setModalShow(false)}
+        onHide={onModalHide}
         size="xl"
         aria-labelledby={`Update Case ${onlyCaseStatusEditable && "Status"}`}
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-custom-modal-styling-title">
-            Update Case {onlyCaseStatusEditable && "Status"}
+            {isFormDisabled ? "View" : "Update"} Case {onlyCaseStatusEditable && "Status"}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -759,7 +772,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                   </Element>
                   <br/>
                   {
-                    !onlyCaseStatusEditable
+                    (!onlyCaseStatusEditable && !isFormDisabled)
                       &&
                         <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
                           <button onClick={()=>setShowResetModal(true)} className="btn btn-primary">Reset All Forms</button>
@@ -776,8 +789,8 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 1
                       &&
                         <Questionaire1
-                          isFormDisabled={onlyCaseStatusEditable}
-                          onlyCaseStatusEditable={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
+                          onlyCaseStatusEditable={onlyCaseStatusEditable || !isFormDisabled}
                           caseStatus={status}
                           setCaseStatus={setStatus}
                           caseTitle={caseTitle}
@@ -804,7 +817,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 2
                       &&
                         <Questionaire2
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           isOrRepresentingPlaintiff={isOrRepresentingPlaintiff}
                           setIsOrRepresentingPlaintiff={setIsOrRepresentingPlaintiff}
                           shouldPGFillPlaintiffInfo={shouldPGFillPlaintiffInfo}
@@ -823,7 +836,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 3
                       &&
                         <Questionaire3
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           isOrRepresentingDefendant={isOrRepresentingDefendant}
                           setIsOrRepresentingDefendant={setIsOrRepresentingDefendant}
                           shouldPGFillDefendantInfo={shouldPGFillDefendantInfo}
@@ -842,7 +855,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 4
                       &&
                         <Questionaire4
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           setNumberOfCaseFilesBeingServed={setNumberOfCaseFilesBeingServed}
                           howManyIndividualsServed={howManyIndividualsServed}
@@ -855,7 +868,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 5
                       &&
                         <Questionaire5
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           serveIndividualAtEmployment={serveIndividualAtEmployment}
                           setServeIndividualAtEmployment={setServeIndividualAtEmployment}
                           requireServerNotifyPersonOfInterest={requireServerNotifyPersonOfInterest}
@@ -870,7 +883,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep === 6
                       &&
                         <Questionaire6
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           serveesPhysicalDescription={serveesPhysicalDescription}
                           setServeesPhysicalDescription={setServeesPhysicalDescription}
                         />
@@ -879,7 +892,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep===7
                       &&
                         <Questionaire7
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           vehiclesInformation={vehiclesInformation}
                           setVehiclesInformation={setVehiclesInformation}
                         />
@@ -888,7 +901,7 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                     activeStep===8
                       &&
                         <Questionaire8
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           specifyDatesForStakeOutService={specifyDatesForStakeOutService}
                           setSpecifyDatesForStakeOutService={setSpecifyDatesForStakeOutService}
                           requireSkipTracingService={requireSkipTracingService}
@@ -916,31 +929,41 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
                       &&
                         <FileSubmission
                           isFormUpdating={!onlyCaseStatusEditable}
-                          isFormDisabled={onlyCaseStatusEditable}
+                          isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           docId={caseDetails.FileSubmission.docId}
                           documentPath={caseDetails.FileSubmission.documentPath}
                           documentURI={caseDetails.FileSubmission.documentURI}
                           numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           fileData={caseDetails.FileSubmission.fileData}
-                          onPressCaseUpdate={handleOnPressCaseUpdate}
+                          onPressCaseUpdate={isFormDisabled ? undefined : handleOnPressCaseUpdate}
                         />
                   }
-                  {
-                    activeStep!==9
-                      &&
-                        <Element name="next-btn" className="element">
-                          <div className="d-flex justify-content-end">
-                            <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={250} duration={500} delay={300}>
-                              <button
-                                className="btn btn-primary mt-1 mb-1"
-                                onClick={()=>handleOnPressNext(activeStep+1)}
-                              >
-                                {getButtonTitle()}
-                              </button>
-                            </RSLink>
-                          </div>
-                        </Element>
-                  }
+                  <div className={`${(onlyCaseStatusEditable && activeStep===9) ? "d-inline" : "d-flex"} justify-content-end`}>
+                    {
+                      onlyCaseStatusEditable
+                        &&
+                          <button
+                            className="btn btn-primary mt-1 mb-1 mr-1"
+                            onClick={()=>props.toggleOnlyCaseStatusEditable(false)}
+                          >
+                            Edit Case
+                          </button>
+                    }
+                    {
+                      activeStep!==9
+                        &&
+                          <Element name="next-btn" className="element">
+                              <RSLink activeClass="active" to="stepper" spy={true} smooth={true} offset={250} duration={500} delay={300}>
+                                <button
+                                  className="btn btn-primary mt-1 mb-1"
+                                  onClick={()=>handleOnPressNext(activeStep+1)}
+                                >
+                                  {getButtonTitle()}
+                                </button>
+                              </RSLink>
+                          </Element>
+                    }
+                  </div>
                   <br/>
                   <ResetQuestionairesConfirmation
                     showModal={showResetModal}
@@ -955,4 +978,4 @@ const EditCase = ({onlyCaseStatusEditable, ...props}) => {
   );
 }
 
-export default EditCase;
+export default ViewEditCase;

@@ -6,7 +6,7 @@ import Pagination from "../../components/Pagination";
 import DeleteNotification from "../../popups/DeleteNotification";
 import ViewNotification from "../../popups/ViewNotification";
 import UpdateAccountStatus from "../../popups/UpdateAccountStatus";
-import EditCase from "../../popups/EditCase";
+import EditCase from "../../popups/ViewEditCase";
 import {
   fetchUserAccountDetails,
   markNotificationAsRead,
@@ -20,6 +20,7 @@ import { capitalizeString } from '../../utils';
 const Notifications = () => {
   const dispatch = useDispatch();
   const [notification, setNotification] = useState(null);
+  const [onlyCaseStatusEditable, toggleOnlyCaseStatusEditable] = useState(true);
   const [endIndex, setEndIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
@@ -32,6 +33,8 @@ const Notifications = () => {
   const lastVisible = useSelector(state => state.admin.lastNotificationVisible);
   const isFetchingNotifications = useSelector(state => state.admin.isFetchingNotifications);
   const metadata = useSelector(state => state.admin.metadata);
+  const userCase = useSelector(state => state.admin.case);
+  const caseDetails = useSelector(state => state.admin.caseDetails);
   const isFetchingMetadata = useSelector(state => state.admin.isFetchingMetadata);
 
   useEffect(()=>{
@@ -94,8 +97,12 @@ const Notifications = () => {
     setAccountStatusModalShow(true);
   }
 
-  const handleOnClickViewCaseDetails = (caseId) => {
-    dispatch(fetchCase({caseId: notification?.content.caseId}, (userCase)=>dispatch(fetchCaseDetails(userCase))));
+  const handleOnClickViewCaseDetails = () => {
+    if((!userCase || userCase.docId!==notification.content.caseId) || ((!userCase || userCase.docId!==notification.content.caseId) && (!caseDetails || caseDetails.caseId!==notification.content.caseId))) {
+      dispatch(fetchCase({caseId: notification.content.caseId}, (userCase)=>dispatch(fetchCaseDetails(userCase))));
+    } else if(!caseDetails || caseDetails.caseId!==notification.content.caseId) {
+      dispatch(fetchCaseDetails(userCase));
+    }
     setEditCaseModalShow(true);
   }
 
@@ -180,7 +187,8 @@ const Notifications = () => {
         setModalShow={setAccountStatusModalShow}
       />
       <EditCase
-        onlyCaseStatusEditable={true}
+        onlyCaseStatusEditable={onlyCaseStatusEditable}
+        toggleOnlyCaseStatusEditable={toggleOnlyCaseStatusEditable}
         modalShow={editCaseModalShow}
         setModalShow={setEditCaseModalShow}
       />

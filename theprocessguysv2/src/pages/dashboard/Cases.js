@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import CreateNewCase from "../../popups/CreateNewCase";
 import DeleteCase from "../../popups/DeleteCase";
-import EditCase from "../../popups/EditCase";
+import EditCase from "../../popups/ViewEditCase";
 import {
   fetchCaseDetails,
   fetchCases,
@@ -18,6 +18,7 @@ const Cases = () => {
   const dispatch = useDispatch();
   const [searchString, setSearchString] = useState("");
   const [userCase, setUserCase] = useState(null);
+  const [isCaseEditable, setIsCaseEditable] = useState(false);
   const [endIndex, setEndIndex] = useState(0);
   const [startIndex, setStartIndex] = useState(0);
   const [activePageNo, setActivePageNo] = useState(1);
@@ -27,6 +28,7 @@ const Cases = () => {
   const cases = useSelector(state => state.admin.cases);
   const lastVisible = useSelector(state => state.admin.lastCaseVisible);
   const isFetchingCases = useSelector(state => state.admin.isFetchingCases);
+  const caseDetails = useSelector(state => state.admin.caseDetails);
   const metadata = useSelector(state => state.admin.metadata);
   const isFetchingMetadata = useSelector(state => state.admin.isFetchingMetadata);
   
@@ -36,7 +38,6 @@ const Cases = () => {
         limit: noOfRowsPerPage,
         lastVisible
       };
-      console.log({data})
       dispatch(fetchCases(data));
     }
     if(!metadata && !isFetchingMetadata) {
@@ -78,9 +79,17 @@ const Cases = () => {
     setDeleteModalShow(true);
   }
 
-  const handleOnClickEdit = (userCase) => {
-    dispatch(fetchCaseDetails(userCase));
-    setUserCase(userCase);
+  const handleOnClickEdit = (userCaseData) => {
+    if(!caseDetails || caseDetails.caseId!==userCaseData.docId) dispatch(fetchCaseDetails(userCaseData));
+    if(!userCase || userCase.docId!==userCaseData.docId) setUserCase(userCaseData);
+    if(!isCaseEditable) setIsCaseEditable(true);
+    setEditModalShow(true);
+  }
+
+  const handleOnClickView = (userCaseData) => {
+    if(!caseDetails || caseDetails.caseId!==userCaseData.docId) dispatch(fetchCaseDetails(userCaseData));
+    if(!userCase || userCase.docId!==userCaseData.docId) setUserCase(userCaseData);
+    if(isCaseEditable) setIsCaseEditable(false);
     setEditModalShow(true);
   }
 
@@ -131,12 +140,17 @@ const Cases = () => {
                         onClick={() => handleOnClickEdit(userCase)}
                         icon="pencil-alt"
                       />
-                      <Link style={{float: "none"}} to={{pathname: `cases/${userCase.docId}`, state: {userCase}}}>
+                      <MDBIcon
+                        style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
+                        onClick={() => handleOnClickView(userCase)}
+                        icon="eye"
+                      />
+                      {/* <Link style={{float: "none"}} to={{pathname: `cases/${userCase.docId}`, state: {userCase}}}>
                         <MDBIcon
                           style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
                           icon="eye"
                         />
-                      </Link>
+                      </Link> */}
                     </td>
                   </tr>
                 ))
@@ -162,6 +176,7 @@ const Cases = () => {
       <EditCase
         modalShow={editModalShow}
         setModalShow={setEditModalShow}
+        isFormDisabled={!isCaseEditable}
       />
     </div>
   );

@@ -429,6 +429,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
           for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
             const caseDocRef = await db.collection("cases").add({
               uid: data.uid, filedAt: new Date(),
+              userName: data.userName,
               caseTitle: data["CaseInformation-1"].caseTitle,
               CaseInformationId: caseInformationDocRef.id,
               PlaintiffInformationId: plaintiffInformationDocRef.id,
@@ -441,7 +442,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               FileSubmissionId: fileSubmissionDocRef.id,
               status: "pending"
             });
-            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: caseDocRef.id, caseTitle: data["CaseInformation-1"].caseTitle}, title: `New case ${caseDocRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
             await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
           }
         }
@@ -454,6 +455,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         for(const serveeDocumentedDataDocRef of serveesDocumentedDataDocRefs) {
           const caseDocRef = await db.collection("cases").add({
             uid: data.uid, filedAt: new Date(),
+            userName: data.userName,
             caseTitle: data["CaseInformation-1"].caseTitle,
             CaseInformationId: caseInformationDocRef.id,
             PlaintiffInformationId: plaintiffInformationDocRef.id,
@@ -466,7 +468,7 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             FileSubmissionId: fileSubmissionDocRef.id,
             status: "pending"
           });
-          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
+          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: caseDocRef.id, caseTitle: data["CaseInformation-1"].caseTitle}, title: `New case ${caseDocRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
           await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
         }
       }
@@ -528,6 +530,9 @@ const updateCaseStatus = (data, onSuccess=()=>{}, onError=()=>{}) => (
     try {
       dispatch(setIsUpdatingCase(true));
       await db.collection("cases").doc(data.caseId).update({status: data.status});
+      if(data.status.toLowerCase() === "cancelled") {
+        db.collection("Notifications").add({category: "case_cancellation", addressed: false, read: false, title: `Case ${data.caseId} for ${data.userName} canceled by ${data.adminName}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, aid: data.aid, userName: data.userName, adminName: data.adminName}, generatedAt: new Date()});
+      }
       dispatch({
         type: UPDATE_CASE_STATUS,
         payload: data
@@ -551,6 +556,9 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       if(data.hasOwnProperty("CaseInformation-1")) {
         if(data["CaseInformation-1"]?.status) {
           await db.collections("cases").doc(data.caseId).update({status: data["CaseInformation-1"].status});
+          if(data["CaseInformation-1"].status.toLowerCase() === "cancelled") {
+            db.collection("Notifications").add({category: "case_cancellation", addressed: false, read: false, title: `Case ${data.caseId} for ${data.userName} canceled by ${data.adminName}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, aid: data.aid, userName: data.userName, adminName: data.adminName}, generatedAt: new Date()});
+          }
           delete data["CaseInformation-1"].status;
         }
         if(data["CaseInformation-1"]?.caseTitle) {
@@ -624,8 +632,9 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             documentURI = await uploadMedia(document.file, `file_submissions/${data.uid}/`, timestamp);
             const fileSubmissionDocRef = await db.collection("FileSubmission-9").add({uid: data.uid, documentURI, documentPath, fileData: {0: {documentName: document.file.name, caseType: document.caseType, description: document.description, fileContents: document.fileContents}}, submittedAt: new Date()});
             const oldCaseData = await db.collection("cases").doc(data.caseId).get();
-            await db.collection("cases").add({
+            const newCaseRef = await db.collection("cases").add({
               uid: data.uid, filedAt: new Date(),
+              userName: data.userName,
               caseTitle: oldCaseData.caseTitle,
               CaseInformationId: oldCaseData.CaseInformationId,
               PlaintiffInformationId: oldCaseData.PlaintiffInformationId,
@@ -639,7 +648,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               searchString: oldCaseData.searchString,
               status: "pending"
             });
-            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
+            notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: newCaseRef.id, caseTitle: oldCaseData.caseTitle}, title: `New case ${newCaseRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
           } else {
             if(document?.file) {
               const timestamp = new Date().getMilliseconds();
@@ -656,8 +665,9 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       } else if(serveesDocumentedDataDocRefs.length>0) {
         for(const sDDDR of serveesDocumentedDataDocRefs) {
           const oldCaseData = await db.collection("cases").doc(data.caseId).get();
-          await db.collection("cases").add({
+          const newCaseRef = await db.collection("cases").add({
             uid: data.uid, filedAt: new Date(),
+            userName: data.userName,
             caseTitle: oldCaseData.caseTitle,
             CaseInformationId: oldCaseData.CaseInformationId,
             PlaintiffInformationId: oldCaseData.PlaintiffInformationId,
@@ -671,7 +681,7 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             searchString: oldCaseData.searchString,
             status: "pending"
           });
-          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {}, generatedAt: new Date()});
+          notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: newCaseRef.id, caseTitle: oldCaseData.caseTitle}, title: `New case ${newCaseRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
         }
       }
       if(data.hasOwnProperty("FileSubmission-9") && !docsUpdated) {
