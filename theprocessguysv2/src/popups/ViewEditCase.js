@@ -99,7 +99,7 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
   useEffect(()=>{
     if(!props.modalShow && activeStep!==1) {
       setActiveStep(1);
-      handleResetForms();
+      // handleResetForms();
     }
   }, [props.modalShow]);
 
@@ -665,6 +665,7 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
 
   const handleResetForms = () => {
     // Reset Form 1
+    setStatus("");
     setCaseTitle("");
     setCaseNumber("");
     setCourtDate("");
