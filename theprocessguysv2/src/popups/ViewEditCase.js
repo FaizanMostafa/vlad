@@ -348,7 +348,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         if(!objectsEqual(courthouseAddress, caseDetails.CaseInformation.courthouseAddress)) data.courthouseAddress=courthouseAddress;
         if(!objectsEqual(courthouseMailingAddress, caseDetails.CaseInformation.courthouseMailingAddress)) data.courthouseMailingAddress=courthouseMailingAddress;
         if(branchName!==caseDetails.CaseInformation.branchName) data.branchName=branchName;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire1', JSON.stringify({docId: caseDetails.CaseInformation.docId, ...data}));
+        if(Object.keys(data).length){
+          localStorage.setItem('Questionaire1', JSON.stringify({docId: caseDetails.CaseInformation.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire1");
+        }
         setActiveStep(nextStep);
       }
     } else if(activeStep === 2) {
@@ -404,7 +408,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         if(shouldPGFillPlaintiffInfo!==caseDetails.PlaintiffInformation.shouldPGFillPlaintiffInfo) data.shouldPGFillPlaintiffInfo=shouldPGFillPlaintiffInfo;
         if(numberOfAttorneysRepresentingPlaintiff!==caseDetails.PlaintiffInformation.numberOfAttorneysRepresentingPlaintiff) data.numberOfAttorneysRepresentingPlaintiff=numberOfAttorneysRepresentingPlaintiff;
         if(!objectsEqual(plaintiffAttorneysDetail, caseDetails.PlaintiffInformation.plaintiffAttorneysDetail)) data.plaintiffAttorneysDetail=plaintiffAttorneysDetail;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire2', JSON.stringify({docId: caseDetails.PlaintiffInformation.docId, ...data}));
+        if(Object.keys(data).length) {
+          localStorage.setItem('Questionaire2', JSON.stringify({docId: caseDetails.PlaintiffInformation.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire2");
+        }
         setActiveStep(nextStep);
       }
     } else if(activeStep === 3) {
@@ -462,7 +470,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         console.log(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail)
         console.log(objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail))
         if(Object.values(defendantAttorneysDetail).length && Object.values(caseDetails.DefendantInformation.defendantAttorneysDetail).length && !objectsEqual(defendantAttorneysDetail, caseDetails.DefendantInformation.defendantAttorneysDetail)) data.defendantAttorneysDetail=defendantAttorneysDetail;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire3', JSON.stringify({docId: caseDetails.DefendantInformation.docId, ...data}));
+        if(Object.keys(data).length) {
+          localStorage.setItem('Questionaire3', JSON.stringify({docId: caseDetails.DefendantInformation.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire3");
+        }
         setActiveStep(nextStep);
       }
     } else if(activeStep === 4) {
@@ -525,7 +537,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         if(numberOfCaseFilesBeingServed!==caseDetails.ServeeDocumentedData.numberOfCaseFilesBeingServed) data.numberOfCaseFilesBeingServed=numberOfCaseFilesBeingServed;
         if(howManyIndividualsServed!==caseDetails.ServeeDocumentedData.howManyIndividualsServed) data.howManyIndividualsServed=howManyIndividualsServed;
         if(!objectsEqual(serveesDetail, caseDetails.ServeeDocumentedData.serveesDetail)) data.serveesDetail=serveesDetail;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire4', JSON.stringify({docId: caseDetails.ServeeDocumentedData.docId, ...data}));
+        if(Object.keys(data).length) {
+          localStorage.setItem('Questionaire4', JSON.stringify({docId: caseDetails.ServeeDocumentedData.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire4");
+        }
         setActiveStep(nextStep);
       }
     } else if(activeStep === 5) {
@@ -543,7 +559,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         if(requireServerNotifyPersonOfInterest!==caseDetails.ClearanceOfAction.requireServerNotifyPersonOfInterest) data.requireServerNotifyPersonOfInterest=requireServerNotifyPersonOfInterest;
         if(serverContactServeeByPhone!==caseDetails.ClearanceOfAction.serverContactServeeByPhone) data.serverContactServeeByPhone=serverContactServeeByPhone;
         if(paralegalAttorneyClientContactServee!==caseDetails.ClearanceOfAction.paralegalAttorneyClientContactServee) data.paralegalAttorneyClientContactServee=paralegalAttorneyClientContactServee;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire5', JSON.stringify({docId: caseDetails.ClearanceOfAction.docId, ...data}));
+        if(Object.keys(data).length) {
+          localStorage.setItem('Questionaire5', JSON.stringify({docId: caseDetails.ClearanceOfAction.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire5");
+        }
         setActiveStep(nextStep);
       }
     } else if(activeStep===6) {
@@ -574,12 +594,20 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         }
         data.serveesPhysicalDescription = serveesFinalPhysicalDescription;
       }
-      if(Object.keys(data).length) localStorage.setItem('Questionaire6', JSON.stringify({docId: caseDetails.ServeePhysicalDescription.docId, ...data}));
+      if(Object.keys(data).length) {
+        localStorage.setItem('Questionaire6', JSON.stringify({docId: caseDetails.ServeePhysicalDescription.docId, ...data}));
+      } else {
+        localStorage.removeItem("Questionaire6");
+      }
       setActiveStep(nextStep);
     } else if(activeStep===7) {
       let data = {};
       if(!objectsEqual(vehiclesInformation, caseDetails.VehicleInformation.vehiclesInformation)) data.vehiclesInformation=vehiclesInformation;
-      if(Object.keys(data).length) localStorage.setItem('Questionaire7', JSON.stringify({docId: caseDetails.VehicleInformation.docId, ...data}));
+      if(Object.keys(data).length) {
+        localStorage.setItem('Questionaire7', JSON.stringify({docId: caseDetails.VehicleInformation.docId, ...data}));
+      } else {
+        localStorage.removeItem("Questionaire7");
+      }
       setActiveStep(nextStep);
     } else if(activeStep===8) {
       if(typeof(requireZipFileService)!=="boolean") {
@@ -610,7 +638,11 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
         if(specificCourtInstruction!==caseDetails.OfferedServices.specificCourtInstruction) data.specificCourtInstruction=specificCourtInstruction;
         if(requireZipFileService!==caseDetails.OfferedServices.requireZipFileService) data.requireZipFileService=requireZipFileService;
         if(ifYesListAddress!==caseDetails.OfferedServices.ifYesListAddress) data.ifYesListAddress=ifYesListAddress;
-        if(Object.keys(data).length) localStorage.setItem('Questionaire8', JSON.stringify({docId: caseDetails.OfferedServices.docId, ...data}));
+        if(Object.keys(data).length) {
+          localStorage.setItem('Questionaire8', JSON.stringify({docId: caseDetails.OfferedServices.docId, ...data}));
+        } else {
+          localStorage.removeItem("Questionaire8");
+        }
         setActiveStep(nextStep);
       }
     }
@@ -936,12 +968,13 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
                           documentURI={caseDetails.FileSubmission.documentURI}
                           numberOfCaseFilesBeingServed={numberOfCaseFilesBeingServed}
                           fileData={caseDetails.FileSubmission.fileData}
-                          onPressCaseUpdate={isFormDisabled ? undefined : handleOnPressCaseUpdate}
+                          toggleOnlyCaseStatusEditable={props.toggleOnlyCaseStatusEditable}
+                          onPressCaseUpdate={onlyCaseStatusEditable && handleOnPressCaseUpdate}
                         />
                   }
                   <div className={`${(onlyCaseStatusEditable && activeStep===9) ? "d-inline" : "d-flex"} justify-content-end`}>
                     {
-                      onlyCaseStatusEditable
+                      (onlyCaseStatusEditable && activeStep!==9)
                         &&
                           <button
                             className="btn btn-primary mt-1 mb-1 mr-1"

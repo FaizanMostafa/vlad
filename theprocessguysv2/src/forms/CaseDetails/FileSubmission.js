@@ -192,14 +192,17 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
             data["adminName"] = `${user.firstName} ${user.middleName} ${user.lastName}`;
             data["userName"] = userCase.userName;
             data["caseTitle"] = userCase.caseTitle;
-            setOnSubmitFunction(()=>dispatch(updateCase(data, ()=>{
-              props.onSuccess();
-              clearLocalStorage();
-            })));
+            data["aid"] = user.uid;
+            const cb = ()=>()=>{
+              setShowCancelCaseConfirmationModal(false);
+              dispatch(updateCase(data, ()=>{
+                clearLocalStorage();
+              }));
+            };
+            setOnSubmitFunction(cb);
             setShowCancelCaseConfirmationModal(true);
           } else {
             dispatch(updateCase(data, ()=>{
-              props.onSuccess();
               clearLocalStorage();
             }));
           }
@@ -245,9 +248,14 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
   }
 
   const handleUpdateCaseStatus = () => {
-    if(JSON.parse(localStorage.getItem("Questionaire1")).status.toLowerCase()==="cancelled") {
+    const Questionaire1 = JSON.parse(localStorage.getItem("Questionaire1"));
+    if(Questionaire1?.status.toLowerCase()==="cancelled") {
       setShowCancelCaseConfirmationModal(true);
-      setOnSubmitFunction(()=>props.onPressCaseUpdate());
+      const cb = ()=>()=>{
+        setShowCancelCaseConfirmationModal(false);
+        props.onPressCaseUpdate();
+      };
+      setOnSubmitFunction(cb);
     } else {
       props.onPressCaseUpdate();
     }
@@ -517,6 +525,16 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
               (!isFormDisabled || props.onPressCaseUpdate)
                 &&
                   <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    {
+                      props.onPressCaseUpdate
+                        &&
+                          <Button
+                            className="mr-1"
+                            onClick={()=>props.toggleOnlyCaseStatusEditable(false)}
+                          >
+                            Edit Case
+                          </Button>
+                    }
                     <Button onClick={props.onPressCaseUpdate ? handleUpdateCaseStatus : handleOnClickSubmit}>
                       {
                         (isUpdating || isCreating)

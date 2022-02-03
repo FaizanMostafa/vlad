@@ -2,11 +2,6 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
 const CaseCancelConfirmation = (props) => {
-  
-  const handleOnPressProceed = () => {
-    props.setModalShow(false);
-    props.handleOnPressProceed();
-  }
 
   return (
     <Modal
@@ -31,7 +26,7 @@ const CaseCancelConfirmation = (props) => {
         <Button variant="success" onClick={() => props.setModalShow(false)}>Close</Button>
         <Button
           variant="danger"
-          onClick={handleOnPressProceed}
+          onClick={props.handleOnPressProceed}
         >
           <span className="text-white">Confirm</span>
         </Button>

@@ -237,6 +237,8 @@ const adminReducer = (state=initState, {type, payload}) => {
       return {
         ...state,
         isUpdatingCase: false,
+        case: {...state.case, status: payload.status},
+        caseDetails: {...state.caseDetails, CaseInformation: {...state.caseDetails.CaseInformation, status: payload.status}},
         cases: updatedCases
       }
     }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
-import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
 import CreateNewCase from "../../popups/CreateNewCase";

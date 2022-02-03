@@ -555,10 +555,14 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       const serveesDocumentedDataDocRefs = [];
       if(data.hasOwnProperty("CaseInformation-1")) {
         if(data["CaseInformation-1"]?.status) {
-          await db.collections("cases").doc(data.caseId).update({status: data["CaseInformation-1"].status});
+          await db.collection("cases").doc(data.caseId).update({status: data["CaseInformation-1"].status});
           if(data["CaseInformation-1"].status.toLowerCase() === "cancelled") {
             db.collection("Notifications").add({category: "case_cancellation", addressed: false, read: false, title: `Case ${data.caseId} for ${data.userName} canceled by ${data.adminName}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, aid: data.aid, userName: data.userName, adminName: data.adminName}, generatedAt: new Date()});
           }
+          dispatch({
+            type: UPDATE_CASE_STATUS,
+            payload: {caseId: data.caseId, status: data["CaseInformation-1"].status}
+          });
           delete data["CaseInformation-1"].status;
         }
         if(data["CaseInformation-1"]?.caseTitle) {
