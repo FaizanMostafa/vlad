@@ -85,7 +85,7 @@ const TOSAgreement = () => {
       <div style={{boxSizing: "border-box", width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: 10, padding: "8px 15px"}}>
         <AddNewTOS />
       </div>
-      <Table striped bordered hover size="sm">
+      <Table bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>

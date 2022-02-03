@@ -7,6 +7,7 @@ import CreateNewCase from "../../popups/CreateNewCase";
 import DeleteCase from "../../popups/DeleteCase";
 import EditCase from "../../popups/ViewEditCase";
 import {
+  setCase,
   fetchCaseDetails,
   fetchCases,
   getMetadataInfo
@@ -79,6 +80,7 @@ const Cases = () => {
   }
 
   const handleOnClickEdit = (userCaseData) => {
+    dispatch(setCase(userCaseData));
     if(!caseDetails || caseDetails.caseId!==userCaseData.docId) dispatch(fetchCaseDetails(userCaseData));
     if(!userCase || userCase.docId!==userCaseData.docId) setUserCase(userCaseData);
     if(!isCaseEditable) setIsCaseEditable(true);
@@ -102,7 +104,7 @@ const Cases = () => {
         /> */}
         <CreateNewCase />
       </div>
-      <Table striped bordered hover size="sm">
+      <Table bordered hover size="sm">
         <thead>
           <tr>
             <th>#</th>

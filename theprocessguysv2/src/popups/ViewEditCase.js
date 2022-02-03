@@ -103,6 +103,10 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
     }
   }, [props.modalShow]);
 
+  useEffect(()=>{
+    console.log({userCase});
+  }, [userCase]);
+
   useEffect(() => {
     if(caseDetails) {
       // Questionaire Form 1

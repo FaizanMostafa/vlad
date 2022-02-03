@@ -364,6 +364,13 @@ const fetchCases = (data) => (
   }
 )
 
+const setCase = (caseData) => {
+  return {
+    type: FETCH_CASE,
+    payload: caseData
+  };
+}
+
 const fetchCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
   (dispatch) => {
     try {
@@ -372,10 +379,7 @@ const fetchCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
         .then((querySnapshot) => {
           const finalData = querySnapshot.data();
           finalData.docId = querySnapshot.id;
-          dispatch({
-            type: FETCH_CASE,
-            payload: finalData
-          });
+          dispatch(setCase(finalData));
           onSuccess(finalData);
         });
     } catch (error) {
@@ -940,6 +944,7 @@ const deleteTOSDocument = (data, onSuccess=()=>{}, onError=()=>{}) => (
 )
 
 export {
+  setCase,
   fetchCase,
   updateUser,
   createUser,
