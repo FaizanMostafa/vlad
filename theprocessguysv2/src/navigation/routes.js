@@ -1,28 +1,24 @@
-import TOSAgreement from "../pages/TOSAgreement";
-import QuestionaireMain from "../pages/questionaireMain";
+import QuestionaireMain from "../pages/QuestionaireMain";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
-import MemberDashboard from "../pages/Dashboard";
-import UpdateProfilePage from "../pages/UpdateProfile";
-import ViewCases from '../pages/viewCases';
+import MemberDashboard from "../pages/MemberDashboard";
+import UpdateProfile from "../pages/UpdateProfile";
 import AdminDashboard from '../pages/dashboard';
-import ThankYouForRegistering from '../pages/ThankYouForRegistering';
-import TermsOfServiceTemplate from '../pages/termsOfServiceTemplate';
-import CaseDocumentArchive from '../pages/caseDocumentArchive';
-import NewsUpdateForClients from '../pages/newsUpdateForClients';
-import ClientPayment from '../pages/clientPayments';
-import ClientPaymentOptions from '../pages/clientPaymentOptions';
-import PaymentSuccessful from '../pages/paymentSucessful';
-import PaymentFailure from '../pages/paymentFailure';
-import AfterUploadMessage from '../pages/afterUploadMessage';
+import CaseDocumentArchive from '../pages/CaseDocumentArchive';
+import NewsUpdateForClients from '../pages/NewsUpdateForClients';
+import ClientPaymentCredit from '../pages/ClientPaymentCredit';
+import ClientPaymentOptions from '../pages/ClientPaymentOptions';
+import PaymentSuccessful from '../pages/PaymentSuccessful';
+import PaymentFailure from '../pages/PaymentFailure';
+import CaseSubmissionSuccess from '../pages/CaseSubmissionSuccess';
 import ContactUs from '../pages/ContactUs';
-import ClientPaymentDebit from '../pages/clientPaymentsDebit';
-import ClientPaymentsZelle from '../pages/clientPaymentsZelle';
-import ClientPaymentsChecks from '../pages/clientPaymentsChecks';
-import ClientPaymentACH from '../pages/clientPaymentACH';
-import NewTermsOfService from '../pages/newTermsOfService';
-import HomePage from '../pages/homePage';
+import ClientPaymentDebit from '../pages/ClientPaymentsDebit';
+import ClientPaymentPayPal from '../pages/ClientPaymentPayPal';
+import ClientPaymentZelle from '../pages/ClientPaymentZelle';
+import ClientPaymentsChecks from '../pages/ClientPaymentsChecks';
+import ClientPaymentACH from '../pages/ClientPaymentACH';
+import HomePage from '../pages/HomePage';
 
 const routes = {
   "superadmin": [
@@ -36,24 +32,21 @@ const routes = {
   "user": [
     {exact: true, path: '/', redirect: "/member-dashboard"},
     {exact: true, path: '/contact-us', component: ContactUs, isProtected: false},
-    {exact: true, path: '/view-cases', component: ViewCases, isProtected: true, redirect: "/login"},
     {exact: true, path: '/member-dashboard', component: MemberDashboard, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/update-profile', component: UpdateProfilePage, isProtected: true, redirect: "/login"},
+    {exact: true, path: '/update-profile', component: UpdateProfile, isProtected: true, redirect: "/login"},
     {exact: true, path: '/questionaire', component: QuestionaireMain, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/questionaire-finished', component: ThankYouForRegistering, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/questionaire-terms-of-service', component: TermsOfServiceTemplate, isProtected: true, redirect: "/login"},
     {exact: true, path: '/case-document-archive', component: CaseDocumentArchive, isProtected: true, redirect: "/login"},
     {exact: true, path: '/news-update-for-clients', component: NewsUpdateForClients, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/client-payment-credit-card', component: ClientPayment, isProtected: true, redirect: "/login"},
+    {exact: true, path: '/client-payment-credit-card', component: ClientPaymentCredit, isProtected: true, redirect: "/login"},
+    {exact: true, path: '/client-payment-paypal', component: ClientPaymentPayPal, isProtected: true, redirect: "/login"},
     {exact: true, path: '/client-payment-options', component: ClientPaymentOptions, isProtected: true, redirect: "/login"},
     {exact: true, path: '/payment-successful', component: PaymentSuccessful, isProtected: true, redirect: "/login"},
     {exact: true, path: '/payment-failure', component: PaymentFailure, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/case-submission-success', component: AfterUploadMessage, isProtected: true, redirect: "/login"},
+    {exact: true, path: '/case-submission-success', component: CaseSubmissionSuccess, isProtected: true, redirect: "/login"},
     {exact: true, path: '/client-payment-debit-card', component: ClientPaymentDebit, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/client-payment-zelle', component: ClientPaymentsZelle, isProtected: true, redirect: "/login"},
+    {exact: true, path: '/client-payment-zelle', component: ClientPaymentZelle, isProtected: true, redirect: "/login"},
     {exact: true, path: '/client-payment-checks', component: ClientPaymentsChecks, isProtected: true, redirect: "/login"},
     {exact: true, path: '/client-payment-ach-to-tpg', component: ClientPaymentACH, isProtected: true, redirect: "/login"},
-    {exact: true, path: '/terms-of-service', component: NewTermsOfService, isProtected: true, redirect: "/login"},
   ],
   "default": [
     {exact: true, path: '/', component: HomePage, isProtected: false},

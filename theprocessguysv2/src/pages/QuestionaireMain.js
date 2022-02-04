@@ -13,7 +13,7 @@ import {
   FileSubmission
 } from "../forms/NewCaseSubmission";
 import {
-  ResetQuestionairesConfirmation
+  ResetQuestionaireConfirmation
 } from "../popups";
 import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 
@@ -852,7 +852,7 @@ function Questionaire() {
             </Element>
       }
       <br/><br/><br/>
-      <ResetQuestionairesConfirmation
+      <ResetQuestionaireConfirmation
         showModal={showResetModal}
         handleModalClose={()=>setShowResetModal(false)}
         handleOnClickConfirm={handleResetForms}

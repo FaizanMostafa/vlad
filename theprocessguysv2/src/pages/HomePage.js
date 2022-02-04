@@ -1,12 +1,12 @@
 import {Fragment} from 'react';
-import tpg_logo_rgb from '../pictures/TPG_logo_rgb.webp';
+import tpg_logo_rgb from '../assets/TPG_logo_rgb.webp';
 
 const HomePage = () => {
 
     return(
         <Fragment>
             <center>
-                <img src={tpg_logo_rgb} loading="lazy" style={{height: 400, width: 400, marginTop: 50, objectFit: "contain"}}/>
+                <img src={tpg_logo_rgb} alt="tpg logo" loading="lazy" style={{height: 400, width: 400, marginTop: 50, objectFit: "contain"}}/>
             </center>
            <h1 className="text-center"> <b>Welcome to The Process Guys official website</b></h1>
            <h4 className="text-center"> <b>we are an organization of professionally licensed Process Servers operating out of the Bay Area;<br/> serving the state of California. who help serve people in need.</b></h4>

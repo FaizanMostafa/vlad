@@ -4,7 +4,7 @@ import { Stepper } from 'react-form-stepper';
 import { Modal, Button } from 'react-bootstrap';
 import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 import {
-  ResetQuestionairesConfirmation
+  ResetQuestionaireConfirmation
 } from "../popups";
 import {
   Questionaire1,
@@ -863,7 +863,7 @@ const CreateNewCase = (props) => {
                 </Element>
           }
           <br/><br/><br/>
-          <ResetQuestionairesConfirmation
+          <ResetQuestionaireConfirmation
             showModal={showResetModal}
             handleModalClose={()=>setShowResetModal(false)}
             handleOnClickConfirm={handleResetForms}

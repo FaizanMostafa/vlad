@@ -1,7 +1,18 @@
-import ResetQuestionairesConfirmation from "./ResetQuestionairesConfirmation";
-import CreateNewUser from "./CreateNewUser";
-
-export {
-  ResetQuestionairesConfirmation,
-  CreateNewUser
-};
+export * as AddNewTOS from "./AddNewTOS";
+export * as CaseCancelConfirmation from "./CaseCancelConfirmation";
+export * as CreateNewAdmin from "./CreateNewAdmin";
+export * as CreateNewCase from "./CreateNewCase";
+export * as CreateNewUser from "./CreateNewUser";
+export * as DeleteCase from "./DeleteCase";
+export * as DeleteNotification from "./DeleteNotification";
+export * as DeleteTOSDoc from "./DeleteTOSDoc";
+export * as DeleteUser from "./DeleteUser";
+export * as EditUser from "./EditUser";
+export * as QuestionaireAdditionalServeeTemplate from "./QuestionaireAdditionalServeeTemplate";
+export * as QuestionaireAdditionalVehicleTemplate from "./QuestionaireAdditionalVehicleTemplate";
+export * as QuestionaireAddressTemplate from "./QuestionaireAddressTemplate";
+export * as QuestionaireAgentOfServiceTemplate from "./QuestionaireAgentOfServiceTemplate";
+export * as ResetQuestionaireConfirmation from "./ResetQuestionaireConfirmation";
+export * as UpdateAccountStatus from "./UpdateAccountStatus";
+export * as ViewEditCase from "./ViewEditCase";
+export * as ViewNotification from "./ViewNotification";

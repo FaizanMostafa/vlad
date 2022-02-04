@@ -1,5 +1,5 @@
 import { MDBCol, MDBInput } from 'mdbreact';
-import QuestionaireAdditionalVehicleTemplate from "../../pages/questionaireAdditionalVehicleTemplate";
+import {QuestionaireAdditionalVehicleTemplate} from "../../popups";
 
 
 const Questionaire7 = (props) => {

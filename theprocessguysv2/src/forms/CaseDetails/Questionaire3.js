@@ -6,7 +6,6 @@ const Questionaire3 = (props) => {
   const {
     isFormDisabled,
     isOrRepresentingDefendant,
-    setIsOrRepresentingDefendant,
     shouldPGFillDefendantInfo,
     setShouldPGFillDefendantInfo,
     defendantsDetail,

@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBCol } from 'mdbreact';
 import { objectsEqual, showToast } from "../../utils";
-import CancelCaseConfirmation from "../../popups/CaseCancelConfirmation";
+import {CaseCancelConfirmation} from "../../popups";
 import {
   updateCase,
   createCase
@@ -551,7 +551,7 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
                   </div>
             }
           </div>
-          <CancelCaseConfirmation
+          <CaseCancelConfirmation
             case={userCase}
             modalShow={showCancelCaseConfirmationModal}
             setModalShow={setShowCancelCaseConfirmationModal}

@@ -14,7 +14,7 @@ import {
 import { showToast } from "../utils";
 import "../App.css";
 
-function ClientPayments(props) {
+function ClientPaymentCredit(props) {
   const stripe = loadStripe(
     "pk_test_51JDeUhHP8jMIq74DWG4uYGfHdWZm0Puvn61GNXXUcgTMcSjIrlxr8AGWj2Wi0x8bNvIGKoBhb8YreUzNuF0uEm41005QVA1EVR"
   );
@@ -160,4 +160,4 @@ function CheckoutForm(props) {
   );
 }
 
-export default ClientPayments;
+export default ClientPaymentCredit;

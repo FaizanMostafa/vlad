@@ -1,6 +1,6 @@
 import { MDBCol, MDBInput } from "mdbreact";
 import FileBase64 from "../../components/FileBase64";
-import QuestionaireAdditionalServeeTemplate from '../../pages/questionaireAdditionalServeeTemplate';
+import {QuestionaireAdditionalServeeTemplate} from "../../popups";
 
 const Questionaire6 = (props) => {
   const {

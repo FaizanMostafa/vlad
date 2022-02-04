@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { db } from "../firebase";
 import { showToast } from "../utils";
 
-const ContactPage = (props) => {
+const ContactUs = (props) => {
 
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhoneNumber, setCustomerPhoneNumber] = useState("");
@@ -201,4 +201,4 @@ const ContactPage = (props) => {
   );
 }
 
-export default ContactPage;
+export default ContactUs;

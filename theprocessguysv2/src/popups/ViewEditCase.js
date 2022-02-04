@@ -4,9 +4,7 @@ import { Stepper, Step } from 'react-form-stepper';
 import { Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
-import {
-  ResetQuestionairesConfirmation
-} from ".";
+import ResetQuestionaireConfirmation from "./ResetQuestionaireConfirmation";
 import {
   updateCaseStatus
 } from "../redux/actions/admin";
@@ -1003,7 +1001,7 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
                     }
                   </div>
                   <br/>
-                  <ResetQuestionairesConfirmation
+                  <ResetQuestionaireConfirmation
                     showModal={showResetModal}
                     handleModalClose={()=>setShowResetModal(false)}
                     handleOnClickConfirm={handleResetForms}

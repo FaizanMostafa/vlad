@@ -1,7 +1,9 @@
 import { MDBCol, MDBRow } from "mdbreact";
 import { Form } from "react-bootstrap";
-import QuestionaireAddressTemplate from "../../pages/questionaireAddressTemplate";
-import QuestionaireAgentOfService from "../../pages/questionaireAgentOfServiceTemplate";
+import {
+  QuestionaireAddressTemplate,
+  QuestionaireAgentOfServiceTemplate
+} from "../../popups";
 
 const Questionaire4 = (props) => {
   const {
@@ -661,7 +663,7 @@ const Questionaire4 = (props) => {
                               !isFormDisabled
                                 &&
                                   <MDBCol>
-                                    <QuestionaireAgentOfService
+                                    <QuestionaireAgentOfServiceTemplate
                                       setAgentFullName={(fullName)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [Object.keys(serviceDetail.agentsOfService).length]: fullName}}}}})}
                                     />
                                   </MDBCol>

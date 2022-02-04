@@ -10,7 +10,7 @@ import BulletinUpdate from "./BulletinUpdate";
 import { logout } from '../../redux/actions/auth';
 import TOSAgreements from './TOSAgreements';
 import UpdateProfile from './UpdateProfile';
-import TPGLogo from "../../pictures/TPG_icon.webp";
+import TPGLogo from "../../assets/TPG_icon.webp";
 
 const AdminDashboard = (props) => {
   let { path, url } = useRouteMatch();

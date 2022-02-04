@@ -2,10 +2,10 @@ import React from 'react';
 import Navbar from 'reactjs-navbar';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import logo from "../pictures/TPG_logo_low.webp";
+import logo from "../../assets/TPG_logo_low.webp";
 import {
   logout
-} from "../redux/actions/auth";
+} from "../../redux/actions/auth";
 import {
   faHome,
   faUser,
@@ -18,7 +18,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import 'reactjs-navbar/dist/index.css';
  
-const NavBar = ({...props}) => {
+const NavBar = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);

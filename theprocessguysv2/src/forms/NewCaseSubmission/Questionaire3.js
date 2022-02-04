@@ -5,7 +5,6 @@ import { Link as RSLink } from 'react-scroll';
 const Questionaire3 = (props) => {
   const {
     isOrRepresentingDefendant,
-    setIsOrRepresentingDefendant,
     shouldPGFillDefendantInfo,
     setShouldPGFillDefendantInfo,
     defendantsDetail,

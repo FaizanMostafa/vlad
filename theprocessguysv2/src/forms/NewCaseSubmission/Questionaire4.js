@@ -1,6 +1,8 @@
 import { MDBCol, MDBRow, MDBInput } from "mdbreact";
-import QuestionaireAddressTemplate from "../../pages/questionaireAddressTemplate";
-import QuestionaireAgentOfService from "../../pages/questionaireAgentOfServiceTemplate";
+import {
+  QuestionaireAddressTemplate,
+  QuestionaireAgentOfServiceTemplate
+} from "../../popups";
 
 const Questionaire4 = (props) => {
   const {
@@ -602,7 +604,7 @@ const Questionaire4 = (props) => {
                               </MDBCol>
                               <br/>
                               <MDBCol>
-                                <QuestionaireAgentOfService
+                                <QuestionaireAgentOfServiceTemplate
                                   setAgentFullName={(fullName)=>setServeesDetail({...serveesDetail, [serveeKey]: {...servee, serviceDetails: {...servee.serviceDetails, [serviceDetailKey]: {...serviceDetail, agentsOfService: {...serviceDetail.agentsOfService, [Object.keys(serviceDetail.agentsOfService).length]: fullName}}}}})}
                                 />
                               </MDBCol>

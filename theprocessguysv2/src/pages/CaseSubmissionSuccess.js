@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AfterUploadMessage() {
+function CaseSubmissionSuccess() {
 
     return(
         <React.Fragment>
@@ -37,4 +37,4 @@ function AfterUploadMessage() {
     )
 }
 
-export default AfterUploadMessage;
+export default CaseSubmissionSuccess;
