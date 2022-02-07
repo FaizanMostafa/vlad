@@ -1,9 +1,9 @@
-export * as Questionaire1 from "./Questionaire1";
-export * as Questionaire2 from "./Questionaire2";
-export * as Questionaire3 from "./Questionaire3";
-export * as Questionaire4 from "./Questionaire4";
-export * as Questionaire5 from "./Questionaire5";
-export * as Questionaire6 from "./Questionaire6";
-export * as Questionaire7 from "./Questionaire7";
-export * as Questionaire8 from "./Questionaire8";
-export * as FileSubmission from './FileSubmission';
+export * from "./Questionaire1";
+export * from "./Questionaire2";
+export * from "./Questionaire3";
+export * from "./Questionaire4";
+export * from "./Questionaire5";
+export * from "./Questionaire6";
+export * from "./Questionaire7";
+export * from "./Questionaire8";
+export * from './FileSubmission';

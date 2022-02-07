@@ -4,7 +4,7 @@ import {
   QuestionaireAgentOfServiceTemplate
 } from "../../popups";
 
-const Questionaire4 = (props) => {
+export const Questionaire4 = (props) => {
   const {
     numberOfCaseFilesBeingServed,
     setNumberOfCaseFilesBeingServed,
@@ -638,5 +638,3 @@ const Questionaire4 = (props) => {
     </>
   );
 }
-
-export default Questionaire4;

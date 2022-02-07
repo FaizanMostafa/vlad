@@ -4,10 +4,12 @@ import { MDBIcon } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
-import CreateNewUser from "../../popups/CreateNewUser";
-import CreateNewAdmin from "../../popups/CreateNewAdmin";
-import DeleteUser from "../../popups/DeleteUser";
-import EditUser from "../../popups/EditUser";
+import {
+  CreateNewUser,
+  CreateNewAdmin,
+  DeleteUser,
+  EditUser
+} from "../../popups";
 import {
   fetchUsers,
   getMetadataInfo

@@ -3,9 +3,11 @@ import { Table } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
-import CreateNewCase from "../../popups/CreateNewCase";
-import DeleteCase from "../../popups/DeleteCase";
-import EditCase from "../../popups/ViewEditCase";
+import {
+  CreateNewCase,
+  DeleteCase,
+  ViewEditCase
+} from "../../popups";
 import {
   setCase,
   fetchCaseDetails,
@@ -174,7 +176,7 @@ const Cases = () => {
         setModalShow={setDeleteModalShow}
         case={userCase}
       />
-      <EditCase
+      <ViewEditCase
         modalShow={editModalShow}
         setModalShow={setEditModalShow}
         isFormDisabled={!isCaseEditable}

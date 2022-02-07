@@ -8,7 +8,7 @@ import {
   submitCase
 } from "../../redux/actions/case";
 
-const FileSubmission = ({...props}) => {
+export const FileSubmission = ({...props}) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -554,5 +554,3 @@ const FileSubmission = ({...props}) => {
     </Fragment>
   )
 }
-
-export default FileSubmission;

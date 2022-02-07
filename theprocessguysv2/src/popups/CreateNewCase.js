@@ -18,7 +18,7 @@ import {
   FileSubmission
 } from "../forms/CaseDetails";
 
-const CreateNewCase = (props) => {
+export const CreateNewCase = (props) => {
   const [show, setShow] = useState(false);
   const [activeStep, setActiveStep] = useState(1);
   const [showResetModal, setShowResetModal] = useState(false);
@@ -873,5 +873,3 @@ const CreateNewCase = (props) => {
     </>
   );
 }
-
-export default CreateNewCase;

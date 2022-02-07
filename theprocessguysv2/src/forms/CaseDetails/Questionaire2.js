@@ -2,7 +2,7 @@ import { Button, Form } from "react-bootstrap";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Link as RSLink } from 'react-scroll';
 
-const Questionaire2 = (props) => {
+export const Questionaire2 = (props) => {
   const {
     isFormDisabled,
     isOrRepresentingPlaintiff,
@@ -450,5 +450,3 @@ const Questionaire2 = (props) => {
     </>
   );
 }
-
-export default Questionaire2;

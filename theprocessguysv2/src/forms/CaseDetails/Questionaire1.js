@@ -1,7 +1,7 @@
 import { MDBCol, MDBRow } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-const Questionaire1 = (props) => {
+export const Questionaire1 = (props) => {
   const {
     isFormDisabled,
     caseStatus,
@@ -263,5 +263,3 @@ const Questionaire1 = (props) => {
     </>
   );
 }
-
-export default Questionaire1;

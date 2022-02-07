@@ -4,7 +4,7 @@ import { Form, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAccountStatus } from '../redux/actions/admin';
 
-const EditUser = (props) => {
+export const UpdateAccountStatus = (props) => {
   const dispatch = useDispatch();
   const isUpdatingUser = useSelector(state => state.admin.isUpdatingUser);
   const user = useSelector(state => state.admin.userAccountDetails);
@@ -520,5 +520,3 @@ const EditUser = (props) => {
     </Modal>
   );
 }
-
-export default EditUser;

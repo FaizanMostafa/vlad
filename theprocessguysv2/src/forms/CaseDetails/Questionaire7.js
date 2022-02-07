@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import {QuestionaireAdditionalVehicleTemplate} from "../../popups";
 
 
-const Questionaire7 = (props) => {
+export const Questionaire7 = (props) => {
   const {
     isFormDisabled,
     vehiclesInformation,
@@ -112,5 +112,3 @@ const Questionaire7 = (props) => {
     </>
   );
 }
-
-export default Questionaire7;

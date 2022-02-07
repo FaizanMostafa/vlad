@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {showToast} from "../utils";
 import { addNewTOSDocument } from '../redux/actions/admin';
 
-const AddNewTOS = (props) => {
+export const AddNewTOS = (props) => {
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("");
   const [version, setVersion] = useState("");
@@ -118,5 +118,3 @@ const AddNewTOS = (props) => {
     </>
   );
 }
-
-export default AddNewTOS;

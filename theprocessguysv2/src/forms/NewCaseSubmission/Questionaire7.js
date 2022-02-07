@@ -2,7 +2,7 @@ import { MDBCol, MDBInput } from 'mdbreact';
 import {QuestionaireAdditionalVehicleTemplate} from "../../popups";
 
 
-const Questionaire7 = (props) => {
+export const Questionaire7 = (props) => {
   const {
     vehiclesInformation,
     setVehiclesInformation
@@ -100,5 +100,3 @@ const Questionaire7 = (props) => {
     </>
   );
 }
-
-export default Questionaire7;

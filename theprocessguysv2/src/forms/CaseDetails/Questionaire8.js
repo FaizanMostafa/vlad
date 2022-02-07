@@ -1,7 +1,7 @@
 import { MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-const Questionaire8 = (props) => {
+export const Questionaire8 = (props) => {
   const {
     isFormDisabled,
     requireSkipTracingService,
@@ -180,5 +180,3 @@ const Questionaire8 = (props) => {
     </>
   );
 }
-
-export default Questionaire8;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-const CaseCancelConfirmation = (props) => {
+export const CaseCancelConfirmation = (props) => {
 
   return (
     <Modal
@@ -34,5 +34,3 @@ const CaseCancelConfirmation = (props) => {
     </Modal>
   );
 }
-
-export default CaseCancelConfirmation;

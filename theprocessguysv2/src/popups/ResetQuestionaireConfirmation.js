@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol } from "mdbreact";
 
-export default function ResetQuestionairesConfirmation({showModal, handleModalClose, handleOnClickConfirm, ...props}) {
+export const ResetQuestionaireConfirmation = ({showModal, handleModalClose, handleOnClickConfirm, ...props}) => {
   return (
     <Modal show={showModal} onHide={handleModalClose}>
       <Modal.Header closeButton>

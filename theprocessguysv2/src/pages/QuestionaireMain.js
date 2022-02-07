@@ -84,7 +84,7 @@ function Questionaire() {
   const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
   const [requireZipFileService, setRequireZipFileService] = useState("");
   const [ifYesListAddress, setIfYesListAddress] = useState("");
-
+console.log({Questionaire1})
   useEffect(() => {
     const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
     const QuestionaireForm2 = JSON.parse(localStorage.getItem("Questionaire2"));

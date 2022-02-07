@@ -1,6 +1,6 @@
 import { MDBCol, MDBInput } from 'mdbreact';
 
-const Questionaire8 = (props) => {
+export const Questionaire8 = (props) => {
   const {
     requireSkipTracingService,
     setRequireSkipTracingService,
@@ -109,5 +109,3 @@ const Questionaire8 = (props) => {
     </>
   );
 }
-
-export default Questionaire8;

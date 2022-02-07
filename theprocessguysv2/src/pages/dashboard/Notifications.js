@@ -3,10 +3,12 @@ import { Table } from 'react-bootstrap';
 import { MDBIcon } from 'mdbreact';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
-import DeleteNotification from "../../popups/DeleteNotification";
-import ViewNotification from "../../popups/ViewNotification";
-import UpdateAccountStatus from "../../popups/UpdateAccountStatus";
-import EditCase from "../../popups/ViewEditCase";
+import {
+  DeleteNotification,
+  ViewNotification,
+  UpdateAccountStatus,
+  ViewEditCase
+} from "../../popups";
 import {
   fetchUserAccountDetails,
   markNotificationAsRead,
@@ -186,7 +188,7 @@ const Notifications = () => {
         modalShow={accountStatusModalShow}
         setModalShow={setAccountStatusModalShow}
       />
-      <EditCase
+      <ViewEditCase
         onlyCaseStatusEditable={onlyCaseStatusEditable}
         toggleOnlyCaseStatusEditable={toggleOnlyCaseStatusEditable}
         modalShow={editCaseModalShow}

@@ -4,8 +4,10 @@ import { MDBIcon } from 'mdbreact';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from "../../components/Pagination";
-import AddNewTOS from "../../popups/AddNewTOS";
-import DeleteTOSDoc from "../../popups/DeleteTOSDoc";
+import {
+  AddNewTOS,
+  DeleteTOSDoc
+ } from "../../popups";
 import {
   fetchTOSDocs,
   getMetadataInfo

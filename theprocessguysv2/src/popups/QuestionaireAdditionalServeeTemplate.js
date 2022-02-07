@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 
-function QuestionaireAttorneyTemplateD({ serveesPhysicalDescription, setServeesPhysicalDescription }) {
+export const QuestionaireAdditionalServeeTemplate = ({ serveesPhysicalDescription, setServeesPhysicalDescription }) => {
   const [showModal, setShow] = useState(false);
   const [physicalDescription, setPhysicalDescription] = useState({
     fullName: { firstName: "", middleName: "", lastName: "" },
@@ -173,5 +173,3 @@ function QuestionaireAttorneyTemplateD({ serveesPhysicalDescription, setServeesP
     </Fragment>
   );
 }
-
-export default QuestionaireAttorneyTemplateD;

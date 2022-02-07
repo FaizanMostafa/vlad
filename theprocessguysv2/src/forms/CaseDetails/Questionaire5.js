@@ -1,7 +1,7 @@
 import { MDBCol } from 'mdbreact';
 import { Form } from 'react-bootstrap';
 
-const Questionaire5 = (props) => {
+export const Questionaire5 = (props) => {
   const {
     isFormDisabled,
     serveIndividualAtEmployment,
@@ -98,5 +98,3 @@ const Questionaire5 = (props) => {
     </>
   );
 }
-
-export default Questionaire5;

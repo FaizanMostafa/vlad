@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 import { createUser } from '../redux/actions/admin';
 
-const CreateNewAdmin = (props) => {
+export const CreateNewAdmin = (props) => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const isCreatingUser = useSelector(state => state.admin.isCreatingUser);
@@ -324,5 +324,3 @@ const CreateNewAdmin = (props) => {
     </>
   );
 }
-
-export default CreateNewAdmin;

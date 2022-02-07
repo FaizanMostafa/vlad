@@ -3,7 +3,7 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { MDBRow, MDBCol, MDBInput } from "mdbreact";
 import { showToast } from "../utils";
 
-function QuestionaireAddressTemplate({setServiceDetails}) {
+export const QuestionaireAddressTemplate = ({setServiceDetails}) => {
   const [showModal, setShow] = useState(false);
   const [localServiceDetails, setLocalServiceDetails] = useState({locationType: "", address: {street: "", city: "", state: "", zipCode: "", country: ""}, typeOfServe: "", requireFirst24HourService: "", requireRushService: "", requireStakeOutService: "", ceaseDate: "", shouldSubServeToCompanion: "", shouldDropServe: "", shouldLeaveDoorTag: "", shouldPostDocsWithBand: "", isThereAnAgentOfService: "", agentsOfService: {0: {firstName: "", middleName: "", lastName: ""}}});
 
@@ -351,5 +351,3 @@ function QuestionaireAddressTemplate({setServiceDetails}) {
     </Fragment>
   );
 }
-  
-export default QuestionaireAddressTemplate;

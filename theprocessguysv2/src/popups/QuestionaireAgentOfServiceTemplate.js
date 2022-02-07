@@ -3,7 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import { showToast } from "../utils";
 
-function QuestionaireAgentOfServiceTemplate({setAgentFullName}) {
+export const QuestionaireAgentOfServiceTemplate = ({setAgentFullName}) => {
   const [showModal, setShow] = useState(false);
   const [fullName, setFullName] = useState({firstName: "", middleName: "", lastName: ""});
 
@@ -73,5 +73,3 @@ function QuestionaireAgentOfServiceTemplate({setAgentFullName}) {
     </Fragment>
   );
 }
-  
-export default QuestionaireAgentOfServiceTemplate;

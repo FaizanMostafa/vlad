@@ -1,6 +1,6 @@
 import { MDBCol, MDBInput } from 'mdbreact';
 
-const Questionaire1 = (props) => {
+export const Questionaire1 = (props) => {
   const {
     caseTitle,
     setCaseTitle,
@@ -219,5 +219,3 @@ const Questionaire1 = (props) => {
     </>
   );
 }
-
-export default Questionaire1;

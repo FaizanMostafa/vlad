@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import FileBase64 from "../../components/FileBase64";
 import {QuestionaireAdditionalServeeTemplate} from "../../popups";
 
-const Questionaire6 = (props) => {
+export const Questionaire6 = (props) => {
   const {
     isFormDisabled,
     serveesPhysicalDescription,
@@ -168,7 +168,7 @@ const Questionaire6 = (props) => {
                         &&
                           <>
                             <Form.Label>Servee Image</Form.Label><br/>
-                            <img src={servee.imageURI} resizeMethod="contain" style={{height: 125, width: 125}} />
+                            <img src={servee.imageURI} alt="servee" resizeMethod="contain" style={{height: 125, width: 125}} />
                           </>
                     :
                       <Form.Group id="image-of-individuals">
@@ -200,5 +200,3 @@ const Questionaire6 = (props) => {
     </>
   );
 }
-
-export default Questionaire6;

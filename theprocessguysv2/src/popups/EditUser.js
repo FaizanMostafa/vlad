@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
 import { updateUser } from '../redux/actions/admin';
 
-const EditUser = (props) => {
+export const EditUser = (props) => {
   const dispatch = useDispatch();
   const isUpdatingUser = useSelector(state => state.admin.isUpdatingUser);
   const [email, setEmail] = useState("");
@@ -729,5 +729,3 @@ const EditUser = (props) => {
     </Modal>
   );
 }
-
-export default EditUser;

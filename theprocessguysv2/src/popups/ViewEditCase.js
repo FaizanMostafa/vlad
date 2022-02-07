@@ -4,7 +4,7 @@ import { Stepper, Step } from 'react-form-stepper';
 import { Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { objectsEqual, showToast, validateEmail, validatePhoneNumber } from "../utils";
-import ResetQuestionaireConfirmation from "./ResetQuestionaireConfirmation";
+import {ResetQuestionaireConfirmation} from "./index";
 import {
   updateCaseStatus
 } from "../redux/actions/admin";
@@ -20,7 +20,7 @@ import {
   FileSubmission
 } from "../forms/CaseDetails";
 
-const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
+export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = useState(1);
   const [showResetModal, setShowResetModal] = useState(false);
@@ -1013,5 +1013,3 @@ const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props}) => {
     </>
   );
 }
-
-export default ViewEditCase;

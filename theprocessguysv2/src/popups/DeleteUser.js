@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from "../redux/actions/admin";
 
-const DeleteUser = (props) => {
+export const DeleteUser = (props) => {
   const dispatch = useDispatch();
   const isDeletingUser = useSelector(state => state.admin.isDeletingUser);
   
@@ -56,5 +56,3 @@ const DeleteUser = (props) => {
     </Modal>
   );
 }
-
-export default DeleteUser;

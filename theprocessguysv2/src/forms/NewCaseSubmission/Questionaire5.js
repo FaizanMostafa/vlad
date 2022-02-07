@@ -1,6 +1,6 @@
 import { MDBCol } from "mdbreact";
 
-const Questionaire5 = (props) => {
+export const Questionaire5 = (props) => {
   const {
     serveIndividualAtEmployment,
     setServeIndividualAtEmployment,
@@ -52,5 +52,3 @@ const Questionaire5 = (props) => {
     </>
   );
 }
-
-export default Questionaire5;

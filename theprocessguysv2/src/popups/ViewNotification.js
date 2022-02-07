@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { markNotificationAsAddressed } from "../redux/actions/admin";
 import { getDateTimeString } from '../utils';
 
-const ViewNotification = (props) => {
+export const ViewNotification = (props) => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
   const [notification, setNotification] = useState(null);
@@ -115,5 +115,3 @@ const ViewNotification = (props) => {
     </Modal>
   );
 }
-
-export default ViewNotification;

@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import { MDBRow, MDBCol, MDBInput } from 'mdbreact';
 import { Link as RSLink } from 'react-scroll';
 
-const Questionaire3 = (props) => {
+export const Questionaire3 = (props) => {
   const {
     isOrRepresentingDefendant,
     shouldPGFillDefendantInfo,
@@ -391,5 +391,3 @@ const Questionaire3 = (props) => {
     </>
   );
 }
-
-export default Questionaire3;

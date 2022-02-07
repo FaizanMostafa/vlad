@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNotification } from "../redux/actions/admin";
 
-const DeleteNotification = (props) => {
+export const DeleteNotification = (props) => {
   const dispatch = useDispatch();
   const isDeletingNotification = useSelector(state => state.admin.isDeletingNotification);
   
@@ -55,5 +55,3 @@ const DeleteNotification = (props) => {
     </Modal>
   );
 }
-
-export default DeleteNotification;

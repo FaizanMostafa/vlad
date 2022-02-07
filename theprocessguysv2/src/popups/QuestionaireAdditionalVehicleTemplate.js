@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 
-function QuestionaireAdditionalVehicleTemplate({vehiclesInformation, setVehiclesInformation}) {
+export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setVehiclesInformation}) => {
 
   const [showModal, setShow] = useState(false);
   const [vehicleInformation, setVehicleInformation] = useState({
@@ -110,5 +110,3 @@ function QuestionaireAdditionalVehicleTemplate({vehiclesInformation, setVehicles
     </React.Fragment>
   );
 }
-
-export default QuestionaireAdditionalVehicleTemplate;

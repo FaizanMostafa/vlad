@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTOSDocument } from "../redux/actions/admin";
 
-const DeleteTOSDoc = (props) => {
+export const DeleteTOSDoc = (props) => {
   const dispatch = useDispatch();
   const isDeletingTOSDoc = useSelector(state => state.admin.isDeletingTOSDoc);
   
@@ -55,5 +55,3 @@ const DeleteTOSDoc = (props) => {
     </Modal>
   );
 }
-
-export default DeleteTOSDoc;

@@ -9,7 +9,7 @@ import {
   createCase
 } from "../../redux/actions/admin";
 
-const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
+export const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
   const dispatch = useDispatch();
   const [onSubmitFunction, setOnSubmitFunction] = useState(null);
@@ -560,5 +560,3 @@ const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         </Fragment>
   )
 }
-
-export default FileSubmission;

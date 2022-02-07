@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCase } from "../redux/actions/admin";
 
-const DeleteCase = (props) => {
+export const DeleteCase = (props) => {
   const dispatch = useDispatch();
   const isDeletingCase = useSelector(state => state.admin.isDeletingCase);
   
@@ -55,5 +55,3 @@ const DeleteCase = (props) => {
     </Modal>
   );
 }
-
-export default DeleteCase;
