@@ -444,7 +444,8 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               VehicleInformationId: vehicleInformationDocRef.id,
               OfferedServicesId: offeredServicesDocRef.id,
               FileSubmissionId: fileSubmissionDocRef.id,
-              status: "pending"
+              status: "pending",
+              amount: ""
             });
             notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: caseDocRef.id, caseTitle: data["CaseInformation-1"].caseTitle}, title: `New case ${caseDocRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
             await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
@@ -470,7 +471,8 @@ const createCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             VehicleInformationId: vehicleInformationDocRef.id,
             OfferedServicesId: offeredServicesDocRef.id,
             FileSubmissionId: fileSubmissionDocRef.id,
-            status: "pending"
+            status: "pending",
+            amount: ""
           });
           notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: caseDocRef.id, caseTitle: data["CaseInformation-1"].caseTitle}, title: `New case ${caseDocRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
           await db.collection("cases").doc(caseDocRef.id).update({searchString: `${data["CaseInformation-1"].caseTitle} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.fullName.firstName} ${p.fullName.middleName} ${p.fullName.lastName}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.fullName.firstName} ${d.fullName.middleName} ${d.fullName.lastName}`)).join(" ")} ${Object.values(data["PlaintiffInformation-2"].plaintiffAttorneysDetail).map((pa)=>(`${pa.fullName.firstName} ${pa.fullName.middleName} ${pa.fullName.lastName}`)).join(" ")} ${data["CaseInformation-1"].courthouseAddress.street} ${data["CaseInformation-1"].courthouseAddress.city} ${data["CaseInformation-1"].courthouseAddress.state} ${data["CaseInformation-1"].courthouseAddress.zipCode} ${data["CaseInformation-1"].courthouseAddress.country} ${data["CaseInformation-1"].courthouseMailingAddress.street} ${data["CaseInformation-1"].courthouseMailingAddress.city} ${data["CaseInformation-1"].courthouseMailingAddress.state} ${data["CaseInformation-1"].courthouseMailingAddress.zipCode} ${data["CaseInformation-1"].courthouseMailingAddress.country} ${Object.values(data["PlaintiffInformation-2"].plaintiffsDetail).map((p)=>(`${p.address.street} ${p.address.city} ${p.address.state} ${p.address.zipCode} ${p.address.country}`)).join(" ")} ${Object.values(data["DefendantInformation-3"].defendantsDetail).map((d)=>(`${d.address.street} ${d.address.city} ${d.address.state} ${d.address.zipCode} ${d.address.country}`)).join(" ")} ${data["OfferedServices-8"].ifYesListAddress} ${data["CaseInformation-1"].countyOf} ${new Date().toDateString()} ${data["CaseInformation-1"].caseNumber} TPG${caseDocRef.id}`});
@@ -496,7 +498,7 @@ const fetchCaseDetails = (data, onSuccess=()=>{}, onError=()=>{}) => (
       let caseData = {};
       let subQuerySnapshot = {};
       subQuerySnapshot = await db.collection("CaseInformation-1").doc(data.CaseInformationId).get();
-      caseData["CaseInformation"] = {docId: subQuerySnapshot.id, status: data.status, ...subQuerySnapshot.data()};
+      caseData["CaseInformation"] = {docId: subQuerySnapshot.id, status: data.status, amount: data?.amount, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("PlaintiffInformation-2").doc(data.PlaintiffInformationId).get();
       caseData["PlaintiffInformation"] = {docId: subQuerySnapshot.id, ...subQuerySnapshot.data()};
       subQuerySnapshot = await db.collection("DefendantInformation-3").doc(data.DefendantInformationId).get();
@@ -533,7 +535,9 @@ const updateCaseStatus = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async(dispatch) => {
     try {
       dispatch(setIsUpdatingCase(true));
-      await db.collection("cases").doc(data.caseId).update({status: data.status});
+      const dataToUpdate = {status: data.status};
+      if(data?.amount) dataToUpdate.amount = data.amount;
+      await db.collection("cases").doc(data.caseId).update(dataToUpdate);
       if(data.status.toLowerCase() === "cancelled") {
         db.collection("Notifications").add({category: "case_cancellation", addressed: false, read: false, title: `Case ${data.caseId} for ${data.userName} canceled by ${data.adminName}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, aid: data.aid, userName: data.userName, adminName: data.adminName}, generatedAt: new Date()});
       }
@@ -558,20 +562,22 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       dispatch(setIsUpdatingCase(true));
       const serveesDocumentedDataDocRefs = [];
       if(data.hasOwnProperty("CaseInformation-1")) {
-        if(data["CaseInformation-1"]?.status) {
-          await db.collection("cases").doc(data.caseId).update({status: data["CaseInformation-1"].status});
-          if(data["CaseInformation-1"].status.toLowerCase() === "cancelled") {
+        if(data["CaseInformation-1"]?.caseTitle || data["CaseInformation-1"]?.status || data["CaseInformation-1"]?.amount) {
+          const caseDataToUpdate = {};
+          if(data["CaseInformation-1"]?.caseTitle) caseDataToUpdate.caseTitle = data["CaseInformation-1"].caseTitle;
+          if(data["CaseInformation-1"]?.status) caseDataToUpdate.status = data["CaseInformation-1"].status;
+          if(data["CaseInformation-1"]?.amount) caseDataToUpdate.amount = data["CaseInformation-1"].amount;
+          await db.collection("cases").doc(data.caseId).update(caseDataToUpdate);
+          if(data["CaseInformation-1"]?.status && data["CaseInformation-1"].status.toLowerCase() === "cancelled") {
             db.collection("Notifications").add({category: "case_cancellation", addressed: false, read: false, title: `Case ${data.caseId} for ${data.userName} canceled by ${data.adminName}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, aid: data.aid, userName: data.userName, adminName: data.adminName}, generatedAt: new Date()});
           }
           dispatch({
             type: UPDATE_CASE_STATUS,
-            payload: {caseId: data.caseId, status: data["CaseInformation-1"].status}
+            payload: {caseId: data.caseId, ...caseDataToUpdate}
           });
-          delete data["CaseInformation-1"].status;
-        }
-        if(data["CaseInformation-1"]?.caseTitle) {
-          await db.collection("cases").doc(data.caseId).update({caseTitle: data["CaseInformation-1"].caseTitle});
-          delete data["CaseInformation-1"].caseTitle;
+          if(data["CaseInformation-1"]?.caseTitle) delete data["CaseInformation-1"].caseTitle;
+          if(data["CaseInformation-1"]?.status) delete data["CaseInformation-1"].status;
+          if(data["CaseInformation-1"]?.amount) delete data["CaseInformation-1"].amount;
         }
         if(Object.keys(data["CaseInformation-1"]).length) {
           await db.collection("CaseInformation-1").doc(data["CaseInformation-1"].docId).update({...data["CaseInformation-1"]});
@@ -654,7 +660,8 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
               OfferedServicesId: oldCaseData.OfferedServicesId,
               FileSubmissionId: fileSubmissionDocRef.id,
               searchString: oldCaseData.searchString,
-              status: "pending"
+              status: "pending",
+              amount: ""
             });
             notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: newCaseRef.id, caseTitle: oldCaseData.caseTitle}, title: `New case ${newCaseRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
           } else {
@@ -687,7 +694,8 @@ const updateCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
             OfferedServicesId: oldCaseData.OfferedServicesId,
             FileSubmissionId: oldCaseData.FileSubmissionId,
             searchString: oldCaseData.searchString,
-            status: "pending"
+            status: "pending",
+            amount: ""
           });
           notificationsBatch.set(db.collection("Notifications").doc(), {category: "case_submission", addressed: false, read: false, content: {uid: data.uid, userName: data.userName, caseId: newCaseRef.id, caseTitle: oldCaseData.caseTitle}, title: `New case ${newCaseRef.id} submission from ${data.userName}, please review for approval`, generatedAt: new Date()});
         }

@@ -142,6 +142,8 @@ const getUserCases = (data, onSuccess=()=>{}, onError=()=>{}) => (
               id: doc.id,
               caseTitle: docData.caseTitle,
               status: docData.status,
+              amount: docData?.amount,
+              payment: docData?.payment,
               searchString: docData.searchString,
               details: null,
               filedAt: docData.filedAt

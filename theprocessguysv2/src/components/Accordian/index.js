@@ -32,7 +32,6 @@ function CustomToggleBtn({ caseId, hasDetails, setIsLoading, children, callback,
 function CustomToggle({ index, caseData, children, ...props }) {
   const [isLoading, setIsLoading] = useState(true);
   const isFetchingCaseDetails = useSelector(state => state.caseReducer.isFetchingCaseDetails);
-
   return (
     <Accordion key={`${index}`} style={{ marginBottom: 20 }}>
       <Card>
@@ -106,12 +105,12 @@ function CustomToggle({ index, caseData, children, ...props }) {
                         <Link to={{ pathname: "/case-questionare", state: { caseId: caseData.id } }} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight: "20px" }}>Open Case Questionare</Link>
                         <Link to={{ pathname: "/attempt-logs", state: { caseId: caseData.id } }} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight: "20px" }}>Attempt Logs</Link>
                         {
-                          (caseData.status.toLowerCase() !== "pending" && caseData?.payment?.status?.toLowerCase() !== "closed")
+                          ((!caseData.hasOwnProperty("payment") || caseData.payment?.status?.toLowerCase()!=="done") && caseData?.amount && caseData.status.toLowerCase() !== "pending" && caseData?.payment?.status?.toLowerCase() !== "closed" && caseData?.payment?.status?.toLowerCase() !== "cancelled")
                           &&
-                          <Link to={{ pathname: "/client-payment-options", state: { caseId: caseData.id } }} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight: "20px" }}>Make Payment</Link>
+                          <Link to={{ pathname: "/client-payment-options", state: {caseData} }} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight: "20px" }}>Make Payment</Link>
                         }
                         {
-                          caseData.status.toLowerCase() !== "pending"
+                          caseData?.payment?.status?.toLowerCase() === "done"
                           &&
                           <Link to={{ pathname: "/view-invoice", state: { caseId: caseData.id } }} className="btn btn-secondary" style={{ marginBottom: "20px", marginRight: "20px" }}>View Invoice</Link>
                         }

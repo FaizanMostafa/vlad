@@ -228,19 +228,23 @@ const adminReducer = (state=initState, {type, payload}) => {
 
     case UPDATE_CASE_STATUS: {
       let updatedCases = [];
+      let caseDataToUpdate = {};
+      if(payload?.status) caseDataToUpdate.status = payload.status;
+      if(payload?.amount) caseDataToUpdate.amount = payload.amount;
       state.cases.forEach((caseData)=>{
         if(caseData.docId===payload.caseId) {
-          caseData.status = payload.status;
+          if(payload?.status) caseData.status = payload.status;
+          if(payload?.amount) caseData.amount = payload.amount;
         }
         updatedCases.push(caseData);
       });
       return {
         ...state,
         isUpdatingCase: false,
-        case: {...state.case, status: payload.status},
-        caseDetails: {...state.caseDetails, CaseInformation: {...state.caseDetails.CaseInformation, status: payload.status}},
+        case: {...state.case, ...caseDataToUpdate},
+        caseDetails: {...state.caseDetails, CaseInformation: {...state.caseDetails.CaseInformation, ...caseDataToUpdate}},
         cases: updatedCases
-      }
+      };
     }
 
     case FETCH_CASE: {

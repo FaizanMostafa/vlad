@@ -34,17 +34,33 @@ const createPaymentIntent = (data, onSuccess=()=>{}, onError=()=>{}) => (
 
 const updatePaymentStatus = (data, onSuccess=()=>{}, onError=()=>{}) => (
   async (dispatch) => {
-    await db.collection("cases").doc(data.caseId).update({
-      payment: {
-        transactionId: data.transactionId,
-        transactionTimestamp: new Date(),
-        status: "done"
-      }
-    });
+    try {
+      await db.collection("cases").doc(data.caseId).update({
+        payment: {
+          transactionId: data.transactionId,
+          transactionTimestamp: new Date(),
+          status: "done"
+        }
+      });
+      await generatePaymentNotification("success", data);
+      onSuccess();
+    } catch (error) {
+      onError();
+      showToast(error.message, "error");
+    }
   }
 )
 
+const generatePaymentNotification = (type, data) => {
+  if(type.toLowerCase()==="success") {
+    return db.collection("Notifications").add({category: "payment_success", addressed: false, read: false, title: `${data.userName} has successfully completed payment of ${data.amount}$ for case ${data.caseId}`, content: {caseId: data.caseId, caseTitle: data.caseTitle, uid: data.uid, userName: data.userName, amount: data.amount, transactionId: data.transactionId}, generatedAt: new Date()});
+  } else {
+    return db.collection("Notifications").add({category: "payment_failure", addressed: false, read: false, title: `${data.userName} payment of ${data.amount}$ for case ${data.caseId} was unsuccessful, please review it!`, content: {caseId: data.caseId, caseTitle: data.caseTitle, uid: data.uid, userName: data.userName, amount: data.amount, transactionId: data.transactionId}, generatedAt: new Date()});
+  }
+}
+
 export {
+  generatePaymentNotification,
   createPaymentIntent,
   updatePaymentStatus
 };

@@ -9,6 +9,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createPaymentIntent,
+  generatePaymentNotification,
   updatePaymentStatus
 } from "../redux/actions/stripe";
 import { showToast } from "../utils";
@@ -33,11 +34,14 @@ function CheckoutForm(props) {
   const [address, setAddress] = useState("");
   const [clientSecret, setClientSecret] = useState(null);
   const [isPaymentLoading, setPaymentLoading] = useState(false);
+  const user = useSelector(state => state.auth.user);
   const isCreatingIntent = useSelector(state => state.stripe.isCreatingPaymentIntent);
   
   useEffect(() => {
+    console.log(props.location.state.caseData)
+    alert(props.location.state.caseData.id)
     dispatch(createPaymentIntent(
-      {caseId: props.location.state.caseId},
+      {caseId: props.location.state.caseData.id},
       (secret)=>setClientSecret(secret),
       ()=>setClientSecret(undefined)
     ));
@@ -67,12 +71,26 @@ function CheckoutForm(props) {
         },
       });
       setPaymentLoading(false);
-      if (paymentResult.error) {
+      const data = {
+        uid: user.uid,
+        userName: `${user.firstName} ${user.middleName} ${user.lastName}`,
+        caseTitle: props.location.state.caseData.caseTitle,
+        caseId: props.location.state.caseData.id,
+        amount: props.location.state.caseData.amount
+      }
+      if(paymentResult.error) {
+        data.transactionId = paymentResult?.paymentIntent?.id;
+        await generatePaymentNotification("failure", data);
         showToast(paymentResult.error.message, "error");
-      } else if (paymentResult.paymentIntent.status === "succeeded") {
-        dispatch(updatePaymentStatus({caseId: props.location.state.caseId, transactionId: paymentResult.paymentIntent.id}));
+      } else if(paymentResult.paymentIntent.status === "succeeded") {
+        data.transactionId = paymentResult.paymentIntent.id;
+        dispatch(updatePaymentStatus(data));
         showToast("Payment was made successfully!", "success");
         props.history.push("/case-document-archive");
+      } else {
+        data.transactionId = paymentResult?.paymentIntent?.id;
+        await generatePaymentNotification("failure", data);
+        showToast(paymentResult.error.message, "error");
       }
     }
   };

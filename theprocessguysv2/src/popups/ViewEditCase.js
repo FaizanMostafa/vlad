@@ -31,6 +31,7 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
   
   // Questionaire Form 1
   const [status, setStatus] = useState("");
+  const [amount, setAmount] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
@@ -101,14 +102,11 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
     }
   }, [props.modalShow]);
 
-  useEffect(()=>{
-    console.log({userCase});
-  }, [userCase]);
-
   useEffect(() => {
     if(caseDetails) {
       // Questionaire Form 1
-      setStatus(caseDetails?.CaseInformation.status);
+      setStatus(caseDetails?.CaseInformation?.status);
+      setAmount(caseDetails?.CaseInformation?.amount);
       setCaseTitle(caseDetails?.CaseInformation.caseTitle);
       setCaseNumber(caseDetails?.CaseInformation.caseNumber);
       setCourtDate(caseDetails?.CaseInformation.courtDate);
@@ -304,6 +302,8 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
     if(activeStep === 1) {
       if(!status.length) {
         showToast("Please select case status!", "warning");
+      } else if(amount && !amount.length) {
+        showToast("Amount field cannot be empty, please type in either an amount or 0!", "warning");
       } else if(!caseTitle.length) {
         showToast("Please enter case title!", "warning");
       } else if(!caseNumber.length) {
@@ -341,6 +341,7 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
       } else {
         let data = {};
         if(status!==caseDetails.CaseInformation.status) data.status=status;
+        if(amount!==caseDetails.CaseInformation?.amount) data.amount=amount;
         if(caseTitle!==caseDetails.CaseInformation.caseTitle) data.caseTitle=caseTitle;
         if(caseNumber!==caseDetails.CaseInformation.caseNumber) data.caseNumber=caseNumber;
         if(courtDate!==caseDetails.CaseInformation.courtDate) data.courtDate=courtDate;
@@ -662,6 +663,7 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
         status, caseTitle, aid: user.uid,
         adminName: `${user.firstName} ${user.middleName} ${user.lastName}`
       };
+      if(userCase?.amount !== amount) data.amount = amount;
       dispatch(updateCaseStatus(data, ()=>props.setModalShow(false)));
     }
   }
@@ -700,6 +702,7 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
   const handleResetForms = () => {
     // Reset Form 1
     setStatus("");
+    setAmount("");
     setCaseTitle("");
     setCaseNumber("");
     setCourtDate("");
@@ -827,6 +830,8 @@ export const ViewEditCase = ({onlyCaseStatusEditable, isFormDisabled, ...props})
                           isFormDisabled={onlyCaseStatusEditable || isFormDisabled}
                           onlyCaseStatusEditable={onlyCaseStatusEditable || !isFormDisabled}
                           caseStatus={status}
+                          amount={amount}
+                          setAmount={setAmount}
                           setCaseStatus={setStatus}
                           caseTitle={caseTitle}
                           setCaseTitle={setCaseTitle}

@@ -41,6 +41,18 @@ export const ViewNotification = (props) => {
       <Modal.Body>
         <h4>{notification?.title}</h4><br/>
         {
+          (notification?.category==="payment_success" || notification?.category==="payment_failure")
+            &&
+              <>
+                <span style={{color: "black"}}><b>Case Number:</b> {notification?.content.caseId}</span><br/>
+                <span style={{color: "black"}}><b>Case Title:</b> {notification?.content.caseTitle}</span><br/>
+                <span style={{color: "black"}}><b>Amount Paid:</b> {notification?.content.amount}$</span><br/>
+                <span style={{color: "black"}}><b>Paid By:</b> {notification?.content.userName}</span><br/>
+                <span style={{color: "black"}}><b>Transaction Id:</b> {notification?.content.transactionId}</span><br/>
+                {/* <span onClick={handleOnClickViewCaseDetails} style={{color: "blue", textDecoration: "underline", cursor: "pointer"}}><b>View Case Details</b></span><br/> */}
+              </>
+        }
+        {
           notification?.category==="case_submission"
             &&
               <>

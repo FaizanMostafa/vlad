@@ -76,6 +76,7 @@ export const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
           data["CaseInformation-1"] = {};
         }
         if(QuestionaireForm1.hasOwnProperty("status")) data["CaseInformation-1"].status=QuestionaireForm1.status;
+        if(QuestionaireForm1?.amount) data["CaseInformation-1"].amount=QuestionaireForm1.amount;
         if(QuestionaireForm1.hasOwnProperty("caseTitle")) data["CaseInformation-1"].caseTitle=QuestionaireForm1.caseTitle;
         if(QuestionaireForm1.hasOwnProperty("caseNumber")) data["CaseInformation-1"].caseNumber=QuestionaireForm1.caseNumber;
         if(QuestionaireForm1.hasOwnProperty("courtDate")) data["CaseInformation-1"].courtDate=QuestionaireForm1.courtDate;
@@ -188,7 +189,7 @@ export const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         data["userName"] = `${user.firstName} ${user.middleName} ${user.lastName}`;
         if(props.fileData && props.numberOfCaseFilesBeingServed) {
           data.caseId = caseId;
-          if(data.hasOwnProperty("CaseInformation-1") && data["CaseInformation-1"]?.status.toLowerCase() === "cancelled") {
+          if(data.hasOwnProperty("CaseInformation-1") && data["CaseInformation-1"]?.status && data["CaseInformation-1"].status.toLowerCase() === "cancelled") {
             data["adminName"] = `${user.firstName} ${user.middleName} ${user.lastName}`;
             data["userName"] = userCase.userName;
             data["caseTitle"] = userCase.caseTitle;
@@ -249,7 +250,7 @@ export const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
 
   const handleUpdateCaseStatus = () => {
     const Questionaire1 = JSON.parse(localStorage.getItem("Questionaire1"));
-    if(Questionaire1?.status.toLowerCase()==="cancelled") {
+    if(Questionaire1?.status?.toLowerCase()==="cancelled") {
       setShowCancelCaseConfirmationModal(true);
       const cb = ()=>()=>{
         setShowCancelCaseConfirmationModal(false);

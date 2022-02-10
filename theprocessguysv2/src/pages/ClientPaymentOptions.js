@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function ClientPaymentOptions(props) {
 
     useEffect(() => {
-        if(!props.location.state || !props.location.state.hasOwnProperty("caseId")) {
+        if(!props.location.state || !props.location.state.hasOwnProperty("caseData")) {
             props.history.goBack();
         }
     }, []);
@@ -17,7 +17,7 @@ function ClientPaymentOptions(props) {
                     <Link
                         to={{
                             pathname: "/client-payment-credit-card",
-                            state: {caseId: props.location.state?.caseId}
+                            state: {caseData: props.location.state?.caseData}
                         }}
                         className="btn btn-primary w-50 mb-3"
                     >Credit/Debit Card</Link>
