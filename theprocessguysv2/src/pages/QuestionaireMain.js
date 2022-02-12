@@ -23,6 +23,7 @@ function Questionaire() {
   const [showResetModal, setShowResetModal] = useState(false);
   
   // Questionaire Form 1
+  const [ownerOfService, setOwnerOfService] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
@@ -96,6 +97,7 @@ function Questionaire() {
     const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
     if(QuestionaireForm1) {
       setActiveStep(2);
+      setOwnerOfService(QuestionaireForm1.ownerOfService ?? "");
       setCaseTitle(QuestionaireForm1.caseTitle);
       setCaseNumber(QuestionaireForm1.caseNumber);
       setCourtDate(QuestionaireForm1.courtDate);
@@ -299,7 +301,9 @@ function Questionaire() {
 
   const handleOnPressNext = () => {
     if(activeStep === 1) {
-      if(!caseTitle.length) {
+      if(!ownerOfService.length) {
+        showToast("Please enter who is the owner of this service!", "warning");
+      } else if(!caseTitle.length) {
         showToast("Please enter case title!", "warning");
       } else if(!caseNumber.length) {
         showToast("Please enter case number!", "warning");
@@ -335,6 +339,7 @@ function Questionaire() {
         showToast("Please enter county of!", "warning");
       } else {
         let data = {
+          ownerOfService,
           caseTitle,
           caseNumber,
           courtDate,
@@ -614,6 +619,7 @@ function Questionaire() {
 
   const handleResetForms = () => {
     // Reset Form 1
+    setOwnerOfService("");
     setCaseTitle("");
     setCaseNumber("");
     setCourtDate("");
@@ -708,6 +714,8 @@ function Questionaire() {
         activeStep === 1
           &&
             <Questionaire1
+              ownerOfService={ownerOfService}
+              setOwnerOfService={setOwnerOfService}
               caseTitle={caseTitle}
               setCaseTitle={setCaseTitle}
               caseNumber={caseNumber}

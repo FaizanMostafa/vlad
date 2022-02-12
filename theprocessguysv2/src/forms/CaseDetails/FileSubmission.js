@@ -75,6 +75,7 @@ export const FileSubmission = ({isFormDisabled, isFormUpdating, ...props}) => {
         } else {
           data["CaseInformation-1"] = {};
         }
+        if(QuestionaireForm1?.ownerOfService) data["CaseInformation-1"].ownerOfService=QuestionaireForm1.ownerOfService;
         if(QuestionaireForm1.hasOwnProperty("status")) data["CaseInformation-1"].status=QuestionaireForm1.status;
         if(QuestionaireForm1?.amount) data["CaseInformation-1"].amount=QuestionaireForm1.amount;
         if(QuestionaireForm1.hasOwnProperty("caseTitle")) data["CaseInformation-1"].caseTitle=QuestionaireForm1.caseTitle;

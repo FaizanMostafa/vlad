@@ -54,6 +54,7 @@ export const FileSubmission = ({...props}) => {
       const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
       if(QuestionaireForm1) {
         data["CaseInformation-1"] = {
+          ownerOfService: QuestionaireForm1.ownerOfService ?? "",
           caseTitle: QuestionaireForm1.caseTitle,
           caseNumber: QuestionaireForm1.caseNumber,
           courtDate: QuestionaireForm1.courtDate,

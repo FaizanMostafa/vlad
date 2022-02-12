@@ -4,6 +4,8 @@ import { Form } from 'react-bootstrap';
 export const Questionaire1 = (props) => {
   const {
     isFormDisabled,
+    ownerOfService,
+    setOwnerOfService,
     amount,
     setAmount,
     caseStatus,
@@ -33,6 +35,17 @@ export const Questionaire1 = (props) => {
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
       <br/>
       <MDBRow md="12">
+      <MDBCol md="8" id="case-amount">
+          <Form.Group id="case-amount-g">
+            <Form.Label>Owner of Service</Form.Label>
+            <Form.Control
+              type="text"
+              value={ownerOfService}
+              disabled={isFormDisabled}
+              onChange={(e)=>setOwnerOfService(e.target.value)}
+            />
+          </Form.Group>
+        </MDBCol>
         <MDBCol md="6" id="case-status">
           <Form.Group id="case-status-g">
             <Form.Label>Case Status</Form.Label>

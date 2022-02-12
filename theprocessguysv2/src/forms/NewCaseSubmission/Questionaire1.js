@@ -2,6 +2,8 @@ import { MDBCol, MDBInput } from 'mdbreact';
 
 export const Questionaire1 = (props) => {
   const {
+    ownerOfService,
+    setOwnerOfService,
     caseTitle,
     setCaseTitle,
     caseNumber,
@@ -36,6 +38,19 @@ export const Questionaire1 = (props) => {
       <br></br>
       <br></br>
       <br></br>
+      <MDBCol md="12" id="owner-of-service-col">
+        <div id="owner-of-service">
+          <label>Owner of Service*</label>
+          <MDBInput
+            type="text"
+            className="text-white"
+            hint="Who is the owner of this service?"
+            value={ownerOfService}
+            onChange={(e) => setOwnerOfService(e.target.value)}
+            required
+          />
+        </div>
+      </MDBCol>
       <MDBCol md="12" id="case-title">
         <div id="case-title">
           <label>Case Title*</label>
