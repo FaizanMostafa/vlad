@@ -23,6 +23,8 @@ export const CreateNewCase = (props) => {
 
   // Questionaire Form 1
   const [ownerOfService, setOwnerOfService] = useState("");
+  const [status, setStatus] = useState("");
+  const [amount, setAmount] = useState("");
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
@@ -147,6 +149,10 @@ export const CreateNewCase = (props) => {
       setActiveStep(2);
       if (QuestionaireForm1?.ownerOfService)
         setOwnerOfService(QuestionaireForm1.ownerOfService);
+      if (QuestionaireForm1?.status)
+        setStatus(QuestionaireForm1.status);
+      if (QuestionaireForm1?.amount)
+        setAmount(QuestionaireForm1.amount);
       if (QuestionaireForm1?.caseTitle)
         setCaseTitle(QuestionaireForm1.caseTitle);
       if (QuestionaireForm1?.caseNumber)
@@ -551,6 +557,13 @@ export const CreateNewCase = (props) => {
     if (activeStep === 1) {
       if (!ownerOfService.length) {
         showToast("Please enter who is the owner of this service!", "warning");
+      } else if (!status.length) {
+        showToast("Please select case status!", "warning");
+      } else if (!amount.length) {
+        showToast(
+          "Amount field cannot be empty, please type in either an amount or 0!",
+          "warning"
+        );
       } else if (!caseTitle.length) {
         showToast("Please enter case title!", "warning");
       } else if (!caseNumber.length) {
@@ -588,6 +601,8 @@ export const CreateNewCase = (props) => {
       } else {
         let data = {
           ownerOfService,
+          status,
+          amount,
           caseTitle,
           caseNumber,
           courtDate,
@@ -1506,6 +1521,8 @@ export const CreateNewCase = (props) => {
   const handleResetForms = () => {
     // Reset Form 1
     setOwnerOfService("");
+    setStatus("");
+    setAmount("");
     setCaseTitle("");
     setCaseNumber("");
     setCourtDate("");
@@ -1662,6 +1679,10 @@ export const CreateNewCase = (props) => {
             <Questionaire1
               ownerOfService={ownerOfService}
               setOwnerOfService={setOwnerOfService}
+              caseStatus={status}
+              setCaseStatus={setStatus}
+              amount={amount}
+              setAmount={setAmount}
               caseTitle={caseTitle}
               setCaseTitle={setCaseTitle}
               caseNumber={caseNumber}
