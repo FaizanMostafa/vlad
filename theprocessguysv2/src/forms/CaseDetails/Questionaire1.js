@@ -1,5 +1,6 @@
-import { MDBCol, MDBRow } from 'mdbreact';
-import { Form } from 'react-bootstrap';
+import { useState, useEffect } from "react";
+import { MDBCol, MDBRow } from "mdbreact";
+import { Form } from "react-bootstrap";
 
 export const Questionaire1 = (props) => {
   const {
@@ -27,22 +28,28 @@ export const Questionaire1 = (props) => {
     courthouseAddress,
     setCourthouseAddress,
     courthouseMailingAddress,
-    setCourthouseMailingAddress
+    setCourthouseMailingAddress,
   } = props;
+
+  const [isSameAddress, setIsSameAddress] = useState(false);
+
+  useEffect(() => {
+    if (isSameAddress) setCourthouseMailingAddress(courthouseAddress);
+  }, [isSameAddress, courthouseAddress]);
 
   return (
     <>
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
-      <br/>
+      <br />
       <MDBRow md="12">
-      <MDBCol md="8" id="case-amount">
+        <MDBCol md="8" id="case-amount">
           <Form.Group id="case-amount-g">
             <Form.Label>Owner of Service</Form.Label>
             <Form.Control
               type="text"
               value={ownerOfService}
               disabled={isFormDisabled}
-              onChange={(e)=>setOwnerOfService(e.target.value)}
+              onChange={(e) => setOwnerOfService(e.target.value)}
             />
           </Form.Group>
         </MDBCol>
@@ -53,9 +60,9 @@ export const Questionaire1 = (props) => {
               as="select"
               value={caseStatus}
               disabled={props.onlyCaseStatusEditable ? false : isFormDisabled}
-              onChange={(e)=>setCaseStatus(e.target.value)}
+              onChange={(e) => setCaseStatus(e.target.value)}
             >
-              <option value="" >Please Select</option>
+              <option value="">Please Select</option>
               <option value="pending">Pending</option>
               <option value="active">Active</option>
               <option value="closed">Closed</option>
@@ -70,7 +77,7 @@ export const Questionaire1 = (props) => {
               type="text"
               value={amount}
               disabled={props.onlyCaseStatusEditable ? false : isFormDisabled}
-              onChange={(e)=>setAmount(e.target.value)}
+              onChange={(e) => setAmount(e.target.value)}
             />
           </Form.Group>
         </MDBCol>
@@ -80,7 +87,7 @@ export const Questionaire1 = (props) => {
             <Form.Control
               type="text"
               disabled={isFormDisabled}
-              onChange={(e)=>setCaseTitle(e.target.value)}
+              onChange={(e) => setCaseTitle(e.target.value)}
               value={caseTitle}
             />
           </Form.Group>
@@ -91,7 +98,7 @@ export const Questionaire1 = (props) => {
             <Form.Control
               type="text"
               disabled={isFormDisabled}
-              onChange={(e)=>setCaseNumber(e.target.value)}
+              onChange={(e) => setCaseNumber(e.target.value)}
               value={caseNumber}
             />
           </Form.Group>
@@ -104,7 +111,7 @@ export const Questionaire1 = (props) => {
             <Form.Control
               type="text"
               disabled={isFormDisabled}
-              onChange={(e)=>setCourtDate(e.target.value)}
+              onChange={(e) => setCourtDate(e.target.value)}
               value={courtDate}
             />
           </Form.Group>
@@ -116,9 +123,9 @@ export const Questionaire1 = (props) => {
               as="select"
               value={courtType}
               disabled={isFormDisabled}
-              onChange={(e)=>setCourtType(e.target.value)}
+              onChange={(e) => setCourtType(e.target.value)}
             >
-              <option value="Please Select" >Please Select</option>
+              <option value="Please Select">Please Select</option>
               <option value="superior court">Superior court</option>
               <option value="appeals court">Appeals court</option>
               <option value="supreme court">Supreme court</option>
@@ -133,7 +140,7 @@ export const Questionaire1 = (props) => {
             <Form.Control
               type="text"
               disabled={isFormDisabled}
-              onChange={(e)=>setCourtState(e.target.value)}
+              onChange={(e) => setCourtState(e.target.value)}
               value={courtState}
             />
           </Form.Group>
@@ -144,7 +151,7 @@ export const Questionaire1 = (props) => {
             <Form.Control
               type="text"
               disabled={isFormDisabled}
-              onChange={(e)=>setBranchName(e.target.value)}
+              onChange={(e) => setBranchName(e.target.value)}
               value={branchName}
             />
           </Form.Group>
@@ -153,14 +160,21 @@ export const Questionaire1 = (props) => {
       <MDBCol md="12">
         <MDBRow>
           <MDBCol>
-            <Form.Label style={{fontWeight: "bold"}}>Courthouse Address</Form.Label>
+            <Form.Label style={{ fontWeight: "bold" }}>
+              Courthouse Address
+            </Form.Label>
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>Street</Form.Label>
               <Form.Control
                 type="text"
                 disabled={isFormDisabled}
                 value={courthouseAddress.street}
-                onChange={(e)=>setCourthouseAddress({...courthouseAddress, street: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    street: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -171,7 +185,12 @@ export const Questionaire1 = (props) => {
                 type="text"
                 disabled={isFormDisabled}
                 value={courthouseAddress.city}
-                onChange={(e)=>setCourthouseAddress({...courthouseAddress, city: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    city: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -184,7 +203,12 @@ export const Questionaire1 = (props) => {
                 type="text"
                 disabled={isFormDisabled}
                 value={courthouseAddress.state}
-                onChange={(e)=>setCourthouseAddress({...courthouseAddress, state: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    state: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -195,7 +219,12 @@ export const Questionaire1 = (props) => {
                 type="text"
                 disabled={isFormDisabled}
                 value={courthouseAddress.zipCode}
-                onChange={(e)=>setCourthouseAddress({...courthouseAddress, zipCode: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    zipCode: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -206,7 +235,12 @@ export const Questionaire1 = (props) => {
                 type="text"
                 disabled={isFormDisabled}
                 value={courthouseAddress.country}
-                onChange={(e)=>setCourthouseAddress({...courthouseAddress, country: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    country: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -215,14 +249,31 @@ export const Questionaire1 = (props) => {
       <MDBCol md="12">
         <MDBRow>
           <MDBCol>
-            <Form.Label style={{fontWeight: "bold"}}>Courthouse Mailing Address</Form.Label>
+            <Form.Label style={{ fontWeight: "bold" }}>
+              Courthouse Mailing Address
+            </Form.Label>
+            {!isFormDisabled && (
+              <Form.Group className="mb-3" controlId="sameAddressCheckbox">
+                <Form.Check
+                  value={isSameAddress}
+                  onChange={() => setIsSameAddress(!isSameAddress)}
+                  type="checkbox"
+                  label="Same as Courthouse Address"
+                />
+              </Form.Group>
+            )}
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>Street</Form.Label>
               <Form.Control
                 type="text"
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isSameAddress}
                 value={courthouseMailingAddress.street}
-                onChange={(e)=>setCourthouseMailingAddress({...courthouseMailingAddress, street: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    street: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -231,9 +282,14 @@ export const Questionaire1 = (props) => {
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isSameAddress}
                 value={courthouseMailingAddress.city}
-                onChange={(e)=>setCourthouseMailingAddress({...courthouseMailingAddress, city: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    city: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -244,9 +300,14 @@ export const Questionaire1 = (props) => {
               <Form.Label>State</Form.Label>
               <Form.Control
                 type="text"
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isSameAddress}
                 value={courthouseMailingAddress.state}
-                onChange={(e)=>setCourthouseMailingAddress({...courthouseMailingAddress, state: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    state: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -255,9 +316,14 @@ export const Questionaire1 = (props) => {
               <Form.Label>Zip Code</Form.Label>
               <Form.Control
                 type="text"
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isSameAddress}
                 value={courthouseMailingAddress.zipCode}
-                onChange={(e)=>setCourthouseMailingAddress({...courthouseMailingAddress, zipCode: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    zipCode: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -266,9 +332,14 @@ export const Questionaire1 = (props) => {
               <Form.Label>Country</Form.Label>
               <Form.Control
                 type="text"
-                disabled={isFormDisabled}
+                disabled={isFormDisabled || isSameAddress}
                 value={courthouseMailingAddress.country}
-                onChange={(e)=>setCourthouseMailingAddress({...courthouseMailingAddress, country: e.target.value})}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    country: e.target.value,
+                  })
+                }
               />
             </Form.Group>
           </MDBCol>
@@ -281,11 +352,11 @@ export const Questionaire1 = (props) => {
             type="text"
             disabled={isFormDisabled}
             value={countyOf}
-            onChange={(e)=>setCountyOf(e.target.value)}
+            onChange={(e) => setCountyOf(e.target.value)}
           />
         </Form.Group>
       </MDBCol>
       <br></br>
     </>
   );
-}
+};

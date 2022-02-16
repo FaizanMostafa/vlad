@@ -1,4 +1,5 @@
-import { MDBCol, MDBInput } from 'mdbreact';
+import { useState, useEffect } from "react";
+import { MDBCol, MDBInput } from "mdbreact";
 
 export const Questionaire1 = (props) => {
   const {
@@ -21,16 +22,23 @@ export const Questionaire1 = (props) => {
     courthouseAddress,
     setCourthouseAddress,
     courthouseMailingAddress,
-    setCourthouseMailingAddress
+    setCourthouseMailingAddress,
   } = props;
+
+  const [isSameAddress, setIsSameAddress] = useState(false);
+
+  useEffect(() => {
+    if (isSameAddress) setCourthouseMailingAddress(courthouseAddress);
+  }, [isSameAddress, courthouseAddress]);
 
   return (
     <>
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
       <h3 className="text-center mb-4 mt-5">
-        **Service should be completed 2 + weeks prior to the court date**
-        Thus avoiding any complications with the judge.
-        Please fill out as much information as possible from the court documents being submitted, certain sections marked with "*" are REQUIRED to proceed
+        **Service should be completed 2 + weeks prior to the court date** Thus
+        avoiding any complications with the judge. Please fill out as much
+        information as possible from the court documents being submitted,
+        certain sections marked with "*" are REQUIRED to proceed
       </h3>
       <br></br>
       <br></br>
@@ -92,12 +100,13 @@ export const Questionaire1 = (props) => {
       <MDBCol md="12" id="superior-court-of">
         <div id="superior-court-of">
           <label>Please select the court*</label>
-          <select className="w-75 m-4 text-center p-2"
+          <select
+            className="w-75 m-4 text-center p-2"
             value={courtType}
             onChange={(e) => setCourtType(e.target.value)}
             required
           >
-            <option value="Please Select" >Please Select</option>
+            <option value="Please Select">Please Select</option>
             <option value="superior court">Superior court</option>
             <option value="appeals court">Appeals court</option>
             <option value="supreme court">Supreme court</option>
@@ -129,14 +138,19 @@ export const Questionaire1 = (props) => {
         </div>
       </MDBCol>
       <MDBCol md="12" id="courthouse-address">
-        <div id="courthouse-address">
-          <label>Courthouse Address*</label>
+        <label>Courthouse Address*</label>
+        <MDBCol>
           <MDBInput
             type="text"
             hint="Street"
             className="text-white"
             value={courthouseAddress.street}
-            onChange={(e) => setCourthouseAddress({...courthouseAddress, street: e.target.value})}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                street: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
@@ -144,7 +158,12 @@ export const Questionaire1 = (props) => {
             hint="City"
             className="text-white"
             value={courthouseAddress.city}
-            onChange={(e) => setCourthouseAddress({...courthouseAddress, city: e.target.value})}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                city: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
@@ -152,7 +171,12 @@ export const Questionaire1 = (props) => {
             hint="State"
             className="text-white"
             value={courthouseAddress.state}
-            onChange={(e) => setCourthouseAddress({...courthouseAddress, state: e.target.value})}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                state: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
@@ -160,7 +184,12 @@ export const Questionaire1 = (props) => {
             hint="Zip Code"
             className="text-white"
             value={courthouseAddress.zipCode}
-            onChange={(e) => setCourthouseAddress({...courthouseAddress, zipCode: e.target.value})}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                zipCode: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
@@ -168,55 +197,102 @@ export const Questionaire1 = (props) => {
             hint="Country"
             className="text-white"
             value={courthouseAddress.country}
-            onChange={(e) => setCourthouseAddress({...courthouseAddress, country: e.target.value})}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                country: e.target.value,
+              })
+            }
             required
           />
-        </div>
+        </MDBCol>
       </MDBCol>
       <MDBCol md="12" id="courthouse-mailing-address">
-        <div id="courthouse-mailing-address">
-          <label>Courthouse Mailing Address*</label>
+        <label>Courthouse Mailing Address*</label>
+        <MDBCol id="courthouse-mailing-address">
+          <div className="mt-4">
+            <input
+              className="mr-2"
+              value={isSameAddress}
+              onChange={() => setIsSameAddress(!isSameAddress)}
+              type="checkbox"
+              id="same-address-checkbox"
+            />
+            <label for="same-address-checkbox">
+              Same as Courthouse Address
+            </label>
+          </div>
           <MDBInput
             type="text"
             hint="Street"
             className="text-white"
+            disabled={isSameAddress}
             value={courthouseMailingAddress.street}
-            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, street: e.target.value})}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                street: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
             type="text"
             hint="City"
             className="text-white"
+            disabled={isSameAddress}
             value={courthouseMailingAddress.city}
-            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, city: e.target.value})}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                city: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
             type="text"
             hint="State"
             className="text-white"
+            disabled={isSameAddress}
             value={courthouseMailingAddress.state}
-            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, state: e.target.value})}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                state: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
             type="text"
             hint="Zip Code"
             className="text-white"
+            disabled={isSameAddress}
             value={courthouseMailingAddress.zipCode}
-            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, zipCode: e.target.value})}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                zipCode: e.target.value,
+              })
+            }
             required
           />
           <MDBInput
             type="text"
             hint="Country"
             className="text-white"
+            disabled={isSameAddress}
             value={courthouseMailingAddress.country}
-            onChange={(e) => setCourthouseMailingAddress({...courthouseMailingAddress, country: e.target.value})}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                country: e.target.value,
+              })
+            }
             required
           />
-        </div>
+        </MDBCol>
       </MDBCol>
       <MDBCol md="12" id="county-of">
         <div id="county-of">
@@ -233,4 +309,4 @@ export const Questionaire1 = (props) => {
       <br></br>
     </>
   );
-}
+};
