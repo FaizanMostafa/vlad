@@ -378,11 +378,18 @@ const fetchCase = (data, onSuccess=()=>{}, onError=()=>{}) => (
       db.collection("cases").doc(data.caseId).get()
         .then((querySnapshot) => {
           const finalData = querySnapshot.data();
-          finalData.docId = querySnapshot.id;
-          dispatch(setCase(finalData));
-          onSuccess(finalData);
+          if(finalData) {
+            finalData.docId = querySnapshot.id;
+            dispatch(setCase(finalData));
+            onSuccess(finalData);
+          } else {
+            dispatch(setIsFetchingCase(false));
+            showToast("This case does not exist in the system anymore!", "error");
+            onError();
+          }
         });
     } catch (error) {
+      console.error(error)
       dispatch(setIsFetchingCase(false));
       showToast(error.message, "error");
       onError();
