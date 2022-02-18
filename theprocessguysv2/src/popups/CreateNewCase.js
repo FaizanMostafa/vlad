@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link as RSLink, Element } from "react-scroll";
-import { Stepper } from "react-form-stepper";
+import { Stepper, Step } from "react-form-stepper";
 import { Modal, Button } from "react-bootstrap";
 import { showToast, validateEmail, validatePhoneNumber } from "../utils";
 import { ResetQuestionaireConfirmation } from "../popups";
@@ -24,7 +24,7 @@ export const CreateNewCase = (props) => {
   // Questionaire Form 1
   const [ownerOfService, setOwnerOfService] = useState("");
   const [status, setStatus] = useState("");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(null);
   const [caseTitle, setCaseTitle] = useState("");
   const [caseNumber, setCaseNumber] = useState("");
   const [courtDate, setCourtDate] = useState("");
@@ -149,10 +149,8 @@ export const CreateNewCase = (props) => {
       setActiveStep(2);
       if (QuestionaireForm1?.ownerOfService)
         setOwnerOfService(QuestionaireForm1.ownerOfService);
-      if (QuestionaireForm1?.status)
-        setStatus(QuestionaireForm1.status);
-      if (QuestionaireForm1?.amount)
-        setAmount(QuestionaireForm1.amount);
+      if (QuestionaireForm1?.status) setStatus(QuestionaireForm1.status);
+      if (QuestionaireForm1?.amount) setAmount(QuestionaireForm1.amount);
       if (QuestionaireForm1?.caseTitle)
         setCaseTitle(QuestionaireForm1.caseTitle);
       if (QuestionaireForm1?.caseNumber)
@@ -553,17 +551,17 @@ export const CreateNewCase = (props) => {
     }
   }, [isOrRepresentingDefendant]);
 
-  const handleOnPressNext = () => {
+  const handleOnPressNext = (nextStep) => {
     if (activeStep === 1) {
       if (!ownerOfService.length) {
         showToast("Please enter who is the owner of this service!", "warning");
       } else if (!status.length) {
         showToast("Please select case status!", "warning");
-      } else if (!amount.length) {
-        showToast(
-          "Amount field cannot be empty, please type in either an amount or 0!",
-          "warning"
-        );
+        // } else if (!amount.length) {
+        //   showToast(
+        //     "Amount field cannot be empty, please type in either an amount or 0!",
+        //     "warning"
+        //   );
       } else if (!caseTitle.length) {
         showToast("Please enter case title!", "warning");
       } else if (!caseNumber.length) {
@@ -614,7 +612,7 @@ export const CreateNewCase = (props) => {
           branchName,
         };
         localStorage.setItem("Questionaire1", JSON.stringify(data));
-        setActiveStep(2);
+        setActiveStep(nextStep);
       }
     } else if (activeStep === 2) {
       if (
@@ -826,7 +824,7 @@ export const CreateNewCase = (props) => {
           plaintiffAttorneysDetail,
         };
         localStorage.setItem("Questionaire2", JSON.stringify(data));
-        setActiveStep(3);
+        setActiveStep(nextStep);
       }
     } else if (activeStep === 3) {
       if (
@@ -1044,7 +1042,7 @@ export const CreateNewCase = (props) => {
           defendantAttorneysDetail,
         };
         localStorage.setItem("Questionaire3", JSON.stringify(data));
-        setActiveStep(4);
+        setActiveStep(nextStep);
       }
     } else if (activeStep === 4) {
       if (!numberOfCaseFilesBeingServed.length) {
@@ -1397,7 +1395,7 @@ export const CreateNewCase = (props) => {
           serveesDetail,
         };
         localStorage.setItem("Questionaire4", JSON.stringify(data));
-        setActiveStep(5);
+        setActiveStep(nextStep);
       }
     } else if (activeStep === 5) {
       if (typeof serveIndividualAtEmployment !== "boolean") {
@@ -1428,20 +1426,20 @@ export const CreateNewCase = (props) => {
           paralegalAttorneyClientContactServee,
         };
         localStorage.setItem("Questionaire5", JSON.stringify(data));
-        setActiveStep(6);
+        setActiveStep(nextStep);
       }
     } else if (activeStep === 6) {
       let data = {
         serveesPhysicalDescription,
       };
       localStorage.setItem("Questionaire6", JSON.stringify(data));
-      setActiveStep(7);
+      setActiveStep(nextStep);
     } else if (activeStep === 7) {
       let data = {
         vehiclesInformation,
       };
       localStorage.setItem("Questionaire7", JSON.stringify(data));
-      setActiveStep(8);
+      setActiveStep(nextStep);
     } else if (activeStep === 8) {
       if (typeof requireZipFileService !== "boolean") {
         showToast(
@@ -1493,8 +1491,10 @@ export const CreateNewCase = (props) => {
           ifYesListAddress,
         };
         localStorage.setItem("Questionaire8", JSON.stringify(data));
-        setActiveStep(9);
+        setActiveStep(nextStep);
       }
+    } else if (activeStep === 9) {
+      setActiveStep(nextStep);
     }
   };
 
@@ -1522,7 +1522,7 @@ export const CreateNewCase = (props) => {
     // Reset Form 1
     setOwnerOfService("");
     setStatus("");
-    setAmount("");
+    setAmount(null);
     setCaseTitle("");
     setCaseNumber("");
     setCourtDate("");
@@ -1633,19 +1633,64 @@ export const CreateNewCase = (props) => {
         <Modal.Body>
           <Element name="stepper" className="element">
             <Stepper
-              steps={[
-                { label: "Step 1" },
-                { label: "Step 2" },
-                { label: "Step 3" },
-                { label: "Step 4" },
-                { label: "Step 5" },
-                { label: "Step 6" },
-                { label: "Step 7" },
-                { label: "Step 8" },
-                { label: "Step 9" },
-              ]}
+              styleConfig={{ activeBgColor: "#a0a0a0" }}
               activeStep={activeStep - 1}
-            />
+            >
+              <Step
+                style={activeStep === 1 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(1)}
+                label="Step 1"
+              />
+              <Step
+                style={activeStep === 2 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(2)}
+                label="Step 2"
+              />
+              <Step
+                style={activeStep === 3 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(3)}
+                label="Step 3"
+              />
+              <Step
+                style={activeStep === 4 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(4)}
+                label="Step 4"
+              />
+              <Step
+                style={activeStep === 5 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(5)}
+                label="Step 5"
+              />
+              <Step
+                style={activeStep === 6 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(6)}
+                label="Step 6"
+              />
+              <Step
+                style={activeStep === 7 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(7)}
+                label="Step 7"
+              />
+              <Step
+                style={activeStep === 8 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(8)}
+                label="Step 8"
+              />
+              <Step
+                style={activeStep === 9 ? { backgroundColor: "#A10308" } : {}}
+                disabled={false}
+                onClick={() => handleOnPressNext(9)}
+                label="Step 9"
+              />
+            </Stepper>
           </Element>
           <br></br>
           <div
@@ -1824,7 +1869,7 @@ export const CreateNewCase = (props) => {
                 >
                   <button
                     className="btn btn-primary mt-1 mb-1"
-                    onClick={handleOnPressNext}
+                    onClick={() => handleOnPressNext(activeStep + 1)}
                   >
                     {getButtonTitle()}
                   </button>

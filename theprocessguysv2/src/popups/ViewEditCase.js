@@ -538,6 +538,10 @@ export const ViewEditCase = ({
   }, [isOrRepresentingDefendant]);
 
   const handleOnPressNext = (nextStep) => {
+    if(isFormDisabled) {
+      setActiveStep(nextStep);
+      return;
+    }
     if (activeStep === 1) {
       if (!ownerOfService.length) {
         showToast("Please enter who is the owner of this service!", "warning");
@@ -1791,6 +1795,8 @@ export const ViewEditCase = ({
         }
         setActiveStep(nextStep);
       }
+    } else if(activeStep === 9) {
+      setActiveStep(nextStep);
     }
   };
 
