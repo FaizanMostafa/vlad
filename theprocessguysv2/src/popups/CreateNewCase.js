@@ -491,6 +491,7 @@ export const CreateNewCase = (props) => {
               0: {
                 locationType: "",
                 address: {
+                  sameAsMainServiceAddress: false,
                   street: "",
                   city: "",
                   state: "",
