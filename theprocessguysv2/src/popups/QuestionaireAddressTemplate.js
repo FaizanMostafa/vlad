@@ -9,7 +9,6 @@ export const QuestionaireAddressTemplate = ({
   mainAddressForService,
 }) => {
   const [showModal, setShow] = useState(false);
-  const [isSameAddress, setIsSameAddress] = useState(false);
   const [localServiceDetails, setLocalServiceDetails] = useState({
     locationType: "",
     address: { sameAsMainServiceAddress: false, street: "", city: "", state: "", zipCode: "", country: "" },
@@ -168,7 +167,7 @@ export const QuestionaireAddressTemplate = ({
           + Add Additional Address for Service
         </Button>
       </div>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal size="lg" show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Additional Address for Service</Modal.Title>
         </Modal.Header>

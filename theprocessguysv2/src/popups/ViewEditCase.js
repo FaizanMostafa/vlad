@@ -484,6 +484,7 @@ export const ViewEditCase = ({
               0: {
                 locationType: "",
                 address: {
+                  sameAsMainServiceAddress: false,
                   street: "",
                   city: "",
                   state: "",
@@ -538,7 +539,7 @@ export const ViewEditCase = ({
   }, [isOrRepresentingDefendant]);
 
   const handleOnPressNext = (nextStep) => {
-    if(isFormDisabled) {
+    if (isFormDisabled) {
       setActiveStep(nextStep);
       return;
     }
@@ -588,7 +589,8 @@ export const ViewEditCase = ({
         showToast("Please enter county of!", "warning");
       } else {
         let data = {};
-        if (ownerOfService !== caseDetails.CaseInformation.ownerOfService) data.ownerOfService = ownerOfService;
+        if (ownerOfService !== caseDetails.CaseInformation.ownerOfService)
+          data.ownerOfService = ownerOfService;
         if (status !== caseDetails.CaseInformation.status) data.status = status;
         if (amount !== caseDetails.CaseInformation?.amount)
           data.amount = amount;
@@ -1795,7 +1797,7 @@ export const ViewEditCase = ({
         }
         setActiveStep(nextStep);
       }
-    } else if(activeStep === 9) {
+    } else if (activeStep === 9) {
       setActiveStep(nextStep);
     }
   };
