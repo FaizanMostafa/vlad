@@ -50,6 +50,7 @@ export const ViewEditCase = ({
   const [countyOf, setCountyOf] = useState("");
   const [courthouseAddress, setCourthouseAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -57,6 +58,7 @@ export const ViewEditCase = ({
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -132,7 +134,7 @@ export const ViewEditCase = ({
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
       insuranceCompany: "",
-      licencePlateNumber: "",
+      licensePlateNumber: "",
       vinNumber: "",
       yearOfMake: "",
       color: "",
@@ -292,6 +294,7 @@ export const ViewEditCase = ({
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -341,6 +344,7 @@ export const ViewEditCase = ({
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -384,6 +388,7 @@ export const ViewEditCase = ({
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -433,6 +438,7 @@ export const ViewEditCase = ({
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -486,6 +492,7 @@ export const ViewEditCase = ({
                 address: {
                   sameAsMainServiceAddress: false,
                   street: "",
+                  unit: "",
                   city: "",
                   state: "",
                   zipCode: "",
@@ -1868,6 +1875,7 @@ export const ViewEditCase = ({
     setCountyOf("");
     setCourthouseAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1875,6 +1883,7 @@ export const ViewEditCase = ({
     });
     setCourthouseMailingAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1922,7 +1931,7 @@ export const ViewEditCase = ({
     setVehiclesInformation({
       0: {
         insuranceCompany: "",
-        licencePlateNumber: "",
+        licensePlateNumber: "",
         vinNumber: "",
         yearOfMake: "",
         color: "",

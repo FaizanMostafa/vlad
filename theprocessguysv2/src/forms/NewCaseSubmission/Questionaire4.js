@@ -785,6 +785,33 @@ export const Questionaire4 = (props) => {
                       />
                       <MDBInput
                         type="text"
+                        hint="Unit"
+                        className="text-white"
+                        value={serviceDetail.address.unit}
+                        disabled={
+                          serviceDetail.address.sameAsMainServiceAddress
+                        }
+                        onChange={(e) =>
+                          setServeesDetail({
+                            ...serveesDetail,
+                            [serveeKey]: {
+                              ...servee,
+                              serviceDetails: {
+                                ...servee.serviceDetails,
+                                [serviceDetailKey]: {
+                                  ...serviceDetail,
+                                  address: {
+                                    ...serviceDetail.address,
+                                    unit: e.target.value,
+                                  },
+                                },
+                              },
+                            },
+                          })
+                        }
+                      />
+                      <MDBInput
+                        type="text"
                         hint="City"
                         className="text-white"
                         value={serviceDetail.address.city}

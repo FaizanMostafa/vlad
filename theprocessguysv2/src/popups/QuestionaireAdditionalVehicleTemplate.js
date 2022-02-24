@@ -2,34 +2,45 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 
-export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setVehiclesInformation}) => {
-
+export const QuestionaireAdditionalVehicleTemplate = ({
+  vehiclesInformation,
+  setVehiclesInformation,
+}) => {
   const [showModal, setShow] = useState(false);
   const [vehicleInformation, setVehicleInformation] = useState({
-    insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
-    yearOfMake: "", color: "", modelType: ""
+    insuranceCompany: "",
+    licensePlateNumber: "",
+    vinNumber: "",
+    yearOfMake: "",
+    color: "",
+    modelType: "",
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setVehiclesInformation({...vehiclesInformation, [Object.keys(vehiclesInformation).length]: vehicleInformation});
+    setVehiclesInformation({
+      ...vehiclesInformation,
+      [Object.keys(vehiclesInformation).length]: vehicleInformation,
+    });
     setVehicleInformation({
-      insuranceCompany: "", licencePlateNumber: "", vinNumber: "",
-      yearOfMake: "", color: "", modelType: ""
+      insuranceCompany: "",
+      licensePlateNumber: "",
+      vinNumber: "",
+      yearOfMake: "",
+      color: "",
+      modelType: "",
     });
     setShow(false);
-  }
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   return (
     <React.Fragment>
-      <div
-        className="d-flex align-items-center justify-content-center"
-      >
+      <div className="d-flex align-items-center justify-content-center">
         <Button variant="primary w-50" onClick={handleShow}>
-          + Additonal Vehicle(s)
+          + Additional Vehicle(s)
         </Button>
       </div>
       <Modal show={showModal} onHide={handleClose}>
@@ -39,11 +50,19 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
         <Modal.Body>
           <MDBCol md="12" id="vehicle-type-model-ownership">
             <div id="vehicle-type-model-ownership">
-              <label>Vehicle Type/Model Ownership <i>(ie car, motorcycle, boat, RV)</i></label>
+              <label>
+                Vehicle Type/Model Ownership{" "}
+                <i>(ie car, motorcycle, boat, RV)</i>
+              </label>
               <MDBInput
                 type="textarea"
                 value={vehicleInformation.modelType}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, modelType: e.target.value})}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    modelType: e.target.value,
+                  })
+                }
               />
             </div>
           </MDBCol>
@@ -53,7 +72,12 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
               <MDBInput
                 type="text"
                 value={vehicleInformation.yearOfMake}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, yearOfMake: e.target.value})}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    yearOfMake: e.target.value,
+                  })
+                }
               />
             </div>
           </MDBCol>
@@ -63,17 +87,27 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
               <MDBInput
                 type="text"
                 value={vehicleInformation.color}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, color: e.target.value})}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    color: e.target.value,
+                  })
+                }
               />
             </div>
           </MDBCol>
-          <MDBCol md="12" id="licence-plate-number-state">
-            <div id="licence-plate-number-state">
-              <label>Licence Plate Number/State of Individual(s)</label>
+          <MDBCol md="12" id="license-plate-number-state">
+            <div id="license-plate-number-state">
+              <label>License Plate Number/State of Individual(s)</label>
               <MDBInput
                 type="text"
-                value={vehicleInformation.licencePlateNumber}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, licencePlateNumber: e.target.value})}
+                value={vehicleInformation.licensePlateNumber}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    licensePlateNumber: e.target.value,
+                  })
+                }
               />
             </div>
           </MDBCol>
@@ -83,7 +117,12 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
               <MDBInput
                 type="text"
                 value={vehicleInformation.vinNumber}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, vinNumber: e.target.value})}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    vinNumber: e.target.value,
+                  })
+                }
               />
             </div>
           </MDBCol>
@@ -93,10 +132,15 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
               <MDBInput
                 type="text"
                 value={vehicleInformation.insuranceCompany}
-                onChange={(e) => setVehicleInformation({...vehicleInformation, insuranceCompany: e.target.value})}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    insuranceCompany: e.target.value,
+                  })
+                }
               />
             </div>
-          </MDBCol>          
+          </MDBCol>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -109,4 +153,4 @@ export const QuestionaireAdditionalVehicleTemplate = ({vehiclesInformation, setV
       </Modal>
     </React.Fragment>
   );
-}
+};

@@ -29,6 +29,7 @@ function Questionaire() {
   const [countyOf, setCountyOf] = useState("");
   const [courthouseAddress, setCourthouseAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -36,6 +37,7 @@ function Questionaire() {
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -111,7 +113,7 @@ function Questionaire() {
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
       insuranceCompany: "",
-      licencePlateNumber: "",
+      licensePlateNumber: "",
       vinNumber: "",
       yearOfMake: "",
       color: "",
@@ -240,6 +242,7 @@ function Questionaire() {
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -289,6 +292,7 @@ function Questionaire() {
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -332,6 +336,7 @@ function Questionaire() {
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -381,6 +386,7 @@ function Questionaire() {
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -433,6 +439,7 @@ function Questionaire() {
                 address: {
                   sameAsMainServiceAddress: false,
                   street: "",
+                  unit: "",
                   city: "",
                   state: "",
                   zipCode: "",
@@ -1459,6 +1466,7 @@ function Questionaire() {
     setCountyOf("");
     setCourthouseAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1466,6 +1474,7 @@ function Questionaire() {
     });
     setCourthouseMailingAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1513,7 +1522,7 @@ function Questionaire() {
     setVehiclesInformation({
       0: {
         insuranceCompany: "",
-        licencePlateNumber: "",
+        licensePlateNumber: "",
         vinNumber: "",
         yearOfMake: "",
         color: "",

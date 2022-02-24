@@ -180,6 +180,24 @@ export const Questionaire1 = (props) => {
           </MDBCol>
           <MDBCol bottom>
             <Form.Group id="attorney-full-firm-address">
+              <Form.Label>Unit</Form.Label>
+              <Form.Control
+                type="text"
+                disabled={isFormDisabled}
+                value={courthouseAddress.unit}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    unit: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <Form.Group id="attorney-full-firm-address">
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
@@ -194,8 +212,6 @@ export const Questionaire1 = (props) => {
               />
             </Form.Group>
           </MDBCol>
-        </MDBRow>
-        <MDBRow>
           <MDBCol>
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>State</Form.Label>
@@ -212,6 +228,8 @@ export const Questionaire1 = (props) => {
               />
             </Form.Group>
           </MDBCol>
+        </MDBRow>
+        <MDBRow>
           <MDBCol>
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>Zip Code</Form.Label>
@@ -279,6 +297,24 @@ export const Questionaire1 = (props) => {
           </MDBCol>
           <MDBCol bottom>
             <Form.Group id="attorney-full-firm-address">
+              <Form.Label>Unit</Form.Label>
+              <Form.Control
+                type="text"
+                disabled={isFormDisabled || isSameAddress}
+                value={courthouseMailingAddress.unit}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    unit: e.target.value,
+                  })
+                }
+              />
+            </Form.Group>
+          </MDBCol>
+        </MDBRow>
+        <MDBRow>
+          <MDBCol>
+            <Form.Group id="attorney-full-firm-address">
               <Form.Label>City</Form.Label>
               <Form.Control
                 type="text"
@@ -293,8 +329,6 @@ export const Questionaire1 = (props) => {
               />
             </Form.Group>
           </MDBCol>
-        </MDBRow>
-        <MDBRow>
           <MDBCol>
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>State</Form.Label>
@@ -311,6 +345,8 @@ export const Questionaire1 = (props) => {
               />
             </Form.Group>
           </MDBCol>
+        </MDBRow>
+        <MDBRow>
           <MDBCol>
             <Form.Group id="attorney-full-firm-address">
               <Form.Label>Zip Code</Form.Label>

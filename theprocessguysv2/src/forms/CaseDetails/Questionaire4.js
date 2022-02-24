@@ -1,5 +1,4 @@
 import { MDBCol, MDBRow } from "mdbreact";
-import { useEffect } from "react";
 import { Form } from "react-bootstrap";
 import {
   QuestionaireAddressTemplate,
@@ -18,7 +17,10 @@ export const Questionaire4 = (props) => {
   } = props;
 
   const updateSameAddresses = (serveeKey, serviceDetailKey) => {
-    if (!serveesDetail[serveeKey].serviceDetails[serviceDetailKey].address.sameAsMainServiceAddress) {
+    if (
+      !serveesDetail[serveeKey].serviceDetails[serviceDetailKey].address
+        .sameAsMainServiceAddress
+    ) {
       setServeesDetail({
         ...serveesDetail,
         [serveeKey]: {
@@ -45,8 +47,11 @@ export const Questionaire4 = (props) => {
             [serviceDetailKey]: {
               ...serveesDetail[serveeKey].serviceDetails[serviceDetailKey],
               address: {
-                ...serveesDetail[serveeKey].serviceDetails[serviceDetailKey].address,
-                sameAsMainServiceAddress: !serveesDetail[serveeKey].serviceDetails[serviceDetailKey].address.sameAsMainServiceAddress,
+                ...serveesDetail[serveeKey].serviceDetails[serviceDetailKey]
+                  .address,
+                sameAsMainServiceAddress:
+                  !serveesDetail[serveeKey].serviceDetails[serviceDetailKey]
+                    .address.sameAsMainServiceAddress,
               },
             },
           },
@@ -226,7 +231,7 @@ export const Questionaire4 = (props) => {
         },
       },
     });
-  }
+  };
 
   return (
     <>
@@ -281,7 +286,7 @@ export const Questionaire4 = (props) => {
               disabled={isFormDisabled}
               className="w-75 m-4 text-center p-2"
               value={howManyIndividualsServed}
-              onChange={(e)=>setHowManyIndividualsServed(e.target.value)}
+              onChange={(e) => setHowManyIndividualsServed(e.target.value)}
             >
               <option value="">Please Select</option>
               {numberOfCaseFilesBeingServed !== "" &&
@@ -782,6 +787,37 @@ export const Questionaire4 = (props) => {
                       </MDBCol>
                       <MDBCol md="4">
                         <Form.Group>
+                          <Form.Label>Unit</Form.Label>
+                          <Form.Control
+                            type="text"
+                            disabled={
+                              isFormDisabled ||
+                              serviceDetail.address.sameAsMainServiceAddress
+                            }
+                            value={serviceDetail.address.unit}
+                            onChange={(e) =>
+                              setServeesDetail({
+                                ...serveesDetail,
+                                [serveeKey]: {
+                                  ...servee,
+                                  serviceDetails: {
+                                    ...servee.serviceDetails,
+                                    [serviceDetailKey]: {
+                                      ...serviceDetail,
+                                      address: {
+                                        ...serviceDetail.address,
+                                        unit: e.target.value,
+                                      },
+                                    },
+                                  },
+                                },
+                              })
+                            }
+                          />
+                        </Form.Group>
+                      </MDBCol>
+                      <MDBCol md="4">
+                        <Form.Group>
                           <Form.Label>City</Form.Label>
                           <Form.Control
                             type="text"
@@ -811,6 +847,8 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
+                    </MDBRow>
+                    <MDBRow md="12">
                       <MDBCol md="4">
                         <Form.Group>
                           <Form.Label>State</Form.Label>
@@ -842,9 +880,7 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                    </MDBRow>
-                    <MDBRow md="12">
-                      <MDBCol md="6">
+                      <MDBCol md="4">
                         <Form.Group>
                           <Form.Label>Zip Code</Form.Label>
                           <Form.Control
@@ -875,7 +911,7 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                      <MDBCol md="6">
+                      <MDBCol md="4">
                         <Form.Group>
                           <Form.Label>Country</Form.Label>
                           <Form.Control
@@ -1643,7 +1679,9 @@ export const Questionaire4 = (props) => {
                         mainAddressForService={
                           serveesDetail["0"].serviceDetails["0"].address
                         }
-                        setServiceDetails={(newServiceDetails) => updateServiceDetails(serveeKey, newServiceDetails)}
+                        setServiceDetails={(newServiceDetails) =>
+                          updateServiceDetails(serveeKey, newServiceDetails)
+                        }
                       />
                     </MDBCol>
                   )}

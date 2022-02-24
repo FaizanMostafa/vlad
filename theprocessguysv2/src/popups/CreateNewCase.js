@@ -33,6 +33,7 @@ export const CreateNewCase = (props) => {
   const [countyOf, setCountyOf] = useState("");
   const [courthouseAddress, setCourthouseAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -40,6 +41,7 @@ export const CreateNewCase = (props) => {
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
+    unit: "",
     city: "",
     state: "",
     zipCode: "",
@@ -115,7 +117,7 @@ export const CreateNewCase = (props) => {
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
       insuranceCompany: "",
-      licencePlateNumber: "",
+      licensePlateNumber: "",
       vinNumber: "",
       yearOfMake: "",
       color: "",
@@ -300,6 +302,7 @@ export const CreateNewCase = (props) => {
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -349,6 +352,7 @@ export const CreateNewCase = (props) => {
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -392,6 +396,7 @@ export const CreateNewCase = (props) => {
             fullName: { firstName: "", middleName: "", lastName: "" },
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -441,6 +446,7 @@ export const CreateNewCase = (props) => {
             email: "",
             address: {
               street: "",
+              unit: "",
               city: "",
               state: "",
               zipCode: "",
@@ -493,6 +499,7 @@ export const CreateNewCase = (props) => {
                 address: {
                   sameAsMainServiceAddress: false,
                   street: "",
+                  unit: "",
                   city: "",
                   state: "",
                   zipCode: "",
@@ -1532,6 +1539,7 @@ export const CreateNewCase = (props) => {
     setCountyOf("");
     setCourthouseAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1539,6 +1547,7 @@ export const CreateNewCase = (props) => {
     });
     setCourthouseMailingAddress({
       street: "",
+      unit: "",
       city: "",
       state: "",
       zipCode: "",
@@ -1586,7 +1595,7 @@ export const CreateNewCase = (props) => {
     setVehiclesInformation({
       0: {
         insuranceCompany: "",
-        licencePlateNumber: "",
+        licensePlateNumber: "",
         vinNumber: "",
         yearOfMake: "",
         color: "",

@@ -3,33 +3,35 @@ import { Modal, Button } from "react-bootstrap";
 import { MDBCol, MDBInput } from "mdbreact";
 import { showToast } from "../utils";
 
-export const QuestionaireAgentOfServiceTemplate = ({setAgentFullName}) => {
+export const QuestionaireAgentOfServiceTemplate = ({ setAgentFullName }) => {
   const [showModal, setShow] = useState(false);
-  const [fullName, setFullName] = useState({firstName: "", middleName: "", lastName: ""});
+  const [fullName, setFullName] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(!fullName.firstName.length) {
+    if (!fullName.firstName.length) {
       showToast("Please enter first name!", "warning");
-    } else if(!fullName.lastName.length) {
+    } else if (!fullName.lastName.length) {
       showToast("Please enter last name!", "warning");
     } else {
       setAgentFullName(fullName);
-      setFullName({firstName: "", middleName: "", lastName: ""});
+      setFullName({ firstName: "", middleName: "", lastName: "" });
       setShow(false);
     }
-  }
+  };
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   return (
     <Fragment>
-      <div
-        className="d-flex align-items-center justify-content-center"
-      >
+      <div className="d-flex align-items-center justify-content-center">
         <Button variant="primary w-50" onClick={handleShow}>
-        + Add Additional Agent Of Service
+          + Add Additional Agent Of Service
         </Button>
       </div>
       <Modal show={showModal} onHide={handleClose}>
@@ -44,19 +46,25 @@ export const QuestionaireAgentOfServiceTemplate = ({setAgentFullName}) => {
                 type="text"
                 hint="First Name"
                 value={fullName.firstName}
-                onChange={(e) => setFullName({...fullName, firstName: e.target.value})}
+                onChange={(e) =>
+                  setFullName({ ...fullName, firstName: e.target.value })
+                }
               />
               <MDBInput
-                type="text" 
+                type="text"
                 hint="Middle Name"
                 value={fullName.middleName}
-                onChange={(e) => setFullName({...fullName, middleName: e.target.value})}
+                onChange={(e) =>
+                  setFullName({ ...fullName, middleName: e.target.value })
+                }
               />
               <MDBInput
-                type="text" 
+                type="text"
                 hint="Last Name"
                 value={fullName.lastName}
-                onChange={(e) => setFullName({...fullName, lastName: e.target.value})}
+                onChange={(e) =>
+                  setFullName({ ...fullName, lastName: e.target.value })
+                }
               />
             </div>
           </MDBCol>
@@ -72,4 +80,4 @@ export const QuestionaireAgentOfServiceTemplate = ({setAgentFullName}) => {
       </Modal>
     </Fragment>
   );
-}
+};

@@ -155,6 +155,18 @@ export const Questionaire1 = (props) => {
           />
           <MDBInput
             type="text"
+            hint="Unit"
+            className="text-white"
+            value={courthouseAddress.unit}
+            onChange={(e) =>
+              setCourthouseAddress({
+                ...courthouseAddress,
+                unit: e.target.value,
+              })
+            }
+          />
+          <MDBInput
+            type="text"
             hint="City"
             className="text-white"
             value={courthouseAddress.city}
@@ -235,6 +247,19 @@ export const Questionaire1 = (props) => {
               })
             }
             required
+          />
+          <MDBInput
+            type="text"
+            hint="Unit"
+            className="text-white"
+            disabled={isSameAddress}
+            value={courthouseMailingAddress.unit}
+            onChange={(e) =>
+              setCourthouseMailingAddress({
+                ...courthouseMailingAddress,
+                unit: e.target.value,
+              })
+            }
           />
           <MDBInput
             type="text"

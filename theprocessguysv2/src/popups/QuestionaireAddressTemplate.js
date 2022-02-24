@@ -1,6 +1,6 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
-import { MDBRow, MDBCol, MDBInput } from "mdbreact";
+import { MDBCol, MDBInput } from "mdbreact";
 import { showToast } from "../utils";
 
 export const QuestionaireAddressTemplate = ({
@@ -11,7 +11,15 @@ export const QuestionaireAddressTemplate = ({
   const [showModal, setShow] = useState(false);
   const [localServiceDetails, setLocalServiceDetails] = useState({
     locationType: "",
-    address: { sameAsMainServiceAddress: false, street: "", city: "", state: "", zipCode: "", country: "" },
+    address: {
+      sameAsMainServiceAddress: false,
+      street: "",
+      unit: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "",
+    },
     typeOfServe: "",
     requireFirst24HourService: "",
     requireRushService: "",
@@ -29,12 +37,20 @@ export const QuestionaireAddressTemplate = ({
     if (!localServiceDetails.address.sameAsMainServiceAddress) {
       setLocalServiceDetails({
         ...localServiceDetails,
-        address: {...mainAddressForService, sameAsMainServiceAddress: !localServiceDetails.address.sameAsMainServiceAddress},
+        address: {
+          ...mainAddressForService,
+          sameAsMainServiceAddress:
+            !localServiceDetails.address.sameAsMainServiceAddress,
+        },
       });
     } else {
       setLocalServiceDetails({
         ...localServiceDetails,
-        address: {...localServiceDetails.address, sameAsMainServiceAddress: !localServiceDetails.address.sameAsMainServiceAddress},
+        address: {
+          ...localServiceDetails.address,
+          sameAsMainServiceAddress:
+            !localServiceDetails.address.sameAsMainServiceAddress,
+        },
       });
     }
   };
@@ -124,7 +140,15 @@ export const QuestionaireAddressTemplate = ({
       setServiceDetails(localServiceDetails);
       setLocalServiceDetails({
         locationType: "",
-        address: { sameAsMainServiceAddress: false, street: "", city: "", state: "", zipCode: "", country: "" },
+        address: {
+          sameAsMainServiceAddress: false,
+          street: "",
+          unit: "",
+          city: "",
+          state: "",
+          zipCode: "",
+          country: "",
+        },
         typeOfServe: "",
         requireFirst24HourService: "",
         requireRushService: "",
@@ -203,7 +227,9 @@ export const QuestionaireAddressTemplate = ({
                   controlId="sameAddressCheckbox"
                 >
                   <Form.Check
-                    checked={localServiceDetails.address.sameAsMainServiceAddress}
+                    checked={
+                      localServiceDetails.address.sameAsMainServiceAddress
+                    }
                     onChange={handleUpdateIsSameAddress}
                     type="checkbox"
                     label="Same as Main Address for Service"
@@ -225,6 +251,21 @@ export const QuestionaireAddressTemplate = ({
                   })
                 }
                 required
+              />
+              <MDBInput
+                type="text"
+                hint="Unit"
+                disabled={localServiceDetails.address.sameAsMainServiceAddress}
+                value={localServiceDetails.address.unit}
+                onChange={(e) =>
+                  setLocalServiceDetails({
+                    ...localServiceDetails,
+                    address: {
+                      ...localServiceDetails.address,
+                      unit: e.target.value,
+                    },
+                  })
+                }
               />
               <MDBInput
                 type="text"
