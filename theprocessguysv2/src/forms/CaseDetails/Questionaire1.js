@@ -37,6 +37,22 @@ export const Questionaire1 = (props) => {
     if (isSameAddress) setCourthouseMailingAddress(courthouseAddress);
   }, [isSameAddress, courthouseAddress]);
 
+  const cAOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : courthouseAddress.country;
+    setCourthouseAddress({ ...courthouseAddress, country, isCountryNotUS });
+  };
+
+  const cMAOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : courthouseMailingAddress.country;
+    setCourthouseMailingAddress({
+      ...courthouseMailingAddress,
+      country,
+      isCountryNotUS,
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
@@ -247,21 +263,37 @@ export const Questionaire1 = (props) => {
             </Form.Group>
           </MDBCol>
           <MDBCol>
-            <Form.Group id="attorney-full-firm-address">
+            <Form.Group id="country-dropdown">
               <Form.Label>Country</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
+                value={courthouseAddress.isCountryNotUS}
                 disabled={isFormDisabled}
-                value={courthouseAddress.country}
-                onChange={(e) =>
-                  setCourthouseAddress({
-                    ...courthouseAddress,
-                    country: e.target.value,
-                  })
-                }
-              />
+                onChange={(e) => cAOnChangeIsCountryNotUS(e.target.value)}
+              >
+                <option value={false}>United States</option>
+                <option value={true}>Other</option>
+              </Form.Control>
             </Form.Group>
           </MDBCol>
+          {courthouseAddress.isCountryNotUS && (
+            <MDBCol>
+              <Form.Group id="attorney-full-firm-address">
+                <Form.Label>Country Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled}
+                  value={courthouseAddress.country}
+                  onChange={(e) =>
+                    setCourthouseAddress({
+                      ...courthouseAddress,
+                      country: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+          )}
         </MDBRow>
       </MDBCol>
       <MDBCol md="12">
@@ -364,21 +396,37 @@ export const Questionaire1 = (props) => {
             </Form.Group>
           </MDBCol>
           <MDBCol>
-            <Form.Group id="attorney-full-firm-address">
+            <Form.Group id="country-dropdown">
               <Form.Label>Country</Form.Label>
               <Form.Control
-                type="text"
+                as="select"
+                value={courthouseMailingAddress.isCountryNotUS}
                 disabled={isFormDisabled || isSameAddress}
-                value={courthouseMailingAddress.country}
-                onChange={(e) =>
-                  setCourthouseMailingAddress({
-                    ...courthouseMailingAddress,
-                    country: e.target.value,
-                  })
-                }
-              />
+                onChange={(e) => cMAOnChangeIsCountryNotUS(e.target.value)}
+              >
+                <option value={false}>United States</option>
+                <option value={true}>Other</option>
+              </Form.Control>
             </Form.Group>
           </MDBCol>
+          {courthouseMailingAddress.isCountryNotUS && (
+            <MDBCol>
+              <Form.Group id="attorney-full-firm-address">
+                <Form.Label>Country Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled || isSameAddress}
+                  value={courthouseMailingAddress.country}
+                  onChange={(e) =>
+                    setCourthouseMailingAddress({
+                      ...courthouseMailingAddress,
+                      country: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+          )}
         </MDBRow>
       </MDBCol>
       <MDBCol md="12" id="county-of">

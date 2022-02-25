@@ -99,6 +99,38 @@ export const Questionaire2 = (props) => {
     }
   };
 
+  const pAOnChangeIsCountryNotUS = (isCountryNotUS, key, plaintiff) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : plaintiff.address.country;
+    setPlaintiffsDetail({
+      ...plaintiffsDetail,
+      [key]: {
+        ...plaintiff,
+        address: {
+          ...plaintiff.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
+  const aAOnChangeIsCountryNotUS = (isCountryNotUS, key, attorney) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : attorney.address.country;
+    setPlaintiffAttorneysDetail({
+      ...plaintiffAttorneysDetail,
+      [key]: {
+        ...attorney,
+        address: {
+          ...attorney.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-2">Plaintiff Information</h2>
@@ -421,27 +453,45 @@ export const Questionaire2 = (props) => {
                 </Form.Group>
               </MDBCol>
               <MDBCol>
-                <Form.Group id="attorney-full-firm-address">
+                <Form.Group id="country-dropdown">
                   <Form.Label>Country</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="select"
+                    value={plaintiff.address.isCountryNotUS}
                     disabled={isFormDisabled}
-                    value={plaintiff.address.country}
                     onChange={(e) =>
-                      setPlaintiffsDetail({
-                        ...plaintiffsDetail,
-                        [key]: {
-                          ...plaintiff,
-                          address: {
-                            ...plaintiff.address,
-                            country: e.target.value,
-                          },
-                        },
-                      })
+                      pAOnChangeIsCountryNotUS(e.target.value, key, plaintiff)
                     }
-                  />
+                  >
+                    <option value={false}>United States</option>
+                    <option value={true}>Other</option>
+                  </Form.Control>
                 </Form.Group>
               </MDBCol>
+              {plaintiff.address.isCountryNotUS && (
+                <MDBCol>
+                  <Form.Group id="attorney-full-firm-address">
+                    <Form.Label>Country Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={isFormDisabled}
+                      value={plaintiff.address.country}
+                      onChange={(e) =>
+                        setPlaintiffsDetail({
+                          ...plaintiffsDetail,
+                          [key]: {
+                            ...plaintiff,
+                            address: {
+                              ...plaintiff.address,
+                              country: e.target.value,
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
             </MDBRow>
           </MDBCol>
         </>
@@ -694,8 +744,8 @@ export const Questionaire2 = (props) => {
           </MDBRow>
           <MDBCol md="12" id="plaintiff-attorney-office-address">
             <Form.Label style={{ fontWeight: "bold" }}>Firm Address</Form.Label>
-            <MDBRow md="12">
-              <MDBCol md="4">
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Street</Form.Label>
                   <Form.Control
@@ -717,7 +767,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Unit</Form.Label>
                   <Form.Control
@@ -739,7 +789,9 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>City</Form.Label>
                   <Form.Control
@@ -761,9 +813,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-            </MDBRow>
-            <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
                   <Form.Control
@@ -785,7 +835,9 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Zip Code</Form.Label>
                   <Form.Control
@@ -807,28 +859,46 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
-                <Form.Group>
+              <MDBCol>
+                <Form.Group id="country-dropdown">
                   <Form.Label>Country</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="select"
+                    value={attorney.address.isCountryNotUS}
                     disabled={isFormDisabled}
-                    value={attorney.address.country}
                     onChange={(e) =>
-                      setPlaintiffAttorneysDetail({
-                        ...plaintiffAttorneysDetail,
-                        [key]: {
-                          ...attorney,
-                          address: {
-                            ...attorney.address,
-                            country: e.target.value,
-                          },
-                        },
-                      })
+                      aAOnChangeIsCountryNotUS(e.target.value, key, attorney)
                     }
-                  />
+                  >
+                    <option value={false}>United States</option>
+                    <option value={true}>Other</option>
+                  </Form.Control>
                 </Form.Group>
               </MDBCol>
+              {attorney.address.isCountryNotUS && (
+                <MDBCol>
+                  <Form.Group>
+                    <Form.Label>Country Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={isFormDisabled}
+                      value={attorney.address.country}
+                      onChange={(e) =>
+                        setPlaintiffAttorneysDetail({
+                          ...plaintiffAttorneysDetail,
+                          [key]: {
+                            ...attorney,
+                            address: {
+                              ...attorney.address,
+                              country: e.target.value,
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
             </MDBRow>
           </MDBCol>
         </>

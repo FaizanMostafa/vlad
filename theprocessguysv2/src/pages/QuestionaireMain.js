@@ -33,7 +33,8 @@ function Questionaire() {
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+      country: "United States",
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
@@ -41,7 +42,8 @@ function Questionaire() {
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+      country: "United States",
   });
   const [branchName, setBranchName] = useState("");
 
@@ -246,7 +248,8 @@ function Questionaire() {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -296,7 +299,8 @@ function Questionaire() {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -340,7 +344,8 @@ function Questionaire() {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -390,7 +395,8 @@ function Questionaire() {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -443,7 +449,8 @@ function Questionaire() {
                   city: "",
                   state: "",
                   zipCode: "",
-                  country: "",
+                  isCountryNotUS: false,
+      country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -1470,7 +1477,8 @@ function Questionaire() {
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setCourthouseMailingAddress({
       street: "",
@@ -1478,7 +1486,8 @@ function Questionaire() {
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setBranchName("");
     // Reset Form 2

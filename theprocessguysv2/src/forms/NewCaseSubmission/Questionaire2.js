@@ -98,6 +98,38 @@ export const Questionaire2 = (props) => {
     }
   };
 
+  const pAOnChangeIsCountryNotUS = (isCountryNotUS, key, plaintiff) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : plaintiff.address.country;
+    setPlaintiffsDetail({
+      ...plaintiffsDetail,
+      [key]: {
+        ...plaintiff,
+        address: {
+          ...plaintiff.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
+  const aAOnChangeIsCountryNotUS = (isCountryNotUS, key, attorney) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : attorney.address.country;
+    setPlaintiffAttorneysDetail({
+      ...plaintiffAttorneysDetail,
+      [key]: {
+        ...attorney,
+        address: {
+          ...attorney.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
   return (
     <>
       <h4 className="text-center mb-4 mt-5">
@@ -394,26 +426,41 @@ export const Questionaire2 = (props) => {
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                hint="Country"
-                className="text-white"
+              <select
+                className={`w-100 mt-2 ${
+                  !plaintiff.address.isCountryNotUS && "mb-4"
+                } p-2`}
                 disabled={shouldPGFillPlaintiffInfo}
-                value={plaintiff.address.country}
+                value={plaintiff.address.isCountryNotUS}
                 onChange={(e) =>
-                  setPlaintiffsDetail({
-                    ...plaintiffsDetail,
-                    [key]: {
-                      ...plaintiff,
-                      address: {
-                        ...plaintiff.address,
-                        country: e.target.value,
-                      },
-                    },
-                  })
+                  pAOnChangeIsCountryNotUS(e.target.value, key, plaintiff)
                 }
                 required
-              />
+              >
+                <option value={false}>United States</option>
+                <option value={true}>Other</option>
+              </select>
+              {plaintiff.address.isCountryNotUS && (
+                <MDBInput
+                  type="text"
+                  hint="Country Name"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  value={plaintiff.address.country}
+                  onChange={(e) =>
+                    setPlaintiffsDetail({
+                      ...plaintiffsDetail,
+                      [key]: {
+                        ...plaintiff,
+                        address: {
+                          ...plaintiff.address,
+                          country: e.target.value,
+                        },
+                      },
+                    })
+                  }
+                />
+              )}
             </div>
             {Object.keys(plaintiffsDetail).length > 1 &&
               Number(key) !== Object.keys(plaintiffsDetail).length - 1 && (
@@ -750,23 +797,41 @@ export const Questionaire2 = (props) => {
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                className="text-white"
+              <select
+                className={`w-100 mt-2 ${
+                  !attorney.address.isCountryNotUS && "mb-4"
+                } p-2`}
                 disabled={shouldPGFillPlaintiffInfo}
-                hint="Country"
-                value={attorney.address.country}
+                value={attorney.address.isCountryNotUS}
                 onChange={(e) =>
-                  setPlaintiffAttorneysDetail({
-                    ...plaintiffAttorneysDetail,
-                    [key]: {
-                      ...attorney,
-                      address: { ...attorney.address, country: e.target.value },
-                    },
-                  })
+                  aAOnChangeIsCountryNotUS(e.target.value, key, attorney)
                 }
                 required
-              />
+              >
+                <option value={false}>United States</option>
+                <option value={true}>Other</option>
+              </select>
+              {attorney.address.isCountryNotUS && (
+                <MDBInput
+                  type="text"
+                  className="text-white"
+                  disabled={shouldPGFillPlaintiffInfo}
+                  hint="Country"
+                  value={attorney.address.country}
+                  onChange={(e) =>
+                    setPlaintiffAttorneysDetail({
+                      ...plaintiffAttorneysDetail,
+                      [key]: {
+                        ...attorney,
+                        address: {
+                          ...attorney.address,
+                          country: e.target.value,
+                        },
+                      },
+                    })
+                  }
+                />
+              )}
             </div>
           </MDBCol>
           {Object.keys(plaintiffAttorneysDetail).length > 1 &&

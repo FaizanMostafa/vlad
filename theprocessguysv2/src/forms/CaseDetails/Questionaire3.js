@@ -98,6 +98,38 @@ export const Questionaire3 = (props) => {
     }
   };
 
+  const dAOnChangeIsCountryNotUS = (isCountryNotUS, key, defendant) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : defendant.address.country;
+    setDefendantsDetail({
+      ...defendantsDetail,
+      [key]: {
+        ...defendant,
+        address: {
+          ...defendant.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
+  const aAOnChangeIsCountryNotUS = (isCountryNotUS, key, attorney) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : attorney.address.country;
+    setDefendantAttorneysDetail({
+      ...defendantAttorneysDetail,
+      [key]: {
+        ...attorney,
+        address: {
+          ...attorney.address,
+          isCountryNotUS,
+          country,
+        },
+      },
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">Defendant Information</h2>
@@ -303,8 +335,8 @@ export const Questionaire3 = (props) => {
             <Form.Label style={{ fontWeight: "bold" }}>
               Defendant {parseInt(key) + 1} Address
             </Form.Label>
-            <MDBRow md="12" id="defendant-address">
-              <MDBCol md="4">
+            <MDBRow id="defendant-address">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Street</Form.Label>
                   <Form.Control
@@ -326,7 +358,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Unit</Form.Label>
                   <Form.Control
@@ -348,7 +380,9 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>City</Form.Label>
                   <Form.Control
@@ -370,9 +404,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-            </MDBRow>
-            <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
                   <Form.Control
@@ -394,7 +426,9 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Zip Code</Form.Label>
                   <Form.Control
@@ -416,28 +450,46 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
-                <Form.Group>
+              <MDBCol>
+                <Form.Group id="country-dropdown">
                   <Form.Label>Country</Form.Label>
                   <Form.Control
-                    type="text"
+                    as="select"
+                    value={defendant.address.isCountryNotUS}
                     disabled={isFormDisabled}
-                    value={defendant.address.country}
                     onChange={(e) =>
-                      setDefendantsDetail({
-                        ...defendantsDetail,
-                        [key]: {
-                          ...defendant,
-                          address: {
-                            ...defendant.address,
-                            country: e.target.value,
-                          },
-                        },
-                      })
+                      dAOnChangeIsCountryNotUS(e.target.value, key, defendant)
                     }
-                  />
+                  >
+                    <option value={false}>United States</option>
+                    <option value={true}>Other</option>
+                  </Form.Control>
                 </Form.Group>
               </MDBCol>
+              {defendant.address.isCountryNotUS && (
+                <MDBCol>
+                  <Form.Group>
+                    <Form.Label>Country Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={isFormDisabled}
+                      value={defendant.address.country}
+                      onChange={(e) =>
+                        setDefendantsDetail({
+                          ...defendantsDetail,
+                          [key]: {
+                            ...defendant,
+                            address: {
+                              ...defendant.address,
+                              country: e.target.value,
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
             </MDBRow>
           </MDBCol>
         </>
@@ -691,7 +743,7 @@ export const Questionaire3 = (props) => {
           <MDBCol md="12">
             <Form.Label style={{ fontWeight: "bold" }}>Firm Address</Form.Label>
             <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group id="defendant-attorney-office-address">
                   <Form.Label>Street</Form.Label>
                   <Form.Control
@@ -713,7 +765,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group id="defendant-attorney-office-address">
                   <Form.Label>Unit</Form.Label>
                   <Form.Control
@@ -735,7 +787,9 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>City</Form.Label>
                   <Form.Control
@@ -757,9 +811,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-            </MDBRow>
-            <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>State</Form.Label>
                   <Form.Control
@@ -781,7 +833,9 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+            </MDBRow>
+            <MDBRow>
+              <MDBCol>
                 <Form.Group>
                   <Form.Label>Zip Code</Form.Label>
                   <Form.Control
@@ -803,28 +857,46 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
-                <Form.Group>
+              <MDBCol>
+                <Form.Group id="country-dropdown">
                   <Form.Label>Country</Form.Label>
                   <Form.Control
-                    type="text"
-                    value={attorney.address.country}
+                    as="select"
+                    value={attorney.address.isCountryNotUS}
                     disabled={isFormDisabled}
                     onChange={(e) =>
-                      setDefendantAttorneysDetail({
-                        ...defendantAttorneysDetail,
-                        [key]: {
-                          ...attorney,
-                          address: {
-                            ...attorney.address,
-                            country: e.target.value,
-                          },
-                        },
-                      })
+                      aAOnChangeIsCountryNotUS(e.target.value, key, attorney)
                     }
-                  />
+                  >
+                    <option value={false}>United States</option>
+                    <option value={true}>Other</option>
+                  </Form.Control>
                 </Form.Group>
               </MDBCol>
+              {attorney.address.isCountryNotUS && (
+                <MDBCol>
+                  <Form.Group>
+                    <Form.Label>Country Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={attorney.address.country}
+                      disabled={isFormDisabled}
+                      onChange={(e) =>
+                        setDefendantAttorneysDetail({
+                          ...defendantAttorneysDetail,
+                          [key]: {
+                            ...attorney,
+                            address: {
+                              ...attorney.address,
+                              country: e.target.value,
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
             </MDBRow>
           </MDBCol>
         </>

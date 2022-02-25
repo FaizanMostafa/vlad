@@ -54,7 +54,8 @@ export const ViewEditCase = ({
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+      country: "United States",
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
@@ -62,7 +63,8 @@ export const ViewEditCase = ({
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+      country: "United States",
   });
   const [branchName, setBranchName] = useState("");
 
@@ -298,7 +300,8 @@ export const ViewEditCase = ({
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -348,7 +351,8 @@ export const ViewEditCase = ({
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -392,7 +396,8 @@ export const ViewEditCase = ({
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -442,7 +447,8 @@ export const ViewEditCase = ({
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -496,7 +502,8 @@ export const ViewEditCase = ({
                   city: "",
                   state: "",
                   zipCode: "",
-                  country: "",
+                  isCountryNotUS: false,
+      country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -1879,7 +1886,8 @@ export const ViewEditCase = ({
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setCourthouseMailingAddress({
       street: "",
@@ -1887,7 +1895,8 @@ export const ViewEditCase = ({
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setBranchName("");
     // Reset Form 2

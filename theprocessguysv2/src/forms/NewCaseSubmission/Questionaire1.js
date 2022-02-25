@@ -31,6 +31,22 @@ export const Questionaire1 = (props) => {
     if (isSameAddress) setCourthouseMailingAddress(courthouseAddress);
   }, [isSameAddress, courthouseAddress]);
 
+  const cAOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : courthouseAddress.country;
+    setCourthouseAddress({ ...courthouseAddress, country, isCountryNotUS });
+  };
+
+  const cMAOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : courthouseMailingAddress.country;
+    setCourthouseMailingAddress({
+      ...courthouseMailingAddress,
+      country,
+      isCountryNotUS,
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
@@ -204,19 +220,31 @@ export const Questionaire1 = (props) => {
             }
             required
           />
-          <MDBInput
-            type="text"
-            hint="Country"
-            className="text-white"
-            value={courthouseAddress.country}
-            onChange={(e) =>
-              setCourthouseAddress({
-                ...courthouseAddress,
-                country: e.target.value,
-              })
-            }
+          <select
+            className={`w-100 mt-2 ${
+              !courthouseAddress.isCountryNotUS && "mb-4"
+            } p-2`}
+            value={courthouseAddress.isCountryNotUS}
+            onChange={(e) => cAOnChangeIsCountryNotUS(e.target.value)}
             required
-          />
+          >
+            <option value={false}>United States</option>
+            <option value={true}>Other</option>
+          </select>
+          {courthouseAddress.isCountryNotUS && (
+            <MDBInput
+              type="text"
+              hint="Country Name"
+              className="text-white"
+              value={courthouseAddress.country}
+              onChange={(e) =>
+                setCourthouseAddress({
+                  ...courthouseAddress,
+                  country: e.target.value,
+                })
+              }
+            />
+          )}
         </MDBCol>
       </MDBCol>
       <MDBCol md="12" id="courthouse-mailing-address">
@@ -303,20 +331,32 @@ export const Questionaire1 = (props) => {
             }
             required
           />
-          <MDBInput
-            type="text"
-            hint="Country"
-            className="text-white"
-            disabled={isSameAddress}
-            value={courthouseMailingAddress.country}
-            onChange={(e) =>
-              setCourthouseMailingAddress({
-                ...courthouseMailingAddress,
-                country: e.target.value,
-              })
-            }
+          <select
+            className={`w-100 mt-2 ${
+              !courthouseMailingAddress.isCountryNotUS && "mb-4"
+            } p-2`}
+            value={courthouseMailingAddress.isCountryNotUS}
+            onChange={(e) => cMAOnChangeIsCountryNotUS(e.target.value)}
             required
-          />
+          >
+            <option value={false}>United States</option>
+            <option value={true}>Other</option>
+          </select>
+          {courthouseMailingAddress.isCountryNotUS && (
+            <MDBInput
+              type="text"
+              hint="Country Name"
+              className="text-white"
+              disabled={isSameAddress}
+              value={courthouseMailingAddress.country}
+              onChange={(e) =>
+                setCourthouseMailingAddress({
+                  ...courthouseMailingAddress,
+                  country: e.target.value,
+                })
+              }
+            />
+          )}
         </MDBCol>
       </MDBCol>
       <MDBCol md="12" id="county-of">

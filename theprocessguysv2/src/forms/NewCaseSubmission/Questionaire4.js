@@ -238,6 +238,34 @@ export const Questionaire4 = (props) => {
     });
   };
 
+  const sDAOnChangeIsCountryNotUS = (
+    isCountryNotUS,
+    servee,
+    serveeKey,
+    serviceDetail,
+    serviceDetailKey
+  ) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : serviceDetail.address.country;
+    setServeesDetail({
+      ...serveesDetail,
+      [serveeKey]: {
+        ...servee,
+        serviceDetails: {
+          ...servee.serviceDetails,
+          [serviceDetailKey]: {
+            ...serviceDetail,
+            address: {
+              ...serviceDetail.address,
+              isCountryNotUS,
+              country,
+            },
+          },
+        },
+      },
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">Servee Documented Data</h2>
@@ -894,34 +922,57 @@ export const Questionaire4 = (props) => {
                         }
                         required
                       />
-                      <MDBInput
-                        type="text"
-                        hint="Country"
-                        className="text-white"
-                        value={serviceDetail.address.country}
+                      <select
+                        className={`w-100 mt-2 ${
+                          !serviceDetail.address.isCountryNotUS && "mb-4"
+                        } p-2`}
                         disabled={
                           serviceDetail.address.sameAsMainServiceAddress
                         }
+                        value={serviceDetail.address.isCountryNotUS}
                         onChange={(e) =>
-                          setServeesDetail({
-                            ...serveesDetail,
-                            [serveeKey]: {
-                              ...servee,
-                              serviceDetails: {
-                                ...servee.serviceDetails,
-                                [serviceDetailKey]: {
-                                  ...serviceDetail,
-                                  address: {
-                                    ...serviceDetail.address,
-                                    country: e.target.value,
+                          sDAOnChangeIsCountryNotUS(
+                            e.target.value,
+                            servee,
+                            serveeKey,
+                            serviceDetail,
+                            serviceDetailKey
+                          )
+                        }
+                        required
+                      >
+                        <option value={false}>United States</option>
+                        <option value={true}>Other</option>
+                      </select>
+                      {serviceDetail.address.isCountryNotUS && (
+                        <MDBInput
+                          type="text"
+                          hint="Country"
+                          className="text-white"
+                          value={serviceDetail.address.country}
+                          disabled={
+                            serviceDetail.address.sameAsMainServiceAddress
+                          }
+                          onChange={(e) =>
+                            setServeesDetail({
+                              ...serveesDetail,
+                              [serveeKey]: {
+                                ...servee,
+                                serviceDetails: {
+                                  ...servee.serviceDetails,
+                                  [serviceDetailKey]: {
+                                    ...serviceDetail,
+                                    address: {
+                                      ...serviceDetail.address,
+                                      country: e.target.value,
+                                    },
                                   },
                                 },
                               },
-                            },
-                          })
-                        }
-                        required
-                      />
+                            })
+                          }
+                        />
+                      )}
                     </MDBCol>
                     <MDBCol md="12">
                       <div id="require-normal-personal-service">

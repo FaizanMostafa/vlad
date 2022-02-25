@@ -18,7 +18,8 @@ export const QuestionaireAddressTemplate = ({
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     },
     typeOfServe: "",
     requireFirst24HourService: "",
@@ -147,7 +148,8 @@ export const QuestionaireAddressTemplate = ({
           city: "",
           state: "",
           zipCode: "",
-          country: "",
+          isCountryNotUS: false,
+          country: "United States",
         },
         typeOfServe: "",
         requireFirst24HourService: "",
@@ -179,6 +181,19 @@ export const QuestionaireAddressTemplate = ({
         typeOfServe: serviceType,
       });
     }
+  };
+
+  const handleOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : localServiceDetails.address.country;
+    setLocalServiceDetails({
+      ...localServiceDetails,
+      address: {
+        ...localServiceDetails.address,
+        isCountryNotUS,
+        country,
+      },
+    });
   };
 
   const handleClose = () => setShow(false);
@@ -315,22 +330,37 @@ export const QuestionaireAddressTemplate = ({
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                hint="Country"
+              <select
+                className={`browser-default custom-select w-100 mt-2 ${
+                  !localServiceDetails.address.isCountryNotUS && "mb-4"
+                } p-2`}
+                value={localServiceDetails.address.isCountryNotUS}
                 disabled={localServiceDetails.address.sameAsMainServiceAddress}
-                value={localServiceDetails.address.country}
-                onChange={(e) =>
-                  setLocalServiceDetails({
-                    ...localServiceDetails,
-                    address: {
-                      ...localServiceDetails.address,
-                      country: e.target.value,
-                    },
-                  })
-                }
-                required
-              />
+                onChange={(e) => handleOnChangeIsCountryNotUS(e.target.value)}
+              >
+                <option value={false}>United States</option>
+                <option value={true}>Other</option>
+              </select>
+              {localServiceDetails.address.isCountryNotUS && (
+                <MDBInput
+                  type="text"
+                  hint="Country Name"
+                  disabled={
+                    localServiceDetails.address.sameAsMainServiceAddress
+                  }
+                  value={localServiceDetails.address.country}
+                  onChange={(e) =>
+                    setLocalServiceDetails({
+                      ...localServiceDetails,
+                      address: {
+                        ...localServiceDetails.address,
+                        country: e.target.value,
+                      },
+                    })
+                  }
+                  required
+                />
+              )}
             </div>
           </MDBCol>
           <MDBCol md="12">

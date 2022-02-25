@@ -37,7 +37,8 @@ export const CreateNewCase = (props) => {
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+    country: "United States",
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
@@ -45,7 +46,8 @@ export const CreateNewCase = (props) => {
     city: "",
     state: "",
     zipCode: "",
-    country: "",
+    isCountryNotUS: false,
+    country: "United States",
   });
   const [branchName, setBranchName] = useState("");
 
@@ -305,8 +307,8 @@ export const CreateNewCase = (props) => {
               unit: "",
               city: "",
               state: "",
-              zipCode: "",
-              country: "",
+              zipCode: "",isCountryNotUS: false,
+              country: "United States",
             },
           };
         }
@@ -356,7 +358,8 @@ export const CreateNewCase = (props) => {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -400,7 +403,8 @@ export const CreateNewCase = (props) => {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -450,7 +454,8 @@ export const CreateNewCase = (props) => {
               city: "",
               state: "",
               zipCode: "",
-              country: "",
+              isCountryNotUS: false,
+      country: "United States",
             },
           };
         }
@@ -503,7 +508,8 @@ export const CreateNewCase = (props) => {
                   city: "",
                   state: "",
                   zipCode: "",
-                  country: "",
+                  isCountryNotUS: false,
+      country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -1543,7 +1549,8 @@ export const CreateNewCase = (props) => {
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setCourthouseMailingAddress({
       street: "",
@@ -1551,7 +1558,8 @@ export const CreateNewCase = (props) => {
       city: "",
       state: "",
       zipCode: "",
-      country: "",
+      isCountryNotUS: false,
+      country: "United States",
     });
     setBranchName("");
     // Reset Form 2

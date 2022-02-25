@@ -233,6 +233,34 @@ export const Questionaire4 = (props) => {
     });
   };
 
+  const sDAOnChangeIsCountryNotUS = (
+    isCountryNotUS,
+    servee,
+    serveeKey,
+    serviceDetail,
+    serviceDetailKey
+  ) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : serviceDetail.address.country;
+    setServeesDetail({
+      ...serveesDetail,
+      [serveeKey]: {
+        ...servee,
+        serviceDetails: {
+          ...servee.serviceDetails,
+          [serviceDetailKey]: {
+            ...serviceDetail,
+            address: {
+              ...serviceDetail.address,
+              isCountryNotUS,
+              country,
+            },
+          },
+        },
+      },
+    });
+  };
+
   return (
     <>
       <h2 className="text-center mb-4 mt-5">Servee Documented Data</h2>
@@ -753,8 +781,8 @@ export const Questionaire4 = (props) => {
                           </MDBCol>
                         </MDBRow>
                       )}
-                    <MDBRow md="12">
-                      <MDBCol md="4">
+                    <MDBRow>
+                      <MDBCol>
                         <Form.Group>
                           <Form.Label>Street</Form.Label>
                           <Form.Control
@@ -785,7 +813,7 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                      <MDBCol md="4">
+                      <MDBCol>
                         <Form.Group>
                           <Form.Label>Unit</Form.Label>
                           <Form.Control
@@ -816,7 +844,9 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                      <MDBCol md="4">
+                    </MDBRow>
+                    <MDBRow>
+                      <MDBCol>
                         <Form.Group>
                           <Form.Label>City</Form.Label>
                           <Form.Control
@@ -847,9 +877,7 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                    </MDBRow>
-                    <MDBRow md="12">
-                      <MDBCol md="4">
+                      <MDBCol>
                         <Form.Group>
                           <Form.Label>State</Form.Label>
                           <Form.Control
@@ -880,7 +908,9 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                      <MDBCol md="4">
+                    </MDBRow>
+                    <MDBRow>
+                      <MDBCol>
                         <Form.Group>
                           <Form.Label>Zip Code</Form.Label>
                           <Form.Control
@@ -911,37 +941,64 @@ export const Questionaire4 = (props) => {
                           />
                         </Form.Group>
                       </MDBCol>
-                      <MDBCol md="4">
-                        <Form.Group>
+                      <MDBCol>
+                        <Form.Group id="country-dropdown">
                           <Form.Label>Country</Form.Label>
                           <Form.Control
-                            type="text"
+                            as="select"
+                            value={serviceDetail.address.isCountryNotUS}
                             disabled={
                               isFormDisabled ||
                               serviceDetail.address.sameAsMainServiceAddress
                             }
-                            value={serviceDetail.address.country}
                             onChange={(e) =>
-                              setServeesDetail({
-                                ...serveesDetail,
-                                [serveeKey]: {
-                                  ...servee,
-                                  serviceDetails: {
-                                    ...servee.serviceDetails,
-                                    [serviceDetailKey]: {
-                                      ...serviceDetail,
-                                      address: {
-                                        ...serviceDetail.address,
-                                        country: e.target.value,
+                              sDAOnChangeIsCountryNotUS(
+                                e.target.value,
+                                servee,
+                                serveeKey,
+                                serviceDetail,
+                                serviceDetailKey
+                              )
+                            }
+                          >
+                            <option value={false}>United States</option>
+                            <option value={true}>Other</option>
+                          </Form.Control>
+                        </Form.Group>
+                      </MDBCol>
+                      {serviceDetail.address.isCountryNotUS && (
+                        <MDBCol>
+                          <Form.Group>
+                            <Form.Label>Country Name</Form.Label>
+                            <Form.Control
+                              type="text"
+                              disabled={
+                                isFormDisabled ||
+                                serviceDetail.address.sameAsMainServiceAddress
+                              }
+                              value={serviceDetail.address.country}
+                              onChange={(e) =>
+                                setServeesDetail({
+                                  ...serveesDetail,
+                                  [serveeKey]: {
+                                    ...servee,
+                                    serviceDetails: {
+                                      ...servee.serviceDetails,
+                                      [serviceDetailKey]: {
+                                        ...serviceDetail,
+                                        address: {
+                                          ...serviceDetail.address,
+                                          country: e.target.value,
+                                        },
                                       },
                                     },
                                   },
-                                },
-                              })
-                            }
-                          />
-                        </Form.Group>
-                      </MDBCol>
+                                })
+                              }
+                            />
+                          </Form.Group>
+                        </MDBCol>
+                      )}
                     </MDBRow>
                   </MDBCol>
                   <MDBCol md="12">
