@@ -31,19 +31,19 @@ function Questionaire() {
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
-      country: "United States",
+    country: "United States",
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
-      country: "United States",
+    country: "United States",
   });
   const [branchName, setBranchName] = useState("");
 
@@ -246,10 +246,10 @@ function Questionaire() {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -297,10 +297,10 @@ function Questionaire() {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -342,10 +342,10 @@ function Questionaire() {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -393,10 +393,10 @@ function Questionaire() {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -447,10 +447,10 @@ function Questionaire() {
                   street: "",
                   unit: "",
                   city: "",
-                  state: "",
+                  state: { us: "", other: "" },
                   zipCode: "",
                   isCountryNotUS: false,
-      country: "United States",
+                  country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -526,8 +526,10 @@ function Questionaire() {
         showToast("Please enter courthouse street!", "warning");
       } else if (!courthouseAddress.city.length) {
         showToast("Please enter courthouse city!", "warning");
-      } else if (!courthouseAddress.state.length) {
-        showToast("Please enter courthouse state!", "warning");
+      } else if (!courthouseAddress.state.us.length ||
+        (courthouseAddress.state.us === "other" &&
+          !courthouseAddress.state.other.length)) {
+        showToast("Please select/enter courthouse state!", "warning");
       } else if (!courthouseAddress.zipCode.length) {
         showToast("Please enter courthouse zip code!", "warning");
       } else if (!courthouseAddress.country.length) {
@@ -536,8 +538,10 @@ function Questionaire() {
         showToast("Please enter courthouse mailing street!", "warning");
       } else if (!courthouseMailingAddress.city.length) {
         showToast("Please enter courthouse mailing city!", "warning");
-      } else if (!courthouseMailingAddress.state.length) {
-        showToast("Please enter courthouse mailing state!", "warning");
+      } else if (!courthouseMailingAddress.state.us.length ||
+        (courthouseMailingAddress.state.us === "other" &&
+          !courthouseMailingAddress.state.other.length)) {
+        showToast("Please select/enter courthouse mailing state!", "warning");
       } else if (!courthouseMailingAddress.zipCode.length) {
         showToast("Please enter courthouse mailing zip code!", "warning");
       } else if (!courthouseMailingAddress.country.length) {
@@ -606,9 +610,11 @@ function Questionaire() {
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter((address) => !address.state.us.length ||
+          (address.state.us === "other" &&
+            !address.state.other.length)).length
       ) {
-        showToast("Please enter plaintiff's state address!", "warning");
+        showToast("Please select/enter plaintiff's state address!", "warning");
       } else if (
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
@@ -736,7 +742,9 @@ function Questionaire() {
         isOrRepresentingPlaintiff === true &&
         Object.values(plaintiffAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter((address) => !address.state.us.length ||
+          (address.state.us === "other" &&
+            !address.state.other.length)).length
       ) {
         showToast("Please enter plaintiff's attorney firm state!", "warning");
       } else if (
@@ -818,9 +826,11 @@ function Questionaire() {
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter((address) => !address.state.us.length ||
+          (address.state.us === "other" &&
+            !address.state.other.length)).length
       ) {
-        showToast("Please enter defendant's state!", "warning");
+        showToast("Please select/enter defendant's state!", "warning");
       } else if (
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
@@ -951,9 +961,11 @@ function Questionaire() {
         isOrRepresentingDefendant === true &&
         Object.values(defendantAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter((address) => !address.state.us.length ||
+          (address.state.us === "other" &&
+            !address.state.other.length)).length
       ) {
-        showToast("Please enter defendant's attorney's firm state!", "warning");
+        showToast("Please select/enter defendant's attorney's firm state!", "warning");
       } else if (
         !shouldPGFillDefendantInfo &&
         numberOfAttorneysRepresentingDefendant !== "0" &&
@@ -1125,7 +1137,9 @@ function Questionaire() {
           [],
           Object.values(serveesDetail).map((o) =>
             Object.values(o.serviceDetails).filter(
-              (o) => !o.address.state.length
+              (o) => !o.address.state.us.length ||
+              (o.address.state.us === "other" &&
+                !o.address.state.other.length)
             )
           )
         ).length
@@ -1475,7 +1489,7 @@ function Questionaire() {
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
@@ -1484,7 +1498,7 @@ function Questionaire() {
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",

@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { Form, Modal, Button } from "react-bootstrap";
-import { MDBCol, MDBInput } from "mdbreact";
-import { showToast } from "../utils";
+import { MDBRow, MDBCol, MDBInput } from "mdbreact";
+import { getUSStates, showToast } from "../utils";
 
 export const QuestionaireAddressTemplate = ({
   serveeKey,
@@ -16,7 +16,7 @@ export const QuestionaireAddressTemplate = ({
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
@@ -64,8 +64,12 @@ export const QuestionaireAddressTemplate = ({
       showToast("Please enter street address!", "warning");
     } else if (!localServiceDetails.address.city.length) {
       showToast("Please enter city address!", "warning");
-    } else if (!localServiceDetails.address.state.length) {
-      showToast("Please enter state address!", "warning");
+    } else if (
+      !localServiceDetails.state.us.length ||
+      (localServiceDetails.state.us === "other" &&
+        !localServiceDetails.state.other.length)
+    ) {
+      showToast("Please select/enter state address!", "warning");
     } else if (!localServiceDetails.address.zipCode.length) {
       showToast("Please enter zip code!", "warning");
     } else if (!localServiceDetails.address.country.length) {
@@ -146,7 +150,7 @@ export const QuestionaireAddressTemplate = ({
           street: "",
           unit: "",
           city: "",
-          state: "",
+          state: { us: "", other: "" },
           zipCode: "",
           isCountryNotUS: false,
           country: "United States",
@@ -298,22 +302,65 @@ export const QuestionaireAddressTemplate = ({
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                hint="State"
-                disabled={localServiceDetails.address.sameAsMainServiceAddress}
-                value={localServiceDetails.address.state}
-                onChange={(e) =>
-                  setLocalServiceDetails({
-                    ...localServiceDetails,
-                    address: {
-                      ...localServiceDetails.address,
-                      state: e.target.value,
-                    },
-                  })
-                }
-                required
-              />
+              <MDBRow>
+                <MDBCol>
+                  <select
+                    className={`browser-default custom-select w-100`}
+                    value={localServiceDetails.address.state.us}
+                    disabled={
+                      localServiceDetails.address.sameAsMainServiceAddress
+                    }
+                    onChange={(e) =>
+                      setLocalServiceDetails({
+                        ...localServiceDetails,
+                        address: {
+                          ...localServiceDetails.address,
+                          state: {
+                            other:
+                              e.target.value !== "other"
+                                ? ""
+                                : localServiceDetails.address.state.other,
+                            us: e.target.value,
+                          },
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </select>
+                </MDBCol>
+                {localServiceDetails.address.state.us === "other" && (
+                  <MDBCol>
+                    <MDBInput
+                      type="text"
+                      hint="State"
+                      className="text-white"
+                      disabled={
+                        localServiceDetails.address.sameAsMainServiceAddress
+                      }
+                      value={localServiceDetails.address.state.other}
+                      onChange={(e) =>
+                        setLocalServiceDetails({
+                          ...localServiceDetails,
+                          address: {
+                            ...localServiceDetails.address,
+                            state: {
+                              ...localServiceDetails.address.state,
+                              other: e.target.value,
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </MDBCol>
+                )}
+              </MDBRow>
               <MDBInput
                 type="text"
                 hint="Zip Code"

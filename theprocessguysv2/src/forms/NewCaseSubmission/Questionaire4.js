@@ -3,6 +3,7 @@ import {
   QuestionaireAddressTemplate,
   QuestionaireAgentOfServiceTemplate,
 } from "../../popups";
+import { getUSStates } from "../../utils";
 
 export const Questionaire4 = (props) => {
   const {
@@ -866,34 +867,84 @@ export const Questionaire4 = (props) => {
                         }
                         required
                       />
-                      <MDBInput
-                        type="text"
-                        hint="State"
-                        className="text-white"
-                        value={serviceDetail.address.state}
-                        disabled={
-                          serviceDetail.address.sameAsMainServiceAddress
-                        }
-                        onChange={(e) =>
-                          setServeesDetail({
-                            ...serveesDetail,
-                            [serveeKey]: {
-                              ...servee,
-                              serviceDetails: {
-                                ...servee.serviceDetails,
-                                [serviceDetailKey]: {
-                                  ...serviceDetail,
-                                  address: {
-                                    ...serviceDetail.address,
-                                    state: e.target.value,
+                      <MDBRow>
+                        <MDBCol>
+                          <select
+                            className={`browser-default custom-select w-100`}
+                            value={serviceDetail.address.state.us}
+                            disabled={
+                              serviceDetail.address.sameAsMainServiceAddress
+                            }
+                            onChange={(e) =>
+                              setServeesDetail({
+                                ...serveesDetail,
+                                [serveeKey]: {
+                                  ...servee,
+                                  serviceDetails: {
+                                    ...servee.serviceDetails,
+                                    [serviceDetailKey]: {
+                                      ...serviceDetail,
+                                      address: {
+                                        ...serviceDetail.address,
+                                        state: {
+                                          other:
+                                            e.target.value !== "other"
+                                              ? ""
+                                              : serviceDetail.address.state
+                                                  .other,
+                                          us: e.target.value,
+                                        },
+                                      },
+                                    },
                                   },
                                 },
-                              },
-                            },
-                          })
-                        }
-                        required
-                      />
+                              })
+                            }
+                          >
+                            <option value="" disabled>
+                              Please select state
+                            </option>
+                            {getUSStates().map((state) => (
+                              <option value={state.value}>{state.name}</option>
+                            ))}
+                            <option value="other">Other</option>
+                          </select>
+                        </MDBCol>
+                        {serviceDetail.address.state.us === "other" && (
+                          <MDBCol>
+                            <MDBInput
+                              type="text"
+                              hint="State"
+                              className="text-white"
+                              disabled={
+                                serviceDetail.address.sameAsMainServiceAddress
+                              }
+                              value={serviceDetail.address.state.other}
+                              onChange={(e) =>
+                                setServeesDetail({
+                                  ...serveesDetail,
+                                  [serveeKey]: {
+                                    ...servee,
+                                    serviceDetails: {
+                                      ...servee.serviceDetails,
+                                      [serviceDetailKey]: {
+                                        ...serviceDetail,
+                                        address: {
+                                          ...serviceDetail.address,
+                                          state: {
+                                            ...serviceDetail.address.state,
+                                            other: e.target.value,
+                                          },
+                                        },
+                                      },
+                                    },
+                                  },
+                                })
+                              }
+                            />
+                          </MDBCol>
+                        )}
+                      </MDBRow>
                       <MDBInput
                         type="text"
                         hint="Zip Code"

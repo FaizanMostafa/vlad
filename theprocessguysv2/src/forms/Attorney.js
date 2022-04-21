@@ -1,13 +1,27 @@
-import React from 'react';
-import { MDBRow, MDBCol } from 'mdbreact';
-import { Form } from 'react-bootstrap';
+import React from "react";
+import { MDBRow, MDBCol } from "mdbreact";
+import { Form } from "react-bootstrap";
+import { getUSStates } from "../utils";
 
-function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barNo, setBarNo, firmName, setFirmName, firmAddress, setFirmAddress, firmRole, setFirmRole, ...props }) {
-
+function Attorney({
+  attorneyType,
+  setAttorneyType,
+  specialty,
+  setSpecialty,
+  barNo,
+  setBarNo,
+  firmName,
+  setFirmName,
+  firmAddress,
+  setFirmAddress,
+  firmRole,
+  setFirmRole,
+  ...props
+}) {
   return (
     <MDBRow>
       <h2 className="justify-content-center">Please Select Role</h2>
-      <MDBCol md="12 w-100" >
+      <MDBCol md="12 w-100">
         <br></br>
         <MDBRow md="8" id="attorney-form-toggle">
           <MDBCol md="12">
@@ -20,7 +34,10 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
                 name="flexRadioDefault"
                 id="flexRadioDefault2"
               />
-              <label class="form-check-label" for="flexRadioDefault2"> Attorney </label>
+              <label class="form-check-label" for="flexRadioDefault2">
+                {" "}
+                Attorney{" "}
+              </label>
             </div>
             <div class="form-check">
               <input
@@ -31,13 +48,14 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
               />
-              <label class="form-check-label" for="flexRadioDefault1"> Paralegal </label>
+              <label class="form-check-label" for="flexRadioDefault1">
+                {" "}
+                Paralegal{" "}
+              </label>
             </div>
             <br></br>
           </MDBCol>
-          {
-            attorneyType === "attorney"
-            &&
+          {attorneyType === "attorney" && (
             <MDBCol md="12">
               <Form.Group id="attorney-barnumber">
                 <Form.Label>Bar Number</Form.Label>
@@ -48,10 +66,12 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
                 />
               </Form.Group>
             </MDBCol>
-          }
+          )}
           <MDBCol md="12">
             <Form.Group id="attorney-specialty">
-              <Form.Label>Legal Specialty (ie. Defence, Business, Financial, etc.)</Form.Label>
+              <Form.Label>
+                Legal Specialty (ie. Defence, Business, Financial, etc.)
+              </Form.Label>
               <Form.Control
                 type="text"
                 value={specialty}
@@ -76,48 +96,97 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
                 type="text"
                 placeholder="Street"
                 value={firmAddress.street}
-                onChange={(e) => setFirmAddress({ ...firmAddress, street: e.target.value })}
+                onChange={(e) =>
+                  setFirmAddress({ ...firmAddress, street: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group id="attorney-full-firm-address">
+            <Form.Group id="attorney-full-firm-city">
               <Form.Control
                 type="text"
                 placeholder="City"
                 value={firmAddress.city}
-                onChange={(e) => setFirmAddress({ ...firmAddress, city: e.target.value })}
+                onChange={(e) =>
+                  setFirmAddress({ ...firmAddress, city: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group id="attorney-full-firm-address">
-              <Form.Control
-                type="text"
-                placeholder="State"
-                value={firmAddress.state}
-                onChange={(e) => setFirmAddress({ ...firmAddress, state: e.target.value })}
-              />
+            <Form.Group id="attorney-full-firm-state">
+              <MDBRow>
+                <MDBCol>
+                  <select
+                    className={`browser-default custom-select w-100`}
+                    value={firmAddress.state.us}
+                    onChange={(e) =>
+                      setFirmAddress({
+                        ...firmAddress,
+                        state: {
+                          other:
+                            e.target.value !== "other"
+                              ? ""
+                              : firmAddress.state.other,
+                          us: e.target.value,
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </select>
+                </MDBCol>
+                {firmAddress.state.us === "other" && (
+                  <MDBCol>
+                    <Form.Control
+                      type="text"
+                      placeholder="State"
+                      value={firmAddress.state.other}
+                      onChange={(e) =>
+                        setFirmAddress({
+                          ...firmAddress,
+                          state: {
+                            ...firmAddress.state,
+                            other: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </MDBCol>
+                )}
+              </MDBRow>
             </Form.Group>
-            <Form.Group id="attorney-full-firm-address">
+            <Form.Group id="attorney-full-firm-zip-code">
               <Form.Control
                 type="text"
                 placeholder="Zip Code"
                 value={firmAddress.zipCode}
-                onChange={(e) => setFirmAddress({ ...firmAddress, zipCode: e.target.value })}
+                onChange={(e) =>
+                  setFirmAddress({ ...firmAddress, zipCode: e.target.value })
+                }
               />
             </Form.Group>
-            <Form.Group id="attorney-full-firm-address">
+            <Form.Group id="attorney-full-firm-country">
               <Form.Control
                 type="text"
                 placeholder="Country"
                 value={firmAddress.country}
-                onChange={(e) => setFirmAddress({ ...firmAddress, country: e.target.value })}
+                onChange={(e) =>
+                  setFirmAddress({ ...firmAddress, country: e.target.value })
+                }
               />
             </Form.Group>
           </MDBCol>
-          {
-            attorneyType === "attorney"
-            &&
+          {attorneyType === "attorney" && (
             <MDBCol md="12">
               <Form.Group id="firm-role">
-                <Form.Label>Firm Role (current position ie Owner, Partner, Staff Member, etc.)</Form.Label>
+                <Form.Label>
+                  Firm Role (current position ie Owner, Partner, Staff Member,
+                  etc.)
+                </Form.Label>
                 <Form.Control
                   type="text"
                   value={firmRole}
@@ -125,7 +194,7 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
                 />
               </Form.Group>
             </MDBCol>
-          }
+          )}
         </MDBRow>
       </MDBCol>
       <br></br>
@@ -134,4 +203,4 @@ function Attorney({ attorneyType, setAttorneyType, specialty, setSpecialty, barN
   );
 }
 
-export default Attorney
+export default Attorney;

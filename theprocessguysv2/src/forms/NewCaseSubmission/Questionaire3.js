@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import { MDBRow, MDBCol, MDBInput } from "mdbreact";
 import { Link as RSLink } from "react-scroll";
+import { getUSStates } from "../../utils";
 
 export const Questionaire3 = (props) => {
   const {
@@ -380,23 +381,67 @@ export const Questionaire3 = (props) => {
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                hint="State"
-                className="text-white"
-                disabled={shouldPGFillDefendantInfo}
-                value={defendant.address.state}
-                onChange={(e) =>
-                  setDefendantsDetail({
-                    ...defendantsDetail,
-                    [key]: {
-                      ...defendant,
-                      address: { ...defendant.address, state: e.target.value },
-                    },
-                  })
-                }
-                required
-              />
+              <MDBRow>
+                <MDBCol>
+                  <select
+                    className={`browser-default custom-select w-100`}
+                    value={defendant.address.state.us}
+                    disabled={shouldPGFillDefendantInfo}
+                    onChange={(e) =>
+                      setDefendantsDetail({
+                        ...defendantsDetail,
+                        [key]: {
+                          ...defendant,
+                          address: {
+                            ...defendant.address,
+                            state: {
+                              other:
+                                e.target.value !== "other"
+                                  ? ""
+                                  : defendant.address.state.other,
+                              us: e.target.value,
+                            },
+                          },
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </select>
+                </MDBCol>
+                {defendant.address.state.us === "other" && (
+                  <MDBCol>
+                    <MDBInput
+                      type="text"
+                      hint="State"
+                      className="text-white"
+                      disabled={shouldPGFillDefendantInfo}
+                      value={defendant.address.state.other}
+                      onChange={(e) =>
+                        setDefendantsDetail({
+                          ...defendantsDetail,
+                          [key]: {
+                            ...defendant,
+                            address: {
+                              ...defendant.address,
+                              state: {
+                                ...defendant.address.state,
+                                other: e.target.value,
+                              },
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </MDBCol>
+                )}
+              </MDBRow>
               <MDBInput
                 type="text"
                 hint="Zip Code"
@@ -757,23 +802,67 @@ export const Questionaire3 = (props) => {
                 }
                 required
               />
-              <MDBInput
-                type="text"
-                className="text-white"
-                hint="State"
-                value={attorney.address.state}
-                disabled={shouldPGFillDefendantInfo}
-                onChange={(e) =>
-                  setDefendantAttorneysDetail({
-                    ...defendantAttorneysDetail,
-                    [key]: {
-                      ...attorney,
-                      address: { ...attorney.address, state: e.target.value },
-                    },
-                  })
-                }
-                required
-              />
+              <MDBRow>
+                <MDBCol>
+                  <select
+                    className={`browser-default custom-select w-100`}
+                    value={attorney.address.state.us}
+                    disabled={shouldPGFillDefendantInfo}
+                    onChange={(e) =>
+                      setDefendantAttorneysDetail({
+                        ...defendantAttorneysDetail,
+                        [key]: {
+                          ...attorney,
+                          address: {
+                            ...attorney.address,
+                            state: {
+                              other:
+                                e.target.value !== "other"
+                                  ? ""
+                                  : attorney.address.state.other,
+                              us: e.target.value,
+                            },
+                          },
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </select>
+                </MDBCol>
+                {attorney.address.state.us === "other" && (
+                  <MDBCol>
+                    <MDBInput
+                      type="text"
+                      hint="State"
+                      className="text-white"
+                      disabled={shouldPGFillDefendantInfo}
+                      value={attorney.address.state.other}
+                      onChange={(e) =>
+                        setDefendantAttorneysDetail({
+                          ...defendantAttorneysDetail,
+                          [key]: {
+                            ...attorney,
+                            address: {
+                              ...attorney.address,
+                              state: {
+                                ...attorney.address.state,
+                                other: e.target.value,
+                              },
+                            },
+                          },
+                        })
+                      }
+                    />
+                  </MDBCol>
+                )}
+              </MDBRow>
               <MDBInput
                 type="text"
                 className="text-white"

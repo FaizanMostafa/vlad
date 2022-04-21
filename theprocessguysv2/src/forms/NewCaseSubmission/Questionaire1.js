@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { MDBCol, MDBInput } from "mdbreact";
+import { MDBRow, MDBCol, MDBInput } from "mdbreact";
+import { getUSStates } from "../../utils";
 
 export const Questionaire1 = (props) => {
   const {
@@ -194,19 +195,53 @@ export const Questionaire1 = (props) => {
             }
             required
           />
-          <MDBInput
-            type="text"
-            hint="State"
-            className="text-white"
-            value={courthouseAddress.state}
-            onChange={(e) =>
-              setCourthouseAddress({
-                ...courthouseAddress,
-                state: e.target.value,
-              })
-            }
-            required
-          />
+          <MDBRow>
+            <MDBCol>
+              <select
+                className={`browser-default custom-select w-100`}
+                value={courthouseAddress.state.us}
+                onChange={(e) =>
+                  setCourthouseAddress({
+                    ...courthouseAddress,
+                    state: {
+                      other:
+                        e.target.value !== "other"
+                          ? ""
+                          : courthouseAddress.state.other,
+                      us: e.target.value,
+                    },
+                  })
+                }
+              >
+                <option value="" disabled>
+                  Please select state
+                </option>
+                {getUSStates().map((state) => (
+                  <option value={state.value}>{state.name}</option>
+                ))}
+                <option value="other">Other</option>
+              </select>
+            </MDBCol>
+            {courthouseAddress.state.us === "other" && (
+              <MDBCol>
+                <MDBInput
+                  type="text"
+                  hint="State"
+                  className="text-white"
+                  value={courthouseAddress.state.other}
+                  onChange={(e) =>
+                    setCourthouseAddress({
+                      ...courthouseAddress,
+                      state: {
+                        ...courthouseAddress.state,
+                        other: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </MDBCol>
+            )}
+          </MDBRow>
           <MDBInput
             type="text"
             hint="Zip Code"
@@ -303,20 +338,55 @@ export const Questionaire1 = (props) => {
             }
             required
           />
-          <MDBInput
-            type="text"
-            hint="State"
-            className="text-white"
-            disabled={isSameAddress}
-            value={courthouseMailingAddress.state}
-            onChange={(e) =>
-              setCourthouseMailingAddress({
-                ...courthouseMailingAddress,
-                state: e.target.value,
-              })
-            }
-            required
-          />
+          <MDBRow>
+            <MDBCol>
+              <select
+                className={`browser-default custom-select w-100`}
+                value={courthouseMailingAddress.state.us}
+                disabled={isSameAddress}
+                onChange={(e) =>
+                  setCourthouseMailingAddress({
+                    ...courthouseMailingAddress,
+                    state: {
+                      other:
+                        e.target.value !== "other"
+                          ? ""
+                          : courthouseMailingAddress.state.other,
+                      us: e.target.value,
+                    },
+                  })
+                }
+              >
+                <option value="" disabled>
+                  Please select state
+                </option>
+                {getUSStates().map((state) => (
+                  <option value={state.value}>{state.name}</option>
+                ))}
+                <option value="other">Other</option>
+              </select>
+            </MDBCol>
+            {courthouseMailingAddress.state.us === "other" && (
+              <MDBCol>
+                <MDBInput
+                  type="text"
+                  hint="State"
+                  className="text-white"
+                  value={courthouseMailingAddress.state.other}
+                  disabled={isSameAddress}
+                  onChange={(e) =>
+                    setCourthouseMailingAddress({
+                      ...courthouseMailingAddress,
+                      state: {
+                        ...courthouseMailingAddress.state,
+                        other: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </MDBCol>
+            )}
+          </MDBRow>
           <MDBInput
             type="text"
             hint="Zip Code"
