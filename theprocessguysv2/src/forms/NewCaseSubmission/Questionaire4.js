@@ -868,7 +868,7 @@ export const Questionaire4 = (props) => {
                         required
                       />
                       <MDBRow>
-                        <MDBCol>
+                        <MDBCol style={{margin: "auto"}}>
                           <select
                             className={`browser-default custom-select w-100`}
                             value={serviceDetail.address.state.us}

@@ -196,7 +196,7 @@ export const Questionaire1 = (props) => {
             required
           />
           <MDBRow>
-            <MDBCol>
+            <MDBCol style={{margin: "auto"}}>
               <select
                 className={`browser-default custom-select w-100`}
                 value={courthouseAddress.state.us}
@@ -339,7 +339,7 @@ export const Questionaire1 = (props) => {
             required
           />
           <MDBRow>
-            <MDBCol>
+            <MDBCol style={{margin: "auto"}}>
               <select
                 className={`browser-default custom-select w-100`}
                 value={courthouseMailingAddress.state.us}

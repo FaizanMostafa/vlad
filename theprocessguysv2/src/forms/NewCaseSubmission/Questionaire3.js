@@ -382,7 +382,7 @@ export const Questionaire3 = (props) => {
                 required
               />
               <MDBRow>
-                <MDBCol>
+                <MDBCol style={{margin: "auto"}}>
                   <select
                     className={`browser-default custom-select w-100`}
                     value={defendant.address.state.us}
@@ -803,7 +803,7 @@ export const Questionaire3 = (props) => {
                 required
               />
               <MDBRow>
-                <MDBCol>
+                <MDBCol style={{margin: "auto"}}>
                   <select
                     className={`browser-default custom-select w-100`}
                     value={attorney.address.state.us}
