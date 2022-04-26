@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MDBCol, MDBRow } from "mdbreact";
 import { Form } from "react-bootstrap";
+import { getUSStates } from "../../utils";
 
 export const Questionaire1 = (props) => {
   const {
@@ -229,20 +230,59 @@ export const Questionaire1 = (props) => {
             </Form.Group>
           </MDBCol>
           <MDBCol>
-            <Form.Group id="attorney-full-firm-address">
-              <Form.Label>State</Form.Label>
-              <Form.Control
-                type="text"
-                disabled={isFormDisabled}
-                value={courthouseAddress.state}
-                onChange={(e) =>
-                  setCourthouseAddress({
-                    ...courthouseAddress,
-                    state: e.target.value,
-                  })
-                }
-              />
-            </Form.Group>
+            <MDBRow>
+              <MDBCol>
+                <Form.Group id="attorney-full-firm-address">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={courthouseAddress.state.us}
+                    disabled={isFormDisabled}
+                    onChange={(e) =>
+                      setCourthouseAddress({
+                        ...courthouseAddress,
+                        state: {
+                          other:
+                            e.target.value !== "other"
+                              ? ""
+                              : courthouseAddress.state.other,
+                          us: e.target.value,
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </Form.Control>
+                </Form.Group>
+              </MDBCol>
+              {courthouseAddress.state.us === "other" && (
+                <MDBCol>
+                  <Form.Group id="attorney-full-firm-address">
+                    <Form.Label>State Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={isFormDisabled}
+                      value={courthouseAddress.state.other}
+                      onChange={(e) =>
+                        setCourthouseAddress({
+                          ...courthouseAddress,
+                          state: {
+                            ...courthouseAddress.state,
+                            other: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
+            </MDBRow>
           </MDBCol>
         </MDBRow>
         <MDBRow>
@@ -362,20 +402,59 @@ export const Questionaire1 = (props) => {
             </Form.Group>
           </MDBCol>
           <MDBCol>
-            <Form.Group id="attorney-full-firm-address">
-              <Form.Label>State</Form.Label>
-              <Form.Control
-                type="text"
-                disabled={isFormDisabled || isSameAddress}
-                value={courthouseMailingAddress.state}
-                onChange={(e) =>
-                  setCourthouseMailingAddress({
-                    ...courthouseMailingAddress,
-                    state: e.target.value,
-                  })
-                }
-              />
-            </Form.Group>
+            <MDBRow>
+              <MDBCol>
+                <Form.Group id="attorney-full-firm-address">
+                  <Form.Label>State</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={courthouseMailingAddress.state.us}
+                    disabled={isFormDisabled || isSameAddress}
+                    onChange={(e) =>
+                      setCourthouseMailingAddress({
+                        ...courthouseMailingAddress,
+                        state: {
+                          other:
+                            e.target.value !== "other"
+                              ? ""
+                              : courthouseMailingAddress.state.other,
+                          us: e.target.value,
+                        },
+                      })
+                    }
+                  >
+                    <option value="" disabled>
+                      Please select state
+                    </option>
+                    {getUSStates().map((state) => (
+                      <option value={state.value}>{state.name}</option>
+                    ))}
+                    <option value="other">Other</option>
+                  </Form.Control>
+                </Form.Group>
+              </MDBCol>
+              {courthouseMailingAddress.state.us === "other" && (
+                <MDBCol>
+                  <Form.Group id="attorney-full-firm-address">
+                    <Form.Label>State Name</Form.Label>
+                    <Form.Control
+                      type="text"
+                      disabled={isFormDisabled || isSameAddress}
+                      value={courthouseMailingAddress.state.other}
+                      onChange={(e) =>
+                        setCourthouseMailingAddress({
+                          ...courthouseMailingAddress,
+                          state: {
+                            ...courthouseMailingAddress.state,
+                            other: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </Form.Group>
+                </MDBCol>
+              )}
+            </MDBRow>
           </MDBCol>
         </MDBRow>
         <MDBRow>

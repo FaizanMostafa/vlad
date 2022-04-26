@@ -1,6 +1,7 @@
 import { Button, Form } from "react-bootstrap";
 import { MDBRow, MDBCol } from "mdbreact";
 import { Link as RSLink } from "react-scroll";
+import { getUSStates } from "../../utils";
 
 export const Questionaire2 = (props) => {
   const {
@@ -407,26 +408,71 @@ export const Questionaire2 = (props) => {
                 </Form.Group>
               </MDBCol>
               <MDBCol>
-                <Form.Group id="attorney-full-firm-address">
-                  <Form.Label>State</Form.Label>
-                  <Form.Control
-                    type="text"
-                    disabled={isFormDisabled}
-                    value={plaintiff.address.state}
-                    onChange={(e) =>
-                      setPlaintiffsDetail({
-                        ...plaintiffsDetail,
-                        [key]: {
-                          ...plaintiff,
-                          address: {
-                            ...plaintiff.address,
-                            state: e.target.value,
-                          },
-                        },
-                      })
-                    }
-                  />
-                </Form.Group>
+                <MDBRow>
+                  <MDBCol>
+                    <Form.Group id="attorney-full-firm-address">
+                      <Form.Label>State</Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={plaintiff.address.state.us}
+                        disabled={isFormDisabled}
+                        onChange={(e) =>
+                          setPlaintiffsDetail({
+                            ...plaintiffsDetail,
+                            [key]: {
+                              ...plaintiff,
+                              address: {
+                                ...plaintiff.address,
+                                state: {
+                                  other:
+                                    e.target.value !== "other"
+                                      ? ""
+                                      : plaintiff.address.state.other,
+                                  us: e.target.value,
+                                },
+                              },
+                            },
+                          })
+                        }
+                      >
+                        <option value="" disabled>
+                          Please select state
+                        </option>
+                        {getUSStates().map((state) => (
+                          <option value={state.value}>{state.name}</option>
+                        ))}
+                        <option value="other">Other</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </MDBCol>
+                  {plaintiff.address.state.us === "other" && (
+                    <MDBCol>
+                      <Form.Group id="attorney-full-firm-address">
+                        <Form.Label>State Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          disabled={isFormDisabled}
+                          value={plaintiff.address.state.other}
+                          onChange={(e) =>
+                            setPlaintiffsDetail({
+                              ...plaintiffsDetail,
+                              [key]: {
+                                ...plaintiff,
+                                address: {
+                                  ...plaintiff.address,
+                                  state: {
+                                    ...plaintiff.address.state,
+                                    other: e.target.value,
+                                  },
+                                },
+                              },
+                            })
+                          }
+                        />
+                      </Form.Group>
+                    </MDBCol>
+                  )}
+                </MDBRow>
               </MDBCol>
             </MDBRow>
             <MDBRow>
@@ -814,26 +860,71 @@ export const Questionaire2 = (props) => {
                 </Form.Group>
               </MDBCol>
               <MDBCol>
-                <Form.Group>
-                  <Form.Label>State</Form.Label>
-                  <Form.Control
-                    type="text"
-                    disabled={isFormDisabled}
-                    value={attorney.address.state}
-                    onChange={(e) =>
-                      setPlaintiffAttorneysDetail({
-                        ...plaintiffAttorneysDetail,
-                        [key]: {
-                          ...attorney,
-                          address: {
-                            ...attorney.address,
-                            state: e.target.value,
-                          },
-                        },
-                      })
-                    }
-                  />
-                </Form.Group>
+                <MDBRow>
+                  <MDBCol>
+                    <Form.Group id="attorney-full-firm-address">
+                      <Form.Label>State</Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={attorney.address.state.us}
+                        disabled={isFormDisabled}
+                        onChange={(e) =>
+                          setPlaintiffAttorneysDetail({
+                            ...plaintiffAttorneysDetail,
+                            [key]: {
+                              ...attorney,
+                              address: {
+                                ...attorney.address,
+                                state: {
+                                  other:
+                                    e.target.value !== "other"
+                                      ? ""
+                                      : attorney.address.state.other,
+                                  us: e.target.value,
+                                },
+                              },
+                            },
+                          })
+                        }
+                      >
+                        <option value="" disabled>
+                          Please select state
+                        </option>
+                        {getUSStates().map((state) => (
+                          <option value={state.value}>{state.name}</option>
+                        ))}
+                        <option value="other">Other</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </MDBCol>
+                  {attorney.address.state.us === "other" && (
+                    <MDBCol>
+                      <Form.Group id="attorney-full-firm-address">
+                        <Form.Label>State Name</Form.Label>
+                        <Form.Control
+                          type="text"
+                          disabled={isFormDisabled}
+                          value={attorney.address.state.other}
+                          onChange={(e) =>
+                            setPlaintiffAttorneysDetail({
+                              ...plaintiffAttorneysDetail,
+                              [key]: {
+                                ...attorney,
+                                address: {
+                                  ...attorney.address,
+                                  state: {
+                                    ...attorney.address.state,
+                                    other: e.target.value,
+                                  },
+                                },
+                              },
+                            })
+                          }
+                        />
+                      </Form.Group>
+                    </MDBCol>
+                  )}
+                </MDBRow>
               </MDBCol>
             </MDBRow>
             <MDBRow>

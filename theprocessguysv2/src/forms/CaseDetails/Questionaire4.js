@@ -4,6 +4,7 @@ import {
   QuestionaireAddressTemplate,
   QuestionaireAgentOfServiceTemplate,
 } from "../../popups";
+import { getUSStates } from "../../utils";
 
 export const Questionaire4 = (props) => {
   const {
@@ -878,35 +879,93 @@ export const Questionaire4 = (props) => {
                         </Form.Group>
                       </MDBCol>
                       <MDBCol>
-                        <Form.Group>
-                          <Form.Label>State</Form.Label>
-                          <Form.Control
-                            type="text"
-                            disabled={
-                              isFormDisabled ||
-                              serviceDetail.address.sameAsMainServiceAddress
-                            }
-                            value={serviceDetail.address.state}
-                            onChange={(e) =>
-                              setServeesDetail({
-                                ...serveesDetail,
-                                [serveeKey]: {
-                                  ...servee,
-                                  serviceDetails: {
-                                    ...servee.serviceDetails,
-                                    [serviceDetailKey]: {
-                                      ...serviceDetail,
-                                      address: {
-                                        ...serviceDetail.address,
-                                        state: e.target.value,
+                        <MDBRow>
+                          <MDBCol>
+                            <Form.Group id="attorney-full-firm-address">
+                              <Form.Label>State</Form.Label>
+                              <Form.Control
+                                as="select"
+                                value={serviceDetail.address.state.us}
+                                disabled={
+                                  isFormDisabled ||
+                                  serviceDetail.address.sameAsMainServiceAddress
+                                }
+                                onChange={(e) =>
+                                  setServeesDetail({
+                                    ...serveesDetail,
+                                    [serveeKey]: {
+                                      ...servee,
+                                      serviceDetails: {
+                                        ...servee.serviceDetails,
+                                        [serviceDetailKey]: {
+                                          ...serviceDetail,
+                                          address: {
+                                            ...serviceDetail.address,
+                                            state: {
+                                              other:
+                                                e.target.value !== "other"
+                                                  ? ""
+                                                  : serviceDetail.address.state
+                                                      .other,
+                                              us: e.target.value,
+                                            },
+                                          },
+                                        },
                                       },
                                     },
-                                  },
-                                },
-                              })
-                            }
-                          />
-                        </Form.Group>
+                                  })
+                                }
+                              >
+                                <option value="" disabled>
+                                  Please select state
+                                </option>
+                                {getUSStates().map((state) => (
+                                  <option value={state.value}>
+                                    {state.name}
+                                  </option>
+                                ))}
+                                <option value="other">Other</option>
+                              </Form.Control>
+                            </Form.Group>
+                          </MDBCol>
+                          {serviceDetail.address.state.us === "other" && (
+                            <MDBCol>
+                              <Form.Group id="attorney-full-firm-address">
+                                <Form.Label>State Name</Form.Label>
+                                <Form.Control
+                                  type="text"
+                                  disabled={
+                                    isFormDisabled ||
+                                    serviceDetail.address
+                                      .sameAsMainServiceAddress
+                                  }
+                                  value={serviceDetail.address.state.other}
+                                  onChange={(e) =>
+                                    setServeesDetail({
+                                      ...serveesDetail,
+                                      [serveeKey]: {
+                                        ...servee,
+                                        serviceDetails: {
+                                          ...servee.serviceDetails,
+                                          [serviceDetailKey]: {
+                                            ...serviceDetail,
+                                            address: {
+                                              ...serviceDetail.address,
+                                              state: {
+                                                ...serviceDetail.address.state,
+                                                other: e.target.value,
+                                              },
+                                            },
+                                          },
+                                        },
+                                      },
+                                    })
+                                  }
+                                />
+                              </Form.Group>
+                            </MDBCol>
+                          )}
+                        </MDBRow>
                       </MDBCol>
                     </MDBRow>
                     <MDBRow>

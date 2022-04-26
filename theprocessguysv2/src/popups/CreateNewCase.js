@@ -35,7 +35,7 @@ export const CreateNewCase = (props) => {
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
     country: "United States",
@@ -44,7 +44,7 @@ export const CreateNewCase = (props) => {
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
     country: "United States",
@@ -306,8 +306,9 @@ export const CreateNewCase = (props) => {
               street: "",
               unit: "",
               city: "",
-              state: "",
-              zipCode: "",isCountryNotUS: false,
+              state: { us: "", other: "" },
+              zipCode: "",
+              isCountryNotUS: false,
               country: "United States",
             },
           };
@@ -356,10 +357,10 @@ export const CreateNewCase = (props) => {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -401,10 +402,10 @@ export const CreateNewCase = (props) => {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -452,10 +453,10 @@ export const CreateNewCase = (props) => {
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -506,10 +507,10 @@ export const CreateNewCase = (props) => {
                   street: "",
                   unit: "",
                   city: "",
-                  state: "",
+                  state: { us: "", other: "" },
                   zipCode: "",
                   isCountryNotUS: false,
-      country: "United States",
+                  country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -592,8 +593,12 @@ export const CreateNewCase = (props) => {
         showToast("Please enter courthouse street!", "warning");
       } else if (!courthouseAddress.city.length) {
         showToast("Please enter courthouse city!", "warning");
-      } else if (!courthouseAddress.state.length) {
-        showToast("Please enter courthouse state!", "warning");
+      } else if (
+        !courthouseAddress.state.us.length ||
+        (courthouseAddress.state.us === "other" &&
+          !courthouseAddress.state.other.length)
+      ) {
+        showToast("Please select/enter courthouse state!", "warning");
       } else if (!courthouseAddress.zipCode.length) {
         showToast("Please enter courthouse zip code!", "warning");
       } else if (!courthouseAddress.country.length) {
@@ -602,8 +607,12 @@ export const CreateNewCase = (props) => {
         showToast("Please enter courthouse mailing street!", "warning");
       } else if (!courthouseMailingAddress.city.length) {
         showToast("Please enter courthouse mailing city!", "warning");
-      } else if (!courthouseMailingAddress.state.length) {
-        showToast("Please enter courthouse mailing state!", "warning");
+      } else if (
+        !courthouseMailingAddress.state.length ||
+        (courthouseMailingAddress.state.us === "other" &&
+          !courthouseMailingAddress.state.other.length)
+      ) {
+        showToast("Please select/enter courthouse mailing state!", "warning");
       } else if (!courthouseMailingAddress.zipCode.length) {
         showToast("Please enter courthouse mailing zip code!", "warning");
       } else if (!courthouseMailingAddress.country.length) {
@@ -674,9 +683,13 @@ export const CreateNewCase = (props) => {
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter plaintiff's state address!", "warning");
+        showToast("Please select/enter plaintiff's state address!", "warning");
       } else if (
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
@@ -804,9 +817,16 @@ export const CreateNewCase = (props) => {
         isOrRepresentingPlaintiff === true &&
         Object.values(plaintiffAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter plaintiff's attorney firm state!", "warning");
+        showToast(
+          "Please select/enter plaintiff's attorney firm state!",
+          "warning"
+        );
       } else if (
         !shouldPGFillPlaintiffInfo &&
         numberOfAttorneysRepresentingPlaintiff !== "0" &&
@@ -886,9 +906,13 @@ export const CreateNewCase = (props) => {
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter defendant's state!", "warning");
+        showToast("Please select/enter defendant's state!", "warning");
       } else if (
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
@@ -1019,9 +1043,17 @@ export const CreateNewCase = (props) => {
         isOrRepresentingDefendant === true &&
         Object.values(defendantAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.length ||
+              (courthouseAddress.state.us === "other" &&
+                !courthouseAddress.state.other.length)
+          ).length
       ) {
-        showToast("Please enter defendant's attorney's firm state!", "warning");
+        showToast(
+          "Please select/enter defendant's attorney's firm state!",
+          "warning"
+        );
       } else if (
         !shouldPGFillDefendantInfo &&
         numberOfAttorneysRepresentingDefendant !== "0" &&
@@ -1193,13 +1225,16 @@ export const CreateNewCase = (props) => {
           [],
           Object.values(serveesDetail).map((o) =>
             Object.values(o.serviceDetails).filter(
-              (o) => !o.address.state.length
+              (o) =>
+                !o.address.state.length ||
+                (courthouseAddress.state.us === "other" &&
+                  !courthouseAddress.state.other.length)
             )
           )
         ).length
       ) {
         showToast(
-          "Please enter state address for all service addresses!",
+          "Please enter select/state address for all service addresses!",
           "warning"
         );
       } else if (
@@ -1547,7 +1582,7 @@ export const CreateNewCase = (props) => {
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
@@ -1556,7 +1591,7 @@ export const CreateNewCase = (props) => {
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
