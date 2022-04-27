@@ -608,7 +608,7 @@ export const CreateNewCase = (props) => {
       } else if (!courthouseMailingAddress.city.length) {
         showToast("Please enter courthouse mailing city!", "warning");
       } else if (
-        !courthouseMailingAddress.state.length ||
+        !courthouseMailingAddress.state.us.length ||
         (courthouseMailingAddress.state.us === "other" &&
           !courthouseMailingAddress.state.other.length)
       ) {
@@ -685,7 +685,7 @@ export const CreateNewCase = (props) => {
           .map((o) => o.address)
           .filter(
             (address) =>
-              !address.state.length ||
+              !address.state.us.length ||
               (address.state.us === "other" && !address.state.other.length)
           ).length
       ) {
@@ -819,7 +819,7 @@ export const CreateNewCase = (props) => {
           .map((o) => o.address)
           .filter(
             (address) =>
-              !address.state.length ||
+              !address.state.us.length ||
               (address.state.us === "other" && !address.state.other.length)
           ).length
       ) {
@@ -908,7 +908,7 @@ export const CreateNewCase = (props) => {
           .map((o) => o.address)
           .filter(
             (address) =>
-              !address.state.length ||
+              !address.state.us.length ||
               (address.state.us === "other" && !address.state.other.length)
           ).length
       ) {
@@ -1045,9 +1045,9 @@ export const CreateNewCase = (props) => {
           .map((o) => o.address)
           .filter(
             (address) =>
-              !address.state.length ||
-              (courthouseAddress.state.us === "other" &&
-                !courthouseAddress.state.other.length)
+              !address.state.us.length ||
+              (address.state.us === "other" &&
+                !address.state.other.length)
           ).length
       ) {
         showToast(
@@ -1226,9 +1226,9 @@ export const CreateNewCase = (props) => {
           Object.values(serveesDetail).map((o) =>
             Object.values(o.serviceDetails).filter(
               (o) =>
-                !o.address.state.length ||
-                (courthouseAddress.state.us === "other" &&
-                  !courthouseAddress.state.other.length)
+                !o.address.state.us.length ||
+                (o.address.state.us === "other" &&
+                  !o.address.state.other.length)
             )
           )
         ).length
