@@ -19,6 +19,7 @@ import ClientPaymentZelle from "../pages/ClientPaymentZelle";
 import ClientPaymentsChecks from "../pages/ClientPaymentsChecks";
 import ClientPaymentACH from "../pages/ClientPaymentACH";
 import HomePage from "../pages/HomePage";
+import CoverLetterForQuestionaire from "../pages/CoverSheetQuestionaireTemplate";
 
 const routes = {
   superadmin: [
@@ -151,6 +152,13 @@ const routes = {
       exact: true,
       path: "/client-payment-ach-to-tpg",
       component: ClientPaymentACH,
+      isProtected: true,
+      redirect: "/login",
+    },
+    {
+      exact: true,
+      path: "/cover-sheet",
+      component: CoverLetterForQuestionaire,
       isProtected: true,
       redirect: "/login",
     },
