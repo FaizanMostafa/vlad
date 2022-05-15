@@ -19,6 +19,22 @@ export const Questionaire7 = (props) => {
           <MDBRow md="12">
             <MDBCol md="6">
               <Form.Group id="vehicle-type-model-ownership">
+                <Form.Label>Who does the vehicle belong to?</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={vehicle.owner}
+                  disabled={isFormDisabled}
+                  onChange={(e) =>
+                    setVehiclesInformation({
+                      ...vehiclesInformation,
+                      [key]: { ...vehicle, owner: e.target.value },
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+            <MDBCol md="6">
+              <Form.Group id="vehicle-type-model-ownership">
                 <Form.Label>
                   Vehicle Type/Model Ownership{" "}
                   <i>(ie car, motorcycle, boat, RV)</i>

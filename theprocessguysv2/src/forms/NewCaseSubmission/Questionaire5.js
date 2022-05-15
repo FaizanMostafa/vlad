@@ -19,9 +19,9 @@ export const Questionaire5 = (props) => {
       <MDBCol md="12" id="paralegal-attorney-client-contact-servee">
         <div id="paralegal-attorney-client-contact-servee">
           <label>
-            Has a paralegal/attorney, or your client contacted the Individual
-            regarding service on this case?{" "}
-            <i>(Thus prompting them to expect attempts)</i>
+            Have the individual(s) in question been contacted by you, a
+            paralegal/attorney, or your client regarding the service?*{" "}
+            <i>(Thus voiding the element of surprise)</i>
           </label>
           <br />
           <input
@@ -53,9 +53,9 @@ export const Questionaire5 = (props) => {
         <div id="require-server-notify-person-of-interest">
           <label>
             Is the judge requiring the Process Server to verbally notify the
-            Servee, service may be rejected? Thus ceasing all further service
-            attempts for current case <i>(International Court Cases)</i> Please
-            verify with Judge*
+            servee(s), they can decline to accept their documents? Thus ceasing
+            all further service attempts if turned away.{" "}
+            <i>(International Court Rules)</i> Please verify with Judge*
           </label>
           <br />
           <input
@@ -85,7 +85,10 @@ export const Questionaire5 = (props) => {
       </MDBCol>
       <MDBCol md="12" id="serve-individual-at-employment">
         <div id="serve-individual-at-employment">
-          <label>May we serve the Servee at a place of employment?*</label>
+          <label>
+            May the Process Server attempt to serve the individual(s) at a place
+            of employment?*
+          </label>
           <br />
           <input
             className="ml-2"
@@ -115,7 +118,8 @@ export const Questionaire5 = (props) => {
       <MDBCol md="12" id="server-contact-servee-by-phone">
         <div id="server-contact-servee-by-phone">
           <label>
-            May our Process Server Contact the Servee by Phone or Other Means?*
+            May our Process Server contact the individual(s) by phone or other
+            means?*
           </label>
           <br />
           <input

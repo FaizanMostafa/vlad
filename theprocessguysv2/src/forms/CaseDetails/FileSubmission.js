@@ -36,7 +36,7 @@ export const FileSubmission = ({
           file: null,
           isNew: true,
           caseType: "",
-          description: "",
+          additionalInfo: "",
           fileContents: {
             coverSheet: false,
             civilCoverSheet: false,
@@ -52,6 +52,7 @@ export const FileSubmission = ({
             statementOfLocation: false,
             declarationOfVenue: false,
             declarationOfReducedFilingFee: false,
+            other: false,
           },
         };
       }
@@ -70,7 +71,7 @@ export const FileSubmission = ({
         caseFileData[index] = {
           file: null,
           caseType: "",
-          description: "",
+          additionalInfo: "",
           fileContents: {
             coverSheet: false,
             civilCoverSheet: false,
@@ -86,6 +87,7 @@ export const FileSubmission = ({
             statementOfLocation: false,
             declarationOfVenue: false,
             declarationOfReducedFilingFee: false,
+            other: false,
           },
         };
       }
@@ -112,12 +114,20 @@ export const FileSubmission = ({
       );
     } else if (
       Object.values(fileData).filter(
-        (o) =>
-          !o.description.length && !Object.values(o.fileContents).includes(true)
+        (o) => !Object.values(o.fileContents).includes(true)
       ).length
     ) {
       showToast(
-        "Please either select the file contents or type-in description for every relevant file!",
+        "Please select the file contents for every relevant file!",
+        "warning"
+      );
+    } else if (
+      Object.values(fileData).filter(
+        (o) => o.fileContents.other && !o.additionalInfo.length
+      ).length
+    ) {
+      showToast(
+        "Please type in additional information for every relevant file!",
         "warning"
       );
     } else if (Object.values(fileData).filter((o) => o.file === null).length) {
@@ -353,9 +363,9 @@ export const FileSubmission = ({
         if (QuestionaireForm8.hasOwnProperty("requireZipFileService"))
           data["OfferedServices-8"].requireZipFileService =
             QuestionaireForm8.requireZipFileService;
-        if (QuestionaireForm8.hasOwnProperty("ifYesListAddress"))
-          data["OfferedServices-8"].ifYesListAddress =
-            QuestionaireForm8.ifYesListAddress;
+        if (QuestionaireForm8.hasOwnProperty("zipFilingAddress"))
+          data["OfferedServices-8"].zipFilingAddress =
+            QuestionaireForm8.zipFilingAddress;
       }
       if (
         Object.values(fileData).filter(
@@ -861,6 +871,27 @@ export const FileSubmission = ({
                       }}
                     />
                   </div>
+                  <div style={{ width: 300 }}>
+                    <Form.Check
+                      type="checkbox"
+                      disabled={isFormDisabled}
+                      label="Other"
+                      id={`other${key}`}
+                      checked={value.fileContents.other}
+                      onChange={(e) => {
+                        setFileData({
+                          ...fileData,
+                          [key]: {
+                            ...fileData[key],
+                            fileContents: {
+                              ...fileData[key].fileContents,
+                              other: !fileData[key].fileContents.other,
+                            },
+                          },
+                        });
+                      }}
+                    />
+                  </div>
                 </div>
               </Form.Group>
               {(isFormDisabled || isFormUpdating) && (
@@ -869,20 +900,25 @@ export const FileSubmission = ({
                   <Form.Control disabled={true} value={value.documentName} />
                 </Form.Group>
               )}
-              <Form.Group id="mS-file-description">
-                <Form.Label>File Description</Form.Label>
-                <Form.Control
-                  type="textarea"
-                  disabled={isFormDisabled}
-                  value={value.description}
-                  onChange={(e) => {
-                    setFileData({
-                      ...fileData,
-                      [key]: { ...fileData[key], description: e.target.value },
-                    });
-                  }}
-                />
-              </Form.Group>
+              {value.fileContents.other && (
+                <Form.Group id="mS-file-description">
+                  <Form.Label>Additional Information</Form.Label>
+                  <Form.Control
+                    type="textarea"
+                    disabled={isFormDisabled}
+                    value={value.additionalInfo}
+                    onChange={(e) => {
+                      setFileData({
+                        ...fileData,
+                        [key]: {
+                          ...fileData[key],
+                          additionalInfo: e.target.value,
+                        },
+                      });
+                    }}
+                  />
+                </Form.Group>
+              )}
               <div>
                 {value.hasOwnProperty("fileType") &&
                 value.fileType.toLowerCase() === "single" ? (

@@ -1,4 +1,5 @@
-import { MDBCol, MDBInput } from "mdbreact";
+import { MDBRow, MDBCol, MDBInput } from "mdbreact";
+import { getUSStates } from "../../utils";
 
 export const Questionaire8 = (props) => {
   const {
@@ -18,9 +19,19 @@ export const Questionaire8 = (props) => {
     setSpecificCourtInstruction,
     requireZipFileService,
     setRequireZipFileService,
-    ifYesListAddress,
-    setIfYesListAddress,
+    zipFilingAddress,
+    setZipFilingAddress,
   } = props;
+
+  const onChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : zipFilingAddress.country;
+    setZipFilingAddress({
+      ...zipFilingAddress,
+      isCountryNotUS,
+      country,
+    });
+  };
 
   return (
     <>
@@ -78,17 +89,139 @@ export const Questionaire8 = (props) => {
           <br />
         </div>
       </MDBCol>
-      <MDBCol md="12" id="if-yes-provide-address">
-        <div id="if-yes-provide-address">
-          <label>If yes, please Provide Address for Zip Filing</label>
-          <MDBInput
-            type="text"
-            className="text-white"
-            value={ifYesListAddress}
-            onChange={(e) => setIfYesListAddress(e.target.value)}
-          />
-        </div>
-      </MDBCol>
+      {requireZipFileService && (
+        <MDBCol md="12" id="if-yes-provide-address">
+          <div id="if-yes-provide-address">
+            <label>Address for Zip Filing</label>
+            <MDBInput
+              type="text"
+              hint="Street"
+              className="text-white"
+              value={zipFilingAddress.street}
+              onChange={(e) =>
+                setZipFilingAddress({
+                  ...zipFilingAddress,
+                  street: e.target.value,
+                })
+              }
+            />
+            <MDBInput
+              type="text"
+              hint="Unit"
+              className="text-white"
+              value={zipFilingAddress.unit}
+              onChange={(e) =>
+                setZipFilingAddress({
+                  ...zipFilingAddress,
+                  unit: e.target.value,
+                })
+              }
+            />
+            <MDBInput
+              type="text"
+              hint="City"
+              className="text-white"
+              value={zipFilingAddress.city}
+              onChange={(e) =>
+                setZipFilingAddress({
+                  ...zipFilingAddress,
+                  city: e.target.value,
+                })
+              }
+            />
+            <MDBRow>
+              <MDBCol style={{ margin: "auto" }}>
+                <select
+                  className={`browser-default custom-select w-100`}
+                  value={zipFilingAddress.state.us}
+                  onChange={(e) =>
+                    setZipFilingAddress({
+                      ...zipFilingAddress,
+                      state: {
+                        other:
+                          e.target.value !== "other"
+                            ? ""
+                            : zipFilingAddress.state.other,
+                        us: e.target.value,
+                      },
+                    })
+                  }
+                >
+                  <option value="" disabled>
+                    Please select state
+                  </option>
+                  {getUSStates().map((state) => (
+                    <option value={state.value}>{state.name}</option>
+                  ))}
+                  <option value="other">Other</option>
+                </select>
+              </MDBCol>
+              {zipFilingAddress.state.us === "other" && (
+                <MDBCol>
+                  <MDBInput
+                    type="text"
+                    hint="State"
+                    className="text-white"
+                    value={zipFilingAddress.state.other}
+                    onChange={(e) =>
+                      setZipFilingAddress({
+                        ...zipFilingAddress,
+                        state: {
+                          ...zipFilingAddress.state,
+                          other: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </MDBCol>
+              )}
+            </MDBRow>
+            <MDBInput
+              type="text"
+              hint="Zip Code"
+              className="text-white"
+              value={zipFilingAddress.zipCode}
+              onChange={(e) =>
+                setZipFilingAddress({
+                  ...zipFilingAddress,
+                  zipCode: e.target.value,
+                })
+              }
+            />
+            <MDBRow>
+              <MDBCol style={{ margin: "auto" }}>
+                <select
+                  className={`w-100 mt-2 ${
+                    !zipFilingAddress.isCountryNotUS && "mb-4"
+                  } p-2`}
+                  value={zipFilingAddress.isCountryNotUS}
+                  onChange={(e) => onChangeIsCountryNotUS(e.target.value)}
+                  required
+                >
+                  <option value={false}>United States</option>
+                  <option value={true}>Other</option>
+                </select>
+              </MDBCol>
+              {zipFilingAddress.isCountryNotUS && (
+                <MDBCol>
+                  <MDBInput
+                    type="text"
+                    hint="Country Name"
+                    className="text-white"
+                    value={zipFilingAddress.country}
+                    onChange={(e) =>
+                      setZipFilingAddress({
+                        ...zipFilingAddress,
+                        country: e.target.value,
+                      })
+                    }
+                  />
+                </MDBCol>
+              )}
+            </MDBRow>
+          </div>
+        </MDBCol>
+      )}
       <MDBCol md="12" id="require-body-cam-footage">
         <div id="require-body-cam-footage">
           <label>
@@ -219,8 +352,9 @@ export const Questionaire8 = (props) => {
       <MDBCol md="12" id="require-service-by-email">
         <div id="require-service-by-email">
           <label>
-            Do you require a service by E-mail? Requires a written statement
-            from servee agreeing to accept such a serve <i>(Additional Fee)</i>*
+            Did the judge permit a service by E-mail? Would require a written
+            statement from the individual being served agreeing to accept said
+            documents by such means <i>(Additional Fee)</i>*
           </label>
           <br />
           <input

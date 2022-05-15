@@ -30,55 +30,15 @@ export const Questionaire6 = (props) => {
               <label>Full Name of Servee</label>
               <MDBInput
                 type="text"
-                hint="First Name"
+                hint="Full Name"
                 className="text-white"
-                value={servee.fullName.firstName}
+                value={servee.fullName}
                 onChange={(e) =>
                   setServeesPhysicalDescription({
                     ...serveesPhysicalDescription,
                     [key]: {
                       ...servee,
-                      fullName: {
-                        ...servee.fullName,
-                        firstName: e.target.value,
-                      },
-                    },
-                  })
-                }
-                required
-              />
-              <MDBInput
-                type="text"
-                hint="Middle Name"
-                className="text-white"
-                value={servee.fullName.middleName}
-                onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: {
-                      ...servee,
-                      fullName: {
-                        ...servee.fullName,
-                        middleName: e.target.value,
-                      },
-                    },
-                  })
-                }
-              />
-              <MDBInput
-                type="text"
-                hint="Last Name"
-                className="text-white"
-                value={servee.fullName.lastName}
-                onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: {
-                      ...servee,
-                      fullName: {
-                        ...servee.fullName,
-                        lastName: e.target.value,
-                      },
+                      fullName: e.target.value
                     },
                   })
                 }

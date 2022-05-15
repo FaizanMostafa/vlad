@@ -8,7 +8,7 @@ export const QuestionaireAdditionalServeeTemplate = ({
 }) => {
   const [showModal, setShow] = useState(false);
   const [physicalDescription, setPhysicalDescription] = useState({
-    fullName: { firstName: "", middleName: "", lastName: "" },
+    fullName: "",
     gender: "",
     ethnicity: "",
     height: "",
@@ -26,7 +26,7 @@ export const QuestionaireAdditionalServeeTemplate = ({
       [Object.keys(serveesPhysicalDescription).length]: physicalDescription,
     });
     setPhysicalDescription({
-      fullName: { firstName: "", middleName: "", lastName: "" },
+      fullName: "",
       gender: "",
       ethnicity: "",
       height: "",
@@ -60,49 +60,13 @@ export const QuestionaireAdditionalServeeTemplate = ({
               <MDBInput
                 style={{ color: "black" }}
                 type="text"
-                hint="First Name"
+                hint="Full Name"
                 className="text-white"
-                value={physicalDescription.fullName.firstName}
+                value={physicalDescription.fullName}
                 onChange={(e) =>
                   setPhysicalDescription({
                     ...physicalDescription,
-                    fullName: {
-                      ...physicalDescription.fullName,
-                      firstName: e.target.value,
-                    },
-                  })
-                }
-                required
-              />
-              <MDBInput
-                style={{ color: "black" }}
-                type="text"
-                hint="Middle Name"
-                className="text-white"
-                value={physicalDescription.fullName.middleName}
-                onChange={(e) =>
-                  setPhysicalDescription({
-                    ...physicalDescription,
-                    fullName: {
-                      ...physicalDescription.fullName,
-                      middleName: e.target.value,
-                    },
-                  })
-                }
-              />
-              <MDBInput
-                style={{ color: "black" }}
-                type="text"
-                hint="Last Name"
-                className="text-white"
-                value={physicalDescription.fullName.lastName}
-                onChange={(e) =>
-                  setPhysicalDescription({
-                    ...physicalDescription,
-                    fullName: {
-                      ...physicalDescription.fullName,
-                      lastName: e.target.value,
-                    },
+                    fullName: e.target.value
                   })
                 }
                 required

@@ -1,5 +1,6 @@
-import { MDBCol } from "mdbreact";
+import { MDBCol, MDBRow } from "mdbreact";
 import { Form } from "react-bootstrap";
+import { getUSStates } from "../../utils";
 
 export const Questionaire8 = (props) => {
   const {
@@ -20,9 +21,19 @@ export const Questionaire8 = (props) => {
     setSpecificCourtInstruction,
     requireZipFileService,
     setRequireZipFileService,
-    ifYesListAddress,
-    setIfYesListAddress,
+    zipFilingAddress,
+    setZipFilingAddress,
   } = props;
+
+  const handleOnChangeIsCountryNotUS = (isCountryNotUS) => {
+    isCountryNotUS = isCountryNotUS === "true";
+    const country = isCountryNotUS ? "" : zipFilingAddress.country;
+    setZipFilingAddress({
+      ...zipFilingAddress,
+      isCountryNotUS,
+      country,
+    });
+  };
 
   return (
     <>
@@ -81,18 +92,169 @@ export const Questionaire8 = (props) => {
         </Form.Group>
       </MDBCol>
       <br />
-      <MDBCol md="12" id="if-yes-provide-address">
-        <Form.Group id="if-yes-provide-address">
-          <Form.Label>If yes, please Provide Address for Zip Filing</Form.Label>
-          <Form.Control
-            type="text"
-            disabled={isFormDisabled}
-            value={ifYesListAddress}
-            onChange={(e) => setIfYesListAddress(e.target.value)}
-          />
-        </Form.Group>
-      </MDBCol>
-      <br />
+      {requireZipFileService && (
+        <MDBCol>
+          <MDBRow>
+            <MDBCol>
+              <Form.Label>Address for Zip Filing</Form.Label>
+              <Form.Group id="zip-filing-address">
+                <Form.Label>Street</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled}
+                  value={zipFilingAddress.street}
+                  onChange={(e) =>
+                    setZipFilingAddress({
+                      ...zipFilingAddress,
+                      street: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+            <MDBCol bottom>
+              <Form.Group id="zip-filing-address">
+                <Form.Label>Unit</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled}
+                  value={zipFilingAddress.unit}
+                  onChange={(e) =>
+                    setZipFilingAddress({
+                      ...zipFilingAddress,
+                      unit: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol>
+              <Form.Group id="zip-filing-address-city">
+                <Form.Label>City</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled}
+                  value={zipFilingAddress.city}
+                  onChange={(e) =>
+                    setZipFilingAddress({
+                      ...zipFilingAddress,
+                      city: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+            <MDBCol>
+              <MDBRow>
+                <MDBCol>
+                  <Form.Group id="zip-filing-address-state">
+                    <Form.Label>State</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={zipFilingAddress.state.us}
+                      disabled={isFormDisabled}
+                      onChange={(e) =>
+                        setZipFilingAddress({
+                          ...zipFilingAddress,
+                          state: {
+                            other:
+                              e.target.value !== "other"
+                                ? ""
+                                : zipFilingAddress.state.other,
+                            us: e.target.value,
+                          },
+                        })
+                      }
+                    >
+                      <option value="" disabled>
+                        Please select state
+                      </option>
+                      {getUSStates().map((state) => (
+                        <option value={state.value}>{state.name}</option>
+                      ))}
+                      <option value="other">Other</option>
+                    </Form.Control>
+                  </Form.Group>
+                </MDBCol>
+                {zipFilingAddress.state.us === "other" && (
+                  <MDBCol>
+                    <Form.Group id="zip-filing-address-state-name">
+                      <Form.Label>State Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        disabled={isFormDisabled}
+                        value={zipFilingAddress.state.other}
+                        onChange={(e) =>
+                          setZipFilingAddress({
+                            ...zipFilingAddress,
+                            state: {
+                              ...zipFilingAddress.state,
+                              other: e.target.value,
+                            },
+                          })
+                        }
+                      />
+                    </Form.Group>
+                  </MDBCol>
+                )}
+              </MDBRow>
+            </MDBCol>
+          </MDBRow>
+          <MDBRow>
+            <MDBCol id="zip-filing-address">
+              <Form.Group id="zip-filing-address">
+                <Form.Label>Zip Code</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={isFormDisabled}
+                  value={zipFilingAddress.zipCode}
+                  onChange={(e) =>
+                    setZipFilingAddress({
+                      ...zipFilingAddress,
+                      zipCode: e.target.value,
+                    })
+                  }
+                />
+              </Form.Group>
+            </MDBCol>
+            <MDBCol>
+              <Form.Group id="country-dropdown">
+                <Form.Label>Country</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={zipFilingAddress.isCountryNotUS}
+                  disabled={isFormDisabled}
+                  onChange={(e) => handleOnChangeIsCountryNotUS(e.target.value)}
+                >
+                  <option value={false}>United States</option>
+                  <option value={true}>Other</option>
+                </Form.Control>
+              </Form.Group>
+            </MDBCol>
+            {zipFilingAddress.isCountryNotUS && (
+              <MDBCol>
+                <Form.Group>
+                  <Form.Label>Country Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    disabled={isFormDisabled}
+                    value={zipFilingAddress.country}
+                    onChange={(e) =>
+                      setZipFilingAddress({
+                        ...zipFilingAddress,
+                        country: e.target.value,
+                      })
+                    }
+                  />
+                </Form.Group>
+              </MDBCol>
+            )}
+          </MDBRow>
+          <br />
+        </MDBCol>
+      )}
       <MDBCol md="12" id="require-body-cam-footage">
         <Form.Group id="require-body-cam-footage">
           <Form.Label>
@@ -223,8 +385,7 @@ export const Questionaire8 = (props) => {
       <MDBCol md="12" id="require-service-by-email">
         <Form.Group id="require-service-by-email">
           <Form.Label>
-            Do you require a service by E-mail? Requires a written statement
-            from servee agreeing to accept such a serve <i>(Additional Fee)</i>*
+            Did the judge permit a service by E-mail? Would require a written statement from the individual being served agreeing to accept said documents by such means <i>(Additional Fee)</i>*
           </Form.Label>
           <br />
           <div style={{ display: "flex" }}>

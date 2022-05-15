@@ -17,6 +17,22 @@ export const Questionaire7 = (props) => {
           )}
           <MDBCol md="12" id="vehicle-type-model-ownership">
             <div id="vehicle-type-model-ownership">
+              <label>Who does the vehicle belong to?</label>
+              <MDBInput
+                type="text"
+                className="text-white"
+                value={vehicle.owner}
+                onChange={(e) =>
+                  setVehiclesInformation({
+                    ...vehiclesInformation,
+                    [key]: { ...vehicle, owner: e.target.value },
+                  })
+                }
+              />
+            </div>
+          </MDBCol>
+          <MDBCol md="12" id="vehicle-type-model-ownership">
+            <div id="vehicle-type-model-ownership">
               <label>
                 Vehicle Type/Model Ownership{" "}
                 <i>(ie car, motorcycle, boat, RV)</i>

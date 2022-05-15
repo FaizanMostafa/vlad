@@ -264,7 +264,7 @@ export const Questionaire3 = (props) => {
               Defendant {parseInt(key) + 1} Full Name
             </Form.Label>
             <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
@@ -286,7 +286,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Middle Name</Form.Label>
                   <Form.Control
@@ -308,7 +308,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
@@ -323,6 +323,28 @@ export const Questionaire3 = (props) => {
                           fullName: {
                             ...defendant.fullName,
                             lastName: e.target.value,
+                          },
+                        },
+                      })
+                    }
+                  />
+                </Form.Group>
+              </MDBCol>
+              <MDBCol md="6">
+                <Form.Group>
+                  <Form.Label>Suffix</Form.Label>
+                  <Form.Control
+                    type="text"
+                    disabled={isFormDisabled}
+                    value={defendant.fullName.suffix}
+                    onChange={(e) =>
+                      setDefendantsDetail({
+                        ...defendantsDetail,
+                        [key]: {
+                          ...defendant,
+                          fullName: {
+                            ...defendant.fullName,
+                            suffix: e.target.value,
                           },
                         },
                       })
@@ -581,7 +603,7 @@ export const Questionaire3 = (props) => {
               Attorney {parseInt(key) + 1} Full Name
             </Form.Label>
             <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
@@ -603,7 +625,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Middle Name</Form.Label>
                   <Form.Control
@@ -625,7 +647,7 @@ export const Questionaire3 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
@@ -640,6 +662,28 @@ export const Questionaire3 = (props) => {
                           fullName: {
                             ...attorney.fullName,
                             lastName: e.target.value,
+                          },
+                        },
+                      })
+                    }
+                  />
+                </Form.Group>
+              </MDBCol>
+              <MDBCol md="6">
+                <Form.Group>
+                  <Form.Label>Suffix</Form.Label>
+                  <Form.Control
+                    type="text"
+                    disabled={isFormDisabled}
+                    value={attorney.fullName.suffix}
+                    onChange={(e) =>
+                      setDefendantAttorneysDetail({
+                        ...defendantAttorneysDetail,
+                        [key]: {
+                          ...attorney,
+                          fullName: {
+                            ...attorney.fullName,
+                            suffix: e.target.value,
                           },
                         },
                       })

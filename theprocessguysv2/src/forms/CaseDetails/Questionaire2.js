@@ -266,7 +266,7 @@ export const Questionaire2 = (props) => {
               Plaintiff {parseInt(key) + 1} Full Name
             </Form.Label>
             <MDBRow md="12">
-              <MDBCol md="4" id="first-name">
+              <MDBCol md="6" id="first-name">
                 <Form.Group id="first-name-g">
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
@@ -288,7 +288,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4" id="middle-name">
+              <MDBCol md="6" id="middle-name">
                 <Form.Group id="middle-name-g">
                   <Form.Label>Middle Name</Form.Label>
                   <Form.Control
@@ -310,7 +310,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4" id="last-name">
+              <MDBCol md="6" id="last-name">
                 <Form.Group id="last-name-g">
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
@@ -329,6 +329,28 @@ export const Questionaire2 = (props) => {
                       })
                     }
                     value={plaintiff.fullName.lastName}
+                  />
+                </Form.Group>
+              </MDBCol>
+              <MDBCol md="6" id="suffix">
+                <Form.Group id="suffix-g">
+                  <Form.Label>Suffix</Form.Label>
+                  <Form.Control
+                    type="text"
+                    disabled={isFormDisabled}
+                    onChange={(e) =>
+                      setPlaintiffsDetail({
+                        ...plaintiffsDetail,
+                        [key]: {
+                          ...plaintiff,
+                          fullName: {
+                            ...plaintiff.fullName,
+                            suffix: e.target.value,
+                          },
+                        },
+                      })
+                    }
+                    value={plaintiff.fullName.suffix}
                   />
                 </Form.Group>
               </MDBCol>
@@ -582,7 +604,7 @@ export const Questionaire2 = (props) => {
               Attorney {parseInt(key) + 1} Full Name
             </Form.Label>
             <MDBRow md="12" id="plaintiff-attorney-name">
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
@@ -604,7 +626,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Middle Name</Form.Label>
                   <Form.Control
@@ -626,7 +648,7 @@ export const Questionaire2 = (props) => {
                   />
                 </Form.Group>
               </MDBCol>
-              <MDBCol md="4">
+              <MDBCol md="6">
                 <Form.Group>
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
@@ -641,6 +663,28 @@ export const Questionaire2 = (props) => {
                           fullName: {
                             ...attorney.fullName,
                             lastName: e.target.value,
+                          },
+                        },
+                      })
+                    }
+                  />
+                </Form.Group>
+              </MDBCol>
+              <MDBCol md="6">
+                <Form.Group>
+                  <Form.Label>Suffix</Form.Label>
+                  <Form.Control
+                    type="text"
+                    disabled={isFormDisabled}
+                    value={attorney.fullName.suffix}
+                    onChange={(e) =>
+                      setPlaintiffAttorneysDetail({
+                        ...plaintiffAttorneysDetail,
+                        [key]: {
+                          ...attorney,
+                          fullName: {
+                            ...attorney.fullName,
+                            suffix: e.target.value,
                           },
                         },
                       })

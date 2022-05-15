@@ -35,66 +35,19 @@ export const Questionaire6 = (props) => {
               Full Name of Servee {Number(key) + 1}
             </Form.Label>
             <MDBRow md="12">
-              <MDBCol md="4">
+              <MDBCol>
                 <Form.Group>
-                  <Form.Label>First Name</Form.Label>
+                  <Form.Label>Full Name</Form.Label>
                   <Form.Control
                     type="text"
                     disabled={isFormDisabled}
-                    value={servee.fullName.firstName}
+                    value={servee.fullName}
                     onChange={(e) =>
                       setServeesPhysicalDescription({
                         ...serveesPhysicalDescription,
                         [key]: {
                           ...servee,
-                          fullName: {
-                            ...servee.fullName,
-                            firstName: e.target.value,
-                          },
-                        },
-                      })
-                    }
-                  />
-                </Form.Group>
-              </MDBCol>
-              <MDBCol md="4">
-                <Form.Group>
-                  <Form.Label>Middle Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    disabled={isFormDisabled}
-                    value={servee.fullName.middleName}
-                    onChange={(e) =>
-                      setServeesPhysicalDescription({
-                        ...serveesPhysicalDescription,
-                        [key]: {
-                          ...servee,
-                          fullName: {
-                            ...servee.fullName,
-                            middleName: e.target.value,
-                          },
-                        },
-                      })
-                    }
-                  />
-                </Form.Group>
-              </MDBCol>
-              <MDBCol md="4">
-                <Form.Group>
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    disabled={isFormDisabled}
-                    value={servee.fullName.lastName}
-                    onChange={(e) =>
-                      setServeesPhysicalDescription({
-                        ...serveesPhysicalDescription,
-                        [key]: {
-                          ...servee,
-                          fullName: {
-                            ...servee.fullName,
-                            lastName: e.target.value,
-                          },
+                          fullName: e.target.value
                         },
                       })
                     }

@@ -27,7 +27,7 @@ export const FileSubmission = (props) => {
       caseFileData[index] = {
         file: null,
         caseType: "",
-        description: "",
+        additionalInfo: "",
         fileContents: {
           coverSheet: false,
           civilCoverSheet: false,
@@ -43,6 +43,7 @@ export const FileSubmission = (props) => {
           statementOfLocation: false,
           declarationOfVenue: false,
           declarationOfReducedFilingFee: false,
+          other: false,
         },
       };
     }
@@ -67,11 +68,21 @@ export const FileSubmission = (props) => {
     } else if (
       Object.values(fileData).filter(
         (o) =>
-          !o.description.length && !Object.values(o.fileContents).includes(true)
+          !Object.values(o.fileContents).includes(true)
       ).length
     ) {
       showToast(
-        "Please either select the file contents or type-in description for every relevant file!",
+        "Please select the file contents for every relevant file!",
+        "warning"
+      );
+    } else if (
+      Object.values(fileData).filter(
+        (o) =>
+          o.fileContents.other && !o.additionalInfo.length
+      ).length
+    ) {
+      showToast(
+        "Please type in additional information for every relevant file!",
         "warning"
       );
     } else if (Object.values(fileData).filter((o) => o.file === null).length) {
@@ -190,7 +201,7 @@ export const FileSubmission = (props) => {
           requireByEmail: QuestionaireForm8.requireByEmail,
           specificCourtInstruction: QuestionaireForm8.specificCourtInstruction,
           requireZipFileService: QuestionaireForm8.requireZipFileService,
-          ifYesListAddress: QuestionaireForm8.ifYesListAddress,
+          zipFilingAddress: QuestionaireForm8.zipFilingAddress,
         };
       }
       data["documents"] = Object.values(fileData);
@@ -607,25 +618,58 @@ export const FileSubmission = (props) => {
                           Declaration Of Reduced Filing Fee
                         </label>
                       </div>
+                      <div style={{ width: 300 }}>
+                        <input
+                          id={`other${key}`}
+                          checked={
+                            value.fileContents.other
+                          }
+                          type="checkbox"
+                          onChange={(e) => {
+                            setFileData({
+                              ...fileData,
+                              [key]: {
+                                ...fileData[key],
+                                fileContents: {
+                                  ...fileData[key].fileContents,
+                                  other:
+                                    !fileData[key].fileContents
+                                      .other,
+                                },
+                              },
+                            });
+                          }}
+                        />
+                        <label
+                          className="ml-2"
+                          for={`other${key}`}
+                        >
+                          Other
+                        </label>
+                      </div>
                     </div>
                   </Form.Group>
-                  <Form.Group id="mS-file-upload">
-                    <label>File Description</label>
-                    <MDBInput
-                      className="text-white"
-                      value={value.description}
-                      hint=""
-                      onChange={(e) => {
-                        setFileData({
-                          ...fileData,
-                          [key]: {
-                            ...fileData[key],
-                            description: e.target.value,
-                          },
-                        });
-                      }}
-                    />
-                  </Form.Group>
+                  {
+                    value.fileContents.other
+                      &&
+                        <Form.Group id="mS-file-upload">
+                          <label>Additional Information</label>
+                          <MDBInput
+                            className="text-white"
+                            value={value.additionalInfo}
+                            hint=""
+                            onChange={(e) => {
+                              setFileData({
+                                ...fileData,
+                                [key]: {
+                                  ...fileData[key],
+                                  additionalInfo: e.target.value,
+                                },
+                              });
+                            }}
+                          />
+                        </Form.Group>
+                  }
                   <Form.Group id="mS-file-upload">
                     <label>File Image</label>
                     <input
@@ -1061,25 +1105,57 @@ export const FileSubmission = (props) => {
                           Declaration Of Reduced Filing Fee
                         </label>
                       </div>
+                      <div style={{ width: 300 }}>
+                        <input
+                          id={`other${key}`}
+                          checked={
+                            value.fileContents.other
+                          }
+                          type="checkbox"
+                          onChange={(e) => {
+                            setFileData({
+                              ...fileData,
+                              [key]: {
+                                ...fileData[key],
+                                fileContents: {
+                                  ...fileData[key].fileContents,
+                                  other:
+                                    !fileData[key].fileContents
+                                      .other,
+                                },
+                              },
+                            });
+                          }}
+                        />
+                        <label
+                          className="ml-2"
+                          for={`other${key}`}
+                        >
+                          Other
+                        </label>
+                      </div>
                     </div>
                   </Form.Group>
+                  {
+                    value.fileContents.other &&
                   <Form.Group id="mS-file-upload">
-                    <label>File Description</label>
+                    <label>Additional Information</label>
                     <MDBInput
                       className="text-white"
-                      value={value.description}
+                      value={value.additionalInfo}
                       hint=""
                       onChange={(e) => {
                         setFileData({
                           ...fileData,
                           [key]: {
                             ...fileData[key],
-                            description: e.target.value,
+                            additionalInfo: e.target.value,
                           },
                         });
                       }}
                     />
                   </Form.Group>
+                  }
                   <Form.Group id="mS-file-upload">
                     <label>File Image</label>
                     <input

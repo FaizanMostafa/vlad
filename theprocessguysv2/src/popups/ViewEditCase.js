@@ -4,6 +4,7 @@ import { Stepper, Step } from "react-form-stepper";
 import { Modal } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  capitalizeString,
   objectsEqual,
   showToast,
   validateEmail,
@@ -52,19 +53,19 @@ export const ViewEditCase = ({
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
-      country: "United States",
+    country: "United States",
   });
   const [courthouseMailingAddress, setCourthouseMailingAddress] = useState({
     street: "",
     unit: "",
     city: "",
-    state: "",
+    state: { us: "", other: "" },
     zipCode: "",
     isCountryNotUS: false,
-      country: "United States",
+    country: "United States",
   });
   const [branchName, setBranchName] = useState("");
 
@@ -120,7 +121,7 @@ export const ViewEditCase = ({
   //  Questionaire Form 6
   const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({
     0: {
-      fullName: { firstName: "", middleName: "", lastName: "" },
+      fullName: "",
       gender: "",
       ethnicity: "",
       height: "",
@@ -135,6 +136,7 @@ export const ViewEditCase = ({
   // Questionaire Form 7
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
+      owner: "",
       insuranceCompany: "",
       licensePlateNumber: "",
       vinNumber: "",
@@ -157,7 +159,15 @@ export const ViewEditCase = ({
   const [requireByEmail, setRequireByEmail] = useState("");
   const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
   const [requireZipFileService, setRequireZipFileService] = useState("");
-  const [ifYesListAddress, setIfYesListAddress] = useState("");
+  const [zipFilingAddress, setZipFilingAddress] = useState({
+    street: "",
+    unit: "",
+    city: "",
+    state: { us: "", other: "" },
+    zipCode: "",
+    isCountryNotUS: false,
+    country: "United States",
+  });
 
   useEffect(() => {
     if (!props.modalShow && activeStep !== 1) {
@@ -274,7 +284,7 @@ export const ViewEditCase = ({
       setRequireZipFileService(
         caseDetails?.OfferedServices.requireZipFileService
       );
-      setIfYesListAddress(caseDetails?.OfferedServices.ifYesListAddress);
+      setZipFilingAddress(caseDetails?.OfferedServices.zipFilingAddress);
     }
   }, [caseDetails, isFetchingCaseDetails]);
 
@@ -298,10 +308,10 @@ export const ViewEditCase = ({
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -349,10 +359,10 @@ export const ViewEditCase = ({
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -394,10 +404,10 @@ export const ViewEditCase = ({
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -445,10 +455,10 @@ export const ViewEditCase = ({
               street: "",
               unit: "",
               city: "",
-              state: "",
+              state: { us: "", other: "" },
               zipCode: "",
               isCountryNotUS: false,
-      country: "United States",
+              country: "United States",
             },
           };
         }
@@ -500,10 +510,10 @@ export const ViewEditCase = ({
                   street: "",
                   unit: "",
                   city: "",
-                  state: "",
+                  state: { us: "", other: "" },
                   zipCode: "",
                   isCountryNotUS: false,
-      country: "United States",
+                  country: "United States",
                 },
                 typeOfServe: "",
                 requireFirst24HourService: "",
@@ -583,8 +593,12 @@ export const ViewEditCase = ({
         showToast("Please enter courthouse street!", "warning");
       } else if (!courthouseAddress.city.length) {
         showToast("Please enter courthouse city!", "warning");
-      } else if (!courthouseAddress.state.length) {
-        showToast("Please enter courthouse state!", "warning");
+      } else if (
+        !courthouseAddress.state.us.length ||
+        (courthouseAddress.state.us === "other" &&
+          !courthouseAddress.state.other.length)
+      ) {
+        showToast("Please select/enter courthouse state!", "warning");
       } else if (!courthouseAddress.zipCode.length) {
         showToast("Please enter courthouse zip code!", "warning");
       } else if (!courthouseAddress.country.length) {
@@ -593,8 +607,12 @@ export const ViewEditCase = ({
         showToast("Please enter courthouse mailing street!", "warning");
       } else if (!courthouseMailingAddress.city.length) {
         showToast("Please enter courthouse mailing city!", "warning");
-      } else if (!courthouseMailingAddress.state.length) {
-        showToast("Please enter courthouse mailing state!", "warning");
+      } else if (
+        !courthouseMailingAddress.state.us.length ||
+        (courthouseMailingAddress.state.us === "other" &&
+          !courthouseMailingAddress.state.other.length)
+      ) {
+        showToast("Please select/enter courthouse mailing state!", "warning");
       } else if (!courthouseMailingAddress.zipCode.length) {
         showToast("Please enter courthouse mailing zip code!", "warning");
       } else if (!courthouseMailingAddress.country.length) {
@@ -695,9 +713,13 @@ export const ViewEditCase = ({
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.us.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter plaintiff's state address!", "warning");
+        showToast("Please select/enter plaintiff's state address!", "warning");
       } else if (
         !shouldPGFillPlaintiffInfo &&
         Object.values(plaintiffsDetail)
@@ -825,9 +847,16 @@ export const ViewEditCase = ({
         isOrRepresentingPlaintiff === true &&
         Object.values(plaintiffAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.us.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter plaintiff's attorney firm state!", "warning");
+        showToast(
+          "Please select/enter plaintiff's attorney firm state!",
+          "warning"
+        );
       } else if (
         !shouldPGFillPlaintiffInfo &&
         numberOfAttorneysRepresentingPlaintiff !== "0" &&
@@ -946,9 +975,13 @@ export const ViewEditCase = ({
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.us.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter defendant's state!", "warning");
+        showToast("Please select/enter defendant's state!", "warning");
       } else if (
         !shouldPGFillDefendantInfo &&
         Object.values(defendantsDetail)
@@ -1079,9 +1112,16 @@ export const ViewEditCase = ({
         isOrRepresentingDefendant === true &&
         Object.values(defendantAttorneysDetail)
           .map((o) => o.address)
-          .filter((address) => !address.state.length).length
+          .filter(
+            (address) =>
+              !address.state.us.length ||
+              (address.state.us === "other" && !address.state.other.length)
+          ).length
       ) {
-        showToast("Please enter defendant's attorney's firm state!", "warning");
+        showToast(
+          "Please select/enter defendant's attorney's firm state!",
+          "warning"
+        );
       } else if (
         !shouldPGFillDefendantInfo &&
         numberOfAttorneysRepresentingDefendant !== "0" &&
@@ -1137,16 +1177,6 @@ export const ViewEditCase = ({
         )
           data.numberOfAttorneysRepresentingDefendant =
             numberOfAttorneysRepresentingDefendant;
-        console.log(
-          defendantAttorneysDetail,
-          caseDetails.DefendantInformation.defendantAttorneysDetail
-        );
-        console.log(
-          objectsEqual(
-            defendantAttorneysDetail,
-            caseDetails.DefendantInformation.defendantAttorneysDetail
-          )
-        );
         if (
           Object.values(defendantAttorneysDetail).length &&
           Object.values(
@@ -1312,13 +1342,16 @@ export const ViewEditCase = ({
           [],
           Object.values(serveesDetail).map((o) =>
             Object.values(o.serviceDetails).filter(
-              (o) => !o.address.state.length
+              (o) =>
+                !o.address.state.us.length ||
+                (o.address.state.us === "other" &&
+                  !o.address.state.other.length)
             )
           )
         ).length
       ) {
         showToast(
-          "Please enter state address for all service addresses!",
+          "Please select/enter state address for all service addresses!",
           "warning"
         );
       } else if (
@@ -1720,8 +1753,20 @@ export const ViewEditCase = ({
           "Please select if you require a zip file service at a court house!",
           "warning"
         );
-      } else if (requireZipFileService && !ifYesListAddress.length) {
-        showToast("Please enter address for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.street.length) {
+        showToast("Please enter street for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.city.length) {
+        showToast("Please enter city for zip filing!", "warning");
+      } else if (
+        (requireZipFileService && !zipFilingAddress.state.us.length) ||
+        (zipFilingAddress.state.us === "other" &&
+          !zipFilingAddress.state.other.length)
+      ) {
+        showToast("Please select/enter state for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.zipCode.length) {
+        showToast("Please enter zip code for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.country.length) {
+        showToast("Please enter country for zip filing!", "warning");
       } else if (typeof requireBodyCamFootage !== "boolean") {
         showToast(
           "Please select if you require body cam footage of service!",
@@ -1796,8 +1841,13 @@ export const ViewEditCase = ({
           caseDetails.OfferedServices.requireZipFileService
         )
           data.requireZipFileService = requireZipFileService;
-        if (ifYesListAddress !== caseDetails.OfferedServices.ifYesListAddress)
-          data.ifYesListAddress = ifYesListAddress;
+        if (
+          !objectsEqual(
+            zipFilingAddress,
+            caseDetails.OfferedServices.zipFilingAddress
+          )
+        )
+          data.zipFilingAddress = zipFilingAddress;
         if (Object.keys(data).length) {
           localStorage.setItem(
             "Questionaire8",
@@ -1884,7 +1934,7 @@ export const ViewEditCase = ({
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
@@ -1893,7 +1943,7 @@ export const ViewEditCase = ({
       street: "",
       unit: "",
       city: "",
-      state: "",
+      state: { us: "", other: "" },
       zipCode: "",
       isCountryNotUS: false,
       country: "United States",
@@ -1925,7 +1975,7 @@ export const ViewEditCase = ({
     // Reset Form 6
     setServeesPhysicalDescription({
       0: {
-        fullName: { firstName: "", middleName: "", lastName: "" },
+        fullName: "",
         gender: "",
         ethnicity: "",
         height: "",
@@ -1957,7 +2007,15 @@ export const ViewEditCase = ({
     setRequireByEmail("");
     setSpecificCourtInstruction("");
     setRequireZipFileService("");
-    setIfYesListAddress("");
+    setZipFilingAddress({
+      street: "",
+      unit: "",
+      city: "",
+      state: { us: "", other: "" },
+      zipCode: "",
+      isCountryNotUS: false,
+      country: "United States",
+    });
     setActiveStep(1);
     setShowResetModal(false);
     clearLocalStorage();
@@ -2143,6 +2201,7 @@ export const ViewEditCase = ({
                   ownerOfService={ownerOfService}
                   setOwnerOfService={setOwnerOfService}
                   caseStatus={status}
+                  paymentStatus={caseDetails?.CaseInformation?.payment?.status && capitalizeString(caseDetails.CaseInformation.payment.status)}
                   setCaseStatus={setStatus}
                   amount={amount}
                   setAmount={setAmount}
@@ -2283,8 +2342,8 @@ export const ViewEditCase = ({
                   setSpecificCourtInstruction={setSpecificCourtInstruction}
                   requireZipFileService={requireZipFileService}
                   setRequireZipFileService={setRequireZipFileService}
-                  ifYesListAddress={ifYesListAddress}
-                  setIfYesListAddress={setIfYesListAddress}
+                  zipFilingAddress={zipFilingAddress}
+                  setZipFilingAddress={setZipFilingAddress}
                 />
               )}
               {activeStep === 9 && (

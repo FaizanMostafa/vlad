@@ -103,7 +103,7 @@ export const CreateNewCase = (props) => {
   //  Questionaire Form 6
   const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({
     0: {
-      fullName: { firstName: "", middleName: "", lastName: "" },
+      fullName: "",
       gender: "",
       ethnicity: "",
       height: "",
@@ -118,6 +118,7 @@ export const CreateNewCase = (props) => {
   // Questionaire Form 7
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
+      owner: "",
       insuranceCompany: "",
       licensePlateNumber: "",
       vinNumber: "",
@@ -138,7 +139,15 @@ export const CreateNewCase = (props) => {
   const [requireByEmail, setRequireByEmail] = useState("");
   const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
   const [requireZipFileService, setRequireZipFileService] = useState("");
-  const [ifYesListAddress, setIfYesListAddress] = useState("");
+  const [zipFilingAddress, setZipFilingAddress] = useState({
+    street: "",
+    unit: "",
+    city: "",
+    state: { us: "", other: "" },
+    zipCode: "",
+    isCountryNotUS: false,
+    country: "United States",
+  });
 
   useEffect(() => {
     const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
@@ -281,8 +290,8 @@ export const CreateNewCase = (props) => {
         setSpecificCourtInstruction(QuestionaireForm8.specificCourtInstruction);
       if (QuestionaireForm8?.requireZipFileService)
         setRequireZipFileService(QuestionaireForm8.requireZipFileService);
-      if (QuestionaireForm8?.ifYesListAddress)
-        setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
+      if (QuestionaireForm8?.zipFilingAddress)
+        setZipFilingAddress(QuestionaireForm8.zipFilingAddress);
     }
   }, []);
 
@@ -1046,8 +1055,7 @@ export const CreateNewCase = (props) => {
           .filter(
             (address) =>
               !address.state.us.length ||
-              (address.state.us === "other" &&
-                !address.state.other.length)
+              (address.state.us === "other" && !address.state.other.length)
           ).length
       ) {
         showToast(
@@ -1495,8 +1503,20 @@ export const CreateNewCase = (props) => {
           "Please select if you require a zip file service at a court house!",
           "warning"
         );
-      } else if (requireZipFileService && !ifYesListAddress.length) {
-        showToast("Please enter address for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.street.length) {
+        showToast("Please enter street for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.city.length) {
+        showToast("Please enter city for zip filing!", "warning");
+      } else if (
+        (requireZipFileService && !zipFilingAddress.state.us.length) ||
+        (zipFilingAddress.state.us === "other" &&
+          !zipFilingAddress.state.other.length)
+      ) {
+        showToast("Please select/enter state for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.zipCode.length) {
+        showToast("Please enter zip code for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.country.length) {
+        showToast("Please enter country for zip filing!", "warning");
       } else if (typeof requireBodyCamFootage !== "boolean") {
         showToast(
           "Please select if you require body cam footage of service!",
@@ -1537,7 +1557,7 @@ export const CreateNewCase = (props) => {
           requireByEmail,
           specificCourtInstruction,
           requireZipFileService,
-          ifYesListAddress,
+          zipFilingAddress,
         };
         localStorage.setItem("Questionaire8", JSON.stringify(data));
         setActiveStep(nextStep);
@@ -1623,7 +1643,7 @@ export const CreateNewCase = (props) => {
     // Reset Form 6
     setServeesPhysicalDescription({
       0: {
-        fullName: { firstName: "", middleName: "", lastName: "" },
+        fullName: "",
         gender: "",
         ethnicity: "",
         height: "",
@@ -1637,6 +1657,7 @@ export const CreateNewCase = (props) => {
     // Reset Form 7
     setVehiclesInformation({
       0: {
+        owner: "",
         insuranceCompany: "",
         licensePlateNumber: "",
         vinNumber: "",
@@ -1654,7 +1675,15 @@ export const CreateNewCase = (props) => {
     setRequireByEmail("");
     setSpecificCourtInstruction("");
     setRequireZipFileService("");
-    setIfYesListAddress("");
+    setZipFilingAddress({
+      street: "",
+      unit: "",
+      city: "",
+      state: { us: "", other: "" },
+      zipCode: "",
+      isCountryNotUS: false,
+      country: "United States",
+    });
     setActiveStep(1);
     setShowResetModal(false);
     localStorage.removeItem("Questionaire1");
@@ -1901,8 +1930,8 @@ export const CreateNewCase = (props) => {
               setSpecificCourtInstruction={setSpecificCourtInstruction}
               requireZipFileService={requireZipFileService}
               setRequireZipFileService={setRequireZipFileService}
-              ifYesListAddress={ifYesListAddress}
-              setIfYesListAddress={setIfYesListAddress}
+              zipFilingAddress={zipFilingAddress}
+              setZipFilingAddress={setZipFilingAddress}
             />
           )}
           {activeStep === 9 && (

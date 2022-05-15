@@ -12,6 +12,7 @@ export const Questionaire1 = (props) => {
     setAmount,
     caseStatus,
     setCaseStatus,
+    paymentStatus,
     caseTitle,
     setCaseTitle,
     caseNumber,
@@ -56,7 +57,7 @@ export const Questionaire1 = (props) => {
 
   return (
     <>
-      <h2 className="text-center mb-4 mt-5">New Case Questionaire</h2>
+      <h2 className="text-center mb-4 mt-5">Case Questionaire</h2>
       <br />
       <MDBRow md="12">
         <MDBCol md="8" id="case-amount">
@@ -70,6 +71,20 @@ export const Questionaire1 = (props) => {
             />
           </Form.Group>
         </MDBCol>
+        {
+          paymentStatus
+            &&
+              <MDBCol md="4" id="payment-status">
+                <Form.Group id="case-amount-g">
+                  <Form.Label>Payment Status</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={paymentStatus}
+                    disabled
+                  />
+                </Form.Group>
+              </MDBCol>
+        }
         <MDBCol md="6" id="case-status">
           <Form.Group id="case-status-g">
             <Form.Label>Case Status</Form.Label>

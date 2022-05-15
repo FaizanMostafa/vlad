@@ -8,6 +8,7 @@ export const QuestionaireAdditionalVehicleTemplate = ({
 }) => {
   const [showModal, setShow] = useState(false);
   const [vehicleInformation, setVehicleInformation] = useState({
+    owner: "",
     insuranceCompany: "",
     licensePlateNumber: "",
     vinNumber: "",
@@ -23,6 +24,7 @@ export const QuestionaireAdditionalVehicleTemplate = ({
       [Object.keys(vehiclesInformation).length]: vehicleInformation,
     });
     setVehicleInformation({
+      owner: "",
       insuranceCompany: "",
       licensePlateNumber: "",
       vinNumber: "",
@@ -48,6 +50,21 @@ export const QuestionaireAdditionalVehicleTemplate = ({
           <Modal.Title>Adding Vehicle</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <MDBCol md="12" id="vehicle-type-model-ownership">
+            <div id="vehicle-type-model-ownership">
+              <label>Who does the vehicle belong to?</label>
+              <MDBInput
+                type="text"
+                value={vehicleInformation.owner}
+                onChange={(e) =>
+                  setVehicleInformation({
+                    ...vehicleInformation,
+                    owner: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </MDBCol>
           <MDBCol md="12" id="vehicle-type-model-ownership">
             <div id="vehicle-type-model-ownership">
               <label>

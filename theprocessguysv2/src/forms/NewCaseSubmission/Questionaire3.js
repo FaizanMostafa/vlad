@@ -322,6 +322,25 @@ export const Questionaire3 = (props) => {
                 }
                 required
               />
+              <MDBInput
+                type="text"
+                hint="Suffix"
+                className="text-white"
+                disabled={shouldPGFillDefendantInfo}
+                value={defendant.fullName.suffix}
+                onChange={(e) =>
+                  setDefendantsDetail({
+                    ...defendantsDetail,
+                    [key]: {
+                      ...defendant,
+                      fullName: {
+                        ...defendant.fullName,
+                        suffix: e.target.value,
+                      },
+                    },
+                  })
+                }
+              />
             </div>
           </MDBCol>
           <MDBCol md="12" id="defendant-address">
@@ -603,6 +622,25 @@ export const Questionaire3 = (props) => {
                   })
                 }
                 required
+              />
+              <MDBInput
+                type="text"
+                hint="Suffix"
+                className="text-white"
+                disabled={shouldPGFillDefendantInfo}
+                value={attorney.fullName.suffix}
+                onChange={(e) =>
+                  setDefendantAttorneysDetail({
+                    ...defendantAttorneysDetail,
+                    [key]: {
+                      ...attorney,
+                      fullName: {
+                        ...attorney.fullName,
+                        suffix: e.target.value,
+                      },
+                    },
+                  })
+                }
               />
             </div>
           </MDBCol>

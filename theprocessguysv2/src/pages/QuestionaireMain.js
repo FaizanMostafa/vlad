@@ -99,7 +99,7 @@ function Questionaire() {
   //  Questionaire Form 6
   const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({
     0: {
-      fullName: { firstName: "", middleName: "", lastName: "" },
+      fullName: "",
       gender: "",
       ethnicity: "",
       height: "",
@@ -114,6 +114,7 @@ function Questionaire() {
   // Questionaire Form 7
   const [vehiclesInformation, setVehiclesInformation] = useState({
     0: {
+      owner: "",
       insuranceCompany: "",
       licensePlateNumber: "",
       vinNumber: "",
@@ -134,7 +135,15 @@ function Questionaire() {
   const [requireByEmail, setRequireByEmail] = useState("");
   const [specificCourtInstruction, setSpecificCourtInstruction] = useState("");
   const [requireZipFileService, setRequireZipFileService] = useState("");
-  const [ifYesListAddress, setIfYesListAddress] = useState("");
+  const [zipFilingAddress, setZipFilingAddress] = useState({
+    street: "",
+    unit: "",
+    city: "",
+    state: { us: "", other: "" },
+    zipCode: "",
+    isCountryNotUS: false,
+    country: "United States",
+  });
 
   useEffect(() => {
     const QuestionaireForm1 = JSON.parse(localStorage.getItem("Questionaire1"));
@@ -222,7 +231,7 @@ function Questionaire() {
       setRequireByEmail(QuestionaireForm8.requireByEmail);
       setSpecificCourtInstruction(QuestionaireForm8.specificCourtInstruction);
       setRequireZipFileService(QuestionaireForm8.requireZipFileService);
-      setIfYesListAddress(QuestionaireForm8.ifYesListAddress);
+      setZipFilingAddress(QuestionaireForm8.zipFilingAddress);
     }
   }, []);
 
@@ -241,7 +250,7 @@ function Questionaire() {
           index++
         ) {
           newPlaintiffsDetail[Object.keys(newPlaintiffsDetail).length] = {
-            fullName: { firstName: "", middleName: "", lastName: "" },
+            fullName: { firstName: "", middleName: "", lastName: "", suffix: "" },
             address: {
               street: "",
               unit: "",
@@ -288,7 +297,7 @@ function Questionaire() {
           index++
         ) {
           newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
-            fullName: { firstName: "", middleName: "", lastName: "" },
+            fullName: { firstName: "", middleName: "", lastName: "", suffix: "" },
             barNumber: "",
             phoneNumbers: { 0: { phoneNumber: "", type: "" } },
             faxNumber: "",
@@ -337,7 +346,7 @@ function Questionaire() {
           index++
         ) {
           newDefendantsDetail[Object.keys(newDefendantsDetail).length] = {
-            fullName: { firstName: "", middleName: "", lastName: "" },
+            fullName: { firstName: "", middleName: "", lastName: "", suffix: "" },
             address: {
               street: "",
               unit: "",
@@ -384,7 +393,7 @@ function Questionaire() {
           index++
         ) {
           newAttorneysDetail[Object.keys(newAttorneysDetail).length] = {
-            fullName: { firstName: "", middleName: "", lastName: "" },
+            fullName: { firstName: "", middleName: "", lastName: "", suffix: "" },
             barNumber: "",
             phoneNumbers: { 0: { phoneNumber: "", type: "" } },
             faxNumber: "",
@@ -1425,8 +1434,20 @@ function Questionaire() {
           "Please select if you require a zip file service at a court house!",
           "warning"
         );
-      } else if (requireZipFileService && !ifYesListAddress.length) {
-        showToast("Please enter address for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.street.length) {
+        showToast("Please enter street for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.city.length) {
+        showToast("Please enter city for zip filing!", "warning");
+      } else if (
+        (requireZipFileService && !zipFilingAddress.state.us.length) ||
+        (zipFilingAddress.state.us === "other" &&
+          !zipFilingAddress.state.other.length)
+      ) {
+        showToast("Please select/enter state for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.zipCode.length) {
+        showToast("Please enter zip code for zip filing!", "warning");
+      } else if (requireZipFileService && !zipFilingAddress.country.length) {
+        showToast("Please enter country for zip filing!", "warning");
       } else if (typeof requireBodyCamFootage !== "boolean") {
         showToast(
           "Please select if you require body cam footage of service!",
@@ -1467,7 +1488,7 @@ function Questionaire() {
           requireByEmail,
           specificCourtInstruction,
           requireZipFileService,
-          ifYesListAddress,
+          zipFilingAddress,
         };
         localStorage.setItem("Questionaire8", JSON.stringify(data));
         setActiveStep(9);
@@ -1549,7 +1570,7 @@ function Questionaire() {
     // Reset Form 6
     setServeesPhysicalDescription({
       0: {
-        fullName: { firstName: "", middleName: "", lastName: "" },
+        fullName: "",
         gender: "",
         ethnicity: "",
         height: "",
@@ -1563,6 +1584,7 @@ function Questionaire() {
     // Reset Form 7
     setVehiclesInformation({
       0: {
+        owner: "",
         insuranceCompany: "",
         licensePlateNumber: "",
         vinNumber: "",
@@ -1580,7 +1602,15 @@ function Questionaire() {
     setRequireByEmail("");
     setSpecificCourtInstruction("");
     setRequireZipFileService("");
-    setIfYesListAddress("");
+    setZipFilingAddress({
+      street: "",
+      unit: "",
+      city: "",
+      state: { us: "", other: "" },
+      zipCode: "",
+      isCountryNotUS: false,
+      country: "United States",
+    });
     setActiveStep(1);
     setShowResetModal(false);
     localStorage.removeItem("Questionaire1");
@@ -1766,8 +1796,8 @@ function Questionaire() {
           setSpecificCourtInstruction={setSpecificCourtInstruction}
           requireZipFileService={requireZipFileService}
           setRequireZipFileService={setRequireZipFileService}
-          ifYesListAddress={ifYesListAddress}
-          setIfYesListAddress={setIfYesListAddress}
+          zipFilingAddress={zipFilingAddress}
+          setZipFilingAddress={setZipFilingAddress}
         />
       )}
       {activeStep === 9 && <FileSubmission />}
