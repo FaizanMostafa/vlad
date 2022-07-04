@@ -48,16 +48,17 @@ export const FileSubmission = (props) => {
       };
     }
     setFileData(caseFileData);
+    setFileSubmissionType(parseInt(numberOfCaseFilesBeingServed) === 1 ? "single" : "multiple")
   }, []);
 
-  const handleOnChangeFileType = (fileType) => {
-    setFileSubmissionType(fileType);
-    let caseFileData = {};
-    for (let index = 0; index < Object.keys(fileData).length; index++) {
-      caseFileData[index] = { ...fileData[index], fileType };
-    }
-    setFileData(caseFileData);
-  };
+  // const setFileType = (fileType) => {
+  //   setFileSubmissionType(fileType);
+  //   let caseFileData = {};
+  //   for (let index = 0; index < Object.keys(fileData).length; index++) {
+  //     caseFileData[index] = { ...fileData[index], fileType };
+  //   }
+  //   setFileData(caseFileData);
+  // };
 
   const handleCaseSubmit = () => {
     if (Object.values(fileData).filter((o) => !o.caseType.length).length) {
@@ -107,9 +108,9 @@ export const FileSubmission = (props) => {
       const QuestionaireForm5 = JSON.parse(
         localStorage.getItem("Questionaire5")
       );
-      const QuestionaireForm6 = JSON.parse(
-        localStorage.getItem("Questionaire6")
-      );
+      // const QuestionaireForm6 = JSON.parse(
+      //   localStorage.getItem("Questionaire6")
+      // );
       const QuestionaireForm7 = JSON.parse(
         localStorage.getItem("Questionaire7")
       );
@@ -178,12 +179,12 @@ export const FileSubmission = (props) => {
             QuestionaireForm5.paralegalAttorneyClientContactServee,
         };
       }
-      if (QuestionaireForm6) {
-        data["ServeePhysicalDescription-6"] = {
-          serveesPhysicalDescription:
-            QuestionaireForm6.serveesPhysicalDescription,
-        };
-      }
+      // if (QuestionaireForm6) {
+      //   data["ServeePhysicalDescription-6"] = {
+      //     serveesPhysicalDescription:
+      //       QuestionaireForm6.serveesPhysicalDescription,
+      //   };
+      // }
       if (QuestionaireForm7) {
         data["VehicleInformation-7"] = {
           vehiclesInformation: QuestionaireForm7.vehiclesInformation,
@@ -212,17 +213,17 @@ export const FileSubmission = (props) => {
             userName: `${user.firstName} ${user.middleName} ${user.lastName}`,
             ...data,
           },
-          () => {
-            localStorage.removeItem("Questionaire1");
-            localStorage.removeItem("Questionaire2");
-            localStorage.removeItem("Questionaire3");
-            localStorage.removeItem("Questionaire4");
-            localStorage.removeItem("Questionaire5");
-            localStorage.removeItem("Questionaire6");
-            localStorage.removeItem("Questionaire7");
-            localStorage.removeItem("Questionaire8");
-            history.push("/case-submission-success");
-          }
+          // () => {
+          //   localStorage.removeItem("Questionaire1");
+          //   localStorage.removeItem("Questionaire2");
+          //   localStorage.removeItem("Questionaire3");
+          //   localStorage.removeItem("Questionaire4");
+          //   localStorage.removeItem("Questionaire5");
+          //   // localStorage.removeItem("Questionaire6");
+          //   localStorage.removeItem("Questionaire7");
+          //   localStorage.removeItem("Questionaire8");
+          //   history.push("/case-submission-success");
+          // }
         )
       );
     }
@@ -721,7 +722,7 @@ export const FileSubmission = (props) => {
             <br />
           </div>
         </>
-      ) : fileSubmissionType === "multiple" ? (
+      ) : fileSubmissionType === "multiple" && (
         <>
           <center>
             <h2>
@@ -1204,46 +1205,6 @@ export const FileSubmission = (props) => {
                 )}
               </Button>
             </div>
-            <br />
-            <br />
-          </div>
-        </>
-      ) : (
-        <>
-          <center>
-            <h2>
-              <b>Upload Case File(s) Type</b>
-            </h2>
-          </center>
-          <div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <MDBCol md="12">
-              <center>
-                <Button
-                  onClick={() => handleOnChangeFileType("single")}
-                  className="w-75"
-                >
-                  <span className="text-white">
-                    Single Case File(s) Submission
-                  </span>
-                </Button>
-                <br />
-                <br />
-                <Button
-                  onClick={() => handleOnChangeFileType("multiple")}
-                  className="w-75"
-                >
-                  <span className="text-white">
-                    Multiple Case File(s) Submission
-                  </span>
-                </Button>
-              </center>
-            </MDBCol>
-            <br />
             <br />
             <br />
           </div>

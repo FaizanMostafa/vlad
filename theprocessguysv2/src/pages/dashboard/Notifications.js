@@ -193,6 +193,7 @@ const Notifications = () => {
                         margin: "0px 8px",
                         cursor: "pointer",
                       }}
+                      data-mdb-toggle="tooltip" title="View Notification"
                       onClick={() => handleOnClickView(notification)}
                       icon="eye"
                     />
@@ -203,6 +204,7 @@ const Notifications = () => {
                           margin: "0px 8px",
                           cursor: "pointer",
                         }}
+                        data-mdb-toggle="tooltip" title="Delete Notification"
                         onClick={() => handleOnClickDelete(notification)}
                         icon="trash-alt"
                       />

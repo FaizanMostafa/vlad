@@ -407,6 +407,7 @@ export const Questionaire1 = (props) => {
             } p-2`}
             value={courthouseMailingAddress.isCountryNotUS}
             onChange={(e) => cMAOnChangeIsCountryNotUS(e.target.value)}
+            disabled={isSameAddress}
             required
           >
             <option value={false}>United States</option>

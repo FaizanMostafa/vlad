@@ -97,19 +97,19 @@ function Questionaire() {
   ] = useState("");
 
   //  Questionaire Form 6
-  const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({
-    0: {
-      fullName: "",
-      gender: "",
-      ethnicity: "",
-      height: "",
-      weight: "",
-      hairColor: "",
-      eyeColor: "",
-      physicalOutline: "",
-      image: null,
-    },
-  });
+  // const [serveesPhysicalDescription, setServeesPhysicalDescription] = useState({
+  //   0: {
+  //     fullName: "",
+  //     gender: "",
+  //     ethnicity: "",
+  //     height: "",
+  //     weight: "",
+  //     hairColor: "",
+  //     eyeColor: "",
+  //     physicalOutline: "",
+  //     image: null,
+  //   },
+  // });
 
   // Questionaire Form 7
   const [vehiclesInformation, setVehiclesInformation] = useState({
@@ -151,7 +151,7 @@ function Questionaire() {
     const QuestionaireForm3 = JSON.parse(localStorage.getItem("Questionaire3"));
     const QuestionaireForm4 = JSON.parse(localStorage.getItem("Questionaire4"));
     const QuestionaireForm5 = JSON.parse(localStorage.getItem("Questionaire5"));
-    const QuestionaireForm6 = JSON.parse(localStorage.getItem("Questionaire6"));
+    // const QuestionaireForm6 = JSON.parse(localStorage.getItem("Questionaire6"));
     const QuestionaireForm7 = JSON.parse(localStorage.getItem("Questionaire7"));
     const QuestionaireForm8 = JSON.parse(localStorage.getItem("Questionaire8"));
     if (QuestionaireForm1) {
@@ -197,7 +197,7 @@ function Questionaire() {
       setServeesDetail(QuestionaireForm4.serveesDetail);
     }
     if (QuestionaireForm5) {
-      setActiveStep(6);
+      setActiveStep(7);
       setServeIndividualAtEmployment(
         QuestionaireForm5.serveIndividualAtEmployment
       );
@@ -211,12 +211,12 @@ function Questionaire() {
         QuestionaireForm5.paralegalAttorneyClientContactServee
       );
     }
-    if (QuestionaireForm6) {
-      setActiveStep(7);
-      setServeesPhysicalDescription(
-        QuestionaireForm6.serveesPhysicalDescription
-      );
-    }
+    // if (QuestionaireForm6) {
+    //   setActiveStep(7);
+    //   setServeesPhysicalDescription(
+    //     QuestionaireForm6.serveesPhysicalDescription
+    //   );
+    // }
     if (QuestionaireForm7) {
       setActiveStep(8);
       setVehiclesInformation(QuestionaireForm7.vehiclesInformation);
@@ -476,6 +476,16 @@ function Questionaire() {
                 },
               },
             },
+            physicalDescription: {
+              gender: "",
+              ethnicity: "",
+              height: "",
+              weight: "",
+              hairColor: "",
+              eyeColor: "",
+              outline: "",
+              image: null,
+            }
           };
         }
         setServeesDetail(newServeesDetail);
@@ -1417,10 +1427,10 @@ function Questionaire() {
         setActiveStep(6);
       }
     } else if (activeStep === 6) {
-      let data = {
-        serveesPhysicalDescription,
-      };
-      localStorage.setItem("Questionaire6", JSON.stringify(data));
+    //   let data = {
+    //     serveesPhysicalDescription,
+    //   };
+    //   localStorage.setItem("Questionaire6", JSON.stringify(data));
       setActiveStep(7);
     } else if (activeStep === 7) {
       let data = {
@@ -1568,19 +1578,19 @@ function Questionaire() {
     setServerContactServeeByPhone("");
     setParalegalAttorneyClientContactServee("");
     // Reset Form 6
-    setServeesPhysicalDescription({
-      0: {
-        fullName: "",
-        gender: "",
-        ethnicity: "",
-        height: "",
-        weight: "",
-        hairColor: "",
-        eyeColor: "",
-        physicalOutline: "",
-        image: null,
-      },
-    });
+    // setServeesPhysicalDescription({
+    //   0: {
+    //     fullName: "",
+    //     gender: "",
+    //     ethnicity: "",
+    //     height: "",
+    //     weight: "",
+    //     hairColor: "",
+    //     eyeColor: "",
+    //     physicalOutline: "",
+    //     image: null,
+    //   },
+    // });
     // Reset Form 7
     setVehiclesInformation({
       0: {
@@ -1768,8 +1778,8 @@ function Questionaire() {
       )}
       {activeStep === 6 && (
         <Questionaire6
-          serveesPhysicalDescription={serveesPhysicalDescription}
-          setServeesPhysicalDescription={setServeesPhysicalDescription}
+          serveesDetail={serveesDetail}
+          setServeesDetail={setServeesDetail}
         />
       )}
       {activeStep === 7 && (

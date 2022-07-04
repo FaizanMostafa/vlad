@@ -118,18 +118,21 @@ const TOSAgreement = () => {
                     <td style={{boxSizing: "border-box"}}>
                       <MDBIcon
                         style={{color: 'red', margin: "0px 8px", cursor: "pointer"}}
+                        data-mdb-toggle="tooltip" title="Delete TOS Agreement"
                         onClick={() => handleOnClickDelete(tosDoc)}
                         icon="trash-alt"
                       />
                       <MDBIcon
                         style={{color: 'blue', margin: "0px 8px", cursor: "pointer"}}
+                        data-mdb-toggle="tooltip" title="Edit TOS Agreement"
                         onClick={() => handleOnClickEdit(tosDoc)}
                         icon="pencil-alt"
                       />
                       <a
                         href={tosDoc.documentURI} target="_blank"
                         referrerPolicy="no-referrer" rel="noreferrer"
-                        style={{float: "none"}}
+                        style={{float: "none"}} data-mdb-toggle="tooltip"
+                        title="View TOS Agreement"
                       >
                         <MDBIcon
                           style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}

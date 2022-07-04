@@ -3,7 +3,8 @@ import { Table } from "react-bootstrap";
 import { MDBIcon } from "mdbreact";
 import { useDispatch, useSelector } from "react-redux";
 import Pagination from "../../components/Pagination";
-import { CreateNewCase, DeleteCase, ViewEditCase } from "../../popups";
+import { CreateNewCase, DeleteCase, ViewEditCase, CreateCoverSheet } from "../../popups";
+import UpdateCoverSheet from "../../forms/UpdateCoverSheet";
 import {
   setCase,
   fetchCaseDetails,
@@ -22,6 +23,8 @@ const Cases = () => {
   const [activePageNo, setActivePageNo] = useState(1);
   const [noOfRowsPerPage, setNoOfRowsPerPage] = useState(10);
   const [editModalShow, setEditModalShow] = useState(false);
+  const [updateCoverSheetModalShow, setUpdateCoverSheetModalShow] = useState(false);
+  const [createCoverSheetModalShow, setCreateCoverSheetModalShow] = useState(false);
   const [deleteModalShow, setDeleteModalShow] = useState(false);
   const cases = useSelector((state) => state.admin.cases);
   const lastVisible = useSelector((state) => state.admin.lastCaseVisible);
@@ -106,6 +109,20 @@ const Cases = () => {
     setEditModalShow(true);
   };
 
+  const handleOnClickEditCoverSheet = (userCaseData) => {
+    setUserCase(userCaseData);
+    setUpdateCoverSheetModalShow(true);
+  };
+
+  const handleOnClickCreateCoverSheet = (userCaseData) => {
+    setUserCase(userCaseData);
+    setCreateCoverSheetModalShow(true);
+  };
+
+  // useEffect(()=>{
+  //   console.log(userCase);
+  // }, [userCase]);
+
   return (
     <div
       style={{
@@ -171,6 +188,7 @@ const Cases = () => {
                       margin: "0px 8px",
                       cursor: "pointer",
                     }}
+                    data-mdb-toggle="tooltip" title="Delete Case"
                     onClick={() => handleOnClickDelete(userCase)}
                     icon="trash-alt"
                   />
@@ -180,6 +198,7 @@ const Cases = () => {
                       margin: "0px 8px",
                       cursor: "pointer",
                     }}
+                    data-mdb-toggle="tooltip" title="Edit Case"
                     onClick={() => handleOnClickEdit(userCase)}
                     icon="pencil-alt"
                   />
@@ -189,9 +208,45 @@ const Cases = () => {
                       margin: "0px 8px",
                       cursor: "pointer",
                     }}
+                    data-mdb-toggle="tooltip" title="View Case"
                     onClick={() => handleOnClickView(userCase)}
                     icon="eye"
                   />
+                  <MDBIcon
+                    style={{
+                      color: "gray",
+                      margin: "0px 8px",
+                      cursor: "pointer",
+                    }}
+                    data-mdb-toggle="tooltip" title="Edit Cover Sheet"
+                    onClick={() => handleOnClickEditCoverSheet(userCase)}
+                    icon="file-signature"
+                  />
+                  <MDBIcon
+                    style={{
+                      color: "gray",
+                      margin: "0px 8px",
+                      cursor: "pointer",
+                    }}
+                    data-mdb-toggle="tooltip" title="Generate Cover Sheets"
+                    onClick={() => handleOnClickCreateCoverSheet(userCase)}
+                    icon="file-alt"
+                  />
+                  {
+                    userCase?.coverSheetDocs?.URI?.admin
+                      &&
+                        <a href={userCase.coverSheetDocs.URI.admin} target="_blank"
+                        referrerPolicy="no-referrer" rel="noreferrer" style={{float: "none"}} data-mdb-toggle="tooltip" title="Download Cover Sheet">
+                          <MDBIcon
+                            style={{
+                              color: "gray",
+                              margin: "0px 8px",
+                              cursor: "pointer",
+                            }}
+                            icon="file-import"
+                          />
+                        </a>
+                  }
                   {/* <Link style={{float: "none"}} to={{pathname: `cases/${userCase.docId}`, state: {userCase}}}>
                         <MDBIcon
                           style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
@@ -222,6 +277,21 @@ const Cases = () => {
         modalShow={editModalShow}
         setModalShow={setEditModalShow}
         isFormDisabled={!isCaseEditable}
+      />
+      <UpdateCoverSheet
+        modalShow={updateCoverSheetModalShow}
+        setModalShow={setUpdateCoverSheetModalShow}
+        caseId={userCase?.docId}
+        coverSheetData={userCase?.coverSheetData}
+      />
+      <CreateCoverSheet
+        modalShow={createCoverSheetModalShow}
+        setModalShow={setCreateCoverSheetModalShow}
+        caseId={userCase?.docId}
+        uid={userCase?.uid}
+        coverSheetData={userCase?.coverSheetData}
+        coverSheetDocs={userCase?.coverSheetDocs}
+        caseTitle={userCase?.caseTitle}
       />
     </div>
   );

@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>PDF Result Template</title>
+        <style>
+            .invoice-box {
+                max-width: 800px;
+                margin: auto;
+                padding: 30px;
+                border: 1px solid #eee;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+                font-size: 16px;
+                line-height: 24px;
+                font-family: 'Helvetica Neue', 'Helvetica';
+                color: #555;
+            }
+
+            .margin-top {
+                margin-top: 50px;
+            }
+
+            .justify-center {
+                text-align: center;
+            }
+
+            .invoice-box table {
+                width: 100%;
+                line-height: inherit;
+                text-align: left;
+            }
+
+            .invoice-box table td {
+                padding: 5px;
+                vertical-align: top;
+            }
+
+            .invoice-box table tr td:nth-child(2) {
+                text-align: right;
+            }
+
+            .invoice-box table tr.top table td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.top table td.title {
+                font-size: 45px;
+                line-height: 45px;
+                color: #333;
+            }
+
+            .invoice-box table tr.information table td {
+                padding-bottom: 40px;
+            }
+
+            .invoice-box table tr.heading td {
+                background: #eee;
+                border-bottom: 1px solid #ddd;
+                font-weight: bold;
+            }
+
+            .invoice-box table tr.details td {
+                padding-bottom: 20px;
+            }
+
+            .invoice-box table tr.item td {
+                border-bottom: 1px solid #eee;
+            }
+
+            .invoice-box table tr.item.last td {
+                border-bottom: none;
+            }
+
+            .invoice-box table tr.total td:nth-child(2) {
+                border-top: 2px solid #eee;
+                font-weight: bold;
+            }
+
+            @media only screen and (max-width: 600px) {
+                .invoice-box table tr.top table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+
+                .invoice-box table tr.information table td {
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="2" style="border-bottom: black 2px solid;">
+                        <table>
+                            <tr>
+                                <td class="title"><img
+                                        src="https://www.theprocessguys.com/static/media/TPG_logo_rgb.3b93a26c.webp"
+                                        style="width:100%; object-fit: contain; max-width:200px;"></td>
+                                <td>
+                                    Datum: ${`${today.getDate()}. ${today.getMonth() + 1}. ${today.getFullYear()}.`}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div style="display: flex; align-items: center;">
+                                        <img
+                                            src="./information.png"
+                                            style="width:100%; object-fit: contain; max-width:40px; margin-right: 10px;"
+                                        />
+                                        Only attempt Service between 8 am and 9 pm (Unless specified by court orders, employees can display or hide this clause)
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-top: 25px; display: flex; align-items: center;">
+                                        <img
+                                            src="./service.png"
+                                            style="width:100%; object-fit: contain; max-width:40px; margin-right: 10px;"
+                                        />
+                                        <span style="font-size: x-large; font-weight: bold;">Service To</span>
+                                    </div>
+                                    <div style="padding-left: 40px;">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-size: medium; font-weight: bold;">Name of individual/Business Receiving Service</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Address for Service<br/>
+                                                    Service Location type<br/>
+                                                    Agent of Service name<br/>
+                                                    Age of Servee<br/>
+                                                    Servee date of birth<br/>
+                                                    Sex of Servee<br/>
+                                                    Ethnicity of Servee<br/>
+                                                    Height of Servee<br/>
+                                                    Weight of Servee<br/>
+                                                    Hair color of Servee<br/>
+                                                    Eye color of Servee<br/>
+                                                    Physical outlines of Servee<br/>
+                                                    Recepient Phone Number
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div style="margin-top: 25px; display: flex; align-items: center;">
+                                        <img
+                                            src="./folder.png"
+                                            style="width:100%; object-fit: contain; max-width:40px; margin-right: 10px;"
+                                        />
+                                        <span style="font-size: x-large; font-weight: bold;">File Document Collection</span>
+                                    </div>
+                                    <div style="padding-left: 40px;">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-size: medium; font-weight: bold;">Display File Content</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Owner of Service<br/>
+                                                    TPG Case Number<br/>
+                                                    Court Address/Branch Information<br/>
+                                                    Court Case Number<br/>
+                                                    Case Title<br/>
+                                                    The Process Guys phone number
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-top: 25px; display: flex; align-items: center;">
+                                        <img
+                                            src="./restriction.png"
+                                            style="width:100%; object-fit: contain; max-width:40px; margin-right: 10px;"
+                                        />
+                                        <span style="font-size: x-large; font-weight: bold;">Rules for Service</span>
+                                    </div>
+                                    <div style="padding-left: 40px;">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <span style="font-size: medium; font-weight: bold;">Display File Content</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    Owner of Service<br/>
+                                                    TPG Case Number<br/>
+                                                    Court Address/Branch Information<br/>
+                                                    Court Case Number<br/>
+                                                    Case Title<br/>
+                                                    The Process Guys phone number
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div style="margin-top: 25px; display: flex; align-items: center;">
+                                        <img
+                                            src="./extra-info.png"
+                                            style="width:100%; object-fit: contain; max-width:40px; margin-right: 10px;"
+                                        />
+                                        <span style="font-size: x-large; font-weight: bold;">Additional Information</span>
+                                    </div>
+                                    <div style="padding-left: 40px;">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    Servee may be expecting service documents, due to client/attorney activity<br/>
+                                                    Co-resident full name<br/>
+                                                    Co-resident relationship to servee<br/>
+                                                    Vehicle Type/Model<br/>
+                                                    Year of vehicle make<br/>
+                                                    Vehicle color<br/>
+                                                    Vehicle license plate/state<br/>
+                                                    Vehicle vin number
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+</html>

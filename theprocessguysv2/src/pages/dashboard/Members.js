@@ -129,17 +129,20 @@ const Members = () => {
                     <td style={{boxSizing: "border-box"}}>
                       <MDBIcon
                         style={{color: 'red', margin: "0px 8px", cursor: "pointer"}}
+                        data-mdb-toggle="tooltip" title="Delete User"
                         onClick={() => handleOnClickDelete(user)}
                         icon="trash-alt"
                       />
                       <MDBIcon
                         style={{color: 'blue', margin: "0px 8px", cursor: "pointer"}}
+                        data-mdb-toggle="tooltip" title="Edit User"
                         onClick={() => handleOnClickEdit(user)}
                         icon="pencil-alt"
                       />
                       <Link style={{float: "none"}} to={{pathname: `members/${user.uid}`, state: {user}}}>
                         <MDBIcon
                           style={{color: 'gray', margin: "0px 8px", cursor: "pointer"}}
+                          data-mdb-toggle="tooltip" title="View User"
                           icon="eye"
                         />
                       </Link>

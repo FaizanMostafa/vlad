@@ -34,7 +34,11 @@ import {
   SET_IS_FETCHING_NOTIFICATIONS,
   SET_IS_DELETING_NOTIFICATION,
   FETCH_USER_ACCOUNT_DETAILS,
-  SET_IS_FETCHING_USER_ACCOUNT_DETAILS
+  SET_IS_FETCHING_USER_ACCOUNT_DETAILS,
+  SET_IS_GENERATING_COVER_SHEETS,
+  SET_GENERATED_COVER_SHEETS,
+  SET_UPDATED_COVER_SHEET_DATA,
+  SET_IS_UPDATING_COVER_SHEET_DATA
 } from "../constants";
 
 const initState = {
@@ -65,6 +69,8 @@ const initState = {
   isUpdatingCase: false,
   isDeletingCase: false,
   isFetchingMetadata: false,
+  isGeneratingCoverSheets: false,
+  isUpdatingCoverSheetData: false,
   isFetchingUsers: true,
   isFetchingCases: true,
   isFetchingCase: false,
@@ -118,6 +124,44 @@ const adminReducer = (state=initState, {type, payload}) => {
       return {
         ...state,
         isCreatingCase: payload
+      };
+    }
+
+    case SET_IS_UPDATING_COVER_SHEET_DATA: {
+      return {
+        ...state,
+        isUpdatingCoverSheetData: payload
+      };
+    }
+
+    case SET_IS_GENERATING_COVER_SHEETS: {
+      return {
+        ...state,
+        isGeneratingCoverSheets: payload
+      };
+    }
+
+    case SET_GENERATED_COVER_SHEETS: {
+      state.cases.forEach((uCase)=>{
+        if(uCase.docId===payload.caseId) {
+          uCase.coverSheetDocs = payload.coverSheetDocs;
+        }
+      });
+      return {
+        ...state,
+        isGeneratingCoverSheets: false
+      };
+    }
+
+    case SET_UPDATED_COVER_SHEET_DATA: {
+      state.cases.forEach((uCase)=>{
+        if(uCase.docId===payload.caseId) {
+          uCase.coverSheetDocs = payload.coverSheetDocs;
+        }
+      });
+      return {
+        ...state,
+        isGeneratingCoverSheets: false
       };
     }
 

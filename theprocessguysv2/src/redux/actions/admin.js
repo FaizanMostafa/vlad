@@ -1,3 +1,4 @@
+import axios from "axios";
 import firebase, {
   db,
   uploadMedia,
@@ -41,6 +42,10 @@ import {
   SET_IS_MARKING_NOTIFICATION_ADDRESSED,
   FETCH_USER_ACCOUNT_DETAILS,
   SET_IS_FETCHING_USER_ACCOUNT_DETAILS,
+  SET_IS_GENERATING_COVER_SHEETS,
+  SET_IS_UPDATING_COVER_SHEET_DATA,
+  SET_GENERATED_COVER_SHEETS,
+  SET_UPDATED_COVER_SHEET_DATA
 } from "../constants";
 
 const setIsUpdatingUser = (status) => {
@@ -130,6 +135,20 @@ const setIsAddingTOSDoc = (status) => {
 const setIsFetchingTOSDocs = (status) => {
   return {
     type: SET_IS_FETCHING_TOS_DOCS,
+    payload: status,
+  };
+};
+
+const setIsUpdatingCoverSheetData = (status) => {
+  return {
+    type: SET_IS_UPDATING_COVER_SHEET_DATA,
+    payload: status,
+  };
+};
+
+const setIsGeneratingCoverSheets = (status) => {
+  return {
+    type: SET_IS_GENERATING_COVER_SHEETS,
     payload: status,
   };
 };
@@ -1598,6 +1617,64 @@ const fetchTOSDocs = (data) => (dispatch) => {
   }
 };
 
+const updateCoverSheetData = (data) => async (dispatch) => {
+  try {
+    dispatch(setIsUpdatingCoverSheetData(true));
+    await db
+      .collection("cases")
+      .doc(data.caseId)
+      .update({ coverSheetData: data.coverSheetData });
+    dispatch({
+      type: SET_UPDATED_COVER_SHEET_DATA,
+      payload: {
+        caseId: data.caseId,
+        coverSheetData: data.coverSheetData
+      }
+    });
+  } catch (error) {
+    dispatch(setIsUpdatingCoverSheetData(false));
+    showToast(error.message, "error");
+  }
+};
+
+const generateCoverSheets = (data, onSuccess=()=>{}, onError=()=>{}) => async (dispatch) => {
+  try {
+    dispatch(setIsGeneratingCoverSheets(true));
+    if (data?.coverSheetDocs?.path) {
+      Object.values(data.coverSheetDocs.path).forEach(async (path) => {
+        await deleteMedia(path);
+      });
+    }
+    let response = await axios.post("https://tpg-pdf-generator.herokuapp.com/generate-pdf", {
+      uid: data.uid,
+      coverSheetData: data.coverSheetData
+    });
+    response = response.data;
+    const coverSheetDocs = {
+      path: { admin: response.aCSPath, user: response.uCSPath },
+      URI: { admin: response.aCSURI, user: response.uCSURI }
+    };
+    await db
+      .collection("cases")
+      .doc(data.caseId)
+      .update({ coverSheetDocs });
+    dispatch({
+      type: SET_GENERATED_COVER_SHEETS,
+      payload: {
+        caseId: data.caseId,
+        coverSheetDocs
+      }
+    });
+    onSuccess();
+    showToast("Generated cover sheets successfully!", "success");
+  } catch (error) {
+    console.log(error);
+    dispatch(setIsGeneratingCoverSheets(false));
+    onError();
+    showToast(error.message, "error");
+  }
+};
+
 const addNewTOSDocument =
   (data, onSuccess = () => {}, onError = () => {}) =>
   async (dispatch) => {
@@ -1622,15 +1699,13 @@ const addNewTOSDocument =
           .doc(doc.id)
           .update({ status: "inactive" });
       });
-      const tosDocRef = await db
-        .collection("TOSAgreements")
-        .add({
-          ...data,
-          documentPath,
-          documentURI,
-          status: "active",
-          createdAt: new Date(),
-        });
+      const tosDocRef = await db.collection("TOSAgreements").add({
+        ...data,
+        documentPath,
+        documentURI,
+        status: "active",
+        createdAt: new Date(),
+      });
       const usersBatch = db.batch();
       const users = await db.collection("users").get();
       users.forEach((doc) => {
@@ -1715,6 +1790,8 @@ export {
   fetchNotifications,
   deleteNotification,
   updateAccountStatus,
+  generateCoverSheets,
+  updateCoverSheetData,
   markNotificationAsRead,
   fetchUserAccountDetails,
   markNotificationAsAddressed,

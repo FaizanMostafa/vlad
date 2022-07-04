@@ -3,13 +3,19 @@ import FileBase64 from "../../components/FileBase64";
 import { QuestionaireAdditionalServeeTemplate } from "../../popups";
 
 export const Questionaire6 = (props) => {
-  const { serveesPhysicalDescription, setServeesPhysicalDescription } = props;
+  const { serveesDetail, setServeesDetail } = props;
 
   const handleSaveImage = (image, key, servee) => {
     delete image.file;
-    setServeesPhysicalDescription({
-      ...serveesPhysicalDescription,
-      [key]: { ...servee, image },
+    setServeesDetail({
+      ...serveesDetail,
+      [key]: {
+        ...servee,
+        physicalDescription: {
+          ...servee.physicalDescription,
+          image: image
+        }
+      }
     });
   };
 
@@ -20,9 +26,9 @@ export const Questionaire6 = (props) => {
         <i>(Proceed to next page if not available)</i>*
       </h2>
       <br></br>
-      {Object.entries(serveesPhysicalDescription).map(([key, servee]) => (
-        <>
-          {Object.keys(serveesPhysicalDescription).length > 1 && (
+      {Object.entries(serveesDetail).map(([key, servee]) => (
+        <MDBCol md="12">
+          {Object.keys(serveesDetail).length > 1 && (
             <h4>Servee {parseInt(key) + 1} Details</h4>
           )}
           <MDBCol md="12" id="full-name-of-described-servee">
@@ -33,15 +39,7 @@ export const Questionaire6 = (props) => {
                 hint="Full Name"
                 className="text-white"
                 value={servee.fullName}
-                onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: {
-                      ...servee,
-                      fullName: e.target.value
-                    },
-                  })
-                }
+                disabled={true}
                 required
               />
             </div>
@@ -51,11 +49,17 @@ export const Questionaire6 = (props) => {
               <label>Sex of Servee</label>
               <select
                 className="w-75 m-4 center p-2"
-                value={servee.gender}
+                value={servee.physicalDescription.gender}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, gender: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        gender: e.target.value
+                      }
+                    }
                   })
                 }
               >
@@ -72,11 +76,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.ethnicity}
+                value={servee.physicalDescription.ethnicity}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, ethnicity: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        ethnicity: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -88,11 +98,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.height}
+                value={servee.physicalDescription.height}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, height: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        height: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -104,11 +120,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.weight}
+                value={servee.physicalDescription.weight}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, weight: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        weight: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -120,11 +142,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.hairColor}
+                value={servee.physicalDescription.hairColor}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, hairColor: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        hairColor: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -136,11 +164,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.eyeColor}
+                value={servee.physicalDescription.eyeColor}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, eyeColor: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        eyeColor: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -158,11 +192,17 @@ export const Questionaire6 = (props) => {
               <MDBInput
                 type="textarea"
                 className="text-white"
-                value={servee.physicalOutline}
+                value={servee.physicalDescription.outline}
                 onChange={(e) =>
-                  setServeesPhysicalDescription({
-                    ...serveesPhysicalDescription,
-                    [key]: { ...servee, physicalOutline: e.target.value },
+                  setServeesDetail({
+                    ...serveesDetail,
+                    [key]: {
+                      ...servee,
+                      physicalDescription: {
+                        ...servee.physicalDescription,
+                        outline: e.target.value
+                      }
+                    }
                   })
                 }
               />
@@ -180,16 +220,16 @@ export const Questionaire6 = (props) => {
               />
             </div>
           </MDBCol>
-          <br></br>
-        </>
+          <br />
+        </MDBCol>
       ))}
-      <MDBCol>
+      {/* <MDBCol>
         <QuestionaireAdditionalServeeTemplate
           serveesPhysicalDescription={serveesPhysicalDescription}
           setServeesPhysicalDescription={setServeesPhysicalDescription}
         />
       </MDBCol>
-      <br></br>
+      <br></br> */}
     </>
   );
 };
